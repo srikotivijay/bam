@@ -1,0 +1,119 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:html="http://www.w3.org/1999/xhtml" controllerName="bam.controller.EditAttributesSingle">
+	<App id="editAttributesSingle">
+		<pages>
+			<Page title="{i18n>title}" 
+				showNavButton="true"
+				navButtonPress="onNavBack">
+				<content>
+				<f:Form editable="true" id="formEditAttributeSingle">
+				    <f:formContainers>
+				        <f:FormContainer title="{i18n>editAttributes}" id="fConEditAttributes">
+				            <f:formElements>
+				                <f:FormElement label="{i18n>gmid}" id="felmGMID">
+				                    <f:fields>
+				                        <Text id="lblGMID" text="{/GMID}" class="sapUiTinyMarginBegin"/>
+				                    </f:fields>
+				                </f:FormElement>
+				                <f:FormElement label="{i18n>country}" id="felmCountry">
+				                    <f:fields>
+				                        <Text id="lblCountry" text="{/COUNTRY}" class="sapUiTinyMarginBegin"/>
+				                    </f:fields>
+				                </f:FormElement>
+				                <f:FormElement label="{i18n>storedCurrency}{i18n>mandatory}" id="felmCurrency">
+				                    <f:fields>
+				                        <Select xmlns:sap.ui.core="sap.ui.core" width="40%" id="ddlStoredCurrency" name="ddlStoredCurrency" change="onChange" items="{path: '/STORED_CURRENCY_LIST'}" selectedKey="{/CURRENCY_CODE_ID}">
+		                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
+										</Select>
+				                    </f:fields>
+				                </f:FormElement>
+				                <f:FormElement label="{i18n>ibpRelevancy}{i18n>mandatory}" id="felmIBPRelevancy">
+				                    <f:fields>
+				                       <Select xmlns:sap.ui.core="sap.ui.core" width="40%" id="ddlIBPRelevancyFlag" name="ddlIBPRelevancyFlag" change="onChange" items="{path: '/IBP_RELEVANCY_LIST'}" selectedKey="{/IBP_RELEVANCY_CODE_ID}">
+		                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
+										</Select>
+				                    </f:fields>
+				                </f:FormElement>
+				                <f:FormElement label="{i18n>nettingDefault}{i18n>mandatory}" id="felmNettingDefault">
+				                    <f:fields>
+				                        <Select xmlns:sap.ui.core="sap.ui.core" width="40%" id="ddlNettingDefaultFlag" name="ddlNettingDefaultFlag" change="onChange" items="{path: '/NETTING_DEFAULT_LIST'}" selectedKey="{/NETTING_DEFAULT_CODE_ID}">
+		                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
+										</Select>
+				                    </f:fields>
+				                </f:FormElement>
+				                <f:FormElement label="{i18n>quadrant}{i18n>mandatory}" id="felmQuadrant">
+				                    <f:fields>
+				                        <Select xmlns:sap.ui.core="sap.ui.core" width="40%" id="ddlQuadrant" name="ddlQuadrant" change="onChange" items="{path: '/QUADRANT_LIST'}" selectedKey="{/QUADRANT_CODE_ID}">
+		                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
+										</Select>
+				                    </f:fields>
+				                </f:FormElement>
+				                <f:FormElement label="{i18n>channel}{i18n>mandatory}" id="felmChannel">
+				                    <f:fields>
+				                        <Select xmlns:sap.ui.core="sap.ui.core" width="40%" id="ddlChannel" name="ddlChannel" change="onChange" items="{path: '/CHANNEL_LIST'}" selectedKey="{/CHANNEL_CODE_ID}">
+		                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
+										</Select>
+				                    </f:fields>
+				                </f:FormElement>
+				                <f:FormElement label="{i18n>marketDefault}{i18n>mandatory}" id="felmMarketDefaultFlag">
+				                    <f:fields>
+				                        <Select xmlns:sap.ui.core="sap.ui.core" width="40%" id="ddlMarketDefaultFlag" name="ddlMarketDefaultFlag" change="onChange" items="{path: '/MARKET_DEFAULT_LIST'}" selectedKey="{/MARKET_DEFAULT_CODE_ID}">
+		                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
+										</Select>
+				                    </f:fields>
+				                </f:FormElement>
+				                <f:FormElement label="{i18n>supplySystemFlag}{i18n>mandatory}" id="felmSupportSystemFlag">
+				                    <f:fields>
+				                        <Select xmlns:sap.ui.core="sap.ui.core" width="40%" id="ddlSupportSystemFlag" name="ddlSupportSystemFlag" change="onChange" items="{path: '/SUPPORT_SYSTEM_FLAG_LIST'}" selectedKey="{/SUPPLY_SYSTEM_FLAG_CODE_ID}">
+		                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
+										</Select>
+				                    </f:fields>
+				                </f:FormElement>
+				                <f:FormElement label="{i18n>demandAtt1}" id="felmDemandAtt1">
+				                    <f:fields>
+				                        <TextArea id="txtDemandAtt1" name="txtDemandAtt1" liveChange="onChange" valueLiveUpdate="true" width="97%" value="{/DEMAND_ATTRIBUTE1}"/>
+				                    </f:fields>
+				                </f:FormElement>
+					            <f:FormElement label="{i18n>demandAtt2}" id="felmDemandAtt2">
+					                    <f:fields>
+					                        <TextArea id="txtDemandAtt2" name="txtDemandAtt2" liveChange="onChange" valueLiveUpdate="true" width="97%" value="{/DEMAND_ATTRIBUTE2}"/>
+					                    </f:fields>
+					            </f:FormElement>
+					            <f:FormElement label="{i18n>mktAtt1}" id="felmMktAtt1">
+					                    <f:fields>
+					                        <TextArea id="txtMktAtt1" name="txtMktAtt1" liveChange="onChange" valueLiveUpdate="true" width="97%" value="{/MARKETING_ATTRIBUTE1}"/>
+					                    </f:fields>
+					            </f:FormElement>
+					            <f:FormElement label="{i18n>mktAtt2}" id="felmMktAtt2">
+					                    <f:fields>
+					                        <TextArea id="txtMktAtt2" name="txtMktAtt2" liveChange="onChange" valueLiveUpdate="true" width="97%" value="{/MARKETING_ATTRIBUTE2}"/>
+					                    </f:fields>
+					            </f:FormElement>
+					            <f:FormElement label="{i18n>supplyAtt1}" id="felmSupplyAtt1">
+					                    <f:fields>
+					                        <TextArea id="txtSupplyAtt1" name="txtSupplyAtt1" liveChange="onChange" valueLiveUpdate="true" width="97%" value="{/SUPPLY_ATTRIBUTE1}"/>
+					                    </f:fields>
+					            </f:FormElement>
+					            <f:FormElement label="{i18n>supplyAtt2}" id="felmSupplyAtt2">
+					                    <f:fields>
+					                        <TextArea id="txtSupplyAtt2" name="txtSupplyAtt2" liveChange="onChange" valueLiveUpdate="true" width="97%" value="{/SUPPLY_ATTRIBUTE2}"/>
+					                    </f:fields>
+					            </f:FormElement>
+				            </f:formElements>
+				        </f:FormContainer>
+				    </f:formContainers>
+				    <f:layout>
+				        <f:ResponsiveGridLayout id="fResGridEditAttributes"/>
+				    </f:layout>
+				</f:Form>
+				<Toolbar width="100%" id="tbrSubmit">
+				     <content>
+				        <ToolbarSpacer id="tbrSpSubmit"/>
+						<Button text="{i18n>submit}" width="100px" id="btnSubmit" press="onSubmit"/>
+				        <Button text="{i18n>cancel}" width="100px" id="btnCancel" press="onCancel" class="sapUiLargeMarginEnd"/>
+				     </content>
+					</Toolbar>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

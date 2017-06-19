@@ -1,0 +1,155 @@
+<edmx:Edmx xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:sap="http://www.sap.com/Protocols/SAPData" Version="1.0">
+<edmx:DataServices xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" m:DataServiceVersion="2.0">
+<Schema xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="ODataService.BAMDataService">
+<EntityType Name="BAM_USERSType">
+<Key>
+<PropertyRef Name="BAM_USER_ID"/>
+</Key>
+<Property Name="BAM_USER_ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="BAM_USER_NAME" Type="Edm.String" MaxLength="100"/>
+<Property Name="BAM_USER_DESCRIPTION" Type="Edm.String" MaxLength="1000"/>
+</EntityType>
+<EntityType Name="CODE_MASTERType">
+<Key>
+<PropertyRef Name="ID"/>
+</Key>
+<Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="CODE_TYPE" Type="Edm.String" Nullable="false" MaxLength="50"/>
+<Property Name="CODE_KEY" Type="Edm.String" Nullable="false" MaxLength="50"/>
+<Property Name="LABEL" Type="Edm.String" Nullable="false" MaxLength="500"/>
+<Property Name="DESCRIPTION" Type="Edm.String" MaxLength="2000"/>
+<Property Name="CUSTOM1" Type="Edm.String" MaxLength="2000"/>
+<Property Name="CUSTOM2" Type="Edm.String" MaxLength="2000"/>
+<Property Name="CUSTOM3" Type="Edm.String" MaxLength="2000"/>
+<Property Name="CUSTOM4" Type="Edm.String" MaxLength="2000"/>
+<Property Name="CUSTOM5" Type="Edm.String" MaxLength="2000"/>
+<Property Name="DISPLAY_ORDER" Type="Edm.Int32"/>
+<Property Name="VALID_FLAG" Type="Edm.String" MaxLength="1"/>
+<Property Name="CREATED_ON" Type="Edm.DateTime" Nullable="false"/>
+<Property Name="CREATED_BY" Type="Edm.String" Nullable="false" MaxLength="50"/>
+<Property Name="LAST_UPDATED_ON" Type="Edm.DateTime"/>
+<Property Name="LAST_UPDATED_BY" Type="Edm.String" MaxLength="50"/>
+<Property Name="COMMENTS" Type="Edm.String" MaxLength="2000"/>
+</EntityType>
+<EntityType Name="GMID_SHIP_TO_COUNTRYType">
+<Key>
+<PropertyRef Name="ID"/>
+</Key>
+<Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="GMID" Type="Edm.String" Nullable="false" MaxLength="10"/>
+<Property Name="COUNTRY_CODE_ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="TYPE" Type="Edm.String" Nullable="false" MaxLength="50"/>
+<Property Name="CURRENCY_CODE_ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="IBP_RELEVANCY_CODE_ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="NETTING_DEFAULT_CODE_ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="QUADRANT_CODE_ID" Type="Edm.Int32"/>
+<Property Name="CHANNEL_CODE_ID" Type="Edm.Int32"/>
+<Property Name="MARKET_DEFAULT_CODE_ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="SUPPLY_SYSTEM_FLAG_CODE_ID" Type="Edm.Int32"/>
+<Property Name="FINANCE_SYSTEM_FLAG_CODE_ID" Type="Edm.Int32"/>
+<Property Name="GMID_COUNTRY_STATUS_CODE_ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="DEMAND_ATTRIBUTE1" Type="Edm.String" MaxLength="1000"/>
+<Property Name="DEMAND_ATTRIBUTE2" Type="Edm.String" MaxLength="1000"/>
+<Property Name="MARKETING_ATTRIBUTE1" Type="Edm.String" MaxLength="1000"/>
+<Property Name="MARKETING_ATTRIBUTE2" Type="Edm.String" MaxLength="1000"/>
+<Property Name="SUPPLY_ATTRIBUTE1" Type="Edm.String" MaxLength="1000"/>
+<Property Name="SUPPLY_ATTRIBUTE2" Type="Edm.String" MaxLength="1000"/>
+<Property Name="CREATED_ON" Type="Edm.DateTime" Nullable="false"/>
+<Property Name="CREATED_BY" Type="Edm.String" Nullable="false" MaxLength="50"/>
+<Property Name="LAST_UPDATED_ON" Type="Edm.DateTime"/>
+<Property Name="LAST_UPDATED_BY" Type="Edm.String" MaxLength="50"/>
+<Property Name="COMMENTS" Type="Edm.String" MaxLength="2000"/>
+</EntityType>
+<EntityType Name="GMID_SHIP_TO_COUNTRY_STGType">
+<Key>
+<PropertyRef Name="ID"/>
+</Key>
+<Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="GMID" Type="Edm.String" Nullable="false" MaxLength="10"/>
+<Property Name="COUNTRY_CODE_ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="TYPE" Type="Edm.String" Nullable="false" MaxLength="50"/>
+<Property Name="CURRENCY_CODE_ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="IBP_RELEVANCY_CODE_ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="NETTING_DEFAULT_CODE_ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="QUADRANT_CODE_ID" Type="Edm.Int32"/>
+<Property Name="CHANNEL_CODE_ID" Type="Edm.Int32"/>
+<Property Name="MARKET_DEFAULT_CODE_ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="GMID_COUNTRY_STATUS_CODE_ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="CREATED_ON" Type="Edm.DateTime" Nullable="false"/>
+<Property Name="CREATED_BY" Type="Edm.String" Nullable="false" MaxLength="50"/>
+<Property Name="COMMENTS" Type="Edm.String" MaxLength="2000"/>
+<Property Name="SUPPLY_SYSTEM_FLAG_CODE_ID" Type="Edm.Int32"/>
+</EntityType>
+<EntityType Name="GMID_COUNTRY_SHIP_FROM_PLANTType">
+<Key>
+<PropertyRef Name="ID"/>
+</Key>
+<Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="GMID_SHIP_FROM_COUNTRY_ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="GMID_SHIP_FROM_PLANT_ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="SOURCING_RATIO" Type="Edm.Double"/>
+<Property Name="CREATED_ON" Type="Edm.DateTime" Nullable="false"/>
+<Property Name="CREATED_BY" Type="Edm.String" Nullable="false" MaxLength="50"/>
+<Property Name="LAST_UPDATED_ON" Type="Edm.DateTime"/>
+<Property Name="LAST_UPDATED_BY" Type="Edm.String" MaxLength="50"/>
+<Property Name="COMMENTS" Type="Edm.String" MaxLength="2000"/>
+</EntityType>
+<EntityType Name="V_GMID_COUNTRY_SHIP_FROM_PLANTType">
+<Key>
+<PropertyRef Name="ID"/>
+</Key>
+<Property Name="ID" Type="Edm.Int64" Nullable="false"/>
+<Property Name="GMID" Type="Edm.String" Nullable="false" MaxLength="10"/>
+<Property Name="COUNTRY_CODE_ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="CURRENCY_CODE_ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="IBP_RELEVANCY_CODE_ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="NETTING_DEFAULT_CODE_ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="QUADRANT_CODE_ID" Type="Edm.Int32"/>
+<Property Name="CHANNEL_CODE_ID" Type="Edm.Int32"/>
+<Property Name="MARKET_DEFAULT_CODE_ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="SUPPLY_SYSTEM_FLAG_CODE_ID" Type="Edm.Int32"/>
+<Property Name="TYPE" Type="Edm.String" Nullable="false" MaxLength="50"/>
+<Property Name="GMID_COUNTRY_STATUS_CODE_ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="CREATED_BY" Type="Edm.String" Nullable="false" MaxLength="50"/>
+<Property Name="COUNTRY" Type="Edm.String" Nullable="false" MaxLength="500"/>
+<Property Name="PLANT_CODE" Type="Edm.String" Nullable="false" MaxLength="10"/>
+<Property Name="GMID_SHIP_FROM_PLANT_ID" Type="Edm.Int32" Nullable="false"/>
+</EntityType>
+<EntityType Name="V_MAINTAIN_ATTRIBUTESType">
+<Key>
+<PropertyRef Name="ID"/>
+</Key>
+<Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="GMID_COUNTRY_STATUS" Type="Edm.String" Nullable="false" MaxLength="500"/>
+<Property Name="GMID" Type="Edm.String" Nullable="false" MaxLength="10"/>
+<Property Name="COUNTRY" Type="Edm.String" Nullable="false" MaxLength="500"/>
+<Property Name="STORED_CURRENCY" Type="Edm.String" Nullable="false" MaxLength="500"/>
+<Property Name="IBP_RELEVANCY" Type="Edm.String" Nullable="false" MaxLength="500"/>
+<Property Name="NETTING_DEFAULT" Type="Edm.String" Nullable="false" MaxLength="500"/>
+<Property Name="QUADRANT" Type="Edm.String" Nullable="false" MaxLength="500"/>
+<Property Name="CHANNEL" Type="Edm.String" Nullable="false" MaxLength="500"/>
+<Property Name="MARKET_DEFAULT" Type="Edm.String" Nullable="false" MaxLength="500"/>
+<Property Name="SUPPLY_SYSTEM_FLAG" Type="Edm.String" Nullable="false" MaxLength="500"/>
+<Property Name="DEMAND_ATTRIBUTE1" Type="Edm.String" MaxLength="1000"/>
+<Property Name="DEMAND_ATTRIBUTE2" Type="Edm.String" MaxLength="1000"/>
+<Property Name="MARKETING_ATTRIBUTE1" Type="Edm.String" MaxLength="1000"/>
+<Property Name="MARKETING_ATTRIBUTE2" Type="Edm.String" MaxLength="1000"/>
+<Property Name="SUPPLY_ATTRIBUTE1" Type="Edm.String" MaxLength="1000"/>
+<Property Name="SUPPLY_ATTRIBUTE2" Type="Edm.String" MaxLength="1000"/>
+<Property Name="REQUESTED_BY" Type="Edm.String" Nullable="false" MaxLength="50"/>
+<Property Name="REQUESTED_DATE" Type="Edm.DateTime" Nullable="false"/>
+<Property Name="LAST_UPDATED_BY" Type="Edm.String" MaxLength="50"/>
+<Property Name="LAST_UPDATED_DATE" Type="Edm.DateTime"/>
+</EntityType>
+<EntityContainer Name="BAMDataService" m:IsDefaultEntityContainer="true">
+<EntitySet Name="BAM_USERS" EntityType="ODataService.BAMDataService.BAM_USERSType"/>
+<EntitySet Name="CODE_MASTER" EntityType="ODataService.BAMDataService.CODE_MASTERType"/>
+<EntitySet Name="GMID_SHIP_TO_COUNTRY" EntityType="ODataService.BAMDataService.GMID_SHIP_TO_COUNTRYType"/>
+<EntitySet Name="GMID_SHIP_TO_COUNTRY_STG" EntityType="ODataService.BAMDataService.GMID_SHIP_TO_COUNTRY_STGType"/>
+<EntitySet Name="GMID_COUNTRY_SHIP_FROM_PLANT" EntityType="ODataService.BAMDataService.GMID_COUNTRY_SHIP_FROM_PLANTType"/>
+<EntitySet Name="V_GMID_COUNTRY_SHIP_FROM_PLANT" EntityType="ODataService.BAMDataService.V_GMID_COUNTRY_SHIP_FROM_PLANTType"/>
+<EntitySet Name="V_MAINTAIN_ATTRIBUTES" EntityType="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType"/>
+</EntityContainer>
+</Schema>
+</edmx:DataServices>
+</edmx:Edmx>
