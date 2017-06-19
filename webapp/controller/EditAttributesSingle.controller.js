@@ -5,19 +5,32 @@ sap.ui.define([
 		"sap/m/MessageBox",
 		"sap/ui/model/resource/ResourceModel",
 		"sap/ui/model/Filter",
-		"sap/ui/core/routing/History"
-	], function (Controller, JSONModel, MessageToast, MessageBox, ResourceModel,Filter,History) {
+		"sap/ui/core/routing/History",
+		"bam/services/DataContext"
+	], function (Controller, JSONModel, MessageToast, MessageBox, ResourceModel,Filter,History,DataContext) {
 		"use strict";
+	
+	var attributeList = [];
 
 	return Controller.extend("bam.controller.EditAttributesSingle", {
 			onInit : function () {
+				
 				this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
 				
 	    		// Create model and set it to initial data
 	    		var oModel = new sap.ui.model.json.JSONModel();
 	    		this.getView().setModel(oModel);
-		    		
-		    	// Bind Stored Currency dropdown
+	    		
+	    		var promise = new Promise(function(resolve, reject) {
+					DataContext.getAttributeListBasedOnUserID()
+					.then(function(data) {
+						attributeList = data;
+						// add code to show/hide the controls on the UI
+					});
+				});
+
+						
+				// Bind Stored Currency dropdown
 				// Create a filter & sorter array
 				var storedcurrencyFilterArray = [];
 				var storedcurrencyFilter = new Filter("CODE_TYPE",sap.ui.model.FilterOperator.EQ,"CURRENCY");
@@ -178,6 +191,7 @@ sap.ui.define([
 		    	//attach _onRouteMatched to be called everytime on navigation to Edit Attributes Single page
 				var oRouter = this.getRouter();
 				oRouter.getRoute("editAttributesSingle").attachMatched(this._onRouteMatched, this);
+				
 			},
 			getRouter : function () {
 				return sap.ui.core.UIComponent.getRouterFor(this);

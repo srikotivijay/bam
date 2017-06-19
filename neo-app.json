@@ -20,6 +20,13 @@
       "description": "SAPUI5 Test Resources"
     },
     {
+		"path": "/services/userapi",
+		"target": {
+			"type": "service",
+			"name": "userapi"
+		}
+	},
+    {
       "path": "/ODataService/BAMDataService.xsodata/",
       "target": {
         "type": "destination",
