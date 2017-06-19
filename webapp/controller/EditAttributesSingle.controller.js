@@ -20,12 +20,13 @@ sap.ui.define([
 	    		// Create model and set it to initial data
 	    		var oModel = new sap.ui.model.json.JSONModel();
 	    		this.getView().setModel(oModel);
-	    		
+	    		var curr = this;
 	    		var promise = new Promise(function(resolve, reject) {
 					DataContext.getAttributeListBasedOnUserID()
 					.then(function(data) {
 						attributeList = data;
 						// add code to show/hide the controls on the UI
+						curr.setVMForControlVisibility();
 					});
 				});
 
@@ -201,6 +202,30 @@ sap.ui.define([
 				this.setPageToInitialState();
 				this._oEditAttributesID = oEvent.getParameter("arguments").editAttributesID;
 				this.setSelectedGMIDCountryVM();
+			},
+			showControl: function(value){
+				return !!value;
+			},
+			// add properties in view model to set the visibility of controls on basis of the user role
+			setVMForControlVisibility: function(){
+				var oModel = this._oGMIDShipToCountryUpdViewModel;
+				//set the control show/hide values
+		    	oModel.setProperty("/SHOW_CURRENCY",this.checkPermission('CURRENCY'));
+			    oModel.setProperty("/SHOW_IBP_RELEVANCY",this.checkPermission('IBP_RELEVANCY'));
+			    oModel.setProperty("/SHOW_NETTING_DEFAULT",this.checkPermission('NETTING_DEFAULT'));
+			    oModel.setProperty("/SHOW_QUADRANT",this.checkPermission('QUADRANT'));
+			    oModel.setProperty("/SHOW_CHANNEL",this.checkPermission('CHANNEL'));
+			    oModel.setProperty("/SHOW_MARKET_DEFAULT",this.checkPermission('MARKET_DEFAULT'));
+			    oModel.setProperty("/SHOW_SUPPLY_SYSTEM_FLAG",this.checkPermission('SUPPLY_SYSTEM'));
+			    oModel.setProperty("/SHOW_DEMAND_ATTRIBUTE1",this.checkPermission('DEMAND_ATTRIBUTE1'));
+			    oModel.setProperty("/SHOW_DEMAND_ATTRIBUTE2",this.checkPermission('DEMAND_ATTRIBUTE2'));
+			    oModel.setProperty("/SHOW_MARKETING_ATTRIBUTE1",this.checkPermission('MARKETING_ATTRIBUTE1'));
+			    oModel.setProperty("/SHOW_MARKETING_ATTRIBUTE2",this.checkPermission('MARKETING_ATTRIBUTE2'));
+			    oModel.setProperty("/SHOW_SUPPLY_ATTRIBUTE1",this.checkPermission('SUPPLY_ATTRIBUTE1'));
+				oModel.setProperty("/SHOW_SUPPLY_ATTRIBUTE2",this.checkPermission('SUPPLY_ATTRIBUTE2'));	
+			},
+			checkPermission: function(attribute){
+				return attributeList.includes(attribute);
 			},
 			// set the page to initial state
 			// clear the value state and value state text for all controls

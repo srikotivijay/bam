@@ -1,15 +1,13 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:html="http://www.w3.org/1999/xhtml" controllerName="bam.controller.EditAttributesMultiple">
 	<App id="editAttributesMultiple">
 		<pages>
-			<Page title="{i18n>title}" 
-				showNavButton="true"
-				navButtonPress="onNavBack">
+			<Page title="{i18n>title}" showNavButton="true" navButtonPress="onNavBack">
 				<content>
 				<f:Form editable="true" id="formEditAttributeMultiple">
 				    <f:formContainers>
 				        <f:FormContainer title="{i18n>editMultipleAttributes}" id="fConEditAttributes">
 				            <f:formElements>
-				                <f:FormElement label="{i18n>gmidcountry}"  id="felmGMIDCountry">
+				                <f:FormElement label="{i18n>gmidcountry}" id="felmGMIDCountry">
 				                    <f:fields>
 				                        <Text id="lblGMID" text="{/GMID_COUNTRY_COUNT}"/>
 				                    </f:fields>
@@ -66,37 +64,37 @@
 				                <f:FormElement label="{i18n>demandAtt1}" id="felmDemandAtt1">
 				                    <f:fields>
 				                        <TextArea id="txtDemandAtt1" name="txtDemandAtt1" liveChange="onChange" valueLiveUpdate="true" width="97%" value="{/DEMAND_ATTRIBUTE1}"/>
-				                        <CheckBox id = "chkDemandAtt1" name ="chkDemandAtt1" text ="{i18n>updateNull}" select ="onChecked" selected="{/NULLIFY_DEMAND_ATTRIBUTE1}"/>
+				                        <CheckBox id="chkDemandAtt1" name="chkDemandAtt1" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_DEMAND_ATTRIBUTE1}" tooltip="{i18n>updateNullTooltip}"/>
 				                    </f:fields>
 				                </f:FormElement>
 					            <f:FormElement label="{i18n>demandAtt2}" id="felmDemandAtt2">
 					                    <f:fields>
 					                        <TextArea id="txtDemandAtt2" name="txtDemandAtt2" liveChange="onChange" valueLiveUpdate="true" width="97%" value="{/DEMAND_ATTRIBUTE2}"/>
-					                        <CheckBox id = "chkDemandAtt2" name ="chkDemandAtt2" text ="{i18n>updateNull}" select ="onChecked" selected="{/NULLIFY_DEMAND_ATTRIBUTE2}"/>
+					                        <CheckBox id="chkDemandAtt2" name="chkDemandAtt2" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_DEMAND_ATTRIBUTE2}" tooltip="{i18n>updateNullTooltip}"/>
 					                    </f:fields>
 					            </f:FormElement>
 					            <f:FormElement label="{i18n>mktAtt1}" id="felmMktAtt1">
 					                    <f:fields>
 					                        <TextArea id="txtMktAtt1" name="txtMktAtt1" liveChange="onChange" valueLiveUpdate="true" width="97%" value="{/MARKETING_ATTRIBUTE1}"/>
-					                        <CheckBox id = "chkMktAtt1" name ="chkMktAtt1" text ="{i18n>updateNull}" select ="onChecked" selected="{/NULLIFY_MARKETING_ATTRIBUTE1}"/>
+					                        <CheckBox id="chkMktAtt1" name="chkMktAtt1" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_MARKETING_ATTRIBUTE1}" tooltip="{i18n>updateNullTooltip}"/>
 					                    </f:fields>
 					            </f:FormElement>
 					            <f:FormElement label="{i18n>mktAtt2}" id="felmMktAtt2">
 					                    <f:fields>
 					                        <TextArea id="txtMktAtt2" name="txtMktAtt2" liveChange="onChange" valueLiveUpdate="true" width="97%" value="{/MARKETING_ATTRIBUTE2}"/>
-					                         <CheckBox id = "chkMktAtt2" name ="chkMktAtt2" text ="{i18n>updateNull}" select ="onChecked" selected="{/NULLIFY_MARKETING_ATTRIBUTE2}"/>
+					                         <CheckBox id="chkMktAtt2" name="chkMktAtt2" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_MARKETING_ATTRIBUTE2}" tooltip="{i18n>updateNullTooltip}"/>
 					                    </f:fields>
 					            </f:FormElement>
 					            <f:FormElement label="{i18n>supplyAtt1}" id="felmSupplyAtt1">
 					                    <f:fields>
 					                        <TextArea id="txtSupplyAtt1" name="txtSupplyAtt1" liveChange="onChange" valueLiveUpdate="true" width="97%" value="{/SUPPLY_ATTRIBUTE1}"/>
-					                        <CheckBox id = "chkSupplyAtt1" name ="chkSupplyAtt1" text ="{i18n>updateNull}" select ="onChecked" selected="{/NULLIFY_SUPPLY_ATTRIBUTE1}"/>
+					                        <CheckBox id="chkSupplyAtt1" name="chkSupplyAtt1" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_SUPPLY_ATTRIBUTE1}" tooltip="{i18n>updateNullTooltip}"/>
 					                    </f:fields>
 					            </f:FormElement>
 					            <f:FormElement label="{i18n>supplyAtt2}" id="felmSupplyAtt2">
 					                    <f:fields>
 					                        <TextArea id="txtSupplyAtt2" name="txtSupplyAtt2" liveChange="onChange" valueLiveUpdate="true" width="97%" value="{/SUPPLY_ATTRIBUTE2}"/>
-					                        <CheckBox id = "chkSupplyAtt2" name ="chkSupplyAtt2" text ="{i18n>updateNull}" select ="onChecked" selected="{/NULLIFY_SUPPLY_ATTRIBUTE2}"/>
+					                        <CheckBox id="chkSupplyAtt2" name="chkSupplyAtt2" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_SUPPLY_ATTRIBUTE2}" tooltip="{i18n>updateNullTooltip}"/>
 					                    </f:fields>
 					            </f:FormElement>
 				            </f:formElements>
