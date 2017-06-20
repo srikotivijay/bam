@@ -141,6 +141,16 @@
 <Property Name="LAST_UPDATED_BY" Type="Edm.String" MaxLength="50"/>
 <Property Name="LAST_UPDATED_DATE" Type="Edm.DateTime"/>
 </EntityType>
+<EntityType Name="V_USER_ROLE_ATTRIBUTE_MAPPINGType">
+<Key>
+<PropertyRef Name="ID"/>
+</Key>
+<Property Name="ID" Type="Edm.Int64" Nullable="false"/>
+<Property Name="USER_ID" Type="Edm.String" Nullable="false" MaxLength="20"/>
+<Property Name="ROLE" Type="Edm.String" MaxLength="50"/>
+<Property Name="ATTRIBUTE" Type="Edm.String" MaxLength="50"/>
+<Property Name="ACTION" Type="Edm.String" Nullable="false" MaxLength="20"/>
+</EntityType>
 <EntityContainer Name="BAMDataService" m:IsDefaultEntityContainer="true">
 <EntitySet Name="BAM_USERS" EntityType="ODataService.BAMDataService.BAM_USERSType"/>
 <EntitySet Name="CODE_MASTER" EntityType="ODataService.BAMDataService.CODE_MASTERType"/>
@@ -149,6 +159,7 @@
 <EntitySet Name="GMID_COUNTRY_SHIP_FROM_PLANT" EntityType="ODataService.BAMDataService.GMID_COUNTRY_SHIP_FROM_PLANTType"/>
 <EntitySet Name="V_GMID_COUNTRY_SHIP_FROM_PLANT" EntityType="ODataService.BAMDataService.V_GMID_COUNTRY_SHIP_FROM_PLANTType"/>
 <EntitySet Name="V_MAINTAIN_ATTRIBUTES" EntityType="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType"/>
+<EntitySet Name="V_USER_ROLE_ATTRIBUTE_MAPPING" EntityType="ODataService.BAMDataService.V_USER_ROLE_ATTRIBUTE_MAPPINGType"/>
 </EntityContainer>
 </Schema>
 </edmx:DataServices>
