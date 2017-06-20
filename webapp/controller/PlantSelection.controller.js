@@ -185,7 +185,7 @@ sap.ui.define([
 										// create new GMIDShipFromPlant object
 										var newGMIDShipFromPlant = {
 								        	ID: maxGMIDShipFromPlantID + 1 + j,
-								        	GMID_SHIP_TO_COUNTRY_ID: gmidshipfromcountryID,
+								        	GMID_SHIP_TO_COUNTRY_ID: maxGMIDShipToID + 1 + i,
 								        	GMID_SHIP_FROM_PLANT_ID: gmidshipfromplantID,
 								        	CREATED_ON: oDate,
 								        	CREATED_BY:gmidshipfromplantcreatedBy
