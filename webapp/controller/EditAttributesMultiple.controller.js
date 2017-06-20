@@ -25,8 +25,9 @@ sap.ui.define([
 	    	//	Create model and set it to initial data
 	    	var oModel = new sap.ui.model.json.JSONModel();
 	    	this.getView().setModel(oModel);
-	    		var curr = this;
-	    		var promise = new Promise(function(resolve, reject) {
+	    	
+	    	var curr = this;
+	    	var promise = new Promise(function(resolve, reject) {
 					DataContext.getAttributeListBasedOnUserID()
 					.then(function(data) {
 						attributeList = data;
@@ -231,9 +232,9 @@ sap.ui.define([
 		},
 		showControl: function(value){
 				return !!value;
-			},
-			// add properties in view model to set the visibility of controls on basis of the user role
-			setVMForControlVisibility: function(){
+		},
+		// add properties in view model to set the visibility of controls on basis of the user role
+		setVMForControlVisibility: function(){
 				var oModel = this._oGMIDShipToCountryUpdViewModel;
 				//set the control show/hide values
 		    	oModel.setProperty("/SHOW_CURRENCY",this.checkPermission('CURRENCY'));
@@ -249,10 +250,10 @@ sap.ui.define([
 			    oModel.setProperty("/SHOW_MARKETING_ATTRIBUTE2",this.checkPermission('MARKETING_ATTRIBUTE2'));
 			    oModel.setProperty("/SHOW_SUPPLY_ATTRIBUTE1",this.checkPermission('SUPPLY_ATTRIBUTE1'));
 				oModel.setProperty("/SHOW_SUPPLY_ATTRIBUTE2",this.checkPermission('SUPPLY_ATTRIBUTE2'));	
-			},
-			checkPermission: function(attribute){
+		},
+		checkPermission: function(attribute){
 				return attributeList.includes(attribute);
-			},
+		},
 		// set the default view model for multiple GMID Country combinations' edit page
 		setGMIDCountryDefaultVM: function(editAttributesIDs){
 			var initData = [];
