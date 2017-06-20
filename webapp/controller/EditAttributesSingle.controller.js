@@ -11,11 +11,16 @@ sap.ui.define([
 		"use strict";
 	
 	var attributeList = [];
-
+	var loggedInUserID;
 	return Controller.extend("bam.controller.EditAttributesSingle", {
 			onInit : function () {
-				
-				this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
+				// Get logged in user id
+				var promise = new Promise(function(resolve, reject) {
+					DataContext.getUserID()
+					.then(function(data) {
+						loggedInUserID = data;
+					});
+				});
 				
 	    		// Create model and set it to initial data
 	    		var oModel = new sap.ui.model.json.JSONModel();
@@ -25,12 +30,13 @@ sap.ui.define([
 					DataContext.getAttributeListBasedOnUserID()
 					.then(function(data) {
 						attributeList = data;
-						// add code to show/hide the controls on the UI
+						// code to show/hide the controls on the UI
 						curr.setVMForControlVisibility();
 					});
 				});
 
-						
+				this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
+				
 				// Bind Stored Currency dropdown
 				// Create a filter & sorter array
 				var storedcurrencyFilterArray = [];
@@ -415,7 +421,7 @@ sap.ui.define([
 					        	GMID_COUNTRY_STATUS_CODE_ID:this._oViewModelData.GMID_COUNTRY_STATUS_CODE_ID,
 					        	CREATED_BY:this._oViewModelData.CREATED_BY,
 					        	CREATED_ON:this._oViewModelData.CREATED_ON,
-					        	LAST_UPDATED_BY:null,
+					        	LAST_UPDATED_BY: loggedInUserID,
 					        	LAST_UPDATED_ON: oDate,
 					        	COMMENTS:this._oViewModelData.COMMENTS
 			    	};

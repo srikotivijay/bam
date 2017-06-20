@@ -3,15 +3,12 @@
 		<pages>
 			<Page title="{i18n>title}" showNavButton="true" navButtonPress="onNavBack">
 				<content>
+				<Text id="lblGMID" text="{i18n>gmidcountry}" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom pageHeaderFont boldFont"/>	
+				<Text id="lblGMIDCountryCount" text="{/GMID_COUNTRY_COUNT}" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom pageHeaderFont boldFont"/>	
 				<f:Form editable="true" id="formEditAttributeMultiple">
 				    <f:formContainers>
-				        <f:FormContainer title="{i18n>editMultipleAttributes}" id="fConEditAttributes">
+				        <f:FormContainer title="{i18n>editAttributes}" id="fConEditAttributes">
 				            <f:formElements>
-				                <f:FormElement label="{i18n>gmidcountry}" id="felmGMIDCountry">
-				                    <f:fields>
-				                        <Text id="lblGMID" text="{/GMID_COUNTRY_COUNT}"/>
-				                    </f:fields>
-				                </f:FormElement>
 				                <f:FormElement label="{i18n>storedCurrency}" id="felmCurrency" visible="{path: '/SHOW_CURRENCY', formatter: '.showControl'}">
 				                    <f:fields>
 				                        <Select xmlns:sap.ui.core="sap.ui.core" width="40%" id="ddlStoredCurrency" name="ddlStoredCurrency" change="onChange" items="{path: '/STORED_CURRENCY_LIST'}" selectedKey="{/CURRENCY_CODE_ID}">

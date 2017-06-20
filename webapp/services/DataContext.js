@@ -18,6 +18,21 @@ sap.ui.define([
 			});
 		}
 		
+		function getUserID()
+		{
+			return new Promise(function (resolve, reject) {
+				var oDataServiceURL = "/services/userapi/currentUser";
+				
+				callService(oDataServiceURL)
+				.then(function(userID) {
+					resolve(userID);	
+				})
+				.catch(function(error) {
+					reject(error);
+				});
+			});
+		}
+		
 		function getUserMapping(userID) {
 	    	return new Promise(function(resolve, reject) {
 	            Promise.resolve()
@@ -71,7 +86,8 @@ sap.ui.define([
 		}
 		
 		var exports = {
-			getAttributeListBasedOnUserID: getAttributeListBasedOnUserID
+			getAttributeListBasedOnUserID: getAttributeListBasedOnUserID,
+			getUserID: getUserID
 		};
 	
 		return exports;

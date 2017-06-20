@@ -9,11 +9,18 @@ sap.ui.define([
 		"bam/services/DataContext"
 	], function (Controller, JSONModel, MessageToast, MessageBox, ResourceModel,Filter,History,DataContext) {
 		"use strict";
+		
 	var attributeList = [];
-	
+	var loggedInUserID;
 	return Controller.extend("bam.controller.EditAttributesMultiple", {
 		onInit : function () {
-			this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
+			// Get logged in user id
+			var promise = new Promise(function(resolve, reject) {
+				DataContext.getUserID()
+				.then(function(data) {
+					loggedInUserID = data;
+				});
+			});
 				
 	    	//	Create model and set it to initial data
 	    	var oModel = new sap.ui.model.json.JSONModel();
@@ -23,10 +30,12 @@ sap.ui.define([
 					DataContext.getAttributeListBasedOnUserID()
 					.then(function(data) {
 						attributeList = data;
-						// add code to show/hide the controls on the UI
+						// code to show/hide the controls on the UI
 						curr.setVMForControlVisibility();
 					});
-				});
+			});
+			
+			this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
 				
 		    //	Bind Stored Currency dropdown
 			//	Create a filter & sorter array
@@ -503,7 +512,7 @@ sap.ui.define([
 			// Create current timestamp
 			var oDate = new Date();
 			var updGMIDCountry = {
-			    		LAST_UPDATED_BY: null,
+			    		LAST_UPDATED_BY: loggedInUserID,
 					    LAST_UPDATED_ON: oDate
 			    	};
 			if(this._oViewModelData.CURRENCY_CODE_ID != -1){
