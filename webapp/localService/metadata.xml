@@ -85,7 +85,7 @@
 <PropertyRef Name="ID"/>
 </Key>
 <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
-<Property Name="GMID_SHIP_FROM_COUNTRY_ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="GMID_SHIP_TO_COUNTRY_ID" Type="Edm.Int32" Nullable="false"/>
 <Property Name="GMID_SHIP_FROM_PLANT_ID" Type="Edm.Int32" Nullable="false"/>
 <Property Name="SOURCING_RATIO" Type="Edm.Double"/>
 <Property Name="CREATED_ON" Type="Edm.DateTime" Nullable="false"/>
