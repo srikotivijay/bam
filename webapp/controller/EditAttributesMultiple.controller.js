@@ -566,7 +566,7 @@ sap.ui.define([
 			    updGMIDCountry.MARKETING_ATTRIBUTE2 = this._oViewModelData.MARKETING_ATTRIBUTE2;
 			}
 			
-			if(this.getView().byId("chkSupplyAtt2").getSelected()){
+			if(this.getView().byId("chkSupplyAtt1").getSelected()){
 				updGMIDCountry.SUPPLY_ATTRIBUTE1 = null;
 			}
 			else if (this._oViewModelData.SUPPLY_ATTRIBUTE1 !== undefined){
