@@ -307,6 +307,7 @@ sap.ui.define([
 	    	// get the crop protection and seeds value from i18n file
 	    	var oi18nModel = this.getView().getModel("i18n");
 		    this._oSeed = oi18nModel.getProperty("seeds");
+		    this._oCropProtection = oi18nModel.getProperty("cropProtection");
 		    var tblGmid = this.getView().byId("tblGMIDRequest");
 			var btnSubmit = this.getView().byId("btnSubmit");
 			var btnContinue = this.getView().byId("btnContinueToPlantSelection");
@@ -351,6 +352,7 @@ sap.ui.define([
 	            		|| data[i].CREATED_BY === "")
 	            {
 	            	data[i].errorMessage = true;
+	            	data[i].toolTipText += "Please enter all mandatory fields highlighted in red.";
 	            	returnValue = false;
 	            }
             }
@@ -358,21 +360,55 @@ sap.ui.define([
         },
         // function to check whether the user has entered a duplicate GMID/country entry on the form
         validateDuplicateEntries :function(){
-        var returnValue = true;
-        var data = this._oViewModelData.GMIDShipToCountryVM;
-        for(var i = 0; i < data.length - 1; i++) 
+	        var returnValue = true;
+	        var data = this._oViewModelData.GMIDShipToCountryVM;
+	        for(var i = 0; i < data.length - 1; i++) 
+	        {
+	            for( var j = i + 1; j < data.length - 1; j++)
+	            { 
+		            if((data[i].GMID === data[j].GMID) && (data[i].COUNTRY_CODE_ID === data[j].COUNTRY_CODE_ID))
+		            {
+		            	 data[i].errorMessage = true;
+		            	 data[j].errorMessage = true;
+		            	 returnValue = false;
+		            }
+	            } 
+	        }
+	        return returnValue;
+        },
+        validateGmidShipFromPlant :function()
         {
-            for( var j = i + 1; j < data.length - 1; j++)
-            { 
-	            if((data[i].GMID === data[j].GMID) && (data[i].COUNTRY_CODE_ID === data[j].COUNTRY_CODE_ID))
-	            {
-	            	 data[i].errorMessage = true;
-	            	 data[j].errorMessage = true;
-	            	 returnValue = false;
-	            }
-            } 
-        }
-        return returnValue;
+        	var data = this._oViewModelData.GMIDShipToCountryVM;
+        	var gmidHasPlant = true;
+        	
+	        for(var i = 0; i < data.length - 1; i++) 
+	        {
+	        	// Create a filter to fetch the GMID Country Status Code ID
+				var gmidFilterArray = [];
+				var gmidFilter = new Filter("GMID",sap.ui.model.FilterOperator.EQ,data[i].GMID);
+				gmidFilterArray.push(gmidFilter);
+	
+				 // Get the GMID Country Status Code ID CODE_MASTER table
+				 this._oDataModel.read("/GMID_SHIP_FROM_PLANT",{
+						filters: gmidFilterArray,
+						async: false,
+		                success: function(oData, oResponse){
+		                //return the GMID Country ID
+		                	if(oData.results.length === 0)
+		                	{
+		                		gmidHasPlant = false;
+		                		data[i].errorMessage = true;
+		                	}
+		                },
+		    		    error: function(){
+		            		MessageToast.show("Unable to retrieve plants for GMID.");
+		    			}
+		    		});
+
+	        }
+	        // if for each GMID a plant exists, return true, else return false
+	        return gmidHasPlant;
+	        
         },
         // function to check if the field is numeric
         numValidationCheck : function (oEvent) {
@@ -416,182 +452,106 @@ sap.ui.define([
 		    	this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
 	        	MessageToast.show("Please enter all mandatory fields.");          
 	        }
+	        // if crop protection is selected and the GMID/plant combination does not exist, return error
+	        else if(this._oSelectedGMIDType === this._oCropProtection && this.validateGmidShipFromPlant() === false)
+        	{
+        		this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
+        		MessageToast.show("There is no plant available for the selected GMID(s).");  
+        	}
+	        // check for duplicate GMID/Country Combination
+	        else if(this.validateUniqueGmidCountry() === true)
+        	{
+        		this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
+        		MessageToast.show("GMID/Country combination already exists in the system");  
+        	}
+        	else if (this.validateDuplicateEntries() === false)
+        	{
+        		this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
+        		MessageToast.show("The page includes duplicate GMID/Country combinations."); 
+        	}
 	        else
 	        {
-	        	// check for duplicate GMID/Country Combination
-	        	if(this.validateUniqueGmidCountry() === true)
-	        	{
-	        		this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
-	        		MessageToast.show("GMID/Country combination already exists in the system");  
-	        	}
-	        	else if (this.validateDuplicateEntries() === false)
-	        	{
-	        		this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
-	        		MessageToast.show("The page includes duplicate GMID/Country combinations."); 
-	        	}
-		        else
-		        {
-		    		// Create current timestamp
-		    		var oDate = new Date();
-		    		
-		    		// Get the MaxID
-		    	    var maxID =	this.getMaxID();
-		    	    // Get the code id for GMID Country Status
-		    	    var gmidcountrystatusID = this.getGMIDCountryStatusID();
-		    	
-		    		// loop through the rows and for each row insert data into database
-		    		// each row contains GMID Ship To combination.
-		    		for(var i = 0; i < GMIDShipToCountry.length - 1; i++) 
-		    		{
-						var GMID = GMIDShipToCountry[i].GMID;
-						var countryID = parseInt(GMIDShipToCountry[i].COUNTRY_CODE_ID,10);
-						var storedcurrencyID = parseInt(GMIDShipToCountry[i].CURRENCY_CODE_ID,10);
-						var ibprelevancyID = parseInt(GMIDShipToCountry[i].IBP_RELEVANCY_CODE_ID,10);
-						var nettingdefaultID = parseInt(GMIDShipToCountry[i].NETTING_DEFAULT_CODE_ID,10);
-						var quadrantID = parseInt(GMIDShipToCountry[i].QUADRANT_CODE_ID,10);
-						var channelID = parseInt(GMIDShipToCountry[i].CHANNEL_CODE_ID,10);
-						var marketdefaultID = parseInt(GMIDShipToCountry[i].MARKET_DEFAULT_CODE_ID,10);
-						var supplySystemFlag = parseInt(GMIDShipToCountry[i].SUPPLY_SYSTEM_FLAG_CODE_ID,10);
-						var createdBy = GMIDShipToCountry[i].CREATED_BY;
-						// create new GMIDShipToCountry object
-						var newGMID = {
-				        	ID: maxID + 1 + i,
-				        	GMID: GMID,
-				        	COUNTRY_CODE_ID: countryID,
-				        	CURRENCY_CODE_ID: storedcurrencyID,
-				        	IBP_RELEVANCY_CODE_ID: ibprelevancyID,
-				        	NETTING_DEFAULT_CODE_ID: nettingdefaultID,
-				        	QUADRANT_CODE_ID:quadrantID,
-				        	CHANNEL_CODE_ID: channelID,
-				        	MARKET_DEFAULT_CODE_ID: marketdefaultID,
-				        	SUPPLY_SYSTEM_FLAG_CODE_ID: supplySystemFlag,
-				        	TYPE: this._oSelectedGMIDType,
-				        	GMID_COUNTRY_STATUS_CODE_ID: gmidcountrystatusID,
-				        	CREATED_ON: oDate,
-				        	CREATED_BY:createdBy
-		    			};
-		    			
-		        		this._oDataModel.create("/GMID_SHIP_TO_COUNTRY", newGMID,
-		        		{
-				        	success: function(){
-				        		successCount++;
-				    		},
-				    		error: function(){
-				    			errorCount++;
-							}
-		        		});
-		    		}
-		    		//Show success or error message
-		    		if(errorCount === 0) {
-		        			this._oMessageModel.setProperty("/NumOfGMIDSubmitted",successCount);
-		    				this.getOwnerComponent().openSubmitConfirmDialog(this.getView());
-		        			// once insertion is success, navigate to homepage
-		    		} 
-		    		else 
-		    		{
-		        			MessageToast.show("Error: GMIDs were not submitted");
-		    		}
-	    		
-	        	} // duplicate gmid country check end else
-	        }
-        },
-        // Function to save the data into the staging table when clicked on continue to plant database
-    	onContinueToPlantSelection : function () {
-    		var errorCount = 0;
-    		var successCount = 0;
-    		var GMIDShipToCountry = this._oGMIDShipToCountryViewModel.getProperty("/GMIDShipToCountryVM");
+	        	var tablePath = "";
+	    	    if(this._oSelectedGMIDType === this._oCropProtection)
+	    	    {
+	    	    	tablePath = "/GMID_SHIP_TO_COUNTRY_STG";
+	    	    }
+	    	    else
+	    	    {
+	    	    	tablePath = "/GMID_SHIP_TO_COUNTRY";
+	    	    }
+	    	    
+	    		// Create current timestamp
+	    		var oDate = new Date();
+	    		// Get the MaxID
+	    	    var maxID =	this.getMaxID(tablePath);
+	    	    // Get the code id for GMID Country Status
+	    	    var gmidcountrystatusID = this.getGMIDCountryStatusID();
+	    	    
+	    		// loop through the rows and for each row insert data into database
+	    		// each row contains GMID Ship To combination.
+	    		for(var i = 0; i < GMIDShipToCountry.length - 1; i++) 
+	    		{
+					var GMID = GMIDShipToCountry[i].GMID;
+					var countryID = parseInt(GMIDShipToCountry[i].COUNTRY_CODE_ID,10);
+					var storedcurrencyID = parseInt(GMIDShipToCountry[i].CURRENCY_CODE_ID,10);
+					var ibprelevancyID = parseInt(GMIDShipToCountry[i].IBP_RELEVANCY_CODE_ID,10);
+					var nettingdefaultID = parseInt(GMIDShipToCountry[i].NETTING_DEFAULT_CODE_ID,10);
+					var quadrantID = parseInt(GMIDShipToCountry[i].QUADRANT_CODE_ID,10);
+					var channelID = parseInt(GMIDShipToCountry[i].CHANNEL_CODE_ID,10);
+					var marketdefaultID = parseInt(GMIDShipToCountry[i].MARKET_DEFAULT_CODE_ID,10);
+					var supplySystemFlag = parseInt(GMIDShipToCountry[i].SUPPLY_SYSTEM_FLAG_CODE_ID,10);
+					var createdBy = GMIDShipToCountry[i].CREATED_BY;
+					// create new GMIDShipToCountry object
+					var newGMID = {
+			        	ID: maxID + 1 + i,
+			        	GMID: GMID,
+			        	COUNTRY_CODE_ID: countryID,
+			        	CURRENCY_CODE_ID: storedcurrencyID,
+			        	IBP_RELEVANCY_CODE_ID: ibprelevancyID,
+			        	NETTING_DEFAULT_CODE_ID: nettingdefaultID,
+			        	QUADRANT_CODE_ID:quadrantID,
+			        	CHANNEL_CODE_ID: channelID,
+			        	MARKET_DEFAULT_CODE_ID: marketdefaultID,
+			        	SUPPLY_SYSTEM_FLAG_CODE_ID: supplySystemFlag,
+			        	TYPE: this._oSelectedGMIDType,
+			        	GMID_COUNTRY_STATUS_CODE_ID: gmidcountrystatusID,
+			        	CREATED_ON: oDate,
+			        	CREATED_BY:createdBy
+	    			};
+	    			
+	        		this._oDataModel.create(tablePath, newGMID,
+	        		{
+			        	success: function(){
+			        		successCount++;
+			    		},
+			    		error: function(){
+			    			errorCount++;
+						}
+	        		});
+	    		}
+	    		//Show success or error message
+	    		if(errorCount === 0) 
+	    		{
+        			if(this._oSelectedGMIDType === this._oSeed)
+        			{
+        					        			// once insertion is success, navigate to homepage
+        				this._oMessageModel.setProperty("/NumOfGMIDSubmitted",successCount);
+    					this.getOwnerComponent().openSubmitConfirmDialog(this.getView());
+        			}
+        			else
+        			{
+        				// navigate to plant selection
+        				this.resetModel();
+                    	this.getOwnerComponent().getRouter().navTo("gmidPlantSelection");
+    				}
+	    		}
+	    		else 
+	    		{
+	        			MessageToast.show("Error: GMIDs were not submitted");
+	    		}
     		
-    		// reset the error message property to false before doing any validation
-			this.resetValidationForModel();
-			// remove the Error column on the UI
-			this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",false);
-			// remove the file from the uploader
-			var fileUploader = this.getView().byId("excelFileUploader");
-			fileUploader.clear();
-			
-	        if (this.validateTextFieldValues() === false)
-	        {
-	        	// Set error message column to false (not visible by default)
-		    	this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
-	        	MessageToast.show("Please enter all mandatory fields.");          
-	        }
-	        else
-	        {
-	        	// check for duplicate GMID/Country Combination
-	        	if(this.validateUniqueGmidCountry() === true)
-	        	{
-	        		this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
-	        		MessageToast.show("GMID/Country combination already exists in the system");  
-	        	}
-	        	else if (this.validateDuplicateEntries() === false)
-	        	{
-	        		this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
-	        		MessageToast.show("The page includes duplicate GMID/Country combinations."); 
-	        	}
-		        else
-		        {
-		    		// Create current timestamp
-		    		var oDate = new Date();
-		    		
-		    		// Get the MaxID for the staging table
-		    	    var maxID =	this.getStageMaxID();
-		    	    // Get the code id for GMID Country Status
-		    	    var gmidcountrystatusID = this.getGMIDCountryStatusID();
-		    	
-		    		// loop through the rows and for each row insert data into database
-		    		// each row contains GMID Ship To combination.
-		    		for(var i = 0; i < GMIDShipToCountry.length - 1; i++) 
-		    		{
-						var GMID = GMIDShipToCountry[i].GMID;
-						var countryID = parseInt(GMIDShipToCountry[i].COUNTRY_CODE_ID,10);
-						var storedcurrencyID = parseInt(GMIDShipToCountry[i].CURRENCY_CODE_ID,10);
-						var ibprelevancyID = parseInt(GMIDShipToCountry[i].IBP_RELEVANCY_CODE_ID,10);
-						var nettingdefaultID = parseInt(GMIDShipToCountry[i].NETTING_DEFAULT_CODE_ID,10);
-						var quadrantID = parseInt(GMIDShipToCountry[i].QUADRANT_CODE_ID,10);
-						var channelID = parseInt(GMIDShipToCountry[i].CHANNEL_CODE_ID,10);
-						var marketdefaultID = parseInt(GMIDShipToCountry[i].MARKET_DEFAULT_CODE_ID,10);
-						var supplySystemFlag = parseInt(GMIDShipToCountry[i].SUPPLY_SYSTEM_FLAG_CODE_ID,10);
-						var createdBy = GMIDShipToCountry[i].CREATED_BY;
-						// create new GMIDShipToCountry object
-						var newGMID = {
-				        	ID: maxID + 1 + i,
-				        	GMID: GMID,
-				        	COUNTRY_CODE_ID: countryID,
-				        	TYPE: this._oSelectedGMIDType,
-				        	CURRENCY_CODE_ID: storedcurrencyID,
-				        	IBP_RELEVANCY_CODE_ID: ibprelevancyID,
-				        	NETTING_DEFAULT_CODE_ID: nettingdefaultID,
-				        	QUADRANT_CODE_ID:quadrantID,
-				        	CHANNEL_CODE_ID: channelID,
-				        	MARKET_DEFAULT_CODE_ID: marketdefaultID,
-				        	SUPPLY_SYSTEM_FLAG_CODE_ID: supplySystemFlag,
-				        	GMID_COUNTRY_STATUS_CODE_ID: gmidcountrystatusID,
-				        	CREATED_ON: oDate,
-				        	CREATED_BY:createdBy
-		    			};
-		    			
-		        		this._oDataModel.create("/GMID_SHIP_TO_COUNTRY_STG", newGMID,
-		        		{
-				        	success: function(){
-				        		successCount++;
-				    		},
-				    		error: function(){
-				    			errorCount++;
-							}
-		        		});
-		    		}
-		    		//Show success or error message
-		    		if(errorCount === 0) {
-		        		// navigate to plant selection
-		        		this.resetModel();
-                        this.getOwnerComponent().getRouter().navTo("gmidPlantSelection");
-		    		} 
-		    		else 
-		    		{
-		        		MessageToast.show("Error: GMIDs were not submitted");
-		    		}
-	        	} // duplicate gmid country check end else
-	        }
+        	}
         },
         resetModel: function ()
         {
@@ -630,7 +590,7 @@ sap.ui.define([
             this._oGMIDShipToCountryViewModel.refresh();
         },
         // below function will return the max ID from GMID_SHIP_TO_COUNTRY TABLE
-        getMaxID : function  () {
+        getMaxID : function  (tablePath) {
 			// Create a filter & sorter array to fetch the max ID
 			var idSortArray = [];
 			var idSort = new sap.ui.model.Sorter("ID",true);
@@ -639,7 +599,7 @@ sap.ui.define([
 			var maxID = null;
 
 			 // Get the Country dropdown list from the CODE_MASTER table
-			 this._oDataModel.read("/GMID_SHIP_TO_COUNTRY?$top=1&$select=ID",{
+			 this._oDataModel.read(tablePath + "?$top=1&$select=ID",{
 					sorters: idSortArray,
 					async: false,
 	                success: function(oData, oResponse){
@@ -651,32 +611,6 @@ sap.ui.define([
 	                },
 	    		    error: function(){
 	            		MessageToast.show("Unable to retrieve max ID for GMID table.");
-	    			}
-	    		});
-	    	return maxID;
-        },
-	    // below function will return the max ID from GMID_SHIP_TO_COUNTRY_STG TABLE
-        getStageMaxID : function  () {
-			// Create a filter & sorter array to fetch the max ID
-			var idSortArray = [];
-			var idSort = new sap.ui.model.Sorter("ID",true);
-			idSortArray.push(idSort);
-			
-			var maxID = null;
-
-			 // Get the Country dropdown list from the CODE_MASTER table
-			 this._oDataModel.read("/GMID_SHIP_TO_COUNTRY_STG?$top=1&$select=ID",{
-					sorters: idSortArray,
-					async: false,
-	                success: function(oData, oResponse){
-	                	//return the max ID
-	                	if(oData.results.length === 0){
-	                		maxID = 0;
-	                	}
-	                	else {maxID = oData.results[0].ID; }
-	                },
-	    		    error: function(){
-	            		MessageToast.show("Unable to retrieve max ID for GMID Staging table.");
 	    			}
 	    		});
 	    	return maxID;
@@ -1093,4 +1027,5 @@ sap.ui.define([
 				this.getOwnerComponent().getRouter().navTo("home");
 		}
   	});
+
 });
