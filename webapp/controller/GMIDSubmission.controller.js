@@ -495,12 +495,10 @@ sap.ui.define([
 	        if(this.validateUniqueGmidCountry() === true)
         	{
         		this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
-        		MessageToast.show("GMID/Country combination already exists in the system");  
         	}
         	if (this.validateDuplicateEntries() === false)
         	{
         		this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
-        		MessageToast.show("The page includes duplicate GMID/Country combinations."); 
         	}
 	        else
 	        {
@@ -581,7 +579,7 @@ sap.ui.define([
 	    		}
 	    		else 
 	    		{
-	        			MessageToast.show("Error: GMIDs were not submitted");
+	        			MessageToast.show("Error: GMIDs were not submitted. Click on the error icon next to each GMID for more information.");
 	    		}
     		
         	}
