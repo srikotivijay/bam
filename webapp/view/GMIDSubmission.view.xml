@@ -1,4 +1,4 @@
-<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:u="sap.ui.unified" controllerName="bam.controller.GMIDSubmission" displayBlock="true">
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:u="sap.ui.unified" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" controllerName="bam.controller.GMIDSubmission" displayBlock="true">
 	<App id="gmidSubmission">
 		<pages><Page title="{i18n>title}" class="sapUiResponsiveContentPadding">
 				<headerContent>
@@ -85,8 +85,8 @@
 					            	 <HBox alignContent="SpaceBetween" direction="Inherit">
 					            	 		<core:Icon id="btnRemoveRow" src="sap-icon://delete" visible="{path: 'createNew', formatter: '.disableControl'}" press="onRemoveRow"/>
 					            	 		<core:Icon id="btnAddRow" src="sap-icon://add" visible="{path: 'createNew', formatter: '.enableControl'}" press="onAddRow"/>
-					            			<core:Icon visible="{path: 'errorMessage'}" src="sap-icon://error" tooltip="{toolTipText}"/>
-					            	 </HBox>
+					            			<core:Icon visible="{path: 'errorMessage'}" src="sap-icon://error" press="showErrorMessage" app:text="{toolTipText}" tooltip="{i18n>errorIcon}"/>				            	
+					            	</HBox>
 				                	<Input id="inputGMID" value="{GMID}" visible="{path: 'createNew', formatter: '.disableControl'}" width="100%" maxLength="8" liveChange="numValidationCheck"/>
 	                            	<Select xmlns:sap.ui.core="sap.ui.core" id="ddlCountry" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/GMIDShipToCountryVM/Country', templateShareable : true}" selectedKey="{COUNTRY_CODE_ID}">
 	                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
@@ -110,7 +110,6 @@
 	                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
 									</Select>
 									<Input id="inputRequestedBy" value="{CREATED_BY}" visible="{path: 'createNew', formatter: '.disableControl'}" width="100%"/>
-				            		
 					           </cells>
 					        </ColumnListItem>
 					 </items>

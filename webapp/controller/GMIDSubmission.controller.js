@@ -2,9 +2,10 @@ sap.ui.define([
 		"sap/ui/core/mvc/Controller",
 		"sap/ui/model/json/JSONModel",
 		"sap/m/MessageToast",
+		"sap/m/MessageBox",
 		"sap/ui/model/resource/ResourceModel",
 		"sap/ui/model/Filter"
-	], function (Controller, JSONModel, MessageToast, ResourceModel,Filter) {
+	], function (Controller, JSONModel, MessageToast, MessageBox, ResourceModel,Filter) {
 		"use strict";
 
 	return Controller.extend("bam.controller.GMIDSubmission", {
@@ -352,6 +353,10 @@ sap.ui.define([
 	            		|| data[i].CREATED_BY === "")
 	            {
 	            	data[i].errorMessage = true;
+            		if(data[i].toolTipText !== "")
+	                {
+	                	data[i].toolTipText += "\n";  
+	                }
 	            	data[i].toolTipText += "Please enter all mandatory fields highlighted in red.";
 	            	returnValue = false;
 	            }
@@ -366,10 +371,23 @@ sap.ui.define([
 	        {
 	            for( var j = i + 1; j < data.length - 1; j++)
 	            { 
-		            if((data[i].GMID === data[j].GMID) && (data[i].COUNTRY_CODE_ID === data[j].COUNTRY_CODE_ID))
+		            if((data[i].GMID !== "" &&  data[j].GMID !== "") && (data[i].COUNTRY_CODE_ID !== -1 &&  data[j].COUNTRY_CODE_ID !== -1) && (data[i].GMID === data[j].GMID) && (data[i].COUNTRY_CODE_ID === data[j].COUNTRY_CODE_ID !== -1))
 		            {
 		            	 data[i].errorMessage = true;
 		            	 data[j].errorMessage = true;
+		            	 
+		            	 if(data[i].toolTipText !== "")
+	                	 {
+	                		data[i].toolTipText += "\n";  
+	                	 }
+	            		 data[i].toolTipText += "Duplicate GMID/Country Combination found at row # " + (j + 1);
+	            		 
+	            		 if(data[j].toolTipText !== "")
+	                	 {
+	                		data[j].toolTipText += "\n";  
+	                	 }
+	            		 data[j].toolTipText += "Duplicate GMID/Country Combination found at row # " + (i + 1);
+	            		 
 		            	 returnValue = false;
 		            }
 	            } 
@@ -383,28 +401,36 @@ sap.ui.define([
         	
 	        for(var i = 0; i < data.length - 1; i++) 
 	        {
-	        	// Create a filter to fetch the GMID Country Status Code ID
-				var gmidFilterArray = [];
-				var gmidFilter = new Filter("GMID",sap.ui.model.FilterOperator.EQ,data[i].GMID);
-				gmidFilterArray.push(gmidFilter);
-	
-				 // Get the GMID Country Status Code ID CODE_MASTER table
-				 this._oDataModel.read("/GMID_SHIP_FROM_PLANT",{
-						filters: gmidFilterArray,
-						async: false,
-		                success: function(oData, oResponse){
-		                //return the GMID Country ID
-		                	if(oData.results.length === 0)
-		                	{
-		                		gmidHasPlant = false;
-		                		data[i].errorMessage = true;
-		                	}
-		                },
-		    		    error: function(){
-		            		MessageToast.show("Unable to retrieve plants for GMID.");
-		    			}
-		    		});
-
+	        	if(data[i].GMID !== "")
+	        	{
+		        	// Create a filter to fetch the GMID Country Status Code ID
+					var gmidFilterArray = [];
+					var gmidFilter = new Filter("GMID",sap.ui.model.FilterOperator.EQ,data[i].GMID);
+					gmidFilterArray.push(gmidFilter);
+		
+					 // Get the GMID Country Status Code ID CODE_MASTER table
+					 this._oDataModel.read("/GMID_SHIP_FROM_PLANT",{
+							filters: gmidFilterArray,
+							async: false,
+			                success: function(oData, oResponse){
+			                //return the GMID Country ID
+			                	if(oData.results.length === 0)
+			                	{
+			                		gmidHasPlant = false;
+			                		data[i].errorMessage = true;
+			                		if(data[i].toolTipText !== "")
+			                		{
+			                			data[i].toolTipText += "\n";  
+			                		}
+			                		data[i].toolTipText += "There is no plant available for the selected GMID(s).";  
+		
+			                	}
+			                },
+			    		    error: function(){
+			            		MessageToast.show("Unable to retrieve plants for GMID.");
+			    			}
+			    		});
+		        }
 	        }
 	        // if for each GMID a plant exists, return true, else return false
 	        return gmidHasPlant;
@@ -433,6 +459,14 @@ sap.ui.define([
             }
             this._oGMIDShipToCountryViewModel.refresh();
         },
+        showErrorMessage: function(oEvent)
+        {
+        	var text = oEvent.getSource().data("text");
+        	MessageBox.alert(text, {
+	    			icon : MessageBox.Icon.ERROR,
+					title : "Invalid Input"
+	       		});
+        },
     	// Function to save the data into the database
     	onSubmit : function () {
     		var errorCount = 0;
@@ -451,21 +485,19 @@ sap.ui.define([
 	        {
 	        	// Set error message column to false (not visible by default)
 		    	this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
-	        	MessageToast.show("Please enter all mandatory fields.");          
 	        }
 	        // if crop protection is selected and the GMID/plant combination does not exist, return error
-	        else if(this._oSelectedGMIDType === this._oCropProtection && this.validateGmidShipFromPlant() === false)
+	        if(this._oSelectedGMIDType === this._oCropProtection && this.validateGmidShipFromPlant() === false)
         	{
         		this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
-        		MessageToast.show("There is no plant available for the selected GMID(s).");  
         	}
 	        // check for duplicate GMID/Country Combination
-	        else if(this.validateUniqueGmidCountry() === true)
+	        if(this.validateUniqueGmidCountry() === true)
         	{
         		this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
         		MessageToast.show("GMID/Country combination already exists in the system");  
         	}
-        	else if (this.validateDuplicateEntries() === false)
+        	if (this.validateDuplicateEntries() === false)
         	{
         		this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
         		MessageToast.show("The page includes duplicate GMID/Country combinations."); 
@@ -661,6 +693,11 @@ sap.ui.define([
 				{
 					isDuplicate = true;
 					data[i].errorMessage = true;
+					if(data[i].toolTipText !== "")
+			        {
+            			data[i].toolTipText += "\n";  
+			        }
+            		data[i].toolTipText += "GMID/Country Combination already exists in the system.";
 				}
 				else
 				{
