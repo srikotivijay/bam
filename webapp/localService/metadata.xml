@@ -147,9 +147,33 @@
 </Key>
 <Property Name="ID" Type="Edm.Int64" Nullable="false"/>
 <Property Name="USER_ID" Type="Edm.String" Nullable="false" MaxLength="20"/>
-<Property Name="ROLE" Type="Edm.String" MaxLength="50"/>
-<Property Name="ATTRIBUTE" Type="Edm.String" MaxLength="50"/>
+<Property Name="ROLE" Type="Edm.String" Nullable="false" MaxLength="50"/>
+<Property Name="ATTRIBUTE" Type="Edm.String" Nullable="false" MaxLength="50"/>
 <Property Name="ACTION" Type="Edm.String" Nullable="false" MaxLength="20"/>
+</EntityType>
+<EntityType Name="GMID_SHIP_FROM_PLANTType">
+<Key>
+<PropertyRef Name="ID"/>
+</Key>
+<Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="GMID" Type="Edm.String" Nullable="false" MaxLength="10"/>
+<Property Name="PLANT_CODE" Type="Edm.String" Nullable="false" MaxLength="10"/>
+<Property Name="MRP_TYPE" Type="Edm.String" MaxLength="10"/>
+<Property Name="PLANT_MATERIAL_STATUS" Type="Edm.String" MaxLength="10"/>
+<Property Name="CREATED_ON" Type="Edm.DateTime" Nullable="false"/>
+<Property Name="CREATED_BY" Type="Edm.String" Nullable="false" MaxLength="50"/>
+<Property Name="LAST_UPDATED_ON" Type="Edm.DateTime"/>
+<Property Name="LAST_UPDATED_BY" Type="Edm.String" MaxLength="50"/>
+<Property Name="COMMENTS" Type="Edm.String" MaxLength="2000"/>
+</EntityType>
+<EntityType Name="MST_GMIDType">
+<Key>
+<PropertyRef Name="GMID"/>
+</Key>
+<Property Name="GMID" Type="Edm.String" Nullable="false" MaxLength="10"/>
+<Property Name="GMID_DESC" Type="Edm.String" MaxLength="250"/>
+<Property Name="MATERIAL_STATE" Type="Edm.String" MaxLength="50"/>
+<Property Name="SOURCE" Type="Edm.String" MaxLength="50"/>
 </EntityType>
 <EntityContainer Name="BAMDataService" m:IsDefaultEntityContainer="true">
 <EntitySet Name="BAM_USERS" EntityType="ODataService.BAMDataService.BAM_USERSType"/>
@@ -160,6 +184,8 @@
 <EntitySet Name="V_GMID_COUNTRY_SHIP_FROM_PLANT" EntityType="ODataService.BAMDataService.V_GMID_COUNTRY_SHIP_FROM_PLANTType"/>
 <EntitySet Name="V_MAINTAIN_ATTRIBUTES" EntityType="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType"/>
 <EntitySet Name="V_USER_ROLE_ATTRIBUTE_MAPPING" EntityType="ODataService.BAMDataService.V_USER_ROLE_ATTRIBUTE_MAPPINGType"/>
+<EntitySet Name="GMID_SHIP_FROM_PLANT" EntityType="ODataService.BAMDataService.GMID_SHIP_FROM_PLANTType"/>
+<EntitySet Name="MST_GMID" EntityType="ODataService.BAMDataService.MST_GMIDType"/>
 </EntityContainer>
 </Schema>
 </edmx:DataServices>

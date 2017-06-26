@@ -436,6 +436,96 @@ sap.ui.define([
 	        return gmidHasPlant;
 	        
         },
+        // validating whether entered GMID have valid status
+        validateGMIDbyStatus : function  (gmid) {
+        	 var oi18nModel = this.getView().getModel("i18n");
+        	  // get the GMID status for i18n model
+        	 var z1gmid = oi18nModel.getProperty("z1gmidStatus");
+        	 var zcgmid = oi18nModel.getProperty("zcgmidstatus");
+        	 var z9gmid = oi18nModel.getProperty("z9gmidstatus");
+        	 var prdGMID = oi18nModel.getProperty("prdGMID");
+        	 var gmiddata = this._oViewModelData.GMIDShipToCountryVM;
+        	 var validgmidwithstatus = false;
+        	for(var i = 0; i < gmiddata.length - 1; i++) 
+	        {
+	        	if(gmiddata[i].GMID !== "")
+	        	{
+	        		// Create a filter to fetch the GMID Country Status Code ID
+					var gmidFilterArray = [];
+					var gmidFilter = new Filter("GMID",sap.ui.model.FilterOperator.EQ,this.lpadstring(gmiddata[i].GMID));
+					gmidFilterArray.push(gmidFilter);
+					var z1gmidFilter = new Filter("MATERIAL_STATE",sap.ui.model.FilterOperator.EQ,z1gmid);
+					var zcgmidFilter = new Filter("MATERIAL_STATE",sap.ui.model.FilterOperator.EQ,zcgmid);
+					var z9gmidFilter = new Filter("MATERIAL_STATE",sap.ui.model.FilterOperator.EQ,z9gmid);
+					var prdGMIDFilter = new Filter("SOURCE",sap.ui.model.FilterOperator.EQ,prdGMID);
+					var gmidstatusFilter = new Filter ({
+						filters : [
+							z1gmidFilter,
+							zcgmidFilter,
+							z9gmidFilter,
+							prdGMIDFilter
+							],
+							and : false
+					});
+					gmidFilterArray.push(gmidstatusFilter);
+					 // verify if the GMID entered belongs to Z1,ZC,Z9 or prdGMID status
+					 this._oDataModel.read("/MST_GMID?$select=GMID",{
+					filters: gmidstatusFilter,
+					async: false,
+	                success: function(oData, oResponse){
+	                    //check if GMID exists
+	                	if(oData.results.length === 0){
+	                		validgmidwithstatus = true;
+	                	}
+	                	else {validgmidwithstatus = false; }
+	                },
+	    		    error: function(){
+	            		MessageToast.show("Unable to retrieve GMID status from MST_GMID table.");
+	    			}
+	    			});
+	        	}
+	        }
+	        return validgmidwithstatus;
+        },
+        // below function will validate whether entered GMID is valid or not
+        validateGMID : function()
+        {
+        	var gmiddata = this._oViewModelData.GMIDShipToCountryVM;
+        	var validgmid = false;
+        	for(var i = 0; i < gmiddata.length - 1; i++) 
+	        {
+	        	if(gmiddata[i].GMID !== "")
+	        	{
+	        		// Create a filter to fetch the GMID Country Status Code ID
+					var gmidFilterArray = [];
+					var gmidFilter = new Filter("GMID",sap.ui.model.FilterOperator.EQ,this.lpadstring(gmiddata[i].GMID));
+					gmidFilterArray.push(gmidFilter);
+					 // verify if the GMID entered belongs to Z1,ZC,Z9 or prdGMID status
+					this._oDataModel.read("/MST_GMID?$select=GMID",{
+					filters: gmidFilterArray,
+					async: false,
+	                success: function(oData, oResponse){
+	                    //check if GMID exists
+	                	if(oData.results.length === 0){
+	                		validgmid = false;
+	                	}
+	                	else {validgmid = true; }
+	                },
+	    		    error: function(){
+	            		MessageToast.show("Unable to retrieve GMID status from MST_GMID table.");
+	    			}
+	    			});
+	        	}
+	        }
+	        return validgmid;
+        	
+        },
+         // below function will left pad GMID with leading zeroes if length is less than 8
+        lpadstring : function(gmid) {
+    			while (gmid.length < 8)
+        		gmid = "0" + gmid;
+    		return gmid;
+        },
         // function to check if the field is numeric
         numValidationCheck : function (oEvent) {
         	var sNumber = "";
@@ -497,6 +587,16 @@ sap.ui.define([
         		this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
         	}
         	if (this.validateDuplicateEntries() === false)
+        	{
+        		this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
+        	}
+        	// check if GMID entered is valid
+        	if (this.validateGMID() === false)
+        	{
+        		this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
+        	}
+        	// check of invalid GMID entry by checking the status of GMID
+        	if (this.validateGMIDbyStatus() === false)
         	{
         		this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
         	}
