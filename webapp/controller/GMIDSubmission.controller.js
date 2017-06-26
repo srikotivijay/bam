@@ -15,13 +15,21 @@ sap.ui.define([
 			for (var i = 0; i < 5; i++) {
     			initData.push({
         		"GMID": "",
+        		"GMIDErrorState": "None",
         		"COUNTRY_CODE_ID": -1,
+        		"countryErrorState": "None",
         		"CURRENCY_CODE_ID": -1,
+        		"currencyErrorState": "None",
         		"IBP_RELEVANCY_CODE_ID": -1,
+        		"IBPRelevancyErrorState": "None",
         		"NETTING_DEFAULT_CODE_ID": -1,
+        		"nettingDefaultErrorState": "None",
         		"QUADRANT_CODE_ID": -1,
+        		"quadrantErrorState": "None",
         		"CHANNEL_CODE_ID": -1,
+        		"channelErrorState": "None",
         		"MARKET_DEFAULT_CODE_ID": -1,
+        		"marketDefaultErrorState": "None",
         		"SUPPLY_SYSTEM_FLAG_CODE_ID": -1,
         		"CREATED_BY":"",
         		"createNew" : false,
@@ -264,13 +272,21 @@ sap.ui.define([
 		    // create new empty GMIDShipToCountry object
 		    var obj = {
 		    				GMID: "",
+		    				GMIDErrorState: "None",
 		    				COUNTRY_CODE_ID:-1,
+		    				countryErrorState: "None",
 		    				CURRENCY_CODE_ID:-1,
+		    				currencyErrorState: "None",
 	        				IBP_RELEVANCY_CODE_ID:this._defaultIBPRelevancy,
+	        				IBPRelevancyErrorState: "None",
 	        				NETTING_DEFAULT_CODE_ID:-1,
+	        				nettingDefaultErrorState: "None",
 	        				QUADRANT_CODE_ID:this._defaultQuadrantForSeed,
+	        				quadrantErrorState: "None",
 	        				CHANNEL_CODE_ID:this._defaultChannelForSeed,
+	        				channelErrorState: "None",
 	        				MARKET_DEFAULT_CODE_ID:-1,
+	        				marketDefaultErrorState: "None",
 	        				SUPPLY_SYSTEM_FLAG_CODE_ID: -1,
 	        				CREATED_BY:"",
 		    				createNew: false,
@@ -342,27 +358,73 @@ sap.ui.define([
         	var data = this._oViewModelData.GMIDShipToCountryVM;
             for(var i = 0; i < data.length - 1; i++) 
             {
-	            if (data[i].GMID === "" 
-	            		|| parseInt(data[i].COUNTRY_CODE_ID,10) === -1
-	            		|| parseInt(data[i].IBP_RELEVANCY_CODE_ID,10) === -1
-	            		|| parseInt(data[i].NETTING_DEFAULT_CODE_ID,10) === -1
-	            		|| parseInt(data[i].QUADRANT_CODE_ID,10) === -1
-	            		|| parseInt(data[i].CHANNEL_CODE_ID,10) === -1
-	            		|| parseInt(data[i].MARKET_DEFAULT_CODE_ID,10) === -1 
-	            		|| parseInt(data[i].CURRENCY_CODE_ID,10) === -1 
-	            		|| data[i].CREATED_BY === "")
-	            {
-	            	data[i].errorMessage = true;
+            	if(this.checkForEmptyFields(data[i]))
+            	{
+            		data[i].errorMessage = true;
             		if(data[i].toolTipText !== "")
 	                {
 	                	data[i].toolTipText += "\n";  
 	                }
 	            	data[i].toolTipText += "Please enter all mandatory fields highlighted in red.";
 	            	returnValue = false;
-	            }
+            	}
             }
             return returnValue;
         },
+        checkForEmptyFields: function (row) {
+        	var errorsFound = false;
+        	
+    		if (row.GMID === "")
+            {
+            	row.GMIDErrorState = "Error";
+            	errorsFound = true;
+            }
+            if(parseInt(row.COUNTRY_CODE_ID,10) === -1)
+            {
+            	row.countryErrorState = "Error";
+            	errorsFound = true;
+            }
+            if(parseInt(row.IBP_RELEVANCY_CODE_ID,10) === -1)
+            {
+            	row.IBPRelevancyErrorState = "Error";
+            	errorsFound = true;
+            }
+            if(parseInt(row.NETTING_DEFAULT_CODE_ID,10) === -1)
+            {
+            	row.nettingDefaultErrorState = "Error";
+            	errorsFound = true;
+            }
+            if(parseInt(row.QUADRANT_CODE_ID,10) === -1)
+            {
+            	row.quadrantErrorState = "Error";
+            	errorsFound = true;
+            }
+            if(parseInt(row.CHANNEL_CODE_ID,10) === -1)
+            {
+            	row.channelErrorState = "Error";
+            	errorsFound = true;
+            }
+            if(parseInt(row.MARKET_DEFAULT_CODE_ID,10) === -1)
+            {
+            	row.marketDefaultErrorState = "Error";
+            	errorsFound = true;
+            }
+            if(parseInt(row.CURRENCY_CODE_ID,10) === -1)
+            {
+            	row.currencyErrorState = "Error";
+            	errorsFound = true;
+            }
+            if(row.CREATED_BY === "")
+            {
+            	// do NOTHING SHOULD BE DELETED
+            }
+            return errorsFound;
+        },
+    	onChange: function(oEvent){
+			var sourceControl = oEvent.getSource();
+			sourceControl.setValueStateText("");
+			sourceControl.setValueState(sap.ui.core.ValueState.None);
+		},
         // function to check whether the user has entered a duplicate GMID/country entry on the form
         validateDuplicateEntries :function(){
 	        var returnValue = true;
@@ -528,6 +590,8 @@ sap.ui.define([
         },
         // function to check if the field is numeric
         numValidationCheck : function (oEvent) {
+        	oEvent.getSource().setValueStateText("");
+			oEvent.getSource().setValueState(sap.ui.core.ValueState.None);
         	var sNumber = "";
 			var value = oEvent.getSource().getValue();
             var bNotnumber = isNaN(value);
@@ -546,6 +610,14 @@ sap.ui.define([
             {	
             	data[i].errorMessage = false;
             	data[i].toolTipText = "";
+            	data[i].GMIDErrorState = "None";
+            	data[i].countryErrorState = "None";
+            	data[i].currencyErrorState = "None";
+            	data[i].IBPRelevancyErrorState = "None";
+            	data[i].nettingDefaultErrorState = "None";
+            	data[i].quadrantErrorState = "None";
+            	data[i].channelErrorState = "None";
+            	data[i].marketDefaultErrorState = "None";
             }
             this._oGMIDShipToCountryViewModel.refresh();
         },
@@ -600,7 +672,7 @@ sap.ui.define([
         	{
         		this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
         	}
-	        else
+	        if(!this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true))
 	        {
 	        	var tablePath = "";
 	    	    if(this._oSelectedGMIDType === this._oCropProtection)
@@ -703,13 +775,21 @@ sap.ui.define([
 			for(var i = 0; i < data.length - 1; i++) 
 			{
 				data[i].GMID = "";
+				data[i].GMIDErrorState = "None";
     			data[i].COUNTRY_CODE_ID = -1;
+    			data[i].countryErrorState = "None";
     			data[i].CURRENCY_CODE_ID = -1;
+    			data[i].currencyErrorState = "None";
     			data[i].IBP_RELEVANCY_CODE_ID = -1;
+    			data[i].IBPRelevancyErrorState = "None";
     			data[i].NETTING_DEFAULT_CODE_ID = -1;
+    			data[i].nettingDefaultErrorState = "None";
     			data[i].QUADRANT_CODE_ID = -1;
+    			data[i].quadrantErrorState = "None";
     			data[i].CHANNEL_CODE_ID = -1;
+    			data[i].channelErrorState = "None";
     			data[i].MARKET_DEFAULT_CODE_ID = -1;
+    			data[i].marketDefaultErrorState = "None";
     			data[i].SUPPLY_SYSTEM_FLAG_CODE_ID = -1;
     			data[i].CREATED_BY = "";
     			data[i].createNew = "";
