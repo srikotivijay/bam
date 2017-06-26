@@ -429,6 +429,7 @@ sap.ui.define([
             for(var i = 0; i < data.length - 1; i++) 
             {	
             	data[i].errorMessage = false;
+            	data[i].toolTipText = "";
             }
             this._oGMIDShipToCountryViewModel.refresh();
         },
@@ -583,6 +584,7 @@ sap.ui.define([
     			data[i].CREATED_BY = "";
     			data[i].createNew = "";
     			data[i].errorMessage = false;
+    			data[i].toolTipText = "";
             }
             
             // remove any extra rows, only want to show 5
