@@ -1,0 +1,19 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:html="http://www.w3.org/1999/xhtml" controllerName="bam.controller.Home">
+	<App id="home">
+		<pages>
+			<Page title="{i18n>title}">
+				<content>
+					<TileContainer allowAdd="true" id="tlCntHome" height="400px" width="55%">
+				        <tiles>
+				        	<StandardTile title="{i18n>gmidSubmission}" info="{i18n>gmidSubmissionHelptext}" icon="sap-icon://add-product" activeIcon="sap-icon://add-product" infoState="Success" id="tlGMIDSubmission" class="sapUiLargeMarginEnd" press="onGoToGMIDSubmission"/>
+				        </tiles>
+				        <tiles>
+				        	<StandardTile title="{i18n>maintainAttributes}" info="{i18n>maintainAttributesHelptext}" icon="sap-icon://user-edit" activeIcon="sap-icon://user-edit" infoState="Success" id="tlMaintainAttributes" class="sapUiLargeMarginEnd" press="onGoToMaintainAttributes"/>
+				        </tiles>
+				    </TileContainer>
+				</content>
+			</Page>
+
+		</pages>
+	</App>
+</mvc:View>

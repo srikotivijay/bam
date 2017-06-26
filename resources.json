@@ -1,0 +1,87 @@
+{
+    "resources": [
+        {
+            "name": "i18n/i18n.properties",
+            "raw": "i18n/i18n.properties"
+        },
+        {
+            "name": "controller/MaintainAttributes.controller.js"
+        },
+        {
+            "name": "controller/EditAttributesSingle.controller.js"
+        },
+        {
+            "name": "controller/EditAttributesMultiple.controller.js"
+        },
+        {
+            "name": "controller/GMIDSubmission.controller.js"
+        },
+        {
+            "name": "controller/SubmitConfirmDialog.js"
+        },
+        {
+            "name": "controller/Home.controller.js"
+        },
+        {
+            "name": "controller/PlantSelection.controller.js"
+        },
+        {
+            "name": "Component.js"
+        },
+        {
+            "name": "index.html"
+        },
+        {
+            "name": "templates/GMIDSubmissionTemplate.xlsx"
+        },
+        {
+            "name": "localService/metadata.xml"
+        },
+        {
+            "name": "services/DataContext.js"
+        },
+        {
+            "name": "css/style.css"
+        },
+        {
+            "name": "manifest.json"
+        },
+        {
+            "name": "script/polyfill.js"
+        },
+        {
+            "name": "view/EditAttributesMultiple.view.xml"
+        },
+        {
+            "name": "view/Home.view.xml"
+        },
+        {
+            "name": "view/PlantSelection.view.xml"
+        },
+        {
+            "name": "view/MaintainAttributes.view.xml"
+        },
+        {
+            "name": "view/EditAttributesSingle.view.xml"
+        },
+        {
+            "name": "view/GMIDSubmission.view.xml"
+        },
+        {
+            "name": "view/SubmitConfirmDialog.fragment.xml"
+        },
+        {
+            "name": "view/BusyLoading.fragment.xml"
+        },
+        {
+            "name": "model/models.js"
+        },
+        {
+            "name": "Component-preload.js",
+            "merged": true
+        },
+        {
+            "name": "neo-app.json"
+        }
+    ]
+}

@@ -1,0 +1,12 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Dialog id="submitConfirmDialog" title="{i18n>submitConfirmDialogTitle}">
+		<HBox justifyContent="Center" alignContent="SpaceAround">
+				<Label text="{i18n>submitConfirmDialogText1}" id="submitConfirmDialogText1" class="sapUiTinyMarginEnd"/>
+				<Label text="{MessageVM>/NumOfGMIDSubmitted}" id="NumOfGMIDSubmitted" class="sapUiTinyMarginEnd"/>
+				<Label text="{i18n>submitConfirmDialogText2}" id="submitConfirmDialogText2"/>
+		</HBox>
+		<HBox justifyContent="Center">
+			<Button text="{i18n>btnOK}" press="onCloseDialog"/>
+		</HBox>
+	</Dialog>
+</core:FragmentDefinition>
