@@ -28,7 +28,7 @@
 					 <ScrollContainer horizontal="true">
 						<Table noDataText="No records to display" id="tblGMIDRequest" items="{/GMIDShipToCountryVM}" visible="false" width="auto">
 							 <columns>
-								 <Column id="clmHdrAction" width="50px">
+								 <Column id="clmHdrAction" width="80px">
 							            <header>
 							                <Label text="{i18n>action}" id="lblAction"/>
 							            </header>
@@ -38,12 +38,12 @@
 						                <Label text="{i18n>gmid}{i18n&gt;mandatory}" id="lblGMID"/>
 						            </header>
 					        	</Column>
-					        	<Column id="clmHdrCountry" width="150px">
+					        	<Column id="clmHdrCountry" width="100px">
 						            <header>
 						                <Label text="{i18n>country}{i18n&gt;mandatory}" id="lblCountry"/>
 						            </header>
 					        	</Column>
-					        <Column id="clmHdrStoredCurrency" width="150px">
+					        <Column id="clmHdrStoredCurrency" width="120px">
 						        <header>
 						              <Label text="{i18n>storedCurrency}{i18n&gt;mandatory}" id="lblStoredCurrency"/>
 						          </header>
@@ -75,26 +75,26 @@
 					        </Column>
 					        <Column id="clmRequestedBy" width="100px">
 						        <header>
-						          <Label text="{i18n>requestedBy}{i18n&gt;mandatory}" id="lblRequestedBy"/>
+						          <Label text="{i18n>requestedBy}{i18n>mandatory}" id="lblRequestedBy"/>
 						         </header>
 					        </Column>
 					    	</columns>
 					    <items>
 					        <ColumnListItem id="cliGMIDShipTocountry">
 					            <cells>
-					            	 <HBox alignContent="SpaceBetween" direction="Inherit">
-					            	 		<core:Icon id="btnRemoveRow" src="sap-icon://delete" visible="{path: 'createNew', formatter: '.disableControl'}" press="onRemoveRow"/>
+					            	 <HBox alignContent="Start" direction="Inherit" alignItems="Baseline">
+					            	 		<Button id="btnRemoveRow" icon="sap-icon://delete" visible="{path: 'createNew', formatter: '.disableControl'}" press="onRemoveRow" class="sapUiTinyMarginEnd"/>
 					            	 		<core:Icon id="btnAddRow" src="sap-icon://add" visible="{path: 'createNew', formatter: '.enableControl'}" press="onAddRow"/>
-					            			<core:Icon visible="{path: 'errorMessage'}" src="sap-icon://error" press="showErrorMessage" app:text="{toolTipText}" tooltip="{i18n>errorIcon}"/>				            	
+					            			<Button visible="{path: 'errorMessage'}" icon="sap-icon://error" press="showErrorMessage" app:text="{toolTipText}" tooltip="{i18n>errorIcon}" type="Reject"/>				            	
 					            	</HBox>
 				                	<Input id="inputGMID" value="{GMID}" visible="{path: 'createNew', formatter: '.disableControl'}" width="100%" maxLength="8" liveChange="numValidationCheck" valueState="{GMIDErrorState}"/>
 	                            	<Select xmlns:sap.ui.core="sap.ui.core" id="ddlCountry" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/GMIDShipToCountryVM/Country', templateShareable : true}" change="onChange" valueState="{countryErrorState}" selectedKey="{COUNTRY_CODE_ID}">
 	                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
 									</Select>
-	                            	<Select xmlns:sap.ui.core="sap.ui.core" id="ddlStoredCurrency" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/GMIDShipToCountryVM/StoredCurrency', templateShareable : true}"  change="onChange" valueState="{currencyErrorState}" selectedKey="{CURRENCY_CODE_ID}">
+	                            	<Select xmlns:sap.ui.core="sap.ui.core" id="ddlStoredCurrency" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/GMIDShipToCountryVM/StoredCurrency', templateShareable : true}" change="onChange" valueState="{currencyErrorState}" selectedKey="{CURRENCY_CODE_ID}">
 	                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
 									</Select>
-	                            	<Select xmlns:sap.ui.core="sap.ui.core" id="ddlIBPRelevancyFlag" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/GMIDShipToCountryVM/IBPRelevancyFlag', templateShareable : true}"  change="onChange" valueState="{IBPRelevancyErrorState}" selectedKey="{IBP_RELEVANCY_CODE_ID}">
+	                            	<Select xmlns:sap.ui.core="sap.ui.core" id="ddlIBPRelevancyFlag" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/GMIDShipToCountryVM/IBPRelevancyFlag', templateShareable : true}" change="onChange" valueState="{IBPRelevancyErrorState}" selectedKey="{IBP_RELEVANCY_CODE_ID}">
 	                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
 									</Select>
 	                            	<Select xmlns:sap.ui.core="sap.ui.core" id="ddlNettingDefaultFlag" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/GMIDShipToCountryVM/NettingDefaultFlag', templateShareable : true}" change="onChange" valueState="{nettingDefaultErrorState}" selectedKey="{NETTING_DEFAULT_CODE_ID}">
