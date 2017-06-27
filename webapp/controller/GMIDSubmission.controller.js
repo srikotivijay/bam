@@ -435,8 +435,13 @@ sap.ui.define([
 	            { 
 		            if((data[i].GMID !== "" &&  data[j].GMID !== "") && (data[i].COUNTRY_CODE_ID !== -1 &&  data[j].COUNTRY_CODE_ID !== -1) && (data[i].GMID === data[j].GMID) && (data[i].COUNTRY_CODE_ID === data[j].COUNTRY_CODE_ID !== -1))
 		            {
+		            	// highlight the GMID & Country input boxes in red
 		            	 data[i].errorMessage = true;
+		            	 data[i].GMIDErrorState = "Error";
+		            	 data[i].CountryErrorState = "Error";
 		            	 data[j].errorMessage = true;
+		            	 data[j].GMIDErrorState = "Error";
+		            	 data[j].CountryErrorState = "Error";
 		            	 
 		            	 if(data[i].toolTipText !== "")
 	                	 {
@@ -484,7 +489,7 @@ sap.ui.define([
 			                		{
 			                			data[i].toolTipText += "\n";  
 			                		}
-			                		data[i].toolTipText += "There is no plant available for the selected GMID(s).";  
+			                		data[i].toolTipText += "There is no plant available for the GMID.";  
 		
 			                	}
 			                },
@@ -687,7 +692,7 @@ sap.ui.define([
         	{
         		this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
         	}
-	        if(!this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true))
+	        if(!this._oGMIDShipToCountryViewModel.getProperty("/ErrorOnPage"))
 	        {
 	        	var tablePath = "";
 	    	    if(this._oSelectedGMIDType === this._oCropProtection)
@@ -886,6 +891,8 @@ sap.ui.define([
 				{
 					isDuplicate = true;
 					data[i].errorMessage = true;
+					data[i].GMIDErrorState = "Error";
+					data[i].CountryErrorState = "Error";
 					if(data[i].toolTipText !== "")
 			        {
             			data[i].toolTipText += "\n";  
