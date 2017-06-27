@@ -489,7 +489,7 @@ sap.ui.define([
 			                	}
 			                },
 			    		    error: function(){
-			            		MessageToast.show("Unable to retrieve plants for GMID.");
+			            		MessageToast.show("Unable to retrieve plants for GMID. Please contact admin.");
 			    			}
 			    		});
 		        }
@@ -532,26 +532,26 @@ sap.ui.define([
 					gmidFilterArray.push(gmidstatusFilter);
 					 // verify if the GMID entered belongs to Z1,ZC,Z9 or prdGMID status
 					 this._oDataModel.read("/V_GMID_PRODUCT_HIERARCHY?$select=GMID",{
-					filters: gmidFilterArray,
-					async: false,
-	                success: function(oData, oResponse){
-	                    //check if GMID exists
-	                	if(oData.results.length !== 0){
-	                		validgmidwithstatus = false;
-	                		gmiddata[i].errorMessage = true;
-	                		gmiddata[i].GMIDErrorState = "Error";
-			                if(gmiddata[i].toolTipText !== "")
-			                {
-			                	gmiddata[i].toolTipText += "\n";  
-			                }
-			                gmiddata[i].toolTipText += "Status is Invalid for the selected GMID(s).";  
-	                	}
-	                	
-	                },
-	    		    error: function(){
-	            		MessageToast.show("Unable to retrieve GMID status from MST_GMID table.");
-	    			}
-	    			});
+						filters: gmidFilterArray,
+						async: false,
+		                success: function(oData, oResponse){
+		                    //check if GMID exists
+		                	if(oData.results.length !== 0){
+		                		validgmidwithstatus = false;
+		                		gmiddata[i].errorMessage = true;
+		                		gmiddata[i].GMIDErrorState = "Error";
+				                if(gmiddata[i].toolTipText !== "")
+				                {
+				                	gmiddata[i].toolTipText += "\n";  
+				                }
+				                gmiddata[i].toolTipText += "GMID has an invalid status.";  
+		                	}
+		                	
+		                },
+		    		    error: function(){
+		            		MessageToast.show("Unable to retrieve GMID status from database. Please contact admin.");
+		    			}
+		    		});
 	        	}
 	        }
 	        return validgmidwithstatus;
@@ -571,7 +571,7 @@ sap.ui.define([
 					gmidFilterArray.push(gmidFilter);
 					var gmidtypeFilter = new Filter("VALUE_CENTER_DESC",sap.ui.model.FilterOperator.EQ,this._oSelectedGMIDType.toUpperCase());
 					gmidFilterArray.push(gmidtypeFilter);
-					 // verify if the GMID entered belongs to Z1,ZC,Z9 or prdGMID status
+					 // verify if the GMID entered has the same value center as the selected template
 					this._oDataModel.read("/V_GMID_PRODUCT_HIERARCHY?$select=GMID",{
 					filters: gmidFilterArray,
 					async: false,
@@ -585,12 +585,11 @@ sap.ui.define([
 			                {
 			                	gmiddata[i].toolTipText += "\n";  
 			                }
-			                gmiddata[i].toolTipText += "Selected GMID(s) are Invalid.";  
+			                gmiddata[i].toolTipText += "GMID does not match with the template selected.";  
 	                	}
-	                	
 	                },
 	    		    error: function(){
-	            		MessageToast.show("Unable to retrieve GMID status from MST_GMID table.");
+	            		MessageToast.show("Unable to retrieve GMID value center from database. Please contact admin.");
 	    			}
 	    			});
 	        	}
@@ -754,7 +753,7 @@ sap.ui.define([
 	    		{
         			if(this._oSelectedGMIDType === this._oSeed)
         			{
-        					        			// once insertion is success, navigate to homepage
+        				// once insertion is success, navigate to homepage
         				this._oMessageModel.setProperty("/NumOfGMIDSubmitted",successCount);
     					this.getOwnerComponent().openSubmitConfirmDialog(this.getView());
         			}
