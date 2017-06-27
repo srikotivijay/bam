@@ -353,6 +353,7 @@ sap.ui.define([
     		// refresh the GMID VM, this will automatically update the UI
     		this._oGMIDShipToCountryViewModel.refresh();
 		},
+		// This function loops through all the rows on the form and checks each input to see if it is filled in
         validateTextFieldValues :function () {
         	var returnValue = true;
         	var data = this._oViewModelData.GMIDShipToCountryVM;
@@ -371,6 +372,7 @@ sap.ui.define([
             }
             return returnValue;
         },
+        // This functions takes one row and check each field to see if it is filled in, if not -> highlight in red
         checkForEmptyFields: function (row) {
         	var errorsFound = false;
         	
@@ -420,6 +422,7 @@ sap.ui.define([
             }
             return errorsFound;
         },
+        // This functions sets the value state of each control to None. This is to clear red input boxes when errors were found durin submission.
     	onChange: function(oEvent){
 			var sourceControl = oEvent.getSource();
 			sourceControl.setValueStateText("");
@@ -438,10 +441,10 @@ sap.ui.define([
 		            	// highlight the GMID & Country input boxes in red
 		            	 data[i].errorMessage = true;
 		            	 data[i].GMIDErrorState = "Error";
-		            	 data[i].CountryErrorState = "Error";
+		            	 data[i].countryErrorState = "Error";
 		            	 data[j].errorMessage = true;
 		            	 data[j].GMIDErrorState = "Error";
-		            	 data[j].CountryErrorState = "Error";
+		            	 data[j].countryErrorState = "Error";
 		            	 
 		            	 if(data[i].toolTipText !== "")
 	                	 {
@@ -461,6 +464,7 @@ sap.ui.define([
 	        }
 	        return returnValue;
         },
+        // This function checks whether a crop protection has plants associated with it
         validateGmidShipFromPlant :function()
         {
         	var data = this._oViewModelData.GMIDShipToCountryVM;
