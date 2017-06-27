@@ -892,7 +892,7 @@ sap.ui.define([
 					isDuplicate = true;
 					data[i].errorMessage = true;
 					data[i].GMIDErrorState = "Error";
-					data[i].CountryErrorState = "Error";
+					data[i].countryErrorState = "Error";
 					if(data[i].toolTipText !== "")
 			        {
             			data[i].toolTipText += "\n";  
