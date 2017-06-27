@@ -114,21 +114,7 @@
 <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
 <Property Name="GMID_COUNTRY_STATUS" Type="Edm.String" Nullable="false" MaxLength="500"/>
 <Property Name="GMID" Type="Edm.String" Nullable="false" MaxLength="10"/>
-<Property Name="GMID_SHORT_TEXT" Type="Edm.String" Nullable="false" MaxLength="250"/>
-<Property Name="TRADE_PRODUCT_CODE" Type="Edm.String" Nullable="false" MaxLength="50"/>
-<Property Name="TRADE_PRODUCT_DESC" Type="Edm.String" MaxLength="250"/>
-<Property Name="MASTER_SALES_SPEC_DESC" Type="Edm.String" MaxLength="250"/>
-<Property Name="PLAN_PRODUCT_DESC" Type="Edm.String" MaxLength="250"/>
-<Property Name="PROFIT_CENTER_DESC" Type="Edm.String" MaxLength="250"/>
-<Property Name="PERFORMANCE_CENTER_DESC" Type="Edm.String" MaxLength="250"/>
-<Property Name="VALUE_CENTER_DESC" Type="Edm.String" MaxLength="250"/>
-<Property Name="SMC_DESC" Type="Edm.String" MaxLength="250"/>
-<Property Name="BRAND_NAME" Type="Edm.String" MaxLength="250"/>
-<Property Name="TREATMENT" Type="Edm.String" MaxLength="100"/>
-<Property Name="PACKAGE_TYPE" Type="Edm.String" MaxLength="100"/>
-<Property Name="MATERIAL_TYPE" Type="Edm.String" MaxLength="50"/>
-<Property Name="BGT_DESC" Type="Edm.String" MaxLength="100"/>
-<Property Name="LOCAL_UOM" Type="Edm.String" MaxLength="50"/>
+<Property Name="GMID_SHORTTEXT" Type="Edm.String" MaxLength="250"/>
 <Property Name="COUNTRY" Type="Edm.String" Nullable="false" MaxLength="500"/>
 <Property Name="STORED_CURRENCY" Type="Edm.String" Nullable="false" MaxLength="500"/>
 <Property Name="IBP_RELEVANCY" Type="Edm.String" Nullable="false" MaxLength="500"/>
@@ -143,6 +129,20 @@
 <Property Name="MARKETING_ATTRIBUTE2" Type="Edm.String" MaxLength="1000"/>
 <Property Name="SUPPLY_ATTRIBUTE1" Type="Edm.String" MaxLength="1000"/>
 <Property Name="SUPPLY_ATTRIBUTE2" Type="Edm.String" MaxLength="1000"/>
+<Property Name="TRADE_PRODUCT_CODE" Type="Edm.String" Nullable="false" MaxLength="10"/>
+<Property Name="TRADE_PRODUCT_DESC" Type="Edm.String" MaxLength="250"/>
+<Property Name="PLAN_PRODUCT_DESC" Type="Edm.String" MaxLength="250"/>
+<Property Name="PROFIT_CENTER_DESC" Type="Edm.String" MaxLength="250"/>
+<Property Name="PERFORMANCE_CENTER_DESC" Type="Edm.String" MaxLength="250"/>
+<Property Name="VALUE_CENTER_DESC" Type="Edm.String" MaxLength="250"/>
+<Property Name="SPECIFIED_MATERIAL_DESC" Type="Edm.String" MaxLength="250"/>
+<Property Name="MASTER_SALES_SPEC_DESC" Type="Edm.String" MaxLength="250"/>
+<Property Name="BRAND_NAME" Type="Edm.String" MaxLength="250"/>
+<Property Name="TREATMENT" Type="Edm.String" MaxLength="250"/>
+<Property Name="PACKAGE_TYPE" Type="Edm.String" MaxLength="50"/>
+<Property Name="BGT_DESC" Type="Edm.String" MaxLength="250"/>
+<Property Name="LOCAL_UOM" Type="Edm.String" MaxLength="50"/>
+<Property Name="MATERIAL_STATUS" Type="Edm.String" MaxLength="50"/>
 <Property Name="REQUESTED_BY" Type="Edm.String" Nullable="false" MaxLength="50"/>
 <Property Name="REQUESTED_DATE" Type="Edm.DateTime" Nullable="false"/>
 <Property Name="LAST_UPDATED_BY" Type="Edm.String" MaxLength="50"/>
@@ -178,25 +178,21 @@
 <PropertyRef Name="GMID"/>
 </Key>
 <Property Name="GMID" Type="Edm.String" Nullable="false" MaxLength="10"/>
-<Property Name="TRADE_PRODUCT_CODE" Type="Edm.String" Nullable="false" MaxLength="50"/>
+<Property Name="GMID_SHORTTEXT" Type="Edm.String" MaxLength="250"/>
+<Property Name="TRADE_PRODUCT_CODE" Type="Edm.String" Nullable="false" MaxLength="10"/>
 <Property Name="TRADE_PRODUCT_DESC" Type="Edm.String" MaxLength="250"/>
-<Property Name="PLAN_PRODUCT_CODE" Type="Edm.String" Nullable="false" MaxLength="50"/>
 <Property Name="PLAN_PRODUCT_DESC" Type="Edm.String" MaxLength="250"/>
-<Property Name="PROFIT_CENTER_CODE" Type="Edm.String" Nullable="false" MaxLength="50"/>
 <Property Name="PROFIT_CENTER_DESC" Type="Edm.String" MaxLength="250"/>
-<Property Name="PERFORMANCE_CENTER_CODE" Type="Edm.String" Nullable="false" MaxLength="50"/>
 <Property Name="PERFORMANCE_CENTER_DESC" Type="Edm.String" MaxLength="250"/>
-<Property Name="VALUE_CENTER_CODE" Type="Edm.String" Nullable="false" MaxLength="50"/>
 <Property Name="VALUE_CENTER_DESC" Type="Edm.String" MaxLength="250"/>
-<Property Name="BUSINESS_CODE" Type="Edm.String" Nullable="false" MaxLength="50"/>
-<Property Name="BUSINESS_DESCRIPTION" Type="Edm.String" MaxLength="250"/>
-<Property Name="MASTER_SALES_SPEC_CODE" Type="Edm.String" Nullable="false" MaxLength="50"/>
+<Property Name="SPECIFIED_MATERIAL_DESC" Type="Edm.String" MaxLength="250"/>
 <Property Name="MASTER_SALES_SPEC_DESC" Type="Edm.String" MaxLength="250"/>
-<Property Name="SMC_CODE" Type="Edm.String" Nullable="false" MaxLength="50"/>
-<Property Name="SMC_DESC" Type="Edm.String" MaxLength="250"/>
-<Property Name="BRAND_CODE" Type="Edm.String" MaxLength="250"/>
 <Property Name="BRAND_NAME" Type="Edm.String" MaxLength="250"/>
-<Property Name="MATERIAL_STATE" Type="Edm.String" MaxLength="50"/>
+<Property Name="TREATMENT" Type="Edm.String" MaxLength="250"/>
+<Property Name="PACKAGE_TYPE" Type="Edm.String" MaxLength="50"/>
+<Property Name="BGT_DESC" Type="Edm.String" MaxLength="250"/>
+<Property Name="LOCAL_UOM" Type="Edm.String" MaxLength="50"/>
+<Property Name="MATERIAL_STATUS" Type="Edm.String" MaxLength="50"/>
 <Property Name="SOURCE" Type="Edm.String" MaxLength="50"/>
 </EntityType>
 <EntityContainer Name="BAMDataService" m:IsDefaultEntityContainer="true">

@@ -525,9 +525,9 @@ sap.ui.define([
 					var gmidFilterArray = [];
 					var gmidFilter = new Filter("GMID",sap.ui.model.FilterOperator.EQ,this.lpadstring(gmiddata[i].GMID));
 					gmidFilterArray.push(gmidFilter);
-					var z1gmidFilter = new Filter("MATERIAL_STATE",sap.ui.model.FilterOperator.EQ,z1gmid);
-					var zcgmidFilter = new Filter("MATERIAL_STATE",sap.ui.model.FilterOperator.EQ,zcgmid);
-					var z9gmidFilter = new Filter("MATERIAL_STATE",sap.ui.model.FilterOperator.EQ,z9gmid);
+					var z1gmidFilter = new Filter("MATERIAL_STATUS",sap.ui.model.FilterOperator.EQ,z1gmid);
+					var zcgmidFilter = new Filter("MATERIAL_STATUS",sap.ui.model.FilterOperator.EQ,zcgmid);
+					var z9gmidFilter = new Filter("MATERIAL_STATUS",sap.ui.model.FilterOperator.EQ,z9gmid);
 					var prdGMIDFilter = new Filter("SOURCE",sap.ui.model.FilterOperator.EQ,prdGMID);
 					var gmidstatusFilter = new Filter ({
 						filters : [
