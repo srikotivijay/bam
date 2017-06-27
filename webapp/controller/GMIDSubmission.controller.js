@@ -502,7 +502,7 @@ sap.ui.define([
         validateGMIDbyStatus : function  (gmid) {
         	 var oi18nModel = this.getView().getModel("i18n");
         	  // get the GMID status for i18n model
-        	 var z1gmid = oi18nModel.getProperty("z1gmidStatus");
+        	 var z1gmid = oi18nModel.getProperty("z1gmidstatus");
         	 var zcgmid = oi18nModel.getProperty("zcgmidstatus");
         	 var z9gmid = oi18nModel.getProperty("z9gmidstatus");
         	 var prdGMID = oi18nModel.getProperty("prdGMID");
@@ -531,8 +531,8 @@ sap.ui.define([
 					});
 					gmidFilterArray.push(gmidstatusFilter);
 					 // verify if the GMID entered belongs to Z1,ZC,Z9 or prdGMID status
-					 this._oDataModel.read("/MST_GMID?$select=GMID",{
-					filters: gmidstatusFilter,
+					 this._oDataModel.read("/V_GMID_PRODUCT_HIERARCHY?$select=GMID",{
+					filters: gmidFilterArray,
 					async: false,
 	                success: function(oData, oResponse){
 	                    //check if GMID exists
@@ -569,8 +569,10 @@ sap.ui.define([
 					var gmidFilterArray = [];
 					var gmidFilter = new Filter("GMID",sap.ui.model.FilterOperator.EQ,this.lpadstring(gmiddata[i].GMID));
 					gmidFilterArray.push(gmidFilter);
+					var gmidtypeFilter = new Filter("VALUE_CENTER_DESC",sap.ui.model.FilterOperator.EQ,this._oSelectedGMIDType.toUpperCase());
+					gmidFilterArray.push(gmidtypeFilter);
 					 // verify if the GMID entered belongs to Z1,ZC,Z9 or prdGMID status
-					this._oDataModel.read("/MST_GMID?$select=GMID",{
+					this._oDataModel.read("/V_GMID_PRODUCT_HIERARCHY?$select=GMID",{
 					filters: gmidFilterArray,
 					async: false,
 	                success: function(oData, oResponse){
@@ -731,7 +733,7 @@ sap.ui.define([
 			        	CHANNEL_CODE_ID: channelID,
 			        	MARKET_DEFAULT_CODE_ID: marketdefaultID,
 			        	SUPPLY_SYSTEM_FLAG_CODE_ID: supplySystemFlag,
-			        	TYPE: this._oSelectedGMIDType,
+			        	TYPE: this._oSelectedGMIDType.toUpperCase(),
 			        	GMID_COUNTRY_STATUS_CODE_ID: gmidcountrystatusID,
 			        	CREATED_ON: oDate,
 			        	CREATED_BY:createdBy
