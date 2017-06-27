@@ -507,7 +507,7 @@ sap.ui.define([
         	 var z9gmid = oi18nModel.getProperty("z9gmidstatus");
         	 var prdGMID = oi18nModel.getProperty("prdGMID");
         	 var gmiddata = this._oViewModelData.GMIDShipToCountryVM;
-        	 var validgmidwithstatus = false;
+        	 var validgmidwithstatus = true;
         	for(var i = 0; i < gmiddata.length - 1; i++) 
 	        {
 	        	if(gmiddata[i].GMID !== "")
@@ -536,10 +536,17 @@ sap.ui.define([
 					async: false,
 	                success: function(oData, oResponse){
 	                    //check if GMID exists
-	                	if(oData.results.length === 0){
-	                		validgmidwithstatus = true;
+	                	if(oData.results.length !== 0){
+	                		validgmidwithstatus = false;
+	                		gmiddata[i].errorMessage = true;
+	                		gmiddata[i].GMIDErrorState = "Error";
+			                if(gmiddata[i].toolTipText !== "")
+			                {
+			                	gmiddata[i].toolTipText += "\n";  
+			                }
+			                gmiddata[i].toolTipText += "Status is Invalid for the selected GMID(s).";  
 	                	}
-	                	else {validgmidwithstatus = false; }
+	                	
 	                },
 	    		    error: function(){
 	            		MessageToast.show("Unable to retrieve GMID status from MST_GMID table.");
@@ -553,7 +560,7 @@ sap.ui.define([
         validateGMID : function()
         {
         	var gmiddata = this._oViewModelData.GMIDShipToCountryVM;
-        	var validgmid = false;
+        	var validgmid = true;
         	for(var i = 0; i < gmiddata.length - 1; i++) 
 	        {
 	        	if(gmiddata[i].GMID !== "")
@@ -570,8 +577,15 @@ sap.ui.define([
 	                    //check if GMID exists
 	                	if(oData.results.length === 0){
 	                		validgmid = false;
+	                		gmiddata[i].errorMessage = true;
+	                		gmiddata[i].GMIDErrorState = "Error";
+			                if(gmiddata[i].toolTipText !== "")
+			                {
+			                	gmiddata[i].toolTipText += "\n";  
+			                }
+			                gmiddata[i].toolTipText += "Selected GMID(s) are Invalid.";  
 	                	}
-	                	else {validgmid = true; }
+	                	
 	                },
 	    		    error: function(){
 	            		MessageToast.show("Unable to retrieve GMID status from MST_GMID table.");
