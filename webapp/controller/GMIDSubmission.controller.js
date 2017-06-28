@@ -4,12 +4,20 @@ sap.ui.define([
 		"sap/m/MessageToast",
 		"sap/m/MessageBox",
 		"sap/ui/model/resource/ResourceModel",
-		"sap/ui/model/Filter"
-	], function (Controller, JSONModel, MessageToast, MessageBox, ResourceModel,Filter) {
+		"sap/ui/model/Filter",
+		"bam/services/DataContext"
+	], function (Controller, JSONModel, MessageToast, MessageBox, ResourceModel,Filter,DataContext) {
 		"use strict";
-
+     var loggedInUserID;
 	return Controller.extend("bam.controller.GMIDSubmission", {
 		onInit : function () {
+			// Get logged in user id
+			var promise = new Promise(function(resolve, reject) {
+				DataContext.getUserID()
+				.then(function(data) {
+					loggedInUserID = data;
+				});
+			});
 			// Create view model for 5 rows to show by default on page load
 			var initData = [];
 			for (var i = 0; i < 5; i++) {
@@ -31,7 +39,6 @@ sap.ui.define([
         		"MARKET_DEFAULT_CODE_ID": -1,
         		"marketDefaultErrorState": "None",
         		"SUPPLY_SYSTEM_FLAG_CODE_ID": -1,
-        		"CREATED_BY":"",
         		"createNew" : false,
         		"errorMessage":false
     			});
@@ -288,8 +295,7 @@ sap.ui.define([
 	        				MARKET_DEFAULT_CODE_ID:-1,
 	        				marketDefaultErrorState: "None",
 	        				SUPPLY_SYSTEM_FLAG_CODE_ID: -1,
-	        				CREATED_BY:"",
-		    				createNew: false,
+	        				createNew: false,
 		    				errorMessage: false
 		    		};
 		    // set default property values on the basis of selected gmid type
@@ -415,10 +421,6 @@ sap.ui.define([
             {
             	row.currencyErrorState = "Error";
             	errorsFound = true;
-            }
-            if(row.CREATED_BY === "")
-            {
-            	// do NOTHING SHOULD BE DELETED
             }
             return errorsFound;
         },
@@ -728,7 +730,7 @@ sap.ui.define([
 					var channelID = parseInt(GMIDShipToCountry[i].CHANNEL_CODE_ID,10);
 					var marketdefaultID = parseInt(GMIDShipToCountry[i].MARKET_DEFAULT_CODE_ID,10);
 					var supplySystemFlag = parseInt(GMIDShipToCountry[i].SUPPLY_SYSTEM_FLAG_CODE_ID,10);
-					var createdBy = GMIDShipToCountry[i].CREATED_BY;
+					var createdBy = loggedInUserID;
 					// create new GMIDShipToCountry object
 					var newGMID = {
 			        	ID: maxID + 1 + i,
@@ -815,7 +817,6 @@ sap.ui.define([
     			data[i].MARKET_DEFAULT_CODE_ID = -1;
     			data[i].marketDefaultErrorState = "None";
     			data[i].SUPPLY_SYSTEM_FLAG_CODE_ID = -1;
-    			data[i].CREATED_BY = "";
     			data[i].createNew = "";
     			data[i].errorMessage = false;
     			data[i].toolTipText = "";
@@ -1013,9 +1014,8 @@ sap.ui.define([
 				var oi18nModel = t.getView().getModel("i18n");
 			   
 				var headerRow = ["GMID", "COUNTRY_CODE_ID", "CURRENCY_CODE_ID","IBP_RELEVANCY_CODE_ID",
-				"NETTING_DEFAULT_CODE_ID","QUADRANT_CODE_ID","CHANNEL_CODE_ID","MARKET_DEFAULT_CODE_ID",
-				"CREATED_BY"];
-			   
+				"NETTING_DEFAULT_CODE_ID","QUADRANT_CODE_ID","CHANNEL_CODE_ID","MARKET_DEFAULT_CODE_ID"];
+
 		        var allTextLines = strCSV.split(/\r\n|\n/);
 		        var excelColumnHeaders = allTextLines[0].split(",");
 		        var validHeadersFlag = true;
@@ -1109,7 +1109,6 @@ sap.ui.define([
 			        		"QUADRANT_CODE_ID": -1,
 			        		"CHANNEL_CODE_ID": -1,
 			        		"MARKET_DEFAULT_CODE_ID": -1,
-			        		"CREATED_BY":"",
 			        		"createNew" : false,
 			        		"errorMessage":false
 							};

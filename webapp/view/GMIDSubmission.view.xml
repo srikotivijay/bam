@@ -73,11 +73,6 @@
 						          <Label text="{i18n>marketDefault}{i18n&gt;mandatory}" id="lblMarketDefault"/>
 						         </header>
 					        </Column>
-					        <Column id="clmRequestedBy" width="100px">
-						        <header>
-						          <Label text="{i18n>requestedBy}{i18n>mandatory}" id="lblRequestedBy"/>
-						         </header>
-					        </Column>
 					    	</columns>
 					    <items>
 					        <ColumnListItem id="cliGMIDShipTocountry">
@@ -109,7 +104,6 @@
 	                            	<Select xmlns:sap.ui.core="sap.ui.core" id="ddlMarketDefaultFlag" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/GMIDShipToCountryVM/MarketDefaultFlag', templateShareable : true}" change="onChange" valueState="{marketDefaultErrorState}" selectedKey="{MARKET_DEFAULT_CODE_ID}">
 	                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
 									</Select>
-									<Input id="inputRequestedBy" value="{CREATED_BY}" visible="{path: 'createNew', formatter: '.disableControl'}" width="100%"/>
 					           </cells>
 					        </ColumnListItem>
 					 </items>
