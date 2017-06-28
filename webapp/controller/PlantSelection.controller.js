@@ -2,10 +2,13 @@ sap.ui.define([
 		"sap/ui/core/mvc/Controller",
 		"sap/ui/model/json/JSONModel",
 		"sap/m/MessageToast",
+		"sap/m/MessageBox",
 		"sap/ui/model/resource/ResourceModel",
 		"sap/ui/model/Filter"
-	], function (Controller, JSONModel, MessageToast, ResourceModel,Filter) {
+	], function (Controller, JSONModel, MessageToast, MessageBox, ResourceModel,Filter) {
 		"use strict";
+		
+	var firstTimePageLoad = true;
 	return Controller.extend("bam.controller.PlantSelection", {
 		//
 		onInit : function () {
@@ -92,6 +95,20 @@ sap.ui.define([
 		    // define a global variable for the view model and the view model data
 		    this._oPlantSelectionViewModel = oModel;
 		    this._oViewModelData = this._oPlantSelectionViewModel.getData();
+		    
+		    if(firstTimePageLoad)
+	    	{
+	    		var oRouter = this.getRouter();
+				oRouter.getRoute("gmidPlantSelection").attachMatched(this._onRouteMatched, this);
+				firstTimePageLoad = false;
+	    	}
+    	},
+    	getRouter : function () {
+				return sap.ui.core.UIComponent.getRouterFor(this);
+			},
+		// force init method to be called everytime we naviagte to Maintain Attribuets page 
+		_onRouteMatched : function (oEvent) {
+			this.onInit();
 		},
 		// Below function removes a row
 		onRemoveRow : function(oEvent) {
@@ -228,8 +245,16 @@ sap.ui.define([
 	    		//Show success or error message
 	    		if(errorCount === 0) 
 	    		{
-	        		this._oMessageModel.setProperty("/NumOfGMIDSubmitted",successGMIDShipToCount);
-	    			this.getOwnerComponent().openSubmitConfirmDialog(this.getView());
+	        			var oRouter = this.getRouter();
+        				// once insertion is success, navigate to homepage
+        				MessageBox.alert("You have successfully submitted " + successGMIDShipToCount + " GMID(s)",
+							{
+								icon : MessageBox.Icon.SUCCESS,
+								title : "Success",
+								onClose: function() {
+				        			oRouter.navTo("home");
+				        	}
+						});
 	        		//once insertion is success, navigate to homepage
 	    		} 
 	    		else 

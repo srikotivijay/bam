@@ -10,6 +10,7 @@ sap.ui.define([
 	], function (Controller, JSONModel, MessageToast, MessageBox, ResourceModel,Filter,History,DataContext) {
 		"use strict";
      var loggedInUserID;
+     var firstTimePageLoad = true;
 	return Controller.extend("bam.controller.GMIDSubmission", {
 		onInit : function () {
 			// Get logged in user id
@@ -258,12 +259,17 @@ sap.ui.define([
 		            		MessageToast.show("Unable to retrieve supply system flag data.");
 		    			}
 		    	});
-	    	// get default values for various fields and set them in global variables
-	    	this.getDefaultPropertyValues();
-	    	//attach _onRouteMatched to be called everytime on navigation to Maintain Attributes page
-	    	var oRouter = this.getRouter();
-			oRouter.getRoute("gmidSubmission").attachMatched(this._onRouteMatched, this);
-			this.resetModel();
+
+	    	// attach _onRouteMatched to be called everytime on navigation to Maintain Attributes page
+	    	// do not attach again if this is not the first time loading the page
+	    	if(firstTimePageLoad)
+	    	{
+	    		var oRouter = this.getRouter();
+				oRouter.getRoute("gmidSubmission").attachMatched(this._onRouteMatched, this);
+				firstTimePageLoad = false;
+				// get default values for various fields and set them in global variables
+	    		this.getDefaultPropertyValues();
+	    	}
     	},
     	getRouter : function () {
 				return sap.ui.core.UIComponent.getRouterFor(this);
@@ -272,10 +278,58 @@ sap.ui.define([
 		_onRouteMatched : function (oEvent) {
 			this.onInit();
 		},
-			// navigate back to the homepage
+		// navigate back to the homepage
 		onHome: function(){
 				this.getOwnerComponent().getRouter().navTo("home");
 		},
+		 resetModel: function ()
+        {
+        	// hide the table & excel button and set the radio button to not selected
+			var tblGmid = this.getView().byId("tblGMIDRequest");
+			tblGmid.setVisible(false);
+			var excelHBox = this.getView().byId("excelHBox");
+			excelHBox.setVisible(false);
+			var rbgGMIDType = this.getView().byId("rbgGMIDType");
+			rbgGMIDType.setSelectedIndex(-1);
+			var btnSubmit = this.getView().byId("btnSubmit");
+			btnSubmit.setVisible(false);
+			var btnContinue = this.getView().byId("btnContinueToPlantSelection");
+			btnContinue.setVisible(false);
+			this._oGMIDShipToCountryViewModel.destroy();
+			this.onInit();
+			
+			// reset model to default 5 rows
+			var data = this._oViewModelData.GMIDShipToCountryVM;
+			for(var i = 0; i < data.length - 1; i++) 
+			{
+				data[i].GMID = "";
+				data[i].GMIDErrorState = "None";
+    			data[i].COUNTRY_CODE_ID = -1;
+    			data[i].countryErrorState = "None";
+    			data[i].CURRENCY_CODE_ID = -1;
+    			data[i].currencyErrorState = "None";
+    			data[i].IBP_RELEVANCY_CODE_ID = -1;
+    			data[i].IBPRelevancyErrorState = "None";
+    			data[i].NETTING_DEFAULT_CODE_ID = -1;
+    			data[i].nettingDefaultErrorState = "None";
+    			data[i].QUADRANT_CODE_ID = -1;
+    			data[i].quadrantErrorState = "None";
+    			data[i].CHANNEL_CODE_ID = -1;
+    			data[i].channelErrorState = "None";
+    			data[i].MARKET_DEFAULT_CODE_ID = -1;
+    			data[i].marketDefaultErrorState = "None";
+    			data[i].SUPPLY_SYSTEM_FLAG_CODE_ID = -1;
+    			data[i].createNew = "";
+    			data[i].errorMessage = false;
+    			data[i].toolTipText = "";
+            }
+           
+            
+            // remove any extra rows, only want to show 5
+            data.splice(5,data.length - 5);
+            this.addEmptyObject();
+            
+        },
     	// Below function is used to prepare an empty object
     	addEmptyObject : function() {
 	    	var aData  = this._oGMIDShipToCountryViewModel.getProperty("/GMIDShipToCountryVM");
@@ -795,14 +849,20 @@ sap.ui.define([
 	    		{
         			if(this._oSelectedGMIDType === this._oSeed)
         			{
+        				var oRouter = this.getRouter();
         				// once insertion is success, navigate to homepage
-        				this._oMessageModel.setProperty("/NumOfGMIDSubmitted",successCount);
-    					this.getOwnerComponent().openSubmitConfirmDialog(this.getView());
+        				MessageBox.alert("You have successfully submitted " + successCount + " GMID(s)",
+							{
+								icon : MessageBox.Icon.SUCCESS,
+								title : "Success",
+								onClose: function() {
+				        			oRouter.navTo("home");
+				        	}
+						});
         			}
         			else
         			{
         				// navigate to plant selection
-        				this.resetModel();
                     	this.getOwnerComponent().getRouter().navTo("gmidPlantSelection");
     				}
 	    		}
@@ -812,50 +872,6 @@ sap.ui.define([
 	    		}
     		
         	}
-        },
-        resetModel: function ()
-        {
-        	// hide the table & excel button and set the radio button to not selected
-			var tblGmid = this.getView().byId("tblGMIDRequest");
-			tblGmid.setVisible(false);
-			var excelHBox = this.getView().byId("excelHBox");
-			excelHBox.setVisible(false);
-			var rbgGMIDType = this.getView().byId("rbgGMIDType");
-			rbgGMIDType.setSelectedIndex(-1);
-			var btnSubmit = this.getView().byId("btnSubmit");
-			btnSubmit.setVisible(false);
-			var btnContinue = this.getView().byId("btnContinueToPlantSelection");
-			btnContinue.setVisible(false);
-			
-			// reset model to default 5 rows
-			var data = this._oViewModelData.GMIDShipToCountryVM;
-			for(var i = 0; i < data.length - 1; i++) 
-			{
-				data[i].GMID = "";
-				data[i].GMIDErrorState = "None";
-    			data[i].COUNTRY_CODE_ID = -1;
-    			data[i].countryErrorState = "None";
-    			data[i].CURRENCY_CODE_ID = -1;
-    			data[i].currencyErrorState = "None";
-    			data[i].IBP_RELEVANCY_CODE_ID = -1;
-    			data[i].IBPRelevancyErrorState = "None";
-    			data[i].NETTING_DEFAULT_CODE_ID = -1;
-    			data[i].nettingDefaultErrorState = "None";
-    			data[i].QUADRANT_CODE_ID = -1;
-    			data[i].quadrantErrorState = "None";
-    			data[i].CHANNEL_CODE_ID = -1;
-    			data[i].channelErrorState = "None";
-    			data[i].MARKET_DEFAULT_CODE_ID = -1;
-    			data[i].marketDefaultErrorState = "None";
-    			data[i].SUPPLY_SYSTEM_FLAG_CODE_ID = -1;
-    			data[i].createNew = "";
-    			data[i].errorMessage = false;
-    			data[i].toolTipText = "";
-            }
-            
-            // remove any extra rows, only want to show 5
-            data.splice(5,data.length - 5);
-            this._oGMIDShipToCountryViewModel.refresh();
         },
         // below function will return the max ID from GMID_SHIP_TO_COUNTRY TABLE
         getMaxID : function  (tablePath) {
