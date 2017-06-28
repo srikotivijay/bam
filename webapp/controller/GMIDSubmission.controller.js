@@ -5,8 +5,9 @@ sap.ui.define([
 		"sap/m/MessageBox",
 		"sap/ui/model/resource/ResourceModel",
 		"sap/ui/model/Filter",
+		"sap/ui/core/routing/History",
 		"bam/services/DataContext"
-	], function (Controller, JSONModel, MessageToast, MessageBox, ResourceModel,Filter,DataContext) {
+	], function (Controller, JSONModel, MessageToast, MessageBox, ResourceModel,Filter,History,DataContext) {
 		"use strict";
      var loggedInUserID;
 	return Controller.extend("bam.controller.GMIDSubmission", {
@@ -18,6 +19,7 @@ sap.ui.define([
 					loggedInUserID = data;
 				});
 			});
+
 			// Create view model for 5 rows to show by default on page load
 			var initData = [];
 			for (var i = 0; i < 5; i++) {
@@ -43,6 +45,7 @@ sap.ui.define([
         		"errorMessage":false
     			});
 			}
+
 			// Assigning view model for the page
 		    var oModel = new sap.ui.model.json.JSONModel({GMIDShipToCountryVM : initData});
 		    // Create table model, set size limit to 300, add an empty row
@@ -257,7 +260,22 @@ sap.ui.define([
 		    	});
 	    	// get default values for various fields and set them in global variables
 	    	this.getDefaultPropertyValues();
+	    	//attach _onRouteMatched to be called everytime on navigation to Maintain Attributes page
+	    	var oRouter = this.getRouter();
+			oRouter.getRoute("gmidSubmission").attachMatched(this._onRouteMatched, this);
+			this.resetModel();
     	},
+    	getRouter : function () {
+				return sap.ui.core.UIComponent.getRouterFor(this);
+			},
+		// force init method to be called everytime we naviagte to Maintain Attribuets page 
+		_onRouteMatched : function (oEvent) {
+			this.onInit();
+		},
+			// navigate back to the homepage
+		onHome: function(){
+				this.getOwnerComponent().getRouter().navTo("home");
+		},
     	// Below function is used to prepare an empty object
     	addEmptyObject : function() {
 	    	var aData  = this._oGMIDShipToCountryViewModel.getProperty("/GMIDShipToCountryVM");
@@ -668,7 +686,18 @@ sap.ui.define([
 			// remove the file from the uploader
 			var fileUploader = this.getView().byId("excelFileUploader");
 			fileUploader.clear();
+	     	// set the busy indicator
+			// creating busy dialog lazily
+			if (!this._busyDialog) 
+			{
+				this._busyDialog = sap.ui.xmlfragment("bam.view.BusyLoading", this);
+				this.getView().addDependent(this._dialog);
+			}
 			
+			// setting to a local variable since we are closing it in an oData success function that has no access to global variables.
+			var busyDialog = this._busyDialog;
+			busyDialog.open();
+				
 	        if (this.validateTextFieldValues() === false)
 	        {
 	        	// Set error message column to false (not visible by default)
@@ -698,8 +727,10 @@ sap.ui.define([
         	{
         		this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
         	}
+        	busyDialog.close();
 	        if(!this._oGMIDShipToCountryViewModel.getProperty("/ErrorOnPage"))
 	        {
+	        	busyDialog.close();
 	        	var tablePath = "";
 	    	    if(this._oSelectedGMIDType === this._oCropProtection)
 	    	    {
@@ -787,8 +818,8 @@ sap.ui.define([
         	// hide the table & excel button and set the radio button to not selected
 			var tblGmid = this.getView().byId("tblGMIDRequest");
 			tblGmid.setVisible(false);
-			//var excelHBox = oView.byId("excelHBox");
-			//excelHBox.setVisible(false);
+			var excelHBox = this.getView().byId("excelHBox");
+			excelHBox.setVisible(false);
 			var rbgGMIDType = this.getView().byId("rbgGMIDType");
 			rbgGMIDType.setSelectedIndex(-1);
 			var btnSubmit = this.getView().byId("btnSubmit");
@@ -1263,10 +1294,6 @@ sap.ui.define([
          	var oUploadCollection = this.getView().byId("ucDownloadTemplate");
 			var oUploadCollectionItem = this.getView().byId("uciDownloadTemplate");
 			oUploadCollection.downloadItem(oUploadCollectionItem, true);
-		},
-		// navigate back to the homepage
-		onHome: function(){
-				this.getOwnerComponent().getRouter().navTo("home");
 		}
   	});
 
