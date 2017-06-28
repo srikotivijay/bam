@@ -35,42 +35,42 @@
 						        </Column>
 					        	<Column id="clmHdrGMID" width="100px">
 						            <header>
-						                <Label text="{i18n>gmid}{i18n&gt;mandatory}" id="lblGMID"/>
+						                <Label text="{i18n>gmid}" id="lblGMID"/>
 						            </header>
 					        	</Column>
 					        	<Column id="clmHdrCountry" width="100px">
 						            <header>
-						                <Label text="{i18n>country}{i18n&gt;mandatory}" id="lblCountry"/>
+						                <Label text="{i18n>country}" id="lblCountry"/>
 						            </header>
 					        	</Column>
 					        <Column id="clmHdrStoredCurrency" width="120px">
 						        <header>
-						              <Label text="{i18n>storedCurrency}{i18n&gt;mandatory}" id="lblStoredCurrency"/>
+						              <Label text="{i18n>storedCurrency}" id="lblStoredCurrency"/>
 						          </header>
 					        </Column>
 					        <Column id="clmHdrIBPRelevancy" width="150px">
 						        <header>
-						            <Label text="{i18n>ibpRelevancy}{i18n&gt;mandatory}" id="lblIBPRelevancy"/>
+						            <Label text="{i18n>ibpRelevancy}" id="lblIBPRelevancy"/>
 						          </header>
 					        </Column>
 					        <Column id="clmHdrNettingDefault" width="150px">
 						        <header>
-						           <Label text="{i18n>nettingDefault}{i18n&gt;mandatory}" id="lblNettingDefault"/>
+						           <Label text="{i18n>nettingDefault}" id="lblNettingDefault"/>
 						         </header>
 					        </Column>
 					        <Column id="clmHdrQuadrant" width="100px">
 						      <header>
-						          <Label text="{i18n>quadrant}{i18n&gt;mandatory}" id="lblQuadrant"/>
+						          <Label text="{i18n>quadrant}" id="lblQuadrant"/>
 						           </header>
 					        	</Column>
 					        	<Column id="clmHdrChannel" width="100px">
 						       <header>
-						         <Label text="{i18n>channel}{i18n&gt;mandatory}" id="lblChannel"/>
+						         <Label text="{i18n>channel}" id="lblChannel"/>
 						        </header>
 					        </Column>
 					        <Column id="clmHdrMarketDefault" width="100px">
 						        <header>
-						          <Label text="{i18n>marketDefault}{i18n&gt;mandatory}" id="lblMarketDefault"/>
+						          <Label text="{i18n>marketDefault}" id="lblMarketDefault"/>
 						         </header>
 					        </Column>
 					    	</columns>

@@ -733,6 +733,13 @@ sap.ui.define([
     		var successCount = 0;
     		var GMIDShipToCountry = this._oGMIDShipToCountryViewModel.getProperty("/GMIDShipToCountryVM");
     		
+    		// if there are no GMIDs show a validation message
+    		if (GMIDShipToCountry.length===1)
+    		{
+    			MessageToast.show("Atleast one GMID should be entered.");
+    			return;
+    		}
+    		
     		// reset the error message property to false before doing any validation
 			this.resetValidationForModel();
 			// remove the Error column on the UI
@@ -784,7 +791,6 @@ sap.ui.define([
         	busyDialog.close();
 	        if(!this._oGMIDShipToCountryViewModel.getProperty("/ErrorOnPage"))
 	        {
-	        	busyDialog.close();
 	        	var tablePath = "";
 	    	    if(this._oSelectedGMIDType === this._oCropProtection)
 	    	    {
@@ -1085,7 +1091,6 @@ sap.ui.define([
 		                var oQuadrant = oi18nModel.getProperty("eQuadrant");
 		                var oChannel = oi18nModel.getProperty("eChannel");
 		                var oMarketDefault = oi18nModel.getProperty("eMarketDefault");
-		                var oRequestedBy  = oi18nModel.getProperty("eRequestedBy");
 		                
 			            if (excelColumnHeaders[0] !== oGMID)
 			            {
@@ -1125,11 +1130,6 @@ sap.ui.define([
 			    	    else if (excelColumnHeaders[7] !== oMarketDefault)
 			    		{
 			                 MessageToast.show("Incorrect template format found. The eight column should be: Market Default Flag");
-			                 validHeadersFlag = false;
-			    		}
-			    	    else if (excelColumnHeaders[8] !== oRequestedBy)
-			    		{
-			                 MessageToast.show("Incorrect template format found. The ninth column should be: Requested By");
 			                 validHeadersFlag = false;
 			    		}
             		} // end of for loop
