@@ -5,18 +5,18 @@
 					<Button id="btnHome" icon="sap-icon://home" tooltip="{i18n>home}" press="onHome"/>
 				</headerContent>
 				<content>
-					<Text id="lblSubmitGMIDFor" text="{i18n>submitGMIDFor}"/>
-					<HBox>
+					<HBox alignItems="Center">
+						<Text id="lblSubmitGMIDFor" text="{i18n>submitGMIDFor}"/>
 						<RadioButtonGroup id="rbgGMIDType" width="100%" columns="2" select="fnGridShow" selectedIndex="-1">
 					    	<buttons>
 					        	<RadioButton id="rBtnCropProtection" text="{i18n>cropProtection}" groupName="rbgGMIDType"/>
 					        	<RadioButton id="rBtnSeeds" text="{i18n>seeds}" groupName="rbgGMIDType" class="sapUiLargeMarginEnd"/>
 					        </buttons>
 						</RadioButtonGroup>
-						<HBox visible="false" id="excelHBox">
+						<HBox visible="true" id="excelHBox">
 							<u:FileUploader id="excelFileUploader" width="300px" sameFilenameAllowed="false" buttonText="" fileType="CSV" placeholder="Choose a CSV file" style="Emphasized" class="sapUiSmallMarginEnd">
 							</u:FileUploader>
-							<Button text="{i18n>importFromExcel}" id="btnImportFromExcel" press="onImportFromExcel" class="sapUiSmallMarginEnd"/>
+							<Button text="{i18n>importFromExcel}" id="btnImportFromExcel" press="onImportFromExcel" class="sapUiLargeMarginEnd"/>
 							<Button text="{i18n>downloadTemplate}" id="btnDownloadTemplate" press="onDownloadTemplate"/>
 						</HBox>
 					</HBox>
@@ -38,7 +38,7 @@
 						                <Label text="{i18n>gmid}" id="lblGMID"/>
 						            </header>
 					        	</Column>
-					        	<Column id="clmHdrCountry" width="100px">
+					        	<Column id="clmHdrCountry" width="125px">
 						            <header>
 						                <Label text="{i18n>country}" id="lblCountry"/>
 						            </header>
@@ -48,12 +48,12 @@
 						              <Label text="{i18n>storedCurrency}" id="lblStoredCurrency"/>
 						          </header>
 					        </Column>
-					        <Column id="clmHdrIBPRelevancy" width="150px">
+					        <Column id="clmHdrIBPRelevancy" width="125px">
 						        <header>
 						            <Label text="{i18n>ibpRelevancy}" id="lblIBPRelevancy"/>
 						          </header>
 					        </Column>
-					        <Column id="clmHdrNettingDefault" width="150px">
+					        <Column id="clmHdrNettingDefault" width="125px">
 						        <header>
 						           <Label text="{i18n>nettingDefault}" id="lblNettingDefault"/>
 						         </header>
@@ -80,7 +80,7 @@
 					            	 <HBox alignContent="Start" direction="Inherit" alignItems="Baseline">
 					            	 		<Button id="btnRemoveRow" icon="sap-icon://delete" visible="{path: 'createNew', formatter: '.disableControl'}" press="onRemoveRow" class="sapUiTinyMarginEnd"/>
 					            	 		<core:Icon id="btnAddRow" src="sap-icon://add" visible="{path: 'createNew', formatter: '.enableControl'}" press="onAddRow"/>
-					            			<Button visible="{path: 'errorMessage'}" icon="sap-icon://error" press="showErrorMessage" app:text="{toolTipText}" tooltip="{i18n>errorIcon}" type="Reject"/>				            	
+					            			<Button visible="{path: 'isError'}" icon="sap-icon://error" press="showErrorMessage" app:text="{errorSummary}" app:GMID ="{GMID}" app:CountryCode ="{COUNTRY_CODE_ID}" tooltip="{i18n>errorIcon}" type="Reject"/>				            	
 					            	</HBox>
 				                	<Input id="inputGMID" value="{GMID}" visible="{path: 'createNew', formatter: '.disableControl'}" width="100%" maxLength="8" liveChange="numValidationCheck" valueState="{GMIDErrorState}"/>
 	                            	<Select xmlns:sap.ui.core="sap.ui.core" id="ddlCountry" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/GMIDShipToCountryVM/Country', templateShareable : true}" change="onChange" valueState="{countryErrorState}" selectedKey="{COUNTRY_CODE_ID}">

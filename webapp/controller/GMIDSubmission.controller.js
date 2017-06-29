@@ -43,7 +43,7 @@ sap.ui.define([
         		"marketDefaultErrorState": "None",
         		"SUPPLY_SYSTEM_FLAG_CODE_ID": -1,
         		"createNew" : false,
-        		"errorMessage":false
+        		"isError":false
     			});
 			}
 
@@ -57,9 +57,6 @@ sap.ui.define([
 		    this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
 		    this.getView().setModel(oModel);
 		    this.addEmptyObject();
-		    
-		    //enable batch mode
-		    this._oDataModel.setUseBatch(true);
 		    
 		    // Create Message model
 	    	this._oMessageModel = new sap.ui.model.json.JSONModel();
@@ -316,7 +313,7 @@ sap.ui.define([
     	// Below function is used to prepare an empty object
     	addEmptyObject : function() {
 	    	var aData  = this._oGMIDShipToCountryViewModel.getProperty("/GMIDShipToCountryVM");
-	    	var emptyObject = {createNew: true, errorMessage: false};
+	    	var emptyObject = {createNew: true, isError: false};
 	    	aData.push(emptyObject);
 	    	this._oGMIDShipToCountryViewModel.setProperty("/GMIDShipToCountryVM", aData);
 		},
@@ -351,7 +348,7 @@ sap.ui.define([
 	        				marketDefaultErrorState: "None",
 	        				SUPPLY_SYSTEM_FLAG_CODE_ID: -1,
 	        				createNew: false,
-		    				errorMessage: false
+		    				isError: false
 		    		};
 		    // set default property values on the basis of selected gmid type
 	    	obj = this.setDefaultPropertyValues(this._oSelectedGMIDType, obj);
@@ -423,12 +420,12 @@ sap.ui.define([
             {
             	if(this.checkForEmptyFields(data[i]))
             	{
-            		data[i].errorMessage = true;
-            		if(data[i].toolTipText !== "")
+            		data[i].isError = true;
+            		if(data[i].errorSummary !== "")
 	                {
-	                	data[i].toolTipText += "\n";  
+	                	data[i].errorSummary += "\n";  
 	                }
-	            	data[i].toolTipText += "Please enter all mandatory fields highlighted in red.";
+	            	data[i].errorSummary += "Please enter all mandatory fields highlighted in red.";
 	            	returnValue = false;
             	}
             }
@@ -497,24 +494,24 @@ sap.ui.define([
 		            if((data[i].GMID !== "" &&  data[j].GMID !== "") && (data[i].COUNTRY_CODE_ID !== -1 &&  data[j].COUNTRY_CODE_ID !== -1) && (data[i].GMID === data[j].GMID) && (data[i].COUNTRY_CODE_ID === data[j].COUNTRY_CODE_ID !== -1))
 		            {
 		            	// highlight the GMID & Country input boxes in red
-		            	 data[i].errorMessage = true;
+		            	 data[i].isError = true;
 		            	 data[i].GMIDErrorState = "Error";
 		            	 data[i].countryErrorState = "Error";
-		            	 data[j].errorMessage = true;
+		            	 data[j].isError = true;
 		            	 data[j].GMIDErrorState = "Error";
 		            	 data[j].countryErrorState = "Error";
 		            	 
-		            	 if(data[i].toolTipText !== "")
+		            	 if(data[i].errorSummary !== "")
 	                	 {
-	                		data[i].toolTipText += "\n";  
+	                		data[i].errorSummary += "\n";  
 	                	 }
-	            		 data[i].toolTipText += "Duplicate GMID/Country Combination found at row # " + (j + 1);
+	            		 data[i].errorSummary += "Duplicate GMID/Country Combination found at row # " + (j + 1);
 	            		 
-	            		 if(data[j].toolTipText !== "")
+	            		 if(data[j].errorSummary !== "")
 	                	 {
-	                		data[j].toolTipText += "\n";  
+	                		data[j].errorSummary += "\n";  
 	                	 }
-	            		 data[j].toolTipText += "Duplicate GMID/Country Combination found at row # " + (i + 1);
+	            		 data[j].errorSummary += "Duplicate GMID/Country Combination found at row # " + (i + 1);
 	            		 
 		            	 returnValue = false;
 		            }
@@ -553,12 +550,12 @@ sap.ui.define([
 			                	if(oData.results.length === 0)
 			                	{
 			                		gmidHasPlant = false;
-			                		data[i].errorMessage = true;
-			                		if(data[i].toolTipText !== "")
+			                		data[i].isError = true;
+			                		if(data[i].errorSummary !== "")
 			                		{
-			                			data[i].toolTipText += "\n";  
+			                			data[i].errorSummary += "\n";  
 			                		}
-			                		data[i].toolTipText += "There is no plant available for the GMID.";  
+			                		data[i].errorSummary += "There is no plant available for the GMID.";  
 		
 			                	}
 			                },
@@ -612,13 +609,13 @@ sap.ui.define([
 		                    //check if GMID exists
 		                	if(oData.results.length !== 0){
 		                		validgmidwithstatus = false;
-		                		gmiddata[i].errorMessage = true;
+		                		gmiddata[i].isError = true;
 		                		gmiddata[i].GMIDErrorState = "Error";
-				                if(gmiddata[i].toolTipText !== "")
+				                if(gmiddata[i].errorSummary !== "")
 				                {
-				                	gmiddata[i].toolTipText += "\n";  
+				                	gmiddata[i].errorSummary += "\n";  
 				                }
-				                gmiddata[i].toolTipText += "GMID has an invalid status.";  
+				                gmiddata[i].errorSummary += "GMID has an invalid status.";  
 		                	}
 		                	
 		                },
@@ -653,13 +650,13 @@ sap.ui.define([
 	                    //check if GMID exists
 	                	if(oData.results.length === 0){
 	                		validgmid = false;
-	                		gmiddata[i].errorMessage = true;
+	                		gmiddata[i].isError = true;
 	                		gmiddata[i].GMIDErrorState = "Error";
-			                if(gmiddata[i].toolTipText !== "")
+			                if(gmiddata[i].errorSummary !== "")
 			                {
-			                	gmiddata[i].toolTipText += "\n";  
+			                	gmiddata[i].errorSummary += "\n";  
 			                }
-			                gmiddata[i].toolTipText += "GMID does not match with the template selected.";  
+			                gmiddata[i].errorSummary += "GMID does not match with the template selected.";  
 	                	}
 	                },
 	    		    error: function(){
@@ -697,8 +694,8 @@ sap.ui.define([
         	var data = this._oViewModelData.GMIDShipToCountryVM;
             for(var i = 0; i < data.length - 1; i++) 
             {	
-            	data[i].errorMessage = false;
-            	data[i].toolTipText = "";
+            	data[i].isError = false;
+            	data[i].errorSummary = "";
             	data[i].GMIDErrorState = "None";
             	data[i].countryErrorState = "None";
             	data[i].currencyErrorState = "None";
@@ -710,13 +707,20 @@ sap.ui.define([
             }
             this._oGMIDShipToCountryViewModel.refresh();
         },
-        showErrorMessage: function(oEvent)
+       showErrorMessage: function(oEvent)
         {
-        	var text = oEvent.getSource().data("text");
-        	MessageBox.alert(text, {
-	    			icon : MessageBox.Icon.ERROR,
-					title : "Invalid Input"
-	       		});
+		    var text = oEvent.getSource().data("text");
+		    // show GMID and Country inside Error Message
+		    var GMID = oEvent.getSource().data("GMID");
+		    var CountryCode = parseInt(oEvent.getSource().data("CountryCode"),10);
+		    var countryList = this._oGMIDShipToCountryViewModel.getProperty("/GMIDShipToCountryVM/Country");
+			var countryLabel = countryList.find(function(data){return data.ID === CountryCode; }).LABEL;
+			
+			var GMIDCountry = "GMID : " + GMID + "\n" + "Country : " + countryLabel + "\n" + "\n";
+		         MessageBox.alert(GMIDCountry + text, {
+			     icon : MessageBox.Icon.ERROR,
+			title : "Invalid Input"
+			       });
         },
     	// Function to save the data into the database
     	onSubmit : function () {
@@ -748,6 +752,7 @@ sap.ui.define([
 			// need to declare local this variable to call global functions in the timeout function
 			var t = this;
 			
+			// setting timeout function in order to show the busy dialog before doing all the validation
 			setTimeout(function()
 			{
 				if (t.validateTextFieldValues() === false)
@@ -765,6 +770,7 @@ sap.ui.define([
 	        	{
 	        		t._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
 	        	}
+	        	// check for duplicate entries on the page
 	        	if (t.validateDuplicateEntries() === false)
 	        	{
 	        		t._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
@@ -803,7 +809,7 @@ sap.ui.define([
 		    		// each row contains GMID Ship To combination.
 		    		for(var i = 0; i < GMIDShipToCountry.length - 1; i++) 
 		    		{
-						var GMID = GMIDShipToCountry[i].GMID;
+						var GMID = this.lpadstring(GMIDShipToCountry[i].GMID);
 						var countryID = parseInt(GMIDShipToCountry[i].COUNTRY_CODE_ID,10);
 						var storedcurrencyID = parseInt(GMIDShipToCountry[i].CURRENCY_CODE_ID,10);
 						var ibprelevancyID = parseInt(GMIDShipToCountry[i].IBP_RELEVANCY_CODE_ID,10);
@@ -943,14 +949,14 @@ sap.ui.define([
 				if (gmidcountrystatusID !== 0)
 				{
 					isDuplicate = true;
-					data[i].errorMessage = true;
+					data[i].isError = true;
 					data[i].GMIDErrorState = "Error";
 					data[i].countryErrorState = "Error";
-					if(data[i].toolTipText !== "")
+					if(data[i].errorSummary !== "")
 			        {
-            			data[i].toolTipText += "\n";  
+            			data[i].errorSummary += "\n";  
 			        }
-            		data[i].toolTipText += "GMID/Country Combination already exists in the system.";
+            		data[i].errorSummary += "GMID/Country Combination already exists in the system.";
 				}
 				else
 				{
@@ -1159,7 +1165,7 @@ sap.ui.define([
 				        		"CHANNEL_CODE_ID": -1,
 				        		"MARKET_DEFAULT_CODE_ID": -1,
 				        		"createNew" : false,
-				        		"errorMessage":false
+				        		"isError":false
 								};
 									
 		                	// get a single row from the Excel file
