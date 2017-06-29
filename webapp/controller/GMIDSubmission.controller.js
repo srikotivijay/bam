@@ -491,7 +491,7 @@ sap.ui.define([
 	        {
 	            for( var j = i + 1; j < data.length - 1; j++)
 	            { 
-		            if((data[i].GMID !== "" &&  data[j].GMID !== "") && (data[i].COUNTRY_CODE_ID !== -1 &&  data[j].COUNTRY_CODE_ID !== -1) && (data[i].GMID === data[j].GMID) && (data[i].COUNTRY_CODE_ID === data[j].COUNTRY_CODE_ID !== -1))
+		            if((data[i].GMID !== "" &&  data[j].GMID !== "") && (data[i].COUNTRY_CODE_ID !== -1 &&  data[j].COUNTRY_CODE_ID !== -1) && (data[i].GMID === data[j].GMID) && (data[i].COUNTRY_CODE_ID === data[j].COUNTRY_CODE_ID))
 		            {
 		            	// highlight the GMID & Country input boxes in red
 		            	 data[i].isError = true;
