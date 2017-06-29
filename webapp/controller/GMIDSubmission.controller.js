@@ -809,7 +809,7 @@ sap.ui.define([
 		    		// each row contains GMID Ship To combination.
 		    		for(var i = 0; i < GMIDShipToCountry.length - 1; i++) 
 		    		{
-						var GMID = this.lpadstring(GMIDShipToCountry[i].GMID);
+						var GMID = t.lpadstring(GMIDShipToCountry[i].GMID);
 						var countryID = parseInt(GMIDShipToCountry[i].COUNTRY_CODE_ID,10);
 						var storedcurrencyID = parseInt(GMIDShipToCountry[i].CURRENCY_CODE_ID,10);
 						var ibprelevancyID = parseInt(GMIDShipToCountry[i].IBP_RELEVANCY_CODE_ID,10);
