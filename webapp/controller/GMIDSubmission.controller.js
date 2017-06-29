@@ -261,7 +261,7 @@ sap.ui.define([
 		    	});
 
 	    	// attach _onRouteMatched to be called everytime on navigation to Maintain Attributes page
-	    	// do not attach again if this is not the first time loading the page
+	    	// do not attach again if this is not the first time loading the page, if we attach it again performance is affected
 	    	if(firstTimePageLoad)
 	    	{
 	    		var oRouter = this.getRouter();
@@ -269,6 +269,11 @@ sap.ui.define([
 				firstTimePageLoad = false;
 				// get default values for various fields and set them in global variables
 	    		this.getDefaultPropertyValues();
+	    	}
+	    	else
+	    	{
+	    		// reset the UI to all be invisible
+	    		this.resetPage();
 	    	}
     	},
     	getRouter : function () {
@@ -282,7 +287,7 @@ sap.ui.define([
 		onHome: function(){
 				this.getOwnerComponent().getRouter().navTo("home");
 		},
-		 resetModel: function ()
+		resetPage: function ()
         {
         	// hide the table & excel button and set the radio button to not selected
 			var tblGmid = this.getView().byId("tblGMIDRequest");
@@ -295,40 +300,7 @@ sap.ui.define([
 			btnSubmit.setVisible(false);
 			var btnContinue = this.getView().byId("btnContinueToPlantSelection");
 			btnContinue.setVisible(false);
-			this._oGMIDShipToCountryViewModel.destroy();
-			this.onInit();
 			
-			// reset model to default 5 rows
-			var data = this._oViewModelData.GMIDShipToCountryVM;
-			for(var i = 0; i < data.length - 1; i++) 
-			{
-				data[i].GMID = "";
-				data[i].GMIDErrorState = "None";
-    			data[i].COUNTRY_CODE_ID = -1;
-    			data[i].countryErrorState = "None";
-    			data[i].CURRENCY_CODE_ID = -1;
-    			data[i].currencyErrorState = "None";
-    			data[i].IBP_RELEVANCY_CODE_ID = -1;
-    			data[i].IBPRelevancyErrorState = "None";
-    			data[i].NETTING_DEFAULT_CODE_ID = -1;
-    			data[i].nettingDefaultErrorState = "None";
-    			data[i].QUADRANT_CODE_ID = -1;
-    			data[i].quadrantErrorState = "None";
-    			data[i].CHANNEL_CODE_ID = -1;
-    			data[i].channelErrorState = "None";
-    			data[i].MARKET_DEFAULT_CODE_ID = -1;
-    			data[i].marketDefaultErrorState = "None";
-    			data[i].SUPPLY_SYSTEM_FLAG_CODE_ID = -1;
-    			data[i].createNew = "";
-    			data[i].errorMessage = false;
-    			data[i].toolTipText = "";
-            }
-           
-            
-            // remove any extra rows, only want to show 5
-            data.splice(5,data.length - 5);
-            this.addEmptyObject();
-            
         },
     	// Below function is used to prepare an empty object
     	addEmptyObject : function() {
@@ -734,9 +706,12 @@ sap.ui.define([
     		var GMIDShipToCountry = this._oGMIDShipToCountryViewModel.getProperty("/GMIDShipToCountryVM");
     		
     		// if there are no GMIDs show a validation message
-    		if (GMIDShipToCountry.length===1)
+    		if (GMIDShipToCountry.length === 1)
     		{
-    			MessageToast.show("Atleast one GMID should be entered.");
+				MessageBox.alert("Please enter at least one GMID.", {
+	    			icon : MessageBox.Icon.ERROR,
+					title : "Invalid Input"
+	       		});
     			return;
     		}
     		
@@ -791,6 +766,7 @@ sap.ui.define([
         	busyDialog.close();
 	        if(!this._oGMIDShipToCountryViewModel.getProperty("/ErrorOnPage"))
 	        {
+	        	// based on which template is selected, store the GMID in the appropriate table
 	        	var tablePath = "";
 	    	    if(this._oSelectedGMIDType === this._oCropProtection)
 	    	    {
