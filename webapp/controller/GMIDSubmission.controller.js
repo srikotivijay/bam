@@ -58,6 +58,9 @@ sap.ui.define([
 		    this.getView().setModel(oModel);
 		    this.addEmptyObject();
 		    
+		    //enable batch mode
+		    this._oDataModel.setUseBatch(true);
+		    
 		    // Create Message model
 	    	this._oMessageModel = new sap.ui.model.json.JSONModel();
 	    	this._oMessageModel.setProperty("/NumOfGMIDSubmitted",0);
@@ -65,6 +68,14 @@ sap.ui.define([
 	    	
 	    	  // Set error message column to false (not visible by default)
 		    this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",false);
+		    
+		    // set the busy indicator
+			// creating busy dialog lazily
+    		if (!this._busyDialog) 
+			{
+				this._busyDialog = sap.ui.xmlfragment("bam.view.BusyLoading", this);
+				this.getView().addDependent(this._dialog);
+			}
 
 			// Bind Country dropdown
 			// Create a filter & sorter array
@@ -405,6 +416,7 @@ sap.ui.define([
 		},
 		// This function loops through all the rows on the form and checks each input to see if it is filled in
         validateTextFieldValues :function () {
+    		
         	var returnValue = true;
         	var data = this._oViewModelData.GMIDShipToCountryVM;
             for(var i = 0; i < data.length - 1; i++) 
@@ -515,6 +527,13 @@ sap.ui.define([
         {
         	var data = this._oViewModelData.GMIDShipToCountryVM;
         	var gmidHasPlant = true;
+        	
+    		var batchArray = [];
+			for(var i = 0; i < data.length - 1; i++) 
+		    {
+		    	batchArray.push(this._oDataModel.createBatchOperation("GMID_SHIP_FROM_PLANT","READ",null));
+			}
+			this._oDataModel.addBatchReadOperations(batchArray);
         	
 	        for(var i = 0; i < data.length - 1; i++) 
 	        {
@@ -704,7 +723,8 @@ sap.ui.define([
     		var errorCount = 0;
     		var successCount = 0;
     		var GMIDShipToCountry = this._oGMIDShipToCountryViewModel.getProperty("/GMIDShipToCountryVM");
-    		
+		
+			
     		// if there are no GMIDs show a validation message
     		if (GMIDShipToCountry.length === 1)
     		{
@@ -717,143 +737,142 @@ sap.ui.define([
     		
     		// reset the error message property to false before doing any validation
 			this.resetValidationForModel();
-			// remove the Error column on the UI
+			// reset error on page to false
 			this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",false);
 			// remove the file from the uploader
 			var fileUploader = this.getView().byId("excelFileUploader");
 			fileUploader.clear();
-	     	// set the busy indicator
-			// creating busy dialog lazily
-			if (!this._busyDialog) 
-			{
-				this._busyDialog = sap.ui.xmlfragment("bam.view.BusyLoading", this);
-				this.getView().addDependent(this._dialog);
-			}
 			
-			// setting to a local variable since we are closing it in an oData success function that has no access to global variables.
-			var busyDialog = this._busyDialog;
-			busyDialog.open();
-				
-	        if (this.validateTextFieldValues() === false)
-	        {
-	        	// Set error message column to false (not visible by default)
-		    	this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
-	        }
-	        // if crop protection is selected and the GMID/plant combination does not exist, return error
-	        if(this._oSelectedGMIDType === this._oCropProtection && this.validateGmidShipFromPlant() === false)
-        	{
-        		this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
-        	}
-	        // check for duplicate GMID/Country Combination
-	        if(this.validateUniqueGmidCountry() === true)
-        	{
-        		this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
-        	}
-        	if (this.validateDuplicateEntries() === false)
-        	{
-        		this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
-        	}
-        	// check if GMID entered is valid
-        	if (this.validateGMID() === false)
-        	{
-        		this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
-        	}
-        	// check of invalid GMID entry by checking the status of GMID
-        	if (this.validateGMIDbyStatus() === false)
-        	{
-        		this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
-        	}
-        	busyDialog.close();
-	        if(!this._oGMIDShipToCountryViewModel.getProperty("/ErrorOnPage"))
-	        {
-	        	// based on which template is selected, store the GMID in the appropriate table
-	        	var tablePath = "";
-	    	    if(this._oSelectedGMIDType === this._oCropProtection)
-	    	    {
-	    	    	tablePath = "/GMID_SHIP_TO_COUNTRY_STG";
-	    	    }
-	    	    else
-	    	    {
-	    	    	tablePath = "/GMID_SHIP_TO_COUNTRY";
-	    	    }
-	    	    
-	    		// Create current timestamp
-	    		var oDate = new Date();
-	    		// Get the MaxID
-	    	    var maxID =	this.getMaxID(tablePath);
-	    	    // Get the code id for GMID Country Status
-	    	    var gmidcountrystatusID = this.getGMIDCountryStatusID();
-	    	    
-	    		// loop through the rows and for each row insert data into database
-	    		// each row contains GMID Ship To combination.
-	    		for(var i = 0; i < GMIDShipToCountry.length - 1; i++) 
-	    		{
-					var GMID = GMIDShipToCountry[i].GMID;
-					var countryID = parseInt(GMIDShipToCountry[i].COUNTRY_CODE_ID,10);
-					var storedcurrencyID = parseInt(GMIDShipToCountry[i].CURRENCY_CODE_ID,10);
-					var ibprelevancyID = parseInt(GMIDShipToCountry[i].IBP_RELEVANCY_CODE_ID,10);
-					var nettingdefaultID = parseInt(GMIDShipToCountry[i].NETTING_DEFAULT_CODE_ID,10);
-					var quadrantID = parseInt(GMIDShipToCountry[i].QUADRANT_CODE_ID,10);
-					var channelID = parseInt(GMIDShipToCountry[i].CHANNEL_CODE_ID,10);
-					var marketdefaultID = parseInt(GMIDShipToCountry[i].MARKET_DEFAULT_CODE_ID,10);
-					var supplySystemFlag = parseInt(GMIDShipToCountry[i].SUPPLY_SYSTEM_FLAG_CODE_ID,10);
-					var createdBy = loggedInUserID;
-					// create new GMIDShipToCountry object
-					var newGMID = {
-			        	ID: maxID + 1 + i,
-			        	GMID: GMID,
-			        	COUNTRY_CODE_ID: countryID,
-			        	CURRENCY_CODE_ID: storedcurrencyID,
-			        	IBP_RELEVANCY_CODE_ID: ibprelevancyID,
-			        	NETTING_DEFAULT_CODE_ID: nettingdefaultID,
-			        	QUADRANT_CODE_ID:quadrantID,
-			        	CHANNEL_CODE_ID: channelID,
-			        	MARKET_DEFAULT_CODE_ID: marketdefaultID,
-			        	SUPPLY_SYSTEM_FLAG_CODE_ID: supplySystemFlag,
-			        	TYPE: this._oSelectedGMIDType.toUpperCase(),
-			        	GMID_COUNTRY_STATUS_CODE_ID: gmidcountrystatusID,
-			        	CREATED_ON: oDate,
-			        	CREATED_BY:createdBy
-	    			};
-	    			
-	        		this._oDataModel.create(tablePath, newGMID,
-	        		{
-			        	success: function(){
-			        		successCount++;
-			    		},
-			    		error: function(){
-			    			errorCount++;
-						}
-	        		});
-	    		}
-	    		//Show success or error message
-	    		if(errorCount === 0) 
-	    		{
-        			if(this._oSelectedGMIDType === this._oSeed)
-        			{
-        				var oRouter = this.getRouter();
-        				// once insertion is success, navigate to homepage
-        				MessageBox.alert("You have successfully submitted " + successCount + " GMID(s)",
-							{
-								icon : MessageBox.Icon.SUCCESS,
-								title : "Success",
-								onClose: function() {
-				        			oRouter.navTo("home");
-				        	}
-						});
-        			}
-        			else
-        			{
-        				// navigate to plant selection
-                    	this.getOwnerComponent().getRouter().navTo("gmidPlantSelection");
-    				}
-	    		}
-	    		else 
-	    		{
-	        			MessageToast.show("Error: GMIDs were not submitted. Click on the error icon next to each GMID for more information.");
-	    		}
-    		
-        	}
+			//open busy dialog
+			this._busyDialog.open();
+			// need to declare local this variable to call global functions in the timeout function
+			var t = this;
+			
+			setTimeout(function()
+			{
+				if (t.validateTextFieldValues() === false)
+		        {
+		        	// Set error message column to false (not visible by default)
+			    	t._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
+		        }
+		        // if crop protection is selected and the GMID/plant combination does not exist, return error
+		        if(t._oSelectedGMIDType === t._oCropProtection && t.validateGmidShipFromPlant() === false)
+	        	{
+	        		t._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
+	        	}
+		        // check for duplicate GMID/Country Combination
+		        if(t.validateUniqueGmidCountry() === true)
+	        	{
+	        		t._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
+	        	}
+	        	if (t.validateDuplicateEntries() === false)
+	        	{
+	        		t._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
+	        	}
+	        	// check if GMID entered is valid
+	        	if (t.validateGMID() === false)
+	        	{
+	        		t._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
+	        	}
+	        	// check of invalid GMID entry by checking the status of GMID
+	        	if (t.validateGMIDbyStatus() === false)
+	        	{
+	        		t._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
+	        	}
+		        if(!t._oGMIDShipToCountryViewModel.getProperty("/ErrorOnPage"))
+		        {
+		        	// based on which template is selected, store the GMID in the appropriate table
+		        	var tablePath = "";
+		    	    if(t._oSelectedGMIDType === t._oCropProtection)
+		    	    {
+		    	    	tablePath = "/GMID_SHIP_TO_COUNTRY_STG";
+		    	    }
+		    	    else
+		    	    {
+		    	    	tablePath = "/GMID_SHIP_TO_COUNTRY";
+		    	    }
+		    	    
+		    		// Create current timestamp
+		    		var oDate = new Date();
+		    		// Get the MaxID
+		    	    var maxID =	t.getMaxID(tablePath);
+		    	    // Get the code id for GMID Country Status
+		    	    var gmidcountrystatusID = t.getGMIDCountryStatusID();
+		    	    
+		    		// loop through the rows and for each row insert data into database
+		    		// each row contains GMID Ship To combination.
+		    		for(var i = 0; i < GMIDShipToCountry.length - 1; i++) 
+		    		{
+						var GMID = GMIDShipToCountry[i].GMID;
+						var countryID = parseInt(GMIDShipToCountry[i].COUNTRY_CODE_ID,10);
+						var storedcurrencyID = parseInt(GMIDShipToCountry[i].CURRENCY_CODE_ID,10);
+						var ibprelevancyID = parseInt(GMIDShipToCountry[i].IBP_RELEVANCY_CODE_ID,10);
+						var nettingdefaultID = parseInt(GMIDShipToCountry[i].NETTING_DEFAULT_CODE_ID,10);
+						var quadrantID = parseInt(GMIDShipToCountry[i].QUADRANT_CODE_ID,10);
+						var channelID = parseInt(GMIDShipToCountry[i].CHANNEL_CODE_ID,10);
+						var marketdefaultID = parseInt(GMIDShipToCountry[i].MARKET_DEFAULT_CODE_ID,10);
+						var supplySystemFlag = parseInt(GMIDShipToCountry[i].SUPPLY_SYSTEM_FLAG_CODE_ID,10);
+						var createdBy = loggedInUserID;
+						// create new GMIDShipToCountry object
+						var newGMID = {
+				        	ID: maxID + 1 + i,
+				        	GMID: GMID,
+				        	COUNTRY_CODE_ID: countryID,
+				        	CURRENCY_CODE_ID: storedcurrencyID,
+				        	IBP_RELEVANCY_CODE_ID: ibprelevancyID,
+				        	NETTING_DEFAULT_CODE_ID: nettingdefaultID,
+				        	QUADRANT_CODE_ID:quadrantID,
+				        	CHANNEL_CODE_ID: channelID,
+				        	MARKET_DEFAULT_CODE_ID: marketdefaultID,
+				        	SUPPLY_SYSTEM_FLAG_CODE_ID: supplySystemFlag,
+				        	TYPE: t._oSelectedGMIDType.toUpperCase(),
+				        	GMID_COUNTRY_STATUS_CODE_ID: gmidcountrystatusID,
+				        	CREATED_ON: oDate,
+				        	CREATED_BY:createdBy
+		    			};
+		    			
+		        		t._oDataModel.create(tablePath, newGMID,
+		        		{
+				        	success: function(){
+				        		successCount++;
+				    		},
+				    		error: function(){
+				    			errorCount++;
+							}
+		        		});
+		    		}
+		    		//Show success or error message
+		    		if(errorCount === 0) 
+		    		{
+	        			if(t._oSelectedGMIDType === t._oSeed)
+	        			{
+	        				var oRouter = t.getRouter();
+	        				// once insertion is success, navigate to homepage
+	        				MessageBox.alert("You have successfully submitted " + successCount + " GMID(s)",
+								{
+									icon : MessageBox.Icon.SUCCESS,
+									title : "Success",
+									onClose: function() {
+					        			oRouter.navTo("home");
+					        	}
+							});
+	        			}
+	        			else
+	        			{
+	        				// navigate to plant selection
+	                    	t.getOwnerComponent().getRouter().navTo("gmidPlantSelection");
+	    				}
+		    		}
+		    		else 
+		    		{
+		        			MessageToast.show("Error: GMIDs were not submitted. Click on the error icon next to each GMID for more information.");
+		    		}
+	    		
+	        	}
+	        	
+	        	// close busy dialog
+				t._busyDialog.close();
+			},500); // end of timeout function
         },
         // below function will return the max ID from GMID_SHIP_TO_COUNTRY TABLE
         getMaxID : function  (tablePath) {
@@ -1039,134 +1058,146 @@ sap.ui.define([
 			var t = this;
 			
 			fileReader.onload = function(event){
-				var strCSV = event.target.result;
-				var oi18nModel = t.getView().getModel("i18n");
-			   
-				var headerRow = ["GMID", "COUNTRY_CODE_ID", "CURRENCY_CODE_ID","IBP_RELEVANCY_CODE_ID",
-				"NETTING_DEFAULT_CODE_ID","QUADRANT_CODE_ID","CHANNEL_CODE_ID","MARKET_DEFAULT_CODE_ID"];
-
-		        var allTextLines = strCSV.split(/\r\n|\n/);
-		        var excelColumnHeaders = allTextLines[0].split(",");
-		        var validHeadersFlag = true;
-		        
-		        if (excelColumnHeaders.length !== parseInt(oi18nModel.getProperty("numOfHeaderColumns"),10))
-            	{
-            		MessageToast.show("Incorrect number of columns on template.");	
-            		validHeadersFlag = false;
-            	}
-            	else
-            	{
-            		for(var i = 0; i < excelColumnHeaders.length; i++) 
-            		{
-            			// Get proper column headers from the i18n model
-		                var oGMID = oi18nModel.getProperty("eGMID");
-		                var oCountry  = oi18nModel.getProperty("eCountry");
-		                var oStoredCurrency =oi18nModel.getProperty("eStoredCurrency"); 
-		                var oIbpRelevancy  = oi18nModel.getProperty("eIBPRelevancy");
-		                var oNettingDefault = oi18nModel.getProperty("eNettingDefault");
-		                var oQuadrant = oi18nModel.getProperty("eQuadrant");
-		                var oChannel = oi18nModel.getProperty("eChannel");
-		                var oMarketDefault = oi18nModel.getProperty("eMarketDefault");
-		                
-			            if (excelColumnHeaders[0] !== oGMID)
+				
+				// open busy dialog
+				t._busyDialog.open();
+				
+				// need to have timeout since otherwise the busy dialog does not show during importing
+				setTimeout(function()
+				{
+					var strCSV = event.target.result;
+					var oi18nModel = t.getView().getModel("i18n");
+				   
+					var headerRow = ["GMID", "COUNTRY_CODE_ID", "CURRENCY_CODE_ID","IBP_RELEVANCY_CODE_ID",
+					"NETTING_DEFAULT_CODE_ID","QUADRANT_CODE_ID","CHANNEL_CODE_ID","MARKET_DEFAULT_CODE_ID"];
+	
+			        var allTextLines = strCSV.split(/\r\n|\n/);
+			        var excelColumnHeaders = allTextLines[0].split(",");
+			        var validHeadersFlag = true;
+			        
+			        if (excelColumnHeaders.length !== parseInt(oi18nModel.getProperty("numOfHeaderColumns"),10))
+	            	{
+	            		MessageToast.show("Incorrect number of columns on template.");	
+	            		validHeadersFlag = false;
+	            	}
+	            	else
+	            	{
+	            		for(var i = 0; i < excelColumnHeaders.length; i++) 
+	            		{
+	            			// Get proper column headers from the i18n model
+			                var oGMID = oi18nModel.getProperty("eGMID");
+			                var oCountry  = oi18nModel.getProperty("eCountry");
+			                var oStoredCurrency =oi18nModel.getProperty("eStoredCurrency"); 
+			                var oIbpRelevancy  = oi18nModel.getProperty("eIBPRelevancy");
+			                var oNettingDefault = oi18nModel.getProperty("eNettingDefault");
+			                var oQuadrant = oi18nModel.getProperty("eQuadrant");
+			                var oChannel = oi18nModel.getProperty("eChannel");
+			                var oMarketDefault = oi18nModel.getProperty("eMarketDefault");
+			                
+				            if (excelColumnHeaders[0] !== oGMID)
+				            {
+				                MessageToast.show("Incorrect template format found. The first column should be: GMID");
+				                validHeadersFlag = false;
+				            }
+				            else if (excelColumnHeaders[1] !== oCountry)
+				            {
+				                MessageToast.show("Incorrect template format found. The second column should be: Country");
+				                validHeadersFlag = false;
+				            }
+				            else if (excelColumnHeaders[2] !== oStoredCurrency)
+				            {
+				                 MessageToast.show("Incorrect template format found. The third column should be: Stored Currency");
+				                 validHeadersFlag = false;
+				            }
+				            else if (excelColumnHeaders[3] !== oIbpRelevancy)
+				            {
+				                 MessageToast.show("Incorrect template format found. The fourth column should be: IBP Relevancy");
+				                 validHeadersFlag = false;
+				           	}
+				    		else if (excelColumnHeaders[4] !== oNettingDefault)
+				    		{
+				                 MessageToast.show("Incorrect template format found. The fifth column should be: Netting Default");
+				                 validHeadersFlag = false;
+				    		}
+				    	    else if (excelColumnHeaders[5] !== oQuadrant)
+				    		{
+				                 MessageToast.show("Incorrect template format found. The sixth column should be: Quadrant");
+				                 validHeadersFlag = false;
+				    		}
+				    	    else if (excelColumnHeaders[6] !== oChannel)
+				    		{
+				                 MessageToast.show("Incorrect template format found. The seventh column should be: Channel");
+				                 validHeadersFlag = false;
+				    		}
+				    	    else if (excelColumnHeaders[7] !== oMarketDefault)
+				    		{
+				                 MessageToast.show("Incorrect template format found. The eight column should be: Market Default Flag");
+				                 validHeadersFlag = false;
+				    		}
+	            		} // end of for loop
+	            	} // end of else
+	
+					// if all the headers are correct
+			        if(validHeadersFlag)
+			        {
+		            	// clear out the current data on the page
+				        t._oViewModelData.GMIDShipToCountryVM.splice(0,t._oViewModelData.GMIDShipToCountryVM.length);
+				        // loop through all the rows, the last row is empty so do not include it
+			            for (var k = 1; k < allTextLines.length - 1; k++) 
 			            {
-			                MessageToast.show("Incorrect template format found. The first column should be: GMID");
-			                validHeadersFlag = false;
+			            	// get a single row
+			            	var row = allTextLines[k].split(",");
+			               
+		                	// create new empty row
+							 var obj = {
+			    				"GMID": "",
+				        		"COUNTRY_CODE_ID": -1,
+				        		"CURRENCY_CODE_ID": -1,
+				        		"IBP_RELEVANCY_CODE_ID": -1,
+				        		"NETTING_DEFAULT_CODE_ID": -1,
+				        		"QUADRANT_CODE_ID": -1,
+				        		"CHANNEL_CODE_ID": -1,
+				        		"MARKET_DEFAULT_CODE_ID": -1,
+				        		"createNew" : false,
+				        		"errorMessage":false
+								};
+									
+		                	// get a single row from the Excel file
+		            		// convert the labels to CODE ID's
+		            		var convertedRow = t.convertLabelToCodeId(row);
+		            		
+		            		// fill the obj with values
+							for (var j = 0; j < convertedRow.length; j++) 
+							{
+							    obj[headerRow[j]] = convertedRow[j];
+							}
+							// set default supply system flag values for both seeds and crop protection
+							if(t._oSelectedGMIDType === t._oSeed){
+									obj["SUPPLY_SYSTEM_FLAG_CODE_ID"] = t._defaultSupplySystemFlagForSeed;
+	        				}
+	        				else{
+	        					obj["SUPPLY_SYSTEM_FLAG_CODE_ID"] = t._defaultSupplySystemFlagForCP;
+	        				}
+							
+							// push the object to our model
+							t._oViewModelData.GMIDShipToCountryVM.push(obj);
 			            }
-			            else if (excelColumnHeaders[1] !== oCountry)
-			            {
-			                MessageToast.show("Incorrect template format found. The second column should be: Country");
-			                validHeadersFlag = false;
-			            }
-			            else if (excelColumnHeaders[2] !== oStoredCurrency)
-			            {
-			                 MessageToast.show("Incorrect template format found. The third column should be: Stored Currency");
-			                 validHeadersFlag = false;
-			            }
-			            else if (excelColumnHeaders[3] !== oIbpRelevancy)
-			            {
-			                 MessageToast.show("Incorrect template format found. The fourth column should be: IBP Relevancy");
-			                 validHeadersFlag = false;
-			           	}
-			    		else if (excelColumnHeaders[4] !== oNettingDefault)
-			    		{
-			                 MessageToast.show("Incorrect template format found. The fifth column should be: Netting Default");
-			                 validHeadersFlag = false;
-			    		}
-			    	    else if (excelColumnHeaders[5] !== oQuadrant)
-			    		{
-			                 MessageToast.show("Incorrect template format found. The sixth column should be: Quadrant");
-			                 validHeadersFlag = false;
-			    		}
-			    	    else if (excelColumnHeaders[6] !== oChannel)
-			    		{
-			                 MessageToast.show("Incorrect template format found. The seventh column should be: Channel");
-			                 validHeadersFlag = false;
-			    		}
-			    	    else if (excelColumnHeaders[7] !== oMarketDefault)
-			    		{
-			                 MessageToast.show("Incorrect template format found. The eight column should be: Market Default Flag");
-			                 validHeadersFlag = false;
-			    		}
-            		} // end of for loop
-            	} // end of else
-
-				// if all the headers are correct
-		        if(validHeadersFlag)
-		        {
-	            	// clear out the current data on the page
-			        t._oViewModelData.GMIDShipToCountryVM.splice(0,t._oViewModelData.GMIDShipToCountryVM.length);
-			        // loop through all the rows, the last row is empty so do not include it
-		            for (var k = 1; k < allTextLines.length - 1; k++) 
-		            {
-		            	// get a single row
-		            	var row = allTextLines[k].split(",");
-		               
-	                	// create new empty row
-						 var obj = {
-		    				"GMID": "",
-			        		"COUNTRY_CODE_ID": -1,
-			        		"CURRENCY_CODE_ID": -1,
-			        		"IBP_RELEVANCY_CODE_ID": -1,
-			        		"NETTING_DEFAULT_CODE_ID": -1,
-			        		"QUADRANT_CODE_ID": -1,
-			        		"CHANNEL_CODE_ID": -1,
-			        		"MARKET_DEFAULT_CODE_ID": -1,
-			        		"createNew" : false,
-			        		"errorMessage":false
-							};
-								
-	                	// get a single row from the Excel file
-	            		// convert the labels to CODE ID's
-	            		var convertedRow = t.convertLabelToCodeId(row);
-	            		
-	            		// fill the obj with values
-						for (var j = 0; j < convertedRow.length; j++) 
-						{
-						    obj[headerRow[j]] = convertedRow[j];
-						}
-						// set default supply system flag values for both seeds and crop protection
-						if(t._oSelectedGMIDType === t._oSeed){
-								obj["SUPPLY_SYSTEM_FLAG_CODE_ID"] = t._defaultSupplySystemFlagForSeed;
-        				}
-        				else{
-        					obj["SUPPLY_SYSTEM_FLAG_CODE_ID"] = t._defaultSupplySystemFlagForCP;
-        				}
-						
-						// push the object to our model
-						t._oViewModelData.GMIDShipToCountryVM.push(obj);
-		            }
-		            
-		        	if (t._validDataFlag === true)
-			    	{
-			    	 	MessageToast.show("Invalid/empty fields were found and defaulted during import.");
-			    	}
-		            // add empty row a the bottom;
-		            t.addEmptyObject();
-		            // refresh the view model
-		            t._oGMIDShipToCountryViewModel.refresh();
 			            
-			    }  // end valid headers flag check
+			        	if (t._validDataFlag === true)
+				    	{
+				    	 	MessageToast.show("Invalid/empty fields were found and defaulted during import.");
+				    	}
+			            // add empty row a the bottom;
+			            t.addEmptyObject();
+			            // close busy dialog
+						t._busyDialog.close();
+			            // refresh the view model
+			            t._oGMIDShipToCountryViewModel.refresh();
+				            
+				    }  // end valid headers flag check
+			    
+				}, 500);
+				
 			}; // end file read on load function
         },
         errorHandler : function(event){
