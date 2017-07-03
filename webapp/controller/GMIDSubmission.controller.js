@@ -491,7 +491,7 @@ sap.ui.define([
 	        {
 	            for( var j = i + 1; j < data.length - 1; j++)
 	            { 
-		            if((data[i].GMID !== "" &&  data[j].GMID !== "") && (data[i].COUNTRY_CODE_ID !== -1 &&  data[j].COUNTRY_CODE_ID !== -1) && (data[i].GMID === data[j].GMID) && (data[i].COUNTRY_CODE_ID === data[j].COUNTRY_CODE_ID))
+		            if((data[i].GMID !== "" &&  data[j].GMID !== "") && (data[i].COUNTRY_CODE_ID !== -1 &&  data[j].COUNTRY_CODE_ID !== -1) && (this.lpadstring(data[i].GMID) === this.lpadstring(data[j].GMID)) && (data[i].COUNTRY_CODE_ID === data[j].COUNTRY_CODE_ID))
 		            {
 		            	// highlight the GMID & Country input boxes in red
 		            	 data[i].isError = true;
@@ -538,7 +538,7 @@ sap.ui.define([
 	        	{
 		        	// Create a filter to fetch the GMID Country Status Code ID
 					var gmidFilterArray = [];
-					var gmidFilter = new Filter("GMID",sap.ui.model.FilterOperator.EQ,data[i].GMID);
+					var gmidFilter = new Filter("GMID",sap.ui.model.FilterOperator.EQ,this.lpadstring(data[i].GMID));
 					gmidFilterArray.push(gmidFilter);
 		
 					 // Get the GMID Country Status Code ID CODE_MASTER table
@@ -971,7 +971,7 @@ sap.ui.define([
         checkGMIDCountryUniqueInDB : function  (gmid,countryid) {
 			// Create a filter to fetch the GMID Country Status Code ID
 			var gmidcountrycodeuniqueFilterArray = [];
-			var gmidFilter = new Filter("GMID",sap.ui.model.FilterOperator.EQ,gmid);
+			var gmidFilter = new Filter("GMID",sap.ui.model.FilterOperator.EQ,this.lpadstring(gmid));
 			gmidcountrycodeuniqueFilterArray.push(gmidFilter);
 			var countrycodeFilter = new Filter("COUNTRY_CODE_ID",sap.ui.model.FilterOperator.EQ,countryid);
 			gmidcountrycodeuniqueFilterArray.push(countrycodeFilter);
@@ -1201,7 +1201,12 @@ sap.ui.define([
 			            t._oGMIDShipToCountryViewModel.refresh();
 				            
 				    }  // end valid headers flag check
-			    
+				    else
+				    {
+				    	 // close busy dialog
+						t._busyDialog.close();
+				    }
+
 				}, 500);
 				
 			}; // end file read on load function
