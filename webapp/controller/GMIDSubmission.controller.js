@@ -555,7 +555,7 @@ sap.ui.define([
 			                		{
 			                			data[i].errorSummary += "\n";  
 			                		}
-			                		data[i].errorSummary += "There is no plant available for the GMID.";  
+			                		data[i].errorSummary += "Ship from Plant is not available for the GMID.";  
 		
 			                	}
 			                },
@@ -615,7 +615,7 @@ sap.ui.define([
 				                {
 				                	gmiddata[i].errorSummary += "\n";  
 				                }
-				                gmiddata[i].errorSummary += "GMID has an invalid status.";  
+				                gmiddata[i].errorSummary += "GMID has an invalid status or does not exists in PRM system.";  
 		                	}
 		                	
 		                },
@@ -656,7 +656,7 @@ sap.ui.define([
 			                {
 			                	gmiddata[i].errorSummary += "\n";  
 			                }
-			                gmiddata[i].errorSummary += "GMID does not match with the template selected.";  
+			                gmiddata[i].errorSummary += "Invalid GMID - GMID does not exist.";  
 	                	}
 	                },
 	    		    error: function(){
@@ -714,8 +714,16 @@ sap.ui.define([
 		    var GMID = oEvent.getSource().data("GMID");
 		    var CountryCode = parseInt(oEvent.getSource().data("CountryCode"),10);
 		    var countryList = this._oGMIDShipToCountryViewModel.getProperty("/GMIDShipToCountryVM/Country");
-			var countryLabel = countryList.find(function(data){return data.ID === CountryCode; }).LABEL;
-			
+		    // if no country is selected then update countrylabel to empty
+		    var countryLabel;
+		    if (CountryCode=== -1)
+		    {
+		    	countryLabel ="";
+		    }
+		    else
+		    {
+		    	countryLabel = countryList.find(function(data){return data.ID === CountryCode; }).LABEL;
+		    }
 			var GMIDCountry = "GMID : " + GMID + "\n" + "Country : " + countryLabel + "\n" + "\n";
 		         MessageBox.alert(GMIDCountry + text, {
 			     icon : MessageBox.Icon.ERROR,
@@ -871,7 +879,7 @@ sap.ui.define([
 		    		}
 		    		else 
 		    		{
-		        			MessageToast.show("Error: GMIDs were not submitted. Click on the error icon next to each GMID for more information.");
+		        			MessageToast.show("Error: All GMID's are not submitted successfully. Please contact System Admin.");
 		    		}
 	    		
 	        	}
@@ -1258,7 +1266,7 @@ sap.ui.define([
         	}
         	else
         	{
-        	   	row[3] = -1;
+        	   	row[3] = this._defaultIBPRelevancy;
         		this._validDataFlag = true;
         	}
         	var nettingDefaultobj = nettingDefaultList.find(function(data){return data.LABEL === row[4].trim(); });

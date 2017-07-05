@@ -53,22 +53,22 @@
 						            <Label text="{i18n>ibpRelevancy}" id="lblIBPRelevancy"/>
 						          </header>
 					        </Column>
-					        <Column id="clmHdrNettingDefault" width="125px">
+					        <Column id="clmHdrNettingDefault" width="120px">
 						        <header>
 						           <Label text="{i18n>nettingDefault}" id="lblNettingDefault"/>
 						         </header>
 					        </Column>
-					        <Column id="clmHdrQuadrant" width="100px">
+					        <Column id="clmHdrQuadrant" width="120px">
 						      <header>
 						          <Label text="{i18n>quadrant}" id="lblQuadrant"/>
 						           </header>
 					        	</Column>
-					        	<Column id="clmHdrChannel" width="100px">
+					        	<Column id="clmHdrChannel" width="125px">
 						       <header>
 						         <Label text="{i18n>channel}" id="lblChannel"/>
 						        </header>
 					        </Column>
-					        <Column id="clmHdrMarketDefault" width="100px">
+					        <Column id="clmHdrMarketDefault" width="120px">
 						        <header>
 						          <Label text="{i18n>marketDefault}" id="lblMarketDefault"/>
 						         </header>
