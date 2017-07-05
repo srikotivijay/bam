@@ -48,52 +48,27 @@ sap.ui.define([
 			                success: function(oData, oResponse){
 			                var groupedGMIDCountry = [];
 			                
-			    //             //common code to check duplicates
-							// var hash = (function() {
-							//     var keys = {};
-							// 	    return {
-							// 	        contains: function(key) {
-							// 	            return keys[key] === true;
-							// 	        },
-							// 	        add: function(key) {
-							// 	            if (keys[key] !== true)
-							// 	            {
-							// 	                keys[key] = true;
-							// 	            }
-							// 	        }
-							// 	    };
-							// 	})();
-							
-							// var key = null;
 							//loop through the rows of the retruened data
 							for (var i = 0; i < oData.results.length; i++) {
 									var item =  oData.results[i];
-								 /*   key = item.GMID + ";" + item.COUNTRY;
-								    //check for the gmid and country combination key 
-								    if (!hash.contains(key))
-								    {
-								    	//if its a new combination add the key to existing list of combinations
-								        hash.add(key);*/
-								        //push the new combination to the list
-								        groupedGMIDCountry.push({GMID:item.GMID, 
-								        						 COUNTRY:item.COUNTRY, 
-								        						 COUNTRY_CODE_ID: item.COUNTRY_CODE_ID,
-					        									 CURRENCY_CODE_ID: item.CURRENCY_CODE_ID,
-					        									 IBP_RELEVANCY_CODE_ID: item.IBP_RELEVANCY_CODE_ID,
-					        									 NETTING_DEFAULT_CODE_ID: item.NETTING_DEFAULT_CODE_ID,
-					        									 QUADRANT_CODE_ID:item.QUADRANT_CODE_ID,
-					        									 CHANNEL_CODE_ID: item.CHANNEL_CODE_ID,
-					        									 MARKET_DEFAULT_CODE_ID: item.MARKET_DEFAULT_CODE_ID,
-					        									 SUPPLY_SYSTEM_FLAG_CODE_ID: item.SUPPLY_SYSTEM_FLAG_CODE_ID,
-					        									 TYPE: item.TYPE,
-					        									 GMID_COUNTRY_STATUS_CODE_ID:item.GMID_COUNTRY_STATUS_CODE_ID,
-					        									 CREATED_BY: item.CREATED_BY,
-								        						 PLANTS:[],
-								        						 errorMessage:false});
-								    }
+							        groupedGMIDCountry.push({GMID:item.GMID, 
+							        						 COUNTRY:item.COUNTRY, 
+							        						 COUNTRY_CODE_ID: item.COUNTRY_CODE_ID,
+				        									 CURRENCY_CODE_ID: item.CURRENCY_CODE_ID,
+				        									 IBP_RELEVANCY_CODE_ID: item.IBP_RELEVANCY_CODE_ID,
+				        									 NETTING_DEFAULT_CODE_ID: item.NETTING_DEFAULT_CODE_ID,
+				        									 QUADRANT_CODE_ID:item.QUADRANT_CODE_ID,
+				        									 CHANNEL_CODE_ID: item.CHANNEL_CODE_ID,
+				        									 MARKET_DEFAULT_CODE_ID: item.MARKET_DEFAULT_CODE_ID,
+				        									 SUPPLY_SYSTEM_FLAG_CODE_ID: item.SUPPLY_SYSTEM_FLAG_CODE_ID,
+				        									 TYPE: item.TYPE,
+				        									 GMID_COUNTRY_STATUS_CODE_ID:item.GMID_COUNTRY_STATUS_CODE_ID,
+				        									 CREATED_BY: item.CREATED_BY,
+							        						 PLANTS:[],
+							        						 errorMessage:false});
 								    //find the object for the gmid and country combination and push the plant code to the nested plant object
 								    groupedGMIDCountry.find(function(data){return data.GMID === item.GMID && data.COUNTRY === item.COUNTRY;}).PLANTS.push({PLANT_CODE: item.PLANT_CODE,PLANT_CODE_ID : item.GMID_SHIP_FROM_PLANT_ID,IS_SELECTED:false});
-								// }
+								 }
 				                // Bind the Country data to the GMIDShipToCountry model
 				                oModel.setProperty("/PlantSelectionVM",groupedGMIDCountry);
 			                },
@@ -101,10 +76,10 @@ sap.ui.define([
 			            		MessageToast.show("Unable to retrieve user data.");
 			    			}
 			    	});
-				    this.getView().setModel(oModel);
+				    t.getView().setModel(oModel);
 				    // define a global variable for the view model and the view model data
-				    this._oPlantSelectionViewModel = oModel;
-				    this._oViewModelData = t._oPlantSelectionViewModel.getData();
+				    t._oPlantSelectionViewModel = oModel;
+				    t._oViewModelData = t._oPlantSelectionViewModel.getData();
 					
 					
 				});
