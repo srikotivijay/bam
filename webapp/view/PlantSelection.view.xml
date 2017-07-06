@@ -11,11 +11,16 @@ controllerName="bam.controller.PlantSelection">
 				<ScrollContainer horizontal="true"> 
 					<Table noDataText="No records to display" id="tblPlantSelection" width="auto" items="{/PlantSelectionVM}">
 						<columns>
-							<Column id="clmErrorMessage" width="50px">
-					            <header>
-					                <Label text="" id="lblHdrErrorMessage"/>
-					            </header>
-					        </Column>
+							<!--<Column id="clmErrorMessage" width="50px">-->
+					  <!--          <header>-->
+					  <!--              <Label text="" id="lblHdrErrorMessage"/>-->
+					  <!--          </header>-->
+					  <!--      </Column>-->
+					    	<Column id="clmHdrAction" width="50px">
+							    <header>
+							        <Label text="{i18n>action}" id="lblHdrAction"/>
+							    </header>
+						    </Column>
 					        <Column id="clmHdrGMID" width="100px">
 							    <header>
 							        <Label text="{i18n>gmid}" id="lblHdrGMID"/>
@@ -31,16 +36,13 @@ controllerName="bam.controller.PlantSelection">
 					                <Label text="{i18n>plant}{i18n>mandatory}" id="lblHdrPlant"/>
 					            </header>
 					        </Column>
-					        <Column id="clmHdrAction" width="50px">
-							    <header>
-							        <Label text="{i18n>action}" id="lblHdrAction"/>
-							    </header>
-						    </Column>
+					      
 					    </columns>
 					    <items>
-					        <ColumnListItem id="cliPlantSelection">
+					        <ColumnListItem id="cliPlantSelection" highlight="{errorState}">
 					            <cells>
-					            	<Label visible="{path: 'errorMessage'}" text="Error" class="sapThemeCriticalText"/>
+					            	<!--<Label visible="{path: 'errorMessage'}" text="Error" class="sapThemeCriticalText"/>-->
+					            	<Button id="btnRemoveRow" icon="sap-icon://delete" press="onRemoveRow"/>
 					            	<Label id="lblGMID" text="{GMID}"/>
 					            	<Label id="lblCountry" text="{COUNTRY}"/>
 					            	<List items="{path: 'PLANTS', templateShareable : true}" mode="MultiSelect">										
@@ -48,9 +50,7 @@ controllerName="bam.controller.PlantSelection">
 											<ObjectListItem title="{PLANT_CODE}" type="Active" selected = "{IS_SELECTED}"/>
 										</items>
 									</List>
-					                <HBox alignContent="SpaceBetween" direction="Inherit">
-			                                <core:Icon id="btnRemoveRow" src="sap-icon://delete" press="onRemoveRow"/>
-			                        </HBox>
+					             
 					            </cells>
 					        </ColumnListItem>
 					    </items>
