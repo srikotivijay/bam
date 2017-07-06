@@ -263,7 +263,7 @@ sap.ui.define([
     				this._oDataModel.remove("/GMID_SHIP_TO_COUNTRY_STG(" + GMIDShipToCountry[k].ID + ")",
 	        		{
 			        	success: function(){
-			        		MessageToast.show("deleted record");
+			        		
 			    		},
 			    		error: function(){
 			    			// show alert message
