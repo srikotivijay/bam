@@ -76,7 +76,8 @@ sap.ui.define([
 						    {
 						    	//if its a new combination add the key to existing list of combinations
 						        hash.add(key);
-						        groupedGMIDCountry.push({GMID:item.GMID, 
+						        groupedGMIDCountry.push({ID: item.ID,
+						        						 GMID:item.GMID, 
 						        						 COUNTRY:item.COUNTRY, 
 						        						 COUNTRY_CODE_ID: item.COUNTRY_CODE_ID,
 			        									 CURRENCY_CODE_ID: item.CURRENCY_CODE_ID,
@@ -255,11 +256,11 @@ sap.ui.define([
 	    		}
 	    		
 	    		// get the count of records in staging table
-    			for(var k = 1; k <= GMIDShipToCountry.length; k++) 
+    			for(var k = 0; k <= GMIDShipToCountry.length; k++) 
     			{
 		    		// once data is inserted successfully in both tables i.e. GMID_SHIP_TO_COUNTYRY 
 		    		// and GMID_COUNTRY_SHIP_FROM_PLANT, delete the data from staging table i.e. GMID_SHIP_TO_COUNTYRY_STG
-    				this._oDataModel.remove("/GMID_SHIP_TO_COUNTRY_STG(" + GMIDShipToCountry.ID + ")",
+    				this._oDataModel.remove("/GMID_SHIP_TO_COUNTRY_STG(" + GMIDShipToCountry[k].ID + ")",
 	        		{
 			        	success: function(){
 			    		},
