@@ -134,7 +134,7 @@ sap.ui.define([
 	    	    // Get the code id for GMID Country Status
 	    	    var gmidcountrystatusID = this.getGMIDCountryStatusID();
 	    	    var plantSelection =this.validatePlantSelection();
-	    	    if (plantSelection=='true')
+	    	    if (plantSelection == "true")
 	    	    	{
 	    	    		MessageToast.show("Gmids Found");
 	    	    	};
@@ -225,7 +225,7 @@ sap.ui.define([
     			{
 		    		// once data is inserted successfully in both tables i.e. GMID_SHIP_TO_COUNTYRY 
 		    		// and GMID_COUNTRY_SHIP_FROM_PLANT, delete the data from staging table i.e. GMID_SHIP_TO_COUNTYRY_STG
-    				this._oDataModel.remove("/GMID_SHIP_TO_COUNTRY_STG(" + k + ")",
+    				this._oDataModel.remove("/GMID_SHIP_TO_COUNTRY_STG(" + GMIDShipToCountry.ID + ")",
 	        		{
 			        	success: function(){
 			    		},
@@ -236,7 +236,6 @@ sap.ui.define([
 	        		});
     			}
 	    		
-		        		
 	    		//Show success or error message
 	    		if(errorCount === 0) 
 	    		{
