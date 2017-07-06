@@ -133,6 +133,12 @@ sap.ui.define([
 	    	    var maxGMIDShipToID = this.getMaxGMIDShipToCountryID();
 	    	    // Get the code id for GMID Country Status
 	    	    var gmidcountrystatusID = this.getGMIDCountryStatusID();
+	    	    var plantSelection =this.validatePlantSelection();
+	    	    if (plantSelection=='true')
+	    	    	{
+	    	    		MessageToast.show("Gmids Found");
+	    	    	};
+
 	    	  	var oModel = this._oDataModel;
 	    		// loop through the rows and for each row insert data into database
 	    		// each row contains GMID Ship To combination.
@@ -335,19 +341,26 @@ sap.ui.define([
         },
          validatePlantSelection :function(){
 	        var GMIDShipToCountry = this._oPlantSelectionViewModel.getProperty("/PlantSelectionVM");
+	        var NotselectionCount=0;
 	        var selectionCount=null;
 	        for(var i = 0; i < GMIDShipToCountry.length; i++)
 	        {
+	        	NotselectionCount=0;
 	        	for(var j = 0; j < GMIDShipToCountry[i].PLANTS.length; j++) 
 	            {
 	                // only selected plants are to be saved in database
-	                if (GMIDShipToCountry[i].PLANTS[j].IS_SELECTED === true)
+	                if (GMIDShipToCountry[i].PLANTS[j].IS_SELECTED === false)
 	                {
-	                	selectionCount = true;
+	                	NotselectionCount = NotselectionCount+1;
 	                }
+	             
 	            }
-	            return selectionCount;
+	            if (j===NotselectionCount)
+	              {
+	               selectionCount='true';	
+	              }
 	        }
+	         return selectionCount;
         }
 
   	});
