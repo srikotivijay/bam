@@ -256,13 +256,14 @@ sap.ui.define([
 	    		}
 	    		
 	    		// get the count of records in staging table
-    			for(var k = 0; k <= GMIDShipToCountry.length; k++) 
+    			for(var k = 0; k < GMIDShipToCountry.length; k++) 
     			{
 		    		// once data is inserted successfully in both tables i.e. GMID_SHIP_TO_COUNTYRY 
 		    		// and GMID_COUNTRY_SHIP_FROM_PLANT, delete the data from staging table i.e. GMID_SHIP_TO_COUNTYRY_STG
     				this._oDataModel.remove("/GMID_SHIP_TO_COUNTRY_STG(" + GMIDShipToCountry[k].ID + ")",
 	        		{
 			        	success: function(){
+			        		MessageToast.show("deleted record");
 			    		},
 			    		error: function(){
 			    			// show alert message
