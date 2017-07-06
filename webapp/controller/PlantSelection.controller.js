@@ -124,6 +124,10 @@ sap.ui.define([
 		_onRouteMatched : function (oEvent) {
 			this.onInit();
 		},
+		// navigate back to the homepage
+		onHome: function(){
+				this.getOwnerComponent().getRouter().navTo("home");
+		},
 		// Below function removes a row
 		onRemoveRow : function(oEvent) {
 			// Get the object to be deleted from the event handler
@@ -171,9 +175,15 @@ sap.ui.define([
     	    
     	    // reset the validation on the screen
     	    this.resetValidation();
-			
+			if(GMIDShipToCountry.length === 0)
+			{
+				MessageBox.alert("There are no GMID/Country combinations to submit. Please return to the homepage.", {
+	    			icon : MessageBox.Icon.ERROR,
+					title : "Invalid Input"
+       			});
+			}
 			// validation to check if each GMID/Country has at least one plant selected
-    	    if (this.validatePlantSelection() === false)
+    	    else if (this.validatePlantSelection() === false)
 	    	{
 	    		MessageBox.alert("Please select at least one plant for each GMID/Country combination.", {
 	    			icon : MessageBox.Icon.ERROR,

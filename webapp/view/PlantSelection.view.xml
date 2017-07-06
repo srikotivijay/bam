@@ -7,6 +7,9 @@ controllerName="bam.controller.PlantSelection">
 	<App id="gmidPlantSelection">
 		<pages>
 			<Page title="{i18n>title}" class="sapUiResponsiveContentPadding">
+				<headerContent>
+					<Button id="btnHome" icon="sap-icon://home" tooltip="{i18n>home}" press="onHome"/>
+				</headerContent>
 				<content>
 				<ScrollContainer horizontal="true"> 
 					<Table noDataText="No records to display" id="tblPlantSelection" width="auto" items="{/PlantSelectionVM}">
