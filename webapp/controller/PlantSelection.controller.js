@@ -11,6 +11,7 @@ sap.ui.define([
 		
 	var firstTimePageLoad = true;
 	var loggedInUserID;
+	var originalGMIDCountry;
 	return Controller.extend("bam.controller.PlantSelection", {
 		//
 		onInit : function () {
@@ -26,11 +27,6 @@ sap.ui.define([
 				     t._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
 				    // Create view model for the page
 				    var oModel = new sap.ui.model.json.JSONModel();
-				    
-				     // Create Message model
-			    	t._oMessageModel = new sap.ui.model.json.JSONModel();
-			    	t._oMessageModel.setProperty("/NumOfGMIDSubmitted",0);
-			    	t.getView().setModel(t._oMessageModel,"MessageVM");
 			    	
 				    // Get the GMID Plant combinations for the GMID-Country combination selected by the user
 					// Create a filter & sorter array (pending depending on user id logic)
@@ -64,7 +60,6 @@ sap.ui.define([
 							    };
 							})();
 							
-						var t = this;
 						var key = null;
 				                
 						//loop through the rows of the retruened data
@@ -99,6 +94,8 @@ sap.ui.define([
 						
 		                // Bind the Country data to the GMIDShipToCountry model
 		                oModel.setProperty("/PlantSelectionVM",groupedGMIDCountry);
+		                // save the original view model into a variable, used later for deletion of rows in staging column
+		                originalGMIDCountry = JSON.parse(JSON.stringify(groupedGMIDCountry));
 		                },
 		    		    error: function(){
 		            		MessageToast.show("Unable to retrieve user data.");
@@ -133,18 +130,29 @@ sap.ui.define([
 			var entryToDelete = oEvent.getSource().getBindingContext().getObject();
 			// Get the # of rows in the VM, (this includes the dropdown objects such as Country, Currency, etc..)
 			var rows = this._oViewModelData.PlantSelectionVM;
+			// Setting local this variable in order to access it in the action confirm button
+			var t = this;
 			
-			// loop through each row and check whether the passed object = the row object
-			 for(var i = 0; i < rows.length; i++){
-			 	if(rows[i] === entryToDelete )
-				{
-					// found a match, remove this row from the data
-					rows.splice(i,1);
-					// refresh the GMID VM, this will automatically update the UI
-					this._oPlantSelectionViewModel.refresh();
-					break;
-				}
-			}
+			MessageBox.confirm(("Are you sure you want to delete this GMID/Country? Doing so will result to the GMID not being submitted to BAM and your entry for this GMID on the previous page will be disregarded."), {
+	    			icon: sap.m.MessageBox.Icon.WARNING,
+	    			actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+	          		onClose: function(oAction) {
+	          			if (oAction === "YES") 
+						{
+							// loop through each row and check whether the passed object = the row object
+							 for(var i = 0; i < rows.length; i++){
+							 	if(rows[i] === entryToDelete)
+								{
+									// found a match, remove this row from the data
+									rows.splice(i,1);
+									// refresh the GMID VM, this will automatically update the UI
+									t._oPlantSelectionViewModel.refresh();
+									break;
+								}
+							}
+	            		}
+	          		}
+	       	});
 		},
 		// Function to save the data into the database
 		// this will save data in two tables GMID_SHIP_TO_COUNTRY and GMID_COUNTRY_SHIP_FROM_PLANT
@@ -254,13 +262,12 @@ sap.ui.define([
 						}
 	        		});
 	    		}
-	    		
 	    		// get the count of records in staging table
-    			for(var k = 0; k < GMIDShipToCountry.length; k++) 
+    			for(var k = 0; k < originalGMIDCountry.length; k++) 
     			{
 		    		// once data is inserted successfully in both tables i.e. GMID_SHIP_TO_COUNTYRY 
 		    		// and GMID_COUNTRY_SHIP_FROM_PLANT, delete the data from staging table i.e. GMID_SHIP_TO_COUNTYRY_STG
-    				this._oDataModel.remove("/GMID_SHIP_TO_COUNTRY_STG(" + GMIDShipToCountry[k].ID + ")",
+    				this._oDataModel.remove("/GMID_SHIP_TO_COUNTRY_STG(" + originalGMIDCountry[k].ID + ")",
 	        		{
 			        	success: function(){
 			        		
