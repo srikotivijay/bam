@@ -27,18 +27,49 @@ sap.ui.define([
 				     t._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
 				    // Create view model for the page
 				    var oModel = new sap.ui.model.json.JSONModel();
+<<<<<<< HEAD
+				    
+				     // Create Message model
+			    	t._oMessageModel = new sap.ui.model.json.JSONModel();
+			    	t._oMessageModel.setProperty("/NumOfGMIDSubmitted",0);
+			    	t.getView().setModel(t._oMessageModel,"MessageVM");
+			    	 var oi18nModel = t.getView().getModel("i18n");
+        	  // get the GMID status for i18n model
+        			var z1gmid = oi18nModel.getProperty("z1gmidstatus");
+        			var zcgmid = oi18nModel.getProperty("zcgmidstatus");
+        			var z9gmid = oi18nModel.getProperty("z9gmidstatus");
+        			//making filter for plant status
+        			var filterArray=[];
+        			var userFilter = new Filter("CREATED_BY",sap.ui.model.FilterOperator.EQ,loggedInUserID);
+        			filterArray.push(userFilter);
+        			var z1gmidFilter = new Filter("MATERIAL_STATUS",sap.ui.model.FilterOperator.EQ,z1gmid);
+					var zcgmidFilter = new Filter("MATERIAL_STATUS",sap.ui.model.FilterOperator.EQ,zcgmid);
+					var z9gmidFilter = new Filter("MATERIAL_STATUS",sap.ui.model.FilterOperator.EQ,z9gmid);
+				
+        			var statusFilter = new Filter ({
+						filters : [
+							z1gmidFilter,
+							zcgmidFilter,
+							z9gmidFilter
+							],
+							and : false
+					});
+					filterArray.push(statusFilter);
+=======
 			    	
+>>>>>>> branch 'Development-BAM.2017.S4.US15C' of https://git.us1.hana.ondemand.com/bea630bda/bam
 				    // Get the GMID Plant combinations for the GMID-Country combination selected by the user
 					// Create a filter & sorter array (pending depending on user id logic)
-					var userFilterArray = [];
-					var userFilter = new Filter("CREATED_BY",sap.ui.model.FilterOperator.EQ,loggedInUserID);
-					userFilterArray.push(userFilter);
+				//	var userFilterArray = [];
+				//	var userFilter = new Filter("CREATED_BY",sap.ui.model.FilterOperator.EQ,loggedInUserID);
+					
+				//	userFilterArray.push(userFilter);
 					var userSortArray = [];
 					var userSort = new sap.ui.model.Sorter("GMID",false);
 					userSortArray.push(userSort);
 					
 					t._oDataModel.read("/V_GMID_COUNTRY_SHIP_FROM_PLANT",{
-						filters: userFilterArray,
+						filters: filterArray,
 						sorters: userSortArray,
 						async: false,
 		                success: function(oData, oResponse){
