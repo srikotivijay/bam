@@ -307,6 +307,7 @@ sap.ui.define([
 						}
 	        		});
 	    		}
+	    		// TODO needs to be refactored to be batch delete
 	    		// get the count of records in staging table
     			for(var k = 0; k < originalGMIDCountry.length; k++) 
     			{
