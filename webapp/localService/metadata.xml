@@ -1,3 +1,4 @@
+This XML file does not appear to have any style information associated with it. The document tree is shown below.
 <edmx:Edmx xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:sap="http://www.sap.com/Protocols/SAPData" Version="1.0">
 <edmx:DataServices xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" m:DataServiceVersion="2.0">
 <Schema xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="ODataService.BAMDataService">
@@ -51,6 +52,20 @@
 <Property Name="LAST_UPDATED_ON" Type="Edm.DateTime"/>
 <Property Name="LAST_UPDATED_BY" Type="Edm.String" MaxLength="50"/>
 <Property Name="COMMENTS" Type="Edm.String" MaxLength="2000"/>
+<Property Name="TRADE_AREA_CODE" Type="Edm.String" MaxLength="10"/>
+<Property Name="SUB_RCU_CODE" Type="Edm.String" MaxLength="10"/>
+<Property Name="CONS_DEFAULT_FLAG" Type="Edm.String" MaxLength="10"/>
+<Property Name="MARKETING_MANAGER" Type="Edm.String" MaxLength="50"/>
+<Property Name="MARKETING_DIRECTOR" Type="Edm.String" MaxLength="50"/>
+<Property Name="DEMAND_MANAGER_ID" Type="Edm.String" MaxLength="10"/>
+<Property Name="GLOBAL_BUSINESS_LEADER_ID" Type="Edm.String" MaxLength="10"/>
+<Property Name="SUPPLY_CHAIN_PLANNING_SPECIALIST_ID" Type="Edm.String" MaxLength="10"/>
+<Property Name="MARKETING_SPECIALIST_ID" Type="Edm.String" MaxLength="10"/>
+<Property Name="GLOBAL_SUPPLY_CHAIN_MANAGER_ID" Type="Edm.String" MaxLength="10"/>
+<Property Name="REG_SUPPLY_CHAIN_MANAGER_ID" Type="Edm.String" MaxLength="10"/>
+<Property Name="IBP_STATUS" Type="Edm.String" MaxLength="50"/>
+<Property Name="IBP_RESPONSE_DESC" Type="Edm.String" MaxLength="500"/>
+<Property Name="RCU_CODE" Type="Edm.String" MaxLength="10"/>
 </EntityType>
 <EntityType Name="GMID_SHIP_TO_COUNTRY_STGType">
 <Key>
@@ -90,7 +105,7 @@
 <Key>
 <PropertyRef Name="ID"/>
 </Key>
-<Property Name="ID" Type="Edm.Int64" Nullable="false"/>
+<Property Name="ID" Type="Edm.Int32" Nullable="false"/>
 <Property Name="GMID" Type="Edm.String" Nullable="false" MaxLength="10"/>
 <Property Name="COUNTRY_CODE_ID" Type="Edm.Int32" Nullable="false"/>
 <Property Name="CURRENCY_CODE_ID" Type="Edm.Int32" Nullable="false"/>
@@ -106,6 +121,8 @@
 <Property Name="COUNTRY" Type="Edm.String" Nullable="false" MaxLength="500"/>
 <Property Name="PLANT_CODE" Type="Edm.String" Nullable="false" MaxLength="10"/>
 <Property Name="GMID_SHIP_FROM_PLANT_ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="MATERIAL_STATUS" Type="Edm.String" MaxLength="10"/>
+<Property Name="FILTER_MATERIAL_STATUS" Type="Edm.String" Nullable="false" MaxLength="10"/>
 </EntityType>
 <EntityType Name="V_MAINTAIN_ATTRIBUTESType">
 <Key>
@@ -143,6 +160,17 @@
 <Property Name="BGT_DESC" Type="Edm.String" MaxLength="250"/>
 <Property Name="LOCAL_UOM" Type="Edm.String" MaxLength="50"/>
 <Property Name="MATERIAL_STATUS" Type="Edm.String" MaxLength="50"/>
+<Property Name="TRADE_AREA_DESC" Type="Edm.String" MaxLength="250"/>
+<Property Name="SUB_RCU_DESC" Type="Edm.String" MaxLength="250"/>
+<Property Name="RCU_DESC" Type="Edm.String" MaxLength="250"/>
+<Property Name="DEMAND_MANAGER" Type="Edm.String" MaxLength="50"/>
+<Property Name="GLOBAL_BUSINESS_LEADER" Type="Edm.String" MaxLength="50"/>
+<Property Name="SUPPLY_CHAIN_PLANNING_SPECIALIST" Type="Edm.String" MaxLength="50"/>
+<Property Name="MARKETING_SPECIALIST" Type="Edm.String" MaxLength="50"/>
+<Property Name="GLOBAL_SUPPLY_CHAIN_MANAGER" Type="Edm.String" MaxLength="50"/>
+<Property Name="REG_SUPPLY_CHAIN_MANAGER" Type="Edm.String" MaxLength="50"/>
+<Property Name="MARKETING_MANAGER" Type="Edm.String" MaxLength="50"/>
+<Property Name="MARKETING_DIRECTOR" Type="Edm.String" MaxLength="50"/>
 <Property Name="REQUESTED_BY" Type="Edm.String" Nullable="false" MaxLength="50"/>
 <Property Name="REQUESTED_DATE" Type="Edm.DateTime" Nullable="false"/>
 <Property Name="LAST_UPDATED_BY" Type="Edm.String" MaxLength="50"/>

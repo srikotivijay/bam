@@ -92,7 +92,10 @@
 			"viewPath": "bam/view",
 			"controlId": "home",
 			"transition": "slide",
-			"controlAggregation": "pages"
+			"controlAggregation": "pages",
+			"bypassed": {
+               "target": "notFound"
+            }
 			},
 			"routes": [
 				{
@@ -151,7 +154,11 @@
 				"editAttributesMultiple": {
 						"viewName": "EditAttributesMultiple",
 						"viewId": "editAttributesMultiple"
-				}
+				},
+				"notFound": {
+		               "viewName": "NotFound",
+		               "transition": "show"
+            	}
 	    	}
 		}	
 	}
