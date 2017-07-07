@@ -5,6 +5,9 @@
 					<Button id="btnHome" icon="sap-icon://home" tooltip="{i18n>home}" press="onHome"/>
 				</headerContent>
 				<content>
+					<HBox>
+						<Label class="boldFont" text="* To upload GMID/Country combination from a file, download the template and enter the data in Excel, save as a CSV file then browse and upload."></Label>
+					</HBox>
 					<HBox alignItems="Center">
 						<Text id="lblSubmitGMIDFor" text="{i18n>submitGMIDFor}"/>
 						<RadioButtonGroup id="rbgGMIDType" width="100%" columns="2" select="fnGridShow" selectedIndex="-1">
@@ -13,10 +16,14 @@
 					        	<RadioButton id="rBtnSeeds" text="{i18n>seeds}" groupName="rbgGMIDType" class="sapUiLargeMarginEnd"/>
 					        </buttons>
 						</RadioButtonGroup>
+						<Label class="sapUiLargeMarginEnd" text=""></Label>
+						<Label class="sapUiLargeMarginEnd" text=""></Label>
+						<Label class="sapUiLargeMarginEnd" text=""></Label>
 						<HBox visible="true" id="excelHBox">
 							<u:FileUploader id="excelFileUploader" width="300px" sameFilenameAllowed="false" buttonText="" fileType="CSV" placeholder="Choose a CSV file" style="Emphasized" class="sapUiSmallMarginEnd">
 							</u:FileUploader>
-							<Button text="{i18n>importFromExcel}" id="btnImportFromExcel" press="onImportFromExcel" class="sapUiLargeMarginEnd"/>
+							<Button text="{i18n>importFromExcel}" id="btnImportFromExcel" press="onImportFromExcel" class="sapUiSmallMarginEnd"/>
+
 							<Button text="{i18n>downloadTemplate}" id="btnDownloadTemplate" press="onDownloadTemplate"/>
 						</HBox>
 					</HBox>

@@ -59,13 +59,8 @@ sap.ui.define([
 					});
 					filterArray.push(statusFilter);
 			    	
-
 				    // Get the GMID Plant combinations for the GMID-Country combination selected by the user
 					// Create a filter & sorter array (pending depending on user id logic)
-				//	var userFilterArray = [];
-				//	var userFilter = new Filter("CREATED_BY",sap.ui.model.FilterOperator.EQ,loggedInUserID);
-					
-				//	userFilterArray.push(userFilter);
 					var userSortArray = [];
 					var userSort = new sap.ui.model.Sorter("GMID",false);
 					userSortArray.push(userSort);

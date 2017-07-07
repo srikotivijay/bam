@@ -1,9 +1,4 @@
-<mvc:View xmlns:core="sap.ui.core" 
-xmlns:mvc="sap.ui.core.mvc"
-xmlns="sap.m" 
-xmlns:layout = "sap.ui.layout"
-xmlns:html="http://www.w3.org/1999/xhtml" 
-controllerName="bam.controller.PlantSelection">
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:layout="sap.ui.layout" xmlns:html="http://www.w3.org/1999/xhtml" controllerName="bam.controller.PlantSelection">
 	<App id="gmidPlantSelection">
 		<pages>
 			<Page title="{i18n>title}" class="sapUiResponsiveContentPadding">
@@ -14,11 +9,6 @@ controllerName="bam.controller.PlantSelection">
 				<ScrollContainer horizontal="true"> 
 					<Table noDataText="No records to display" id="tblPlantSelection" width="auto" items="{/PlantSelectionVM}">
 						<columns>
-							<!--<Column id="clmErrorMessage" width="50px">-->
-					  <!--          <header>-->
-					  <!--              <Label text="" id="lblHdrErrorMessage"/>-->
-					  <!--          </header>-->
-					  <!--      </Column>-->
 					    	<Column id="clmHdrAction" width="50px">
 							    <header>
 							        <Label text="{i18n>action}" id="lblHdrAction"/>
@@ -36,7 +26,7 @@ controllerName="bam.controller.PlantSelection">
 						    </Column>
 					        <Column id="clmHdrPlant">
 					            <header>
-					                <Label text="{i18n>plant}{i18n>mandatory}" id="lblHdrPlant"/>
+					                <Label text="{i18n>plant}" id="lblHdrPlant"/>
 					            </header>
 					        </Column>
 					      
@@ -44,16 +34,15 @@ controllerName="bam.controller.PlantSelection">
 					    <items>
 					        <ColumnListItem id="cliPlantSelection" highlight="{errorState}">
 					            <cells>
-					            	<!--<Label visible="{path: 'errorMessage'}" text="Error" class="sapThemeCriticalText"/>-->
 					            	<Button id="btnRemoveRow" icon="sap-icon://delete" press="onRemoveRow"/>
 					            	<Label id="lblGMID" text="{GMID}"/>
 					            	<Label id="lblCountry" text="{COUNTRY}"/>
-					            	<List items="{path: 'PLANTS', templateShareable : true}" mode="MultiSelect">										
-					            		<items>
-											<ObjectListItem title="{PLANT_CODE}" type="Active" selected = "{IS_SELECTED}"/>
+					            	<List items="{path: 'PLANTS', templateShareable : true}" mode="MultiSelect" class="noWrap">
+					            		<items class="noWrap">
+											<ObjectListItem type="Active" selected="{IS_SELECTED}" class="noWrap"/>
+											<DisplayListItem label="{PLANT_CODE}" class="noWrap"/>
 										</items>
 									</List>
-					             
 					            </cells>
 					        </ColumnListItem>
 					    </items>
