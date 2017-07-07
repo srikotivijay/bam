@@ -800,6 +800,39 @@ sap.ui.define([
 		    	    if(t._oSelectedGMIDType === t._oCropProtection)
 		    	    {
 		    	    	tablePath = "/GMID_SHIP_TO_COUNTRY_STG";
+		    	    	
+		    	    	//making filter for user ID
+        				var filterArray=[];
+		    	    	var userFilter = new Filter("CREATED_BY",sap.ui.model.FilterOperator.EQ,loggedInUserID);
+        				filterArray.push(userFilter);
+        				
+	        			t._oDataModel.read("/GMID_SHIP_TO_COUNTRY_STG",{
+							filters: filterArray,
+							async: false,
+			                success: function(oData, oResponse){
+		                		// delete any records for this user from the staging table
+				    	    	// get the count of records in staging table
+				    			for(var k = 0; k < oData.results.length; k++) 
+				    			{
+						    		// once data is inserted successfully in both tables i.e. GMID_SHIP_TO_COUNTYRY 
+						    		// and GMID_COUNTRY_SHIP_FROM_PLANT, delete the data from staging table i.e. GMID_SHIP_TO_COUNTYRY_STG
+				    				t._oDataModel.remove("/GMID_SHIP_TO_COUNTRY_STG(" + oData.results[k].ID + ")",
+					        		{
+							        	success: function(){
+							        		
+							    		},
+							    		error: function(){
+							    			// show alert message
+							    				MessageToast.show("Error: Data not deleted from staging table");
+										}
+					        		});
+				    			}
+			                },
+			    		    error: function(){
+			            		MessageToast.show("Unable to retrieve netting default data.");
+			    			}
+		    			});
+
 		    	    }
 		    	    else
 		    	    {
@@ -953,8 +986,7 @@ sap.ui.define([
     		{
     			var GMID = data[i].GMID;
 				var countryID = parseInt(data[i].COUNTRY_CODE_ID,10);
-				var gmidcountrystatusID = this.checkGMIDCountryUniqueInDB(GMID,countryID);
-				if (gmidcountrystatusID !== 0)
+				if (!DataContext.checkGMIDCountryUniqueInDB(GMID,countryID))
 				{
 					isDuplicate = true;
 					data[i].isError = true;
@@ -974,34 +1006,6 @@ sap.ui.define([
     		this._oGMIDShipToCountryViewModel.refresh();
     		
 	    	return isDuplicate;
-        },
-        // below function will check for duplicate entry for GMID/Country Combination in DB
-        checkGMIDCountryUniqueInDB : function  (gmid,countryid) {
-			// Create a filter to fetch the GMID Country Status Code ID
-			var gmidcountrycodeuniqueFilterArray = [];
-			var gmidFilter = new Filter("GMID",sap.ui.model.FilterOperator.EQ,this.lpadstring(gmid));
-			gmidcountrycodeuniqueFilterArray.push(gmidFilter);
-			var countrycodeFilter = new Filter("COUNTRY_CODE_ID",sap.ui.model.FilterOperator.EQ,countryid);
-			gmidcountrycodeuniqueFilterArray.push(countrycodeFilter);
-			
-			var gmidcountryID = null;
-
-			 // Get the GMID Country Status Code ID CODE_MASTER table
-			 this._oDataModel.read("/GMID_SHIP_TO_COUNTRY?$select=ID",{
-					filters: gmidcountrycodeuniqueFilterArray,
-					async: false,
-	                success: function(oData, oResponse){
-	                //return the GMID Country ID
-	                	if(oData.results.length === 0){
-	                		gmidcountryID = 0;
-	                	}
-	                	else {gmidcountryID = oData.results[0].ID; }
-	                },
-	    		    error: function(){
-	            		MessageToast.show("Unable to retrieve Code ID for GMID Country Status.");
-	    			}
-	    		});
-	    	return gmidcountryID;
         },
         // gets the default property values and sets them in global variables
         getDefaultPropertyValues : function(){

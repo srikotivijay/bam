@@ -215,6 +215,13 @@ sap.ui.define([
 					title : "Invalid Input"
        			});
 			}
+			else if(!this.validateDuplicateRecords())
+			{
+				MessageBox.alert("Duplicate GMID/Country combination exists in the system. Please remove the entry.", {
+	    			icon : MessageBox.Icon.ERROR,
+					title : "Invalid Input"
+       			});
+			}
 			// validation to check if each GMID/Country has at least one plant selected
     	    else if (this.validatePlantSelection() === false)
 	    	{
@@ -452,6 +459,22 @@ sap.ui.define([
 	        }
 	        this._oPlantSelectionViewModel.refresh();
 	        return validPlants;
+        },
+        validateDuplicateRecords : function()
+        {
+        	var GMIDShipToCountry = this._oPlantSelectionViewModel.getProperty("/PlantSelectionVM");
+        	var noDuplicates = true;
+        	
+        	for(var i = 0; i < GMIDShipToCountry.length; i++)
+	        {
+	        	if(!DataContext.checkGMIDCountryUniqueInDB(GMIDShipToCountry[i].GMID,GMIDShipToCountry[i].COUNTRY_CODE_ID))
+	        	{
+	        		noDuplicates = false;
+	        		GMIDShipToCountry[i].errorState = "Error";
+	        	}
+	        }
+	         this._oPlantSelectionViewModel.refresh();
+	          return noDuplicates;
         },
         resetValidation: function()
         {
