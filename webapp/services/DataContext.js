@@ -6,6 +6,11 @@ sap.ui.define([
 	"sap/m/MessageToast"
 ],function (Controller, History,Filter, FilterOperator,MessageToast) {
 	
+		var oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", {
+						json: true,
+						tokenHandling: true
+					});
+	
 		function callService(url) {
 			return new Promise(function(resolve, reject) {
 				$.get(url)
@@ -38,11 +43,6 @@ sap.ui.define([
 	    	return new Promise(function(resolve, reject) {
 	            Promise.resolve()
 	            .then(function() {
-	            	var oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", {
-						json: true,
-						tokenHandling: true
-					});
-					
 					return new Promise(function(oDataResolve) {
 						oDataModel.read("V_USER_ROLE_ATTRIBUTE_MAPPING", {
 							filters: [ 
@@ -95,11 +95,6 @@ sap.ui.define([
 		
 		function checkGMIDCountryUniqueInDB(gmid,countryid)
 		{
-			var oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", {
-						json: true,
-						tokenHandling: true
-					});
-			
 			// Create a filter to fetch the GMID Country Status Code ID
 			var gmidcountrycodeuniqueFilterArray = [];
 			var gmidFilter = new Filter("GMID",sap.ui.model.FilterOperator.EQ,lpadstring(gmid));
@@ -127,10 +122,38 @@ sap.ui.define([
 	    	return validInput;
 		}
 		
+		function getMaxID(tablePath)
+		{
+			// Create a filter & sorter array to fetch the max ID
+			var idSortArray = [];
+			var idSort = new sap.ui.model.Sorter("ID",true);
+			idSortArray.push(idSort);
+			
+			var maxID = null;
+
+			 // Get the Max ID from  GMID_SHIP_FROM_PLANT table
+			 oDataModel.read(tablePath + "?$top=1&$select=ID",{
+					sorters: idSortArray,
+					async: false,
+	                success: function(oData, oResponse){
+	                	//return the max ID
+	                	if(oData.results.length === 0){
+	                		maxID = 0;
+	                	}
+	                	else {maxID = oData.results[0].ID; }
+	                },
+	    		    error: function(){
+	            		MessageToast.show("Unable to retrieve max ID for GMID Ship from table.");
+	    			}
+	    		});
+	    	return maxID;
+		}
+		
 		var exports = {
 			getAttributeListBasedOnUserID: getAttributeListBasedOnUserID,
 			getUserID: getUserID,
-			checkGMIDCountryUniqueInDB: checkGMIDCountryUniqueInDB
+			checkGMIDCountryUniqueInDB: checkGMIDCountryUniqueInDB,
+			getMaxID: getMaxID
 		};
 	
 		return exports;

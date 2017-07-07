@@ -202,7 +202,7 @@ sap.ui.define([
     		// Create current timestamp
     		var oDate = new Date();
     		// Get the MaxID for the GMID Ship to Country
-    	    var maxGMIDShipToID = this.getMaxGMIDShipToCountryID();
+    	    var maxGMIDShipToID = DataContext.getMaxID("/GMID_SHIP_TO_COUNTRY");
     	    // Get the code id for GMID Country Status
     	    var gmidcountrystatusID = this.getGMIDCountryStatusID();
     	    
@@ -266,7 +266,7 @@ sap.ui.define([
 			        	CREATED_BY:createdBy
 	    			};
 	    			
-	    			var maxGMIDShipFromPlantID = this.getMaxGMIDShipFromPlantID();
+	    			var maxGMIDShipFromPlantID = DataContext.getMaxID("/GMID_COUNTRY_SHIP_FROM_PLANT");
 	    			
 	        		this._oDataModel.create("/GMID_SHIP_TO_COUNTRY", newGMID,
 	        		{
@@ -351,32 +351,6 @@ sap.ui.define([
 	    		
 	    	} // end of else validation at least one plant selected
 	    },
-		// below function will return the max ID from GMID_SHIP_FROM_PLANT  TABLE
-        getMaxGMIDShipFromPlantID : function  () {
-			// Create a filter & sorter array to fetch the max ID
-			var idSortArray = [];
-			var idSort = new sap.ui.model.Sorter("ID",true);
-			idSortArray.push(idSort);
-			
-			var maxID = null;
-
-			 // Get the Max ID from  GMID_SHIP_FROM_PLANT table
-			 this._oDataModel.read("/GMID_COUNTRY_SHIP_FROM_PLANT?$top=1&$select=ID",{
-					sorters: idSortArray,
-					async: false,
-	                success: function(oData, oResponse){
-	                	//return the max ID
-	                	if(oData.results.length === 0){
-	                		maxID = 0;
-	                	}
-	                	else {maxID = oData.results[0].ID; }
-	                },
-	    		    error: function(){
-	            		MessageToast.show("Unable to retrieve max ID for GMID Ship from table.");
-	    			}
-	    		});
-	    	return maxID;
-        },
          // below function will return the GMID Country Status ID from CODE_Master TABLE
         getGMIDCountryStatusID : function  () {
         	 var oi18nModel = this.getView().getModel("i18n");
@@ -405,32 +379,6 @@ sap.ui.define([
 	    			}
 	    		});
 	    	return gmidcountrystatusID;
-        },
-        // below function will return the max ID from GMID_SHIP_TO_COUNTRY TABLE
-        getMaxGMIDShipToCountryID : function  () {
-			// Create a filter & sorter array to fetch the max ID
-			var idSortArray = [];
-			var idSort = new sap.ui.model.Sorter("ID",true);
-			idSortArray.push(idSort);
-			
-			var maxID = null;
-
-			 // Get the Country dropdown list from the GMID_SHIP_TO_COUNTRY table
-			 this._oDataModel.read("/GMID_SHIP_TO_COUNTRY?$top=1&$select=ID",{
-					sorters: idSortArray,
-					async: false,
-	                success: function(oData, oResponse){
-	                	//return the max ID
-	                	if(oData.results.length === 0){
-	                		maxID = 0;
-	                	}
-	                	else {maxID = oData.results[0].ID; }
-	                },
-	    		    error: function(){
-	            		MessageToast.show("Unable to retrieve max ID for GMID Ship to country table.");
-	    			}
-	    		});
-	    	return maxID;
         },
         validatePlantSelection :function()
         {

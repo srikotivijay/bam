@@ -842,7 +842,7 @@ sap.ui.define([
 		    		// Create current timestamp
 		    		var oDate = new Date();
 		    		// Get the MaxID
-		    	    var maxID =	t.getMaxID(tablePath);
+		    	    var maxID =	DataContext.getMaxID(tablePath);
 		    	    // Get the code id for GMID Country Status
 		    	    var gmidcountrystatusID = t.getGMIDCountryStatusID();
 		    	    
@@ -920,32 +920,6 @@ sap.ui.define([
 	        	// close busy dialog
 				t._busyDialog.close();
 			},500); // end of timeout function
-        },
-        // below function will return the max ID from GMID_SHIP_TO_COUNTRY TABLE
-        getMaxID : function  (tablePath) {
-			// Create a filter & sorter array to fetch the max ID
-			var idSortArray = [];
-			var idSort = new sap.ui.model.Sorter("ID",true);
-			idSortArray.push(idSort);
-			
-			var maxID = null;
-
-			 // Get the Country dropdown list from the CODE_MASTER table
-			 this._oDataModel.read(tablePath + "?$top=1&$select=ID",{
-					sorters: idSortArray,
-					async: false,
-	                success: function(oData, oResponse){
-	                	//return the max ID
-	                	if(oData.results.length === 0){
-	                		maxID = 0;
-	                	}
-	                	else {maxID = oData.results[0].ID; }
-	                },
-	    		    error: function(){
-	            		MessageToast.show("Unable to retrieve max ID for GMID table.");
-	    			}
-	    		});
-	    	return maxID;
         },
          // below function will return the GMID Country Status ID from CODE_Master TABLE
         getGMIDCountryStatusID : function  () {
