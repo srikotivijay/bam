@@ -24,7 +24,10 @@ sap.ui.define([
 		    // Create view model for the page
 		    var oModel = new sap.ui.model.json.JSONModel();
 
-	    	var oi18nModel = this.getView().getModel("i18n");
+	    	var oi18nModel = new ResourceModel({
+                bundleName: "bam.i18n.i18n"
+            });
+            
 			// get the GMID status for i18n model
 			var z1gmid = oi18nModel.getProperty("z1gmidstatus");
 			var zcgmid = oi18nModel.getProperty("zcgmidstatus");
