@@ -59,7 +59,7 @@ sap.ui.define([
 	            	
 	            	// get all the attributes for each row returned
 	            	data.results.forEach(function(item) {
-						attributeList.push(item.ATTRIBUTE);
+	            		attributeList.push(item.ATTRIBUTE);
 	            	});
 	            		
 	    			resolve(attributeList);
@@ -68,6 +68,46 @@ sap.ui.define([
 	        		reject(error);
 	        	});
 	        });
+    	}
+    	
+    	// function to get user roles.  First gets the current user that's logged in 
+    	function getUserPermissions() {
+    		var result;
+    		$.ajax({
+			    url : "/services/userapi/currentUser",
+			    type : "get",
+			    async: false,
+			    success : function(data) {
+			    	oDataModel.read("V_USER_ROLE_ATTRIBUTE_MAPPING", {
+						async: false,
+						filters: [ 
+							new Filter("USER_ID", FilterOperator.EQ, data.name)
+						],
+						success: function(oData, oResponse) {
+							var permissionList = [];
+			            	
+			            	// get all the attributes for each row returned
+			            	oData.results.forEach(function(item) {
+	            			permissionList.push(item);
+
+			            	});
+			            	
+			            	result = permissionList;
+						},
+						error: function(oError) {
+							MessageToast.show("Error getting user roles. Please contact System Admin.");                         
+							result = [];
+						}
+					});	
+			    
+			    },
+			    error: function() {
+			       MessageToast.show("Error getting user roles. Please contact System Admin.");                         
+							result = [];
+			    }
+			 });
+			 
+			return result;
     	}
     	
 		function getAttributeListBasedOnUserID()
@@ -153,7 +193,8 @@ sap.ui.define([
 			getAttributeListBasedOnUserID: getAttributeListBasedOnUserID,
 			getUserID: getUserID,
 			checkGMIDCountryUniqueInDB: checkGMIDCountryUniqueInDB,
-			getMaxID: getMaxID
+			getMaxID: getMaxID,
+			getUserPermissions: getUserPermissions
 		};
 	
 		return exports;

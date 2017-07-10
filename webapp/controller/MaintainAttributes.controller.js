@@ -1,17 +1,36 @@
 sap.ui.define([
 		"sap/ui/core/mvc/Controller",
 		"sap/m/MessageToast",
-		"sap/m/MessageBox"
-	], function (Controller,MessageToast,MessageBox) {
+		"sap/m/MessageBox",
+		"bam/services/DataContext"
+	], function (Controller,MessageToast,MessageBox,DataContext) {
 		"use strict";
 
 	return Controller.extend("bam.controller.MaintainAttributes", {
 			onInit : function () {
 				 // define a global variable for the oData model		    
 		    	this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
-		    	var oView;
-		    	oView = this.getView();
+		    	var oView = this.getView();
 		    	oView.setModel(this._oDataModel);
+		    	
+		    	this._oModel = new sap.ui.model.json.JSONModel();
+	    		this._oModel.setProperty("/showEditButton",false);
+	    		this.getView().setModel(this._oModel,"MaintainAttributesVM");
+		    	
+		    	// getting permissions for the current logged in user
+				var permissions = DataContext.getUserPermissions();
+				// check to see if the permission list includes "EDIT" action for the MAINTAIN ATTRIBUTES Module
+				// ATTRIBUTE in this case means MODULE
+				for(var i = 0; i < permissions.length; i++)
+				{
+					if(permissions[i].ATTRIBUTE === "MAINTAIN_ATTRIBUTES" && permissions[i].ACTION === "EDIT")
+					{
+						this._oModel.setProperty("/showEditButton",true);
+						// break since the user may have more than one role, as long as one of the user roles has permission to edit we can show the button
+						break;
+					}
+				}
+		    	
 		    	//attach _onRouteMatched to be called everytime on navigation to Maintain Attributes page
 		    	var oRouter = this.getRouter();
 				oRouter.getRoute("maintainAttributes").attachMatched(this._onRouteMatched, this);

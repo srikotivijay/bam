@@ -58,7 +58,7 @@ sap.ui.define([
 		    this.getView().setModel(oModel);
 		    this.addEmptyObject();
 		    
-		    // Create Message model
+		    // Create Message model -- NOT USED
 	    	this._oMessageModel = new sap.ui.model.json.JSONModel();
 	    	this._oMessageModel.setProperty("/NumOfGMIDSubmitted",0);
 	    	this.getView().setModel(this._oMessageModel,"MessageVM");

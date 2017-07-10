@@ -9,7 +9,7 @@
 				<VBox fitContainer="true">
 					<Toolbar width="100%" id="tlbrCustomControl">
 					    <content>
-					    	<Button id="btnEdit" text="{i18n>edit}" press="onEdit" class="sapUiMediumMarginBegin" icon="sap-icon://edit" activeIcon="sap-icon://edit"/>
+					    	<Button id="btnEdit" visible="{MaintainAttributesVM>/showEditButton}" text="{i18n>edit}" press="onEdit" class="sapUiMediumMarginBegin" icon="sap-icon://edit" activeIcon="sap-icon://edit"/>
 					    </content>
 					</Toolbar>
 					<smartTable:SmartTable id="smartTblBAMAttributes" entitySet="V_MAINTAIN_ATTRIBUTES" tableType="Table" useExportToExcel="true" useVariantManagement="true" showFullScreenButton="true" 
