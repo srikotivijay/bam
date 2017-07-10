@@ -2,96 +2,156 @@ sap.ui.define([
 		"sap/ui/core/mvc/Controller",
 		"sap/ui/model/json/JSONModel",
 		"sap/m/MessageToast",
+		"sap/m/MessageBox",
 		"sap/ui/model/resource/ResourceModel",
-		"sap/ui/model/Filter"
-	], function (Controller, JSONModel, MessageToast, ResourceModel,Filter) {
+		"sap/ui/model/Filter",
+		"bam/services/DataContext"
+	], function (Controller, JSONModel, MessageToast, MessageBox, ResourceModel,Filter,DataContext) {
 		"use strict";
+		
+	var firstTimePageLoad = true;
+	var loggedInUserID;
+	var originalGMIDCountry;
 	return Controller.extend("bam.controller.PlantSelection", {
 		//
 		onInit : function () {
-		     // define a global variable for the oData model		    
-		     this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
+			
+			// Get logged in user id
+			loggedInUserID = DataContext.getUserID();
+					
+			// define a global variable for the oData model		    
+		    this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
 		    // Create view model for the page
 		    var oModel = new sap.ui.model.json.JSONModel();
-		    
-		     // Create Message model
-	    	this._oMessageModel = new sap.ui.model.json.JSONModel();
-	    	this._oMessageModel.setProperty("/NumOfGMIDSubmitted",0);
-	    	this.getView().setModel(this._oMessageModel,"MessageVM");
+
+	    	var oi18nModel = new ResourceModel({
+                bundleName: "bam.i18n.i18n"
+            });
+            
+			// get the GMID status for i18n model
+			var z1gmid = oi18nModel.getProperty("z1gmidstatus");
+			var zcgmid = oi18nModel.getProperty("zcgmidstatus");
+			var z9gmid = oi18nModel.getProperty("z9gmidstatus");
+			//making filter for plant status
+			// Get the GMID Plant combinations for the GMID-Country combination selected by the user
+			// Create a filter & sorter array (pending depending on user id logic)
+			//
+			var filterArray=[];
+			var userFilter = new Filter("CREATED_BY",sap.ui.model.FilterOperator.EQ,loggedInUserID);
+			filterArray.push(userFilter);
+			var z1gmidFilter = new Filter("FILTER_MATERIAL_STATUS",sap.ui.model.FilterOperator.NE,z1gmid);
+			var zcgmidFilter = new Filter("FILTER_MATERIAL_STATUS",sap.ui.model.FilterOperator.NE,zcgmid);
+			var z9gmidFilter = new Filter("FILTER_MATERIAL_STATUS",sap.ui.model.FilterOperator.NE,z9gmid);
+		
+			var statusFilter = new Filter ({
+				filters : [
+					z1gmidFilter,
+					zcgmidFilter,
+					z9gmidFilter
+					],
+					and : true
+			});
+			filterArray.push(statusFilter);
 	    	
 		    // Get the GMID Plant combinations for the GMID-Country combination selected by the user
 			// Create a filter & sorter array (pending depending on user id logic)
-			// var userFilterArray = [];
-			// var userFilter = new Filter("USER_ID",sap.ui.model.FilterOperator.EQ,"COUNTRY");
-			// userFilterArray.push(userFilter);
 			var userSortArray = [];
 			var userSort = new sap.ui.model.Sorter("GMID",false);
 			userSortArray.push(userSort);
 			
 			this._oDataModel.read("/V_GMID_COUNTRY_SHIP_FROM_PLANT",{
-				//	filters: userFilterArray,
-					sorters: userSortArray,
-					async: false,
-	                success: function(oData, oResponse){
-	                var groupedGMIDCountry = [];
-	                
-	                //common code to check duplicates
-					var hash = (function() {
-					    var keys = {};
-						    return {
-						        contains: function(key) {
-						            return keys[key] === true;
-						        },
-						        add: function(key) {
-						            if (keys[key] !== true)
-						            {
-						                keys[key] = true;
-						            }
-						        }
-						    };
-						})();
+				filters: filterArray,
+				sorters: userSortArray,
+				async: false,
+                success: function(oData, oResponse){
+                var groupedGMIDCountry = [];
+                
+		        //common code to check duplicates
+				var hash = (function() {
+				    var keys = {};
+					    return {
+					        contains: function(key) {
+					            return keys[key] === true;
+					        },
+					        add: function(key) {
+					            if (keys[key] !== true)
+					            {
+					                keys[key] = true;
+					            }
+					        }
+					    };
+					})();
 					
-					var key = null;
-					//loop through the rows of the retruened data
-					for (var i = 0; i < oData.results.length; i++) {
-							var item =  oData.results[i];
-						    key = item.GMID + ";" + item.COUNTRY;
-						    //check for the gmid and country combination key 
-						    if (!hash.contains(key))
-						    {
-						    	//if its a new combination add the key to existing list of combinations
-						        hash.add(key);
-						        //push the new combination to the list
-						        groupedGMIDCountry.push({GMID:item.GMID, 
-						        						 COUNTRY:item.COUNTRY, 
-						        						 COUNTRY_CODE_ID: item.COUNTRY_CODE_ID,
-			        									 CURRENCY_CODE_ID: item.CURRENCY_CODE_ID,
-			        									 IBP_RELEVANCY_CODE_ID: item.IBP_RELEVANCY_CODE_ID,
-			        									 NETTING_DEFAULT_CODE_ID: item.NETTING_DEFAULT_CODE_ID,
-			        									 QUADRANT_CODE_ID:item.QUADRANT_CODE_ID,
-			        									 CHANNEL_CODE_ID: item.CHANNEL_CODE_ID,
-			        									 MARKET_DEFAULT_CODE_ID: item.MARKET_DEFAULT_CODE_ID,
-			        									 SUPPLY_SYSTEM_FLAG_CODE_ID: item.SUPPLY_SYSTEM_FLAG_CODE_ID,
-			        									 TYPE: item.TYPE,
-			        									 GMID_COUNTRY_STATUS_CODE_ID:item.GMID_COUNTRY_STATUS_CODE_ID,
-			        									 CREATED_BY: item.CREATED_BY,
-						        						 PLANTS:[],
-						        						 errorMessage:false});
-						    }
-						    //find the object for the gmid and country combination and push the plant code to the nested plant object
-						    groupedGMIDCountry.find(function(data){return data.GMID === item.GMID && data.COUNTRY === item.COUNTRY;}).PLANTS.push({PLANT_CODE: item.PLANT_CODE,PLANT_CODE_ID : item.GMID_SHIP_FROM_PLANT_ID,IS_SELECTED:false});
-						}
-		                // Bind the Country data to the GMIDShipToCountry model
-		                oModel.setProperty("/PlantSelectionVM",groupedGMIDCountry);
-	                },
-	    		    error: function(){
-	            		MessageToast.show("Unable to retrieve user data.");
-	    			}
+				var key = null;
+		                
+				//loop through the rows of the retruened data
+				for (var i = 0; i < oData.results.length; i++) {
+					var item =  oData.results[i];
+					key = item.GMID + ";" + item.COUNTRY;
+				    //check for the gmid and country combination key 
+				    if(!hash.contains(key))
+				    {
+				    	//if its a new combination add the key to existing list of combinations
+				        hash.add(key);
+				        groupedGMIDCountry.push({ID: item.ID,
+				        						 GMID:item.GMID, 
+				        						 COUNTRY:item.COUNTRY, 
+				        						 COUNTRY_CODE_ID: item.COUNTRY_CODE_ID,
+	        									 CURRENCY_CODE_ID: item.CURRENCY_CODE_ID,
+	        									 IBP_RELEVANCY_CODE_ID: item.IBP_RELEVANCY_CODE_ID,
+	        									 NETTING_DEFAULT_CODE_ID: item.NETTING_DEFAULT_CODE_ID,
+	        									 QUADRANT_CODE_ID:item.QUADRANT_CODE_ID,
+	        									 CHANNEL_CODE_ID: item.CHANNEL_CODE_ID,
+	        									 MARKET_DEFAULT_CODE_ID: item.MARKET_DEFAULT_CODE_ID,
+	        									 SUPPLY_SYSTEM_FLAG_CODE_ID: item.SUPPLY_SYSTEM_FLAG_CODE_ID,
+	        									 TYPE: item.TYPE,
+	        									 GMID_COUNTRY_STATUS_CODE_ID:item.GMID_COUNTRY_STATUS_CODE_ID,
+	        									 CREATED_BY: item.CREATED_BY,
+				        						 PLANTS:[],
+				        						 errorState: "None"});
+					}
+				    //find the object for the gmid and country combination and push the plant code to the nested plant object
+				    groupedGMIDCountry.find(function(data){return data.GMID === item.GMID && data.COUNTRY === item.COUNTRY;}).PLANTS.push({PLANT_CODE: item.PLANT_CODE,PLANT_CODE_ID : item.GMID_SHIP_FROM_PLANT_ID,IS_SELECTED:false});
+				}
+				
+                // Bind the Country data to the GMIDShipToCountry model
+                oModel.setProperty("/PlantSelectionVM",groupedGMIDCountry);
+                // save the original view model into a variable, used later for deletion of rows in staging column
+                originalGMIDCountry = JSON.parse(JSON.stringify(groupedGMIDCountry));
+                },
+    		    error: function(){
+            		MessageToast.show("Unable to retrieve user data.");
+    			}
 	    	});
 		    this.getView().setModel(oModel);
 		    // define a global variable for the view model and the view model data
 		    this._oPlantSelectionViewModel = oModel;
 		    this._oViewModelData = this._oPlantSelectionViewModel.getData();
+
+		    if(firstTimePageLoad)
+	    	{
+	    		var oRouter = this.getRouter();
+				oRouter.getRoute("gmidPlantSelection").attachMatched(this._onRouteMatched, this);
+				firstTimePageLoad = false;
+	    	}
+    	},
+    	getRouter : function () {
+				return sap.ui.core.UIComponent.getRouterFor(this);
+			},
+		// force init method to be called everytime we naviagte to Maintain Attribuets page 
+		_onRouteMatched : function (oEvent) {
+			if(DataContext.isBAMUser() === false)
+			{
+				this.getOwnerComponent().getRouter().navTo("accessDenied");
+			}
+			else
+			{
+				this.onInit();
+			}
+		},
+		// navigate back to the homepage
+		onHome: function(){
+				this.getOwnerComponent().getRouter().navTo("home");
 		},
 		// Below function removes a row
 		onRemoveRow : function(oEvent) {
@@ -99,18 +159,29 @@ sap.ui.define([
 			var entryToDelete = oEvent.getSource().getBindingContext().getObject();
 			// Get the # of rows in the VM, (this includes the dropdown objects such as Country, Currency, etc..)
 			var rows = this._oViewModelData.PlantSelectionVM;
+			// Setting local this variable in order to access it in the action confirm button
+			var t = this;
 			
-			// loop through each row and check whether the passed object = the row object
-			 for(var i = 0; i < rows.length; i++){
-			 	if(rows[i] === entryToDelete )
-				{
-					// found a match, remove this row from the data
-					rows.splice(i,1);
-					// refresh the GMID VM, this will automatically update the UI
-					this._oPlantSelectionViewModel.refresh();
-					break;
-				}
-			}
+			MessageBox.confirm(("Are you sure you want to delete this GMID/Country? Doing so will result to the GMID not being submitted to BAM and your entry for this GMID on the previous page will be disregarded."), {
+	    			icon: sap.m.MessageBox.Icon.WARNING,
+	    			actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+	          		onClose: function(oAction) {
+	          			if (oAction === "YES") 
+						{
+							// loop through each row and check whether the passed object = the row object
+							 for(var i = 0; i < rows.length; i++){
+							 	if(rows[i] === entryToDelete)
+								{
+									// found a match, remove this row from the data
+									rows.splice(i,1);
+									// refresh the GMID VM, this will automatically update the UI
+									t._oPlantSelectionViewModel.refresh();
+									break;
+								}
+							}
+	            		}
+	          		}
+	       	});
 		},
 		// Function to save the data into the database
 		// this will save data in two tables GMID_SHIP_TO_COUNTRY and GMID_COUNTRY_SHIP_FROM_PLANT
@@ -119,15 +190,41 @@ sap.ui.define([
     		var successGMIDShipToCount = 0;
     	 	var successGMIDShipFromPlantCount = 0;
     		var GMIDShipToCountry = this._oPlantSelectionViewModel.getProperty("/PlantSelectionVM");
-    		  // TODO Validations
-    		  // once all the validations are done need to save data into tables
-	    	  // Create current timestamp
-	    		var oDate = new Date();
-	    		// Get the MaxID for the GMID Ship to Country
-	    	    var maxGMIDShipToID = this.getMaxGMIDShipToCountryID();
-	    	    // Get the code id for GMID Country Status
-	    	    var gmidcountrystatusID = this.getGMIDCountryStatusID();
-	    	  	var oModel = this._oDataModel;
+    	
+    		// Create current timestamp
+    		var oDate = new Date();
+    		// Get the MaxID for the GMID Ship to Country
+    	    var maxGMIDShipToID = DataContext.getMaxID("/GMID_SHIP_TO_COUNTRY");
+    	    // Get the code id for GMID Country Status
+    	    var gmidcountrystatusID = this.getGMIDCountryStatusID();
+    	    
+    	    // reset the validation on the screen
+    	    this.resetValidation();
+			if(GMIDShipToCountry.length === 0)
+			{
+				MessageBox.alert("There are no GMID/Country combinations to submit. Please return to the homepage.", {
+	    			icon : MessageBox.Icon.ERROR,
+					title : "Invalid Input"
+       			});
+			}
+			else if(!this.validateDuplicateRecords())
+			{
+				MessageBox.alert("Duplicate GMID/Country combination exists in the system. Please remove the entry.", {
+	    			icon : MessageBox.Icon.ERROR,
+					title : "Invalid Input"
+       			});
+			}
+			// validation to check if each GMID/Country has at least one plant selected
+    	    else if (this.validatePlantSelection() === false)
+	    	{
+	    		MessageBox.alert("Please select at least one plant for each GMID/Country combination.", {
+	    			icon : MessageBox.Icon.ERROR,
+					title : "Invalid Input"
+       			});
+	    	}
+	    	else
+	    	{
+	    		 var oModel = this._oDataModel;
 	    		// loop through the rows and for each row insert data into database
 	    		// each row contains GMID Ship To combination.
 	    		for(var i = 0; i < GMIDShipToCountry.length; i++) 
@@ -161,7 +258,7 @@ sap.ui.define([
 			        	CREATED_BY:createdBy
 	    			};
 	    			
-	    			var maxGMIDShipFromPlantID = this.getMaxGMIDShipFromPlantID();
+	    			var maxGMIDShipFromPlantID = DataContext.getMaxID("/GMID_COUNTRY_SHIP_FROM_PLANT");
 	    			
 	        		this._oDataModel.create("/GMID_SHIP_TO_COUNTRY", newGMID,
 	        		{
@@ -207,15 +304,16 @@ sap.ui.define([
 						}
 	        		});
 	    		}
-	    		
+	    		// TODO needs to be refactored to be batch delete
 	    		// get the count of records in staging table
-    			for(var k = 1; k <= GMIDShipToCountry.length; k++) 
+    			for(var k = 0; k < originalGMIDCountry.length; k++) 
     			{
 		    		// once data is inserted successfully in both tables i.e. GMID_SHIP_TO_COUNTYRY 
 		    		// and GMID_COUNTRY_SHIP_FROM_PLANT, delete the data from staging table i.e. GMID_SHIP_TO_COUNTYRY_STG
-    				this._oDataModel.remove("/GMID_SHIP_TO_COUNTRY_STG(" + k + ")",
+    				this._oDataModel.remove("/GMID_SHIP_TO_COUNTRY_STG(" + originalGMIDCountry[k].ID + ")",
 	        		{
 			        	success: function(){
+			        		
 			    		},
 			    		error: function(){
 			    			// show alert message
@@ -224,12 +322,19 @@ sap.ui.define([
 	        		});
     			}
 	    		
-		        		
 	    		//Show success or error message
 	    		if(errorCount === 0) 
 	    		{
-	        		this._oMessageModel.setProperty("/NumOfGMIDSubmitted",successGMIDShipToCount);
-	    			this.getOwnerComponent().openSubmitConfirmDialog(this.getView());
+	        			var oRouter = this.getRouter();
+        				// once insertion is success, navigate to homepage
+        				MessageBox.alert("You have successfully submitted " + successGMIDShipToCount + " GMID(s)",
+							{
+								icon : MessageBox.Icon.SUCCESS,
+								title : "Success",
+								onClose: function() {
+				        			oRouter.navTo("home");
+				        	}
+						});
 	        		//once insertion is success, navigate to homepage
 	    		} 
 	    		else 
@@ -237,33 +342,8 @@ sap.ui.define([
 	        			MessageToast.show("Error: GMIDs were not submitted");
 	    		}
 	    		
-	        },
-		// below function will return the max ID from GMID_SHIP_FROM_PLANT  TABLE
-        getMaxGMIDShipFromPlantID : function  () {
-			// Create a filter & sorter array to fetch the max ID
-			var idSortArray = [];
-			var idSort = new sap.ui.model.Sorter("ID",true);
-			idSortArray.push(idSort);
-			
-			var maxID = null;
-
-			 // Get the Max ID from  GMID_SHIP_FROM_PLANT table
-			 this._oDataModel.read("/GMID_COUNTRY_SHIP_FROM_PLANT?$top=1&$select=ID",{
-					sorters: idSortArray,
-					async: false,
-	                success: function(oData, oResponse){
-	                	//return the max ID
-	                	if(oData.results.length === 0){
-	                		maxID = 0;
-	                	}
-	                	else {maxID = oData.results[0].ID; }
-	                },
-	    		    error: function(){
-	            		MessageToast.show("Unable to retrieve max ID for GMID Ship from table.");
-	    			}
-	    		});
-	    	return maxID;
-        },
+	    	} // end of else validation at least one plant selected
+	    },
          // below function will return the GMID Country Status ID from CODE_Master TABLE
         getGMIDCountryStatusID : function  () {
         	 var oi18nModel = this.getView().getModel("i18n");
@@ -293,31 +373,58 @@ sap.ui.define([
 	    		});
 	    	return gmidcountrystatusID;
         },
-        // below function will return the max ID from GMID_SHIP_TO_COUNTRY TABLE
-        getMaxGMIDShipToCountryID : function  () {
-			// Create a filter & sorter array to fetch the max ID
-			var idSortArray = [];
-			var idSort = new sap.ui.model.Sorter("ID",true);
-			idSortArray.push(idSort);
-			
-			var maxID = null;
-
-			 // Get the Country dropdown list from the GMID_SHIP_TO_COUNTRY table
-			 this._oDataModel.read("/GMID_SHIP_TO_COUNTRY?$top=1&$select=ID",{
-					sorters: idSortArray,
-					async: false,
-	                success: function(oData, oResponse){
-	                	//return the max ID
-	                	if(oData.results.length === 0){
-	                		maxID = 0;
-	                	}
-	                	else {maxID = oData.results[0].ID; }
-	                },
-	    		    error: function(){
-	            		MessageToast.show("Unable to retrieve max ID for GMID Ship to country table.");
-	    			}
-	    		});
-	    	return maxID;
+        validatePlantSelection :function()
+        {
+	        var GMIDShipToCountry = this._oPlantSelectionViewModel.getProperty("/PlantSelectionVM");
+	        var plantSelected;
+	        var validPlants = true;
+	        
+	        for(var i = 0; i < GMIDShipToCountry.length; i++)
+	        {
+	        	plantSelected = false;
+	        	for(var j = 0; j < GMIDShipToCountry[i].PLANTS.length; j++) 
+	            {
+	                // if there is at least one plant selected, then the GMID/Country combination is valid
+	                if (GMIDShipToCountry[i].PLANTS[j].IS_SELECTED === true)
+	                {
+	                	plantSelected = true;
+	                }
+	            }
+	            if (plantSelected === false)
+	            {
+	               // add error state for this GMID 
+	               GMIDShipToCountry[i].errorState = "Error";
+	               // invalid GMID/Country combo found
+	               validPlants = false;
+	            }
+	        }
+	        this._oPlantSelectionViewModel.refresh();
+	        return validPlants;
+        },
+        validateDuplicateRecords : function()
+        {
+        	var GMIDShipToCountry = this._oPlantSelectionViewModel.getProperty("/PlantSelectionVM");
+        	var noDuplicates = true;
+        	
+        	for(var i = 0; i < GMIDShipToCountry.length; i++)
+	        {
+	        	if(!DataContext.checkGMIDCountryUniqueInDB(GMIDShipToCountry[i].GMID,GMIDShipToCountry[i].COUNTRY_CODE_ID))
+	        	{
+	        		noDuplicates = false;
+	        		GMIDShipToCountry[i].errorState = "Error";
+	        	}
+	        }
+	         this._oPlantSelectionViewModel.refresh();
+	          return noDuplicates;
+        },
+        resetValidation: function()
+        {
+        	var GMIDShipToCountry = this._oPlantSelectionViewModel.getProperty("/PlantSelectionVM");
+        	for(var i = 0; i < GMIDShipToCountry.length; i++)
+	        {
+	        	GMIDShipToCountry[i].errorState = "None";
+	        }
         }
+
   	});
 });

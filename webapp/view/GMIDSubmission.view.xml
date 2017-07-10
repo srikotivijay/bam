@@ -1,25 +1,29 @@
-<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:u="sap.ui.unified" controllerName="bam.controller.GMIDSubmission" displayBlock="true">
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:u="sap.ui.unified" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" controllerName="bam.controller.GMIDSubmission" displayBlock="true">
 	<App id="gmidSubmission">
-		<pages>
-			<Page title="{i18n>title}" class="sapUiResponsiveContentPadding">
+		<pages><Page title="{i18n>title}" class="sapUiResponsiveContentPadding">
 				<headerContent>
 					<Button id="btnHome" icon="sap-icon://home" tooltip="{i18n>home}" press="onHome"/>
 				</headerContent>
 				<content>
-					<Text id="lblSubmitGMIDFor" text="{i18n>submitGMIDFor}"/>
 					<HBox>
+						<Label class="boldFont" text="* To upload GMID/Country combination from a file, download the template and enter the data in Excel, save as a CSV file then browse and upload."></Label>
+					</HBox>
+					<HBox alignItems="Center">
+						<Text id="lblSubmitGMIDFor" text="{i18n>submitGMIDFor}"/>
 						<RadioButtonGroup id="rbgGMIDType" width="100%" columns="2" select="fnGridShow" selectedIndex="-1">
 					    	<buttons>
 					        	<RadioButton id="rBtnCropProtection" text="{i18n>cropProtection}" groupName="rbgGMIDType"/>
 					        	<RadioButton id="rBtnSeeds" text="{i18n>seeds}" groupName="rbgGMIDType" class="sapUiLargeMarginEnd"/>
 					        </buttons>
 						</RadioButtonGroup>
-						<HBox visible="false" id="excelHBox">
-							<u:FileUploader id="excelFileUploader" width="300px"
-							    sameFilenameAllowed="false" buttonText="" fileType="CSV"
-							    placeholder="Choose a CSV file" style="Emphasized" class="sapUiSmallMarginEnd">
+						<Label class="sapUiLargeMarginEnd" text=""></Label>
+						<Label class="sapUiLargeMarginEnd" text=""></Label>
+						<Label class="sapUiLargeMarginEnd" text=""></Label>
+						<HBox visible="true" id="excelHBox">
+							<u:FileUploader id="excelFileUploader" width="300px" sameFilenameAllowed="false" buttonText="" fileType="CSV" placeholder="Choose a CSV file" style="Emphasized" class="sapUiSmallMarginEnd">
 							</u:FileUploader>
 							<Button text="{i18n>importFromExcel}" id="btnImportFromExcel" press="onImportFromExcel" class="sapUiSmallMarginEnd"/>
+
 							<Button text="{i18n>downloadTemplate}" id="btnDownloadTemplate" press="onDownloadTemplate"/>
 						</HBox>
 					</HBox>
@@ -31,93 +35,82 @@
 					 <ScrollContainer horizontal="true">
 						<Table noDataText="No records to display" id="tblGMIDRequest" items="{/GMIDShipToCountryVM}" visible="false" width="auto">
 							 <columns>
-							 	<Column id="clmErrorMessage" visible="{/ErrorOnPage}" width="50px">
-							 		<header>
-						                <Label text="" id="lblErrorMessage"/>
-						            </header>
-					    		</Column>
+								 <Column id="clmHdrAction" width="80px">
+							            <header>
+							                <Label text="{i18n>action}" id="lblAction"/>
+							            </header>
+						        </Column>
 					        	<Column id="clmHdrGMID" width="100px">
 						            <header>
-						                <Label text="{i18n>gmid}{i18n>mandatory}" id="lblGMID"/>
+						                <Label text="{i18n>gmid}" id="lblGMID"/>
 						            </header>
 					        	</Column>
-					        	<Column id="clmHdrCountry" width="150px">
+					        	<Column id="clmHdrCountry" width="125px">
 						            <header>
-						                <Label text="{i18n>country}{i18n>mandatory}" id="lblCountry"/>
+						                <Label text="{i18n>country}" id="lblCountry"/>
 						            </header>
 					        	</Column>
-					        <Column id="clmHdrStoredCurrency" width="150px">
+					        <Column id="clmHdrStoredCurrency" width="120px">
 						        <header>
-						              <Label text="{i18n>storedCurrency}{i18n>mandatory}" id="lblStoredCurrency"/>
+						              <Label text="{i18n>storedCurrency}" id="lblStoredCurrency"/>
 						          </header>
 					        </Column>
-					        <Column id="clmHdrIBPRelevancy" width="150px">
+					        <Column id="clmHdrIBPRelevancy" width="125px">
 						        <header>
-						            <Label text="{i18n>ibpRelevancy}{i18n>mandatory}" id="lblIBPRelevancy"/>
+						            <Label text="{i18n>ibpRelevancy}" id="lblIBPRelevancy"/>
 						          </header>
 					        </Column>
-					        <Column id="clmHdrNettingDefault" width="150px">
+					        <Column id="clmHdrNettingDefault" width="120px">
 						        <header>
-						           <Label text="{i18n>nettingDefault}{i18n>mandatory}" id="lblNettingDefault"/>
+						           <Label text="{i18n>nettingDefault}" id="lblNettingDefault"/>
 						         </header>
 					        </Column>
-					        <Column id="clmHdrQuadrant" width="100px">
+					        <Column id="clmHdrQuadrant" width="120px">
 						      <header>
-						          <Label text="{i18n>quadrant}{i18n>mandatory}" id="lblQuadrant"/>
+						          <Label text="{i18n>quadrant}" id="lblQuadrant"/>
 						           </header>
 					        	</Column>
-					        	<Column id="clmHdrChannel" width="100px">
+					        	<Column id="clmHdrChannel" width="125px">
 						       <header>
-						         <Label text="{i18n>channel}{i18n>mandatory}" id="lblChannel"/>
+						         <Label text="{i18n>channel}" id="lblChannel"/>
 						        </header>
 					        </Column>
-					        <Column id="clmHdrMarketDefault" width="100px">
+					        <Column id="clmHdrMarketDefault" width="120px">
 						        <header>
-						          <Label text="{i18n>marketDefault}{i18n>mandatory}" id="lblMarketDefault"/>
+						          <Label text="{i18n>marketDefault}" id="lblMarketDefault"/>
 						         </header>
 					        </Column>
-					        <Column id="clmRequestedBy" width="100px">
-						        <header>
-						          <Label text="{i18n>requestedBy}{i18n>mandatory}" id="lblRequestedBy"/>
-						         </header>
-					        </Column>
-					        <Column id="clmHdrAction" width="50px">
-						            <header>
-						                <Label text="{i18n>action}" id="lblAction"/>
-						            </header>
-					        	</Column>
 					    	</columns>
 					    <items>
 					        <ColumnListItem id="cliGMIDShipTocountry">
 					            <cells>
-					            		<Label visible="{path: 'errorMessage'}" text="{i18n>errorMessage}" class="sapThemeCriticalText"/>
-					                	<Input id="inputGMID" value="{GMID}" visible="{path: 'createNew', formatter: '.disableControl'}" width="100%" maxLength="8" liveChange="numValidationCheck"/>
-		                            	<Select xmlns:sap.ui.core="sap.ui.core" id="ddlCountry" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/GMIDShipToCountryVM/Country', templateShareable : true}" selectedKey="{COUNTRY_CODE_ID}">
-		                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
-										</Select>
-		                            	<Select xmlns:sap.ui.core="sap.ui.core" id="ddlStoredCurrency" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/GMIDShipToCountryVM/StoredCurrency', templateShareable : true}" selectedKey="{CURRENCY_CODE_ID}">
-		                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
-										</Select>
-		                            	<Select xmlns:sap.ui.core="sap.ui.core" id="ddlIBPRelevancyFlag" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/GMIDShipToCountryVM/IBPRelevancyFlag', templateShareable : true}" selectedKey="{IBP_RELEVANCY_CODE_ID}">
-		                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
-										</Select>
-		                            	<Select xmlns:sap.ui.core="sap.ui.core" id="ddlNettingDefaultFlag" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/GMIDShipToCountryVM/NettingDefaultFlag', templateShareable : true}" selectedKey="{NETTING_DEFAULT_CODE_ID}">
-		                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
-										</Select>
-		                            	<Select xmlns:sap.ui.core="sap.ui.core" id="ddlQuadrant" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/GMIDShipToCountryVM/Quadrant', templateShareable : true}" selectedKey="{QUADRANT_CODE_ID}">
-		                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
-										</Select>
-		                            	<Select xmlns:sap.ui.core="sap.ui.core" id="ddlChannel" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/GMIDShipToCountryVM/Channel', templateShareable : true}" selectedKey="{CHANNEL_CODE_ID}">
-		                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
-										</Select>
-		                            	<Select xmlns:sap.ui.core="sap.ui.core" id="ddlMarketDefaultFlag" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/GMIDShipToCountryVM/MarketDefaultFlag', templateShareable : true}" selectedKey="{MARKET_DEFAULT_CODE_ID}">
-		                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
-										</Select>
-										<Input id="inputRequestedBy" value="{CREATED_BY}" visible="{path: 'createNew', formatter: '.disableControl'}" width="100%"/>
-		                            <HBox alignContent="SpaceBetween" direction="Inherit">
-					            		<core:Icon id="btnAddRow" src="sap-icon://add" visible="{path: 'createNew', formatter: '.enableControl'}" press="onAddRow"/>
-		                                <core:Icon id="btnRemoveRow" src="sap-icon://delete" visible="{path: 'createNew', formatter: '.disableControl'}" press="onRemoveRow"/>
-		                            </HBox>
+					            	 <HBox alignContent="Start" direction="Inherit" alignItems="Baseline">
+					            	 		<Button id="btnRemoveRow" icon="sap-icon://delete" visible="{path: 'createNew', formatter: '.disableControl'}" press="onRemoveRow" class="sapUiTinyMarginEnd"/>
+					            	 		<core:Icon id="btnAddRow" src="sap-icon://add" visible="{path: 'createNew', formatter: '.enableControl'}" press="onAddRow"/>
+					            			<Button visible="{path: 'isError'}" icon="sap-icon://error" press="showErrorMessage" app:text="{errorSummary}" app:GMID ="{GMID}" app:CountryCode ="{COUNTRY_CODE_ID}" tooltip="{i18n>errorIcon}" type="Reject"/>				            	
+					            	</HBox>
+				                	<Input id="inputGMID" value="{GMID}" visible="{path: 'createNew', formatter: '.disableControl'}" width="100%" maxLength="8" liveChange="numValidationCheck" valueState="{GMIDErrorState}"/>
+	                            	<Select xmlns:sap.ui.core="sap.ui.core" id="ddlCountry" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/GMIDShipToCountryVM/Country', templateShareable : true}" change="onChange" valueState="{countryErrorState}" selectedKey="{COUNTRY_CODE_ID}">
+	                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
+									</Select>
+	                            	<Select xmlns:sap.ui.core="sap.ui.core" id="ddlStoredCurrency" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/GMIDShipToCountryVM/StoredCurrency', templateShareable : true}" change="onChange" valueState="{currencyErrorState}" selectedKey="{CURRENCY_CODE_ID}">
+	                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
+									</Select>
+	                            	<Select xmlns:sap.ui.core="sap.ui.core" id="ddlIBPRelevancyFlag" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/GMIDShipToCountryVM/IBPRelevancyFlag', templateShareable : true}" change="onChange" valueState="{IBPRelevancyErrorState}" selectedKey="{IBP_RELEVANCY_CODE_ID}">
+	                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
+									</Select>
+	                            	<Select xmlns:sap.ui.core="sap.ui.core" id="ddlNettingDefaultFlag" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/GMIDShipToCountryVM/NettingDefaultFlag', templateShareable : true}" change="onChange" valueState="{nettingDefaultErrorState}" selectedKey="{NETTING_DEFAULT_CODE_ID}">
+	                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
+									</Select>
+	                            	<Select xmlns:sap.ui.core="sap.ui.core" id="ddlQuadrant" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/GMIDShipToCountryVM/Quadrant', templateShareable : true}" change="onChange" valueState="{quadrantErrorState}" selectedKey="{QUADRANT_CODE_ID}">
+	                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
+									</Select>
+	                            	<Select xmlns:sap.ui.core="sap.ui.core" id="ddlChannel" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/GMIDShipToCountryVM/Channel', templateShareable : true}" change="onChange" valueState="{channelErrorState}" selectedKey="{CHANNEL_CODE_ID}">
+	                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
+									</Select>
+	                            	<Select xmlns:sap.ui.core="sap.ui.core" id="ddlMarketDefaultFlag" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/GMIDShipToCountryVM/MarketDefaultFlag', templateShareable : true}" change="onChange" valueState="{marketDefaultErrorState}" selectedKey="{MARKET_DEFAULT_CODE_ID}">
+	                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
+									</Select>
 					           </cells>
 					        </ColumnListItem>
 					 </items>
@@ -127,7 +120,7 @@
 				     <content>
 				         <ToolbarSpacer id="tbrSpSubmit"/>
 							 <Button text="{i18n>submit}" width="100px" id="btnSubmit" press="onSubmit" visible="false"/>
-				             <Button text="{i18n>continueToPlant}" width="200px" id="btnContinueToPlantSelection" press="onContinueToPlantSelection" visible="false" />
+				             <Button text="{i18n>continueToPlant}" width="200px" id="btnContinueToPlantSelection" press="onSubmit" visible="false"/>
 				     </content>
 				 </Toolbar>
 				</content>

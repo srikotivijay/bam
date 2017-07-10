@@ -9,10 +9,13 @@
 				<VBox fitContainer="true">
 					<Toolbar width="100%" id="tlbrCustomControl">
 					    <content>
-					    	<Button id="btnEdit" text="{i18n>edit}" press="onEdit" class="sapUiMediumMarginBegin" icon="sap-icon://edit" activeIcon="sap-icon://edit"/>
+					    	<Button id="btnEdit" visible="{MaintainAttributesVM>/showEditButton}" text="{i18n>edit}" press="onEdit" class="sapUiMediumMarginBegin" icon="sap-icon://edit" activeIcon="sap-icon://edit"/>
 					    </content>
 					</Toolbar>
-					<smartTable:SmartTable id="smartTblBAMAttributes" entitySet="V_MAINTAIN_ATTRIBUTES" tableType="Table" useExportToExcel="true" useVariantManagement="false" showFullScreenButton="true" initiallyVisibleFields="GMID_COUNTRY_STATUS,GMID,COUNTRY,STORED_CURRENCY,IBP_RELEVANCY,NETTING_DEFAULT,QUADRANT,CHANNEL,MARKET_DEFAULT,SUPPLY_SYSTEM_FLAG,DEMAND_ATTRIBUTE1,DEMAND_ATTRIBUTE2,MARKETING_ATTRIBUTE1,MARKETING_ATTRIBUTE2,SUPPLY_ATTRIBUTE1,SUPPLY_ATTRIBUTE2,REQUESTED_BY,REQUESTED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE" useTablePersonalisation="true" header="GMID Country Attributes" showRowCount="true" enableAutoBinding="true" app:useSmartField="true" class="sapUiResponsiveContentPadding" ignoreFromPersonalisation="ID">
+					<smartTable:SmartTable id="smartTblBAMAttributes" entitySet="V_MAINTAIN_ATTRIBUTES" tableType="Table" useExportToExcel="true" useVariantManagement="true" showFullScreenButton="true" 
+					useTablePersonalisation="true" header="GMID Country Attributes" showRowCount="true" enableAutoBinding="true" app:useSmartField="true" class="sapUiResponsiveContentPadding" ignoreFromPersonalisation="ID"
+					initiallyVisibleFields="GMID_COUNTRY_STATUS,GMID,GMID_SHORTTEXT,COUNTRY,STORED_CURRENCY,IBP_RELEVANCY,NETTING_DEFAULT,QUADRANT,CHANNEL,MARKET_DEFAULT,SUPPLY_SYSTEM_FLAG,DEMAND_ATTRIBUTE1,DEMAND_ATTRIBUTE2,MARKETING_ATTRIBUTE1,MARKETING_ATTRIBUTE2,SUPPLY_ATTRIBUTE1,SUPPLY_ATTRIBUTE2,TRADE_PRODUCT_CODE,TRADE_PRODUCT_DESC,PLAN_PRODUCT_DESC,PROFIT_CENTER_DESC,PERFORMANCE_CENTER_DESC,VALUE_CENTER_DESC,SPECIFIED_MATERIAL_DESC,MASTER_SALES_SPEC_DESC,BRAND_NAME,TREATMENT,PACKAGE_TYPE,BGT_DESC,LOCAL_UOM,MATERIAL_STATUS,TRADE_AREA_DESC,SUB_RCU_DESC,RCU_DESC,CONS_DEFAULT_FLAG,MARKETING_MANAGER,MARKETING_DIRECTOR,DEMAND_MANAGER,GLOBAL_BUSINESS_LEADER,
+					,SUPPLY_CHAIN_PLANNING_SPECIALIST,MARKETING_SPECIALIST,GLOBAL_SUPPLY_CHAIN_MANAGER,REG_SUPPLY_CHAIN_MANAGER,IBP_STATUS,IBP_RESPONSE_DESC,REQUESTED_BY,REQUESTED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE">
 						<!-- layout data used to make the table growing but the filter bar fixed -->
 						<smartTable:layoutData>
 								<FlexItemData growFactor="1" baseSize="0%"/>

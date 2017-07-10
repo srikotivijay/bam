@@ -2,31 +2,47 @@ sap.ui.define([
 		"sap/ui/core/mvc/Controller",
 		"sap/ui/model/json/JSONModel",
 		"sap/m/MessageToast",
+		"sap/m/MessageBox",
 		"sap/ui/model/resource/ResourceModel",
-		"sap/ui/model/Filter"
-	], function (Controller, JSONModel, MessageToast, ResourceModel,Filter) {
+		"sap/ui/model/Filter",
+		"sap/ui/core/routing/History",
+		"bam/services/DataContext"
+	], function (Controller, JSONModel, MessageToast, MessageBox, ResourceModel,Filter,History,DataContext) {
 		"use strict";
-
+     var loggedInUserID;
+     var firstTimePageLoad = true;
 	return Controller.extend("bam.controller.GMIDSubmission", {
 		onInit : function () {
+			
+			// Get logged in user id
+			loggedInUserID = DataContext.getUserID();
+
 			// Create view model for 5 rows to show by default on page load
 			var initData = [];
 			for (var i = 0; i < 5; i++) {
     			initData.push({
         		"GMID": "",
+        		"GMIDErrorState": "None",
         		"COUNTRY_CODE_ID": -1,
+        		"countryErrorState": "None",
         		"CURRENCY_CODE_ID": -1,
+        		"currencyErrorState": "None",
         		"IBP_RELEVANCY_CODE_ID": -1,
+        		"IBPRelevancyErrorState": "None",
         		"NETTING_DEFAULT_CODE_ID": -1,
+        		"nettingDefaultErrorState": "None",
         		"QUADRANT_CODE_ID": -1,
+        		"quadrantErrorState": "None",
         		"CHANNEL_CODE_ID": -1,
+        		"channelErrorState": "None",
         		"MARKET_DEFAULT_CODE_ID": -1,
+        		"marketDefaultErrorState": "None",
         		"SUPPLY_SYSTEM_FLAG_CODE_ID": -1,
-        		"CREATED_BY":"",
         		"createNew" : false,
-        		"errorMessage":false
+        		"isError":false
     			});
 			}
+
 			// Assigning view model for the page
 		    var oModel = new sap.ui.model.json.JSONModel({GMIDShipToCountryVM : initData});
 		    // Create table model, set size limit to 300, add an empty row
@@ -38,13 +54,21 @@ sap.ui.define([
 		    this.getView().setModel(oModel);
 		    this.addEmptyObject();
 		    
-		    // Create Message model
+		    // Create Message model -- NOT USED
 	    	this._oMessageModel = new sap.ui.model.json.JSONModel();
 	    	this._oMessageModel.setProperty("/NumOfGMIDSubmitted",0);
 	    	this.getView().setModel(this._oMessageModel,"MessageVM");
 	    	
 	    	  // Set error message column to false (not visible by default)
 		    this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",false);
+		    
+		    // set the busy indicator
+			// creating busy dialog lazily
+    		if (!this._busyDialog) 
+			{
+				this._busyDialog = sap.ui.xmlfragment("bam.view.BusyLoading", this);
+				this.getView().addDependent(this._dialog);
+			}
 
 			// Bind Country dropdown
 			// Create a filter & sorter array
@@ -239,13 +263,60 @@ sap.ui.define([
 		            		MessageToast.show("Unable to retrieve supply system flag data.");
 		    			}
 		    	});
-	    	// get default values for various fields and set them in global variables
-	    	this.getDefaultPropertyValues();
+
+	    	// attach _onRouteMatched to be called everytime on navigation to Maintain Attributes page
+	    	// do not attach again if this is not the first time loading the page, if we attach it again performance is affected
+	    	if(firstTimePageLoad)
+	    	{
+	    		var oRouter = this.getRouter();
+				oRouter.getRoute("gmidSubmission").attachMatched(this._onRouteMatched, this);
+				firstTimePageLoad = false;
+				// get default values for various fields and set them in global variables
+	    		this.getDefaultPropertyValues();
+	    	}
+	    	else
+	    	{
+	    		// reset the UI to all be invisible
+	    		this.resetPage();
+	    	}
     	},
+    	getRouter : function () {
+				return sap.ui.core.UIComponent.getRouterFor(this);
+			},
+		// force init method to be called everytime we naviagte to Maintain Attribuets page 
+		_onRouteMatched : function (oEvent) {
+			if(DataContext.isBAMUser() === false)
+			{
+				this.getOwnerComponent().getRouter().navTo("accessDenied");
+			}
+			else
+			{
+				this.onInit();
+			}
+		},
+		// navigate back to the homepage
+		onHome: function(){
+				this.getOwnerComponent().getRouter().navTo("home");
+		},
+		resetPage: function ()
+        {
+        	// hide the table & excel button and set the radio button to not selected
+			var tblGmid = this.getView().byId("tblGMIDRequest");
+			tblGmid.setVisible(false);
+			var excelHBox = this.getView().byId("excelHBox");
+			excelHBox.setVisible(false);
+			var rbgGMIDType = this.getView().byId("rbgGMIDType");
+			rbgGMIDType.setSelectedIndex(-1);
+			var btnSubmit = this.getView().byId("btnSubmit");
+			btnSubmit.setVisible(false);
+			var btnContinue = this.getView().byId("btnContinueToPlantSelection");
+			btnContinue.setVisible(false);
+			
+        },
     	// Below function is used to prepare an empty object
     	addEmptyObject : function() {
 	    	var aData  = this._oGMIDShipToCountryViewModel.getProperty("/GMIDShipToCountryVM");
-	    	var emptyObject = {createNew: true, errorMessage: false};
+	    	var emptyObject = {createNew: true, isError: false};
 	    	aData.push(emptyObject);
 	    	this._oGMIDShipToCountryViewModel.setProperty("/GMIDShipToCountryVM", aData);
 		},
@@ -263,17 +334,24 @@ sap.ui.define([
 		    // create new empty GMIDShipToCountry object
 		    var obj = {
 		    				GMID: "",
+		    				GMIDErrorState: "None",
 		    				COUNTRY_CODE_ID:-1,
+		    				countryErrorState: "None",
 		    				CURRENCY_CODE_ID:-1,
+		    				currencyErrorState: "None",
 	        				IBP_RELEVANCY_CODE_ID:this._defaultIBPRelevancy,
+	        				IBPRelevancyErrorState: "None",
 	        				NETTING_DEFAULT_CODE_ID:-1,
+	        				nettingDefaultErrorState: "None",
 	        				QUADRANT_CODE_ID:this._defaultQuadrantForSeed,
+	        				quadrantErrorState: "None",
 	        				CHANNEL_CODE_ID:this._defaultChannelForSeed,
+	        				channelErrorState: "None",
 	        				MARKET_DEFAULT_CODE_ID:-1,
+	        				marketDefaultErrorState: "None",
 	        				SUPPLY_SYSTEM_FLAG_CODE_ID: -1,
-	        				CREATED_BY:"",
-		    				createNew: false,
-		    				errorMessage: false
+	        				createNew: false,
+		    				isError: false
 		    		};
 		    // set default property values on the basis of selected gmid type
 	    	obj = this.setDefaultPropertyValues(this._oSelectedGMIDType, obj);
@@ -307,6 +385,7 @@ sap.ui.define([
 	    	// get the crop protection and seeds value from i18n file
 	    	var oi18nModel = this.getView().getModel("i18n");
 		    this._oSeed = oi18nModel.getProperty("seeds");
+		    this._oCropProtection = oi18nModel.getProperty("cropProtection");
 		    var tblGmid = this.getView().byId("tblGMIDRequest");
 			var btnSubmit = this.getView().byId("btnSubmit");
 			var btnContinue = this.getView().byId("btnContinueToPlantSelection");
@@ -335,47 +414,301 @@ sap.ui.define([
     		// refresh the GMID VM, this will automatically update the UI
     		this._oGMIDShipToCountryViewModel.refresh();
 		},
+		// This function loops through all the rows on the form and checks each input to see if it is filled in
         validateTextFieldValues :function () {
+    		
         	var returnValue = true;
         	var data = this._oViewModelData.GMIDShipToCountryVM;
             for(var i = 0; i < data.length - 1; i++) 
             {
-	            if (data[i].GMID === "" 
-	            		|| parseInt(data[i].COUNTRY_CODE_ID,10) === -1
-	            		|| parseInt(data[i].IBP_RELEVANCY_CODE_ID,10) === -1
-	            		|| parseInt(data[i].NETTING_DEFAULT_CODE_ID,10) === -1
-	            		|| parseInt(data[i].QUADRANT_CODE_ID,10) === -1
-	            		|| parseInt(data[i].CHANNEL_CODE_ID,10) === -1
-	            		|| parseInt(data[i].MARKET_DEFAULT_CODE_ID,10) === -1 
-	            		|| parseInt(data[i].CURRENCY_CODE_ID,10) === -1 
-	            		|| data[i].CREATED_BY === "")
-	            {
-	            	data[i].errorMessage = true;
+            	if(this.checkForEmptyFields(data[i]))
+            	{
+            		data[i].isError = true;
+            		if(data[i].errorSummary !== "")
+	                {
+	                	data[i].errorSummary += "\n";  
+	                }
+	            	data[i].errorSummary += "Please enter all mandatory fields highlighted in red.";
 	            	returnValue = false;
-	            }
+            	}
             }
             return returnValue;
         },
+        // This functions takes one row and check each field to see if it is filled in, if not -> highlight in red
+        checkForEmptyFields: function (row) {
+        	var errorsFound = false;
+        	
+    		if (row.GMID === "")
+            {
+            	row.GMIDErrorState = "Error";
+            	errorsFound = true;
+            }
+            if(parseInt(row.COUNTRY_CODE_ID,10) === -1)
+            {
+            	row.countryErrorState = "Error";
+            	errorsFound = true;
+            }
+            if(parseInt(row.IBP_RELEVANCY_CODE_ID,10) === -1)
+            {
+            	row.IBPRelevancyErrorState = "Error";
+            	errorsFound = true;
+            }
+            if(parseInt(row.NETTING_DEFAULT_CODE_ID,10) === -1)
+            {
+            	row.nettingDefaultErrorState = "Error";
+            	errorsFound = true;
+            }
+            if(parseInt(row.QUADRANT_CODE_ID,10) === -1)
+            {
+            	row.quadrantErrorState = "Error";
+            	errorsFound = true;
+            }
+            if(parseInt(row.CHANNEL_CODE_ID,10) === -1)
+            {
+            	row.channelErrorState = "Error";
+            	errorsFound = true;
+            }
+            if(parseInt(row.MARKET_DEFAULT_CODE_ID,10) === -1)
+            {
+            	row.marketDefaultErrorState = "Error";
+            	errorsFound = true;
+            }
+            if(parseInt(row.CURRENCY_CODE_ID,10) === -1)
+            {
+            	row.currencyErrorState = "Error";
+            	errorsFound = true;
+            }
+            return errorsFound;
+        },
+        // This functions sets the value state of each control to None. This is to clear red input boxes when errors were found durin submission.
+    	onChange: function(oEvent){
+			var sourceControl = oEvent.getSource();
+			sourceControl.setValueStateText("");
+			sourceControl.setValueState(sap.ui.core.ValueState.None);
+		},
         // function to check whether the user has entered a duplicate GMID/country entry on the form
         validateDuplicateEntries :function(){
-        var returnValue = true;
-        var data = this._oViewModelData.GMIDShipToCountryVM;
-        for(var i = 0; i < data.length - 1; i++) 
+	        var returnValue = true;
+	        var data = this._oViewModelData.GMIDShipToCountryVM;
+	        for(var i = 0; i < data.length - 1; i++) 
+	        {
+	            for( var j = i + 1; j < data.length - 1; j++)
+	            { 
+		            if((data[i].GMID !== "" &&  data[j].GMID !== "") && (data[i].COUNTRY_CODE_ID !== -1 &&  data[j].COUNTRY_CODE_ID !== -1) && (this.lpadstring(data[i].GMID) === this.lpadstring(data[j].GMID)) && (data[i].COUNTRY_CODE_ID === data[j].COUNTRY_CODE_ID))
+		            {
+		            	// highlight the GMID & Country input boxes in red
+		            	 data[i].isError = true;
+		            	 data[i].GMIDErrorState = "Error";
+		            	 data[i].countryErrorState = "Error";
+		            	 data[j].isError = true;
+		            	 data[j].GMIDErrorState = "Error";
+		            	 data[j].countryErrorState = "Error";
+		            	 
+		            	 if(data[i].errorSummary !== "")
+	                	 {
+	                		data[i].errorSummary += "\n";  
+	                	 }
+	            		 data[i].errorSummary += "Duplicate GMID/Country Combination found at row # " + (j + 1);
+	            		 
+	            		 if(data[j].errorSummary !== "")
+	                	 {
+	                		data[j].errorSummary += "\n";  
+	                	 }
+	            		 data[j].errorSummary += "Duplicate GMID/Country Combination found at row # " + (i + 1);
+	            		 
+		            	 returnValue = false;
+		            }
+	            } 
+	        }
+	        return returnValue;
+        },
+        // This function checks whether a crop protection has plants associated with it
+        validateGmidShipFromPlant :function()
         {
-            for( var j = i + 1; j < data.length - 1; j++)
-            { 
-	            if((data[i].GMID === data[j].GMID) && (data[i].COUNTRY_CODE_ID === data[j].COUNTRY_CODE_ID))
-	            {
-	            	 data[i].errorMessage = true;
-	            	 data[j].errorMessage = true;
-	            	 returnValue = false;
-	            }
-            } 
-        }
-        return returnValue;
+        	var data = this._oViewModelData.GMIDShipToCountryVM;
+        	var gmidHasPlant = true;
+        	
+        	// REFACTORING DO LATER
+   // 		var batchArray = [];
+			// for(var i = 0; i < data.length - 1; i++) 
+		 //   {
+		 //   	batchArray.push(this._oDataModel.createBatchOperation("GMID_SHIP_FROM_PLANT","READ",null));
+			// }
+			// this._oDataModel.addBatchReadOperations(batchArray);
+			
+			 var oi18nModel = this.getView().getModel("i18n");
+        	  // get the GMID status for i18n model
+        	 var z1gmid = oi18nModel.getProperty("z1gmidstatus");
+        	 var zcgmid = oi18nModel.getProperty("zcgmidstatus");
+        	 var z9gmid = oi18nModel.getProperty("z9gmidstatus");
+        	
+	        for(var i = 0; i < data.length - 1; i++) 
+	        {
+	        	if(data[i].GMID !== "")
+	        	{
+	        		var filterArray = [];
+	        		
+		        	// Create a filter to fetch the GMID Country Status Code ID
+					var gmidFilter = new Filter("GMID",sap.ui.model.FilterOperator.EQ,this.lpadstring(data[i].GMID));
+					filterArray.push(gmidFilter);
+					
+					// adding plant material status filter - Z1
+					var z1gmidFilter = new Filter("MATERIAL_STATUS_FILTER",sap.ui.model.FilterOperator.NE,z1gmid);
+					
+					// adding plant material status filter - ZC
+					var zcgmidFilter = new Filter("MATERIAL_STATUS_FILTER",sap.ui.model.FilterOperator.NE,zcgmid);
+					
+					// adding plant material status filter - Z9
+					var z9gmidFilter = new Filter("MATERIAL_STATUS_FILTER",sap.ui.model.FilterOperator.NE,z9gmid);
+					
+					var statusFilterArray = new Filter ({
+						filters : [
+							z1gmidFilter,
+							zcgmidFilter,
+							z9gmidFilter
+							],
+							and : true
+					});
+					
+					filterArray.push(statusFilterArray);
+		
+					 // Get the GMID Country Status Code ID CODE_MASTER table
+					 this._oDataModel.read("/V_GMID_SHIP_FROM_PLANT",{
+							filters: filterArray,
+							async: false,
+			                success: function(oData, oResponse){
+			                //return the GMID Country ID
+			                	if(oData.results.length === 0)
+			                	{
+			                		gmidHasPlant = false;
+			                		data[i].isError = true;
+			                		if(data[i].errorSummary !== "")
+			                		{
+			                			data[i].errorSummary += "\n";  
+			                		}
+			                		data[i].errorSummary += "Valid Ship from Plant is not available for the GMID.";  
+		
+			                	}
+			                },
+			    		    error: function(){
+			            		MessageToast.show("Unable to retrieve plants for GMID. Please contact admin.");
+			    			}
+			    		});
+		        }
+	        }
+	        // if for each GMID a plant exists, return true, else return false
+	        return gmidHasPlant;
+	        
+        },
+        // validating whether entered GMID have valid status
+        validateGMIDbyStatus : function  (gmid) {
+        	 var oi18nModel = this.getView().getModel("i18n");
+        	  // get the GMID status for i18n model
+        	 var z1gmid = oi18nModel.getProperty("z1gmidstatus");
+        	 var zcgmid = oi18nModel.getProperty("zcgmidstatus");
+        	 var z9gmid = oi18nModel.getProperty("z9gmidstatus");
+        	 var prdGMID = oi18nModel.getProperty("prdGMID");
+        	 var gmiddata = this._oViewModelData.GMIDShipToCountryVM;
+        	 var validgmidwithstatus = true;
+        	for(var i = 0; i < gmiddata.length - 1; i++) 
+	        {
+	        	if(gmiddata[i].GMID !== "")
+	        	{
+	        		// Create a filter to fetch the GMID Country Status Code ID
+					var gmidFilterArray = [];
+					var gmidFilter = new Filter("GMID",sap.ui.model.FilterOperator.EQ,this.lpadstring(gmiddata[i].GMID));
+					gmidFilterArray.push(gmidFilter);
+					var z1gmidFilter = new Filter("MATERIAL_STATUS",sap.ui.model.FilterOperator.EQ,z1gmid);
+					var zcgmidFilter = new Filter("MATERIAL_STATUS",sap.ui.model.FilterOperator.EQ,zcgmid);
+					var z9gmidFilter = new Filter("MATERIAL_STATUS",sap.ui.model.FilterOperator.EQ,z9gmid);
+					var prdGMIDFilter = new Filter("SOURCE",sap.ui.model.FilterOperator.EQ,prdGMID);
+					var gmidstatusFilter = new Filter ({
+						filters : [
+							z1gmidFilter,
+							zcgmidFilter,
+							z9gmidFilter,
+							prdGMIDFilter
+							],
+							and : false
+					});
+					gmidFilterArray.push(gmidstatusFilter);
+					 // verify if the GMID entered belongs to Z1,ZC,Z9 or prdGMID status
+					 this._oDataModel.read("/V_GMID_PRODUCT_HIERARCHY?$select=GMID",{
+						filters: gmidFilterArray,
+						async: false,
+		                success: function(oData, oResponse){
+		                    //check if GMID exists
+		                	if(oData.results.length !== 0){
+		                		validgmidwithstatus = false;
+		                		gmiddata[i].isError = true;
+		                		gmiddata[i].GMIDErrorState = "Error";
+				                if(gmiddata[i].errorSummary !== "")
+				                {
+				                	gmiddata[i].errorSummary += "\n";  
+				                }
+				                gmiddata[i].errorSummary += "GMID has an invalid status or does not exists in PRM system.";  
+		                	}
+		                	
+		                },
+		    		    error: function(){
+		            		MessageToast.show("Unable to retrieve GMID status from database. Please contact admin.");
+		    			}
+		    		});
+	        	}
+	        }
+	        return validgmidwithstatus;
+        },
+        // below function will validate whether entered GMID is valid or not
+        validateGMID : function()
+        {
+        	var gmiddata = this._oViewModelData.GMIDShipToCountryVM;
+        	var validgmid = true;
+        	for(var i = 0; i < gmiddata.length - 1; i++) 
+	        {
+	        	if(gmiddata[i].GMID !== "")
+	        	{
+	        		// Create a filter to fetch the GMID Country Status Code ID
+					var gmidFilterArray = [];
+					var gmidFilter = new Filter("GMID",sap.ui.model.FilterOperator.EQ,this.lpadstring(gmiddata[i].GMID));
+					gmidFilterArray.push(gmidFilter);
+					var gmidtypeFilter = new Filter("VALUE_CENTER_DESC",sap.ui.model.FilterOperator.EQ,this._oSelectedGMIDType.toUpperCase());
+					gmidFilterArray.push(gmidtypeFilter);
+					 // verify if the GMID entered has the same value center as the selected template
+					this._oDataModel.read("/V_GMID_PRODUCT_HIERARCHY?$select=GMID",{
+					filters: gmidFilterArray,
+					async: false,
+	                success: function(oData, oResponse){
+	                    //check if GMID exists
+	                	if(oData.results.length === 0){
+	                		validgmid = false;
+	                		gmiddata[i].isError = true;
+	                		gmiddata[i].GMIDErrorState = "Error";
+			                if(gmiddata[i].errorSummary !== "")
+			                {
+			                	gmiddata[i].errorSummary += "\n";  
+			                }
+			                gmiddata[i].errorSummary += "Invalid GMID - GMID does not exist.";  
+	                	}
+	                },
+	    		    error: function(){
+	            		MessageToast.show("Unable to retrieve GMID value center from database. Please contact admin.");
+	    			}
+	    			});
+	        	}
+	        }
+	        return validgmid;
+        	
+        },
+         // below function will left pad GMID with leading zeroes if length is less than 8
+        lpadstring : function(gmid) {
+    			while (gmid.length < 8)
+        		gmid = "0" + gmid;
+    		return gmid;
         },
         // function to check if the field is numeric
         numValidationCheck : function (oEvent) {
+        	oEvent.getSource().setValueStateText("");
+			oEvent.getSource().setValueState(sap.ui.core.ValueState.None);
         	var sNumber = "";
 			var value = oEvent.getSource().getValue();
             var bNotnumber = isNaN(value);
@@ -392,58 +725,163 @@ sap.ui.define([
         	var data = this._oViewModelData.GMIDShipToCountryVM;
             for(var i = 0; i < data.length - 1; i++) 
             {	
-            	data[i].errorMessage = false;
+            	data[i].isError = false;
+            	data[i].errorSummary = "";
+            	data[i].GMIDErrorState = "None";
+            	data[i].countryErrorState = "None";
+            	data[i].currencyErrorState = "None";
+            	data[i].IBPRelevancyErrorState = "None";
+            	data[i].nettingDefaultErrorState = "None";
+            	data[i].quadrantErrorState = "None";
+            	data[i].channelErrorState = "None";
+            	data[i].marketDefaultErrorState = "None";
             }
             this._oGMIDShipToCountryViewModel.refresh();
+        },
+       showErrorMessage: function(oEvent)
+        {
+		    var text = oEvent.getSource().data("text");
+		    // show GMID and Country inside Error Message
+		    var GMID = oEvent.getSource().data("GMID");
+		    var CountryCode = parseInt(oEvent.getSource().data("CountryCode"),10);
+		    var countryList = this._oGMIDShipToCountryViewModel.getProperty("/GMIDShipToCountryVM/Country");
+		    // if no country is selected then update countrylabel to empty
+		    var countryLabel;
+		    if (CountryCode=== -1)
+		    {
+		    	countryLabel ="";
+		    }
+		    else
+		    {
+		    	countryLabel = countryList.find(function(data){return data.ID === CountryCode; }).LABEL;
+		    }
+			var GMIDCountry = "GMID : " + GMID + "\n" + "Country : " + countryLabel + "\n" + "\n";
+		         MessageBox.alert(GMIDCountry + text, {
+			     icon : MessageBox.Icon.ERROR,
+			title : "Invalid Input"
+			       });
         },
     	// Function to save the data into the database
     	onSubmit : function () {
     		var errorCount = 0;
     		var successCount = 0;
     		var GMIDShipToCountry = this._oGMIDShipToCountryViewModel.getProperty("/GMIDShipToCountryVM");
+		
+			
+    		// if there are no GMIDs show a validation message
+    		if (GMIDShipToCountry.length === 1)
+    		{
+				MessageBox.alert("Please enter at least one GMID.", {
+	    			icon : MessageBox.Icon.ERROR,
+					title : "Invalid Input"
+	       		});
+    			return;
+    		}
     		
     		// reset the error message property to false before doing any validation
 			this.resetValidationForModel();
-			// remove the Error column on the UI
+			// reset error on page to false
 			this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",false);
 			// remove the file from the uploader
 			var fileUploader = this.getView().byId("excelFileUploader");
 			fileUploader.clear();
 			
-	        if (this.validateTextFieldValues() === false)
-	        {
-	        	// Set error message column to false (not visible by default)
-		    	this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
-	        	MessageToast.show("Please enter all mandatory fields.");          
-	        }
-	        else
-	        {
-	        	// check for duplicate GMID/Country Combination
-	        	if(this.validateUniqueGmidCountry() === true)
-	        	{
-	        		this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
-	        		MessageToast.show("GMID/Country combination already exists in the system");  
-	        	}
-	        	else if (this.validateDuplicateEntries() === false)
-	        	{
-	        		this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
-	        		MessageToast.show("The page includes duplicate GMID/Country combinations."); 
-	        	}
-		        else
+			//open busy dialog
+			this._busyDialog.open();
+			// need to declare local this variable to call global functions in the timeout function
+			var t = this;
+			
+			// setting timeout function in order to show the busy dialog before doing all the validation
+			setTimeout(function()
+			{
+				if (t.validateTextFieldValues() === false)
 		        {
+		        	// Set error message column to false (not visible by default)
+			    	t._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
+		        }
+		        // if crop protection is selected and the GMID/plant combination does not exist, return error
+		        if(t._oSelectedGMIDType === t._oCropProtection && t.validateGmidShipFromPlant() === false)
+	        	{
+	        		t._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
+	        	}
+		        // check for duplicate GMID/Country Combination
+		        if(t.validateUniqueGmidCountry() === true)
+	        	{
+	        		t._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
+	        	}
+	        	// check for duplicate entries on the page
+	        	if (t.validateDuplicateEntries() === false)
+	        	{
+	        		t._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
+	        	}
+	        	// check if GMID entered is valid
+	        	if (t.validateGMID() === false)
+	        	{
+	        		t._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
+	        	}
+	        	// check of invalid GMID entry by checking the status of GMID
+	        	if (t.validateGMIDbyStatus() === false)
+	        	{
+	        		t._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
+	        	}
+		        if(!t._oGMIDShipToCountryViewModel.getProperty("/ErrorOnPage"))
+		        {
+		        	// based on which template is selected, store the GMID in the appropriate table
+		        	var tablePath = "";
+		    	    if(t._oSelectedGMIDType === t._oCropProtection)
+		    	    {
+		    	    	tablePath = "/GMID_SHIP_TO_COUNTRY_STG";
+		    	    	
+		    	    	//making filter for user ID
+        				var filterArray=[];
+		    	    	var userFilter = new Filter("CREATED_BY",sap.ui.model.FilterOperator.EQ,loggedInUserID);
+        				filterArray.push(userFilter);
+        				
+	        			t._oDataModel.read("/GMID_SHIP_TO_COUNTRY_STG",{
+							filters: filterArray,
+							async: false,
+			                success: function(oData, oResponse){
+		                		// delete any records for this user from the staging table
+				    	    	// get the count of records in staging table
+				    			for(var k = 0; k < oData.results.length; k++) 
+				    			{
+						    		// once data is inserted successfully in both tables i.e. GMID_SHIP_TO_COUNTYRY 
+						    		// and GMID_COUNTRY_SHIP_FROM_PLANT, delete the data from staging table i.e. GMID_SHIP_TO_COUNTYRY_STG
+				    				t._oDataModel.remove("/GMID_SHIP_TO_COUNTRY_STG(" + oData.results[k].ID + ")",
+					        		{
+							        	success: function(){
+							        		
+							    		},
+							    		error: function(){
+							    			// show alert message
+							    				MessageToast.show("Error: Data not deleted from staging table");
+										}
+					        		});
+				    			}
+			                },
+			    		    error: function(){
+			            		MessageToast.show("Unable to retrieve netting default data.");
+			    			}
+		    			});
+
+		    	    }
+		    	    else
+		    	    {
+		    	    	tablePath = "/GMID_SHIP_TO_COUNTRY";
+		    	    }
+		    	    
 		    		// Create current timestamp
 		    		var oDate = new Date();
-		    		
 		    		// Get the MaxID
-		    	    var maxID =	this.getMaxID();
+		    	    var maxID =	DataContext.getMaxID(tablePath);
 		    	    // Get the code id for GMID Country Status
-		    	    var gmidcountrystatusID = this.getGMIDCountryStatusID();
-		    	
+		    	    var gmidcountrystatusID = t.getGMIDCountryStatusID();
+		    	    
 		    		// loop through the rows and for each row insert data into database
 		    		// each row contains GMID Ship To combination.
 		    		for(var i = 0; i < GMIDShipToCountry.length - 1; i++) 
 		    		{
-						var GMID = GMIDShipToCountry[i].GMID;
+						var GMID = t.lpadstring(GMIDShipToCountry[i].GMID);
 						var countryID = parseInt(GMIDShipToCountry[i].COUNTRY_CODE_ID,10);
 						var storedcurrencyID = parseInt(GMIDShipToCountry[i].CURRENCY_CODE_ID,10);
 						var ibprelevancyID = parseInt(GMIDShipToCountry[i].IBP_RELEVANCY_CODE_ID,10);
@@ -452,7 +890,7 @@ sap.ui.define([
 						var channelID = parseInt(GMIDShipToCountry[i].CHANNEL_CODE_ID,10);
 						var marketdefaultID = parseInt(GMIDShipToCountry[i].MARKET_DEFAULT_CODE_ID,10);
 						var supplySystemFlag = parseInt(GMIDShipToCountry[i].SUPPLY_SYSTEM_FLAG_CODE_ID,10);
-						var createdBy = GMIDShipToCountry[i].CREATED_BY;
+						var createdBy = loggedInUserID;
 						// create new GMIDShipToCountry object
 						var newGMID = {
 				        	ID: maxID + 1 + i,
@@ -465,13 +903,13 @@ sap.ui.define([
 				        	CHANNEL_CODE_ID: channelID,
 				        	MARKET_DEFAULT_CODE_ID: marketdefaultID,
 				        	SUPPLY_SYSTEM_FLAG_CODE_ID: supplySystemFlag,
-				        	TYPE: this._oSelectedGMIDType,
+				        	TYPE: t._oSelectedGMIDType.toUpperCase(),
 				        	GMID_COUNTRY_STATUS_CODE_ID: gmidcountrystatusID,
 				        	CREATED_ON: oDate,
 				        	CREATED_BY:createdBy
 		    			};
 		    			
-		        		this._oDataModel.create("/GMID_SHIP_TO_COUNTRY", newGMID,
+		        		t._oDataModel.create(tablePath, newGMID,
 		        		{
 				        	success: function(){
 				        		successCount++;
@@ -482,204 +920,37 @@ sap.ui.define([
 		        		});
 		    		}
 		    		//Show success or error message
-		    		if(errorCount === 0) {
-		        			this._oMessageModel.setProperty("/NumOfGMIDSubmitted",successCount);
-		    				this.getOwnerComponent().openSubmitConfirmDialog(this.getView());
-		        			// once insertion is success, navigate to homepage
-		    		} 
+		    		if(errorCount === 0) 
+		    		{
+	        			if(t._oSelectedGMIDType === t._oSeed)
+	        			{
+	        				var oRouter = t.getRouter();
+	        				// once insertion is success, navigate to homepage
+	        				MessageBox.alert("You have successfully submitted " + successCount + " GMID(s)",
+								{
+									icon : MessageBox.Icon.SUCCESS,
+									title : "Success",
+									onClose: function() {
+					        			oRouter.navTo("home");
+					        	}
+							});
+	        			}
+	        			else
+	        			{
+	        				// navigate to plant selection
+	                    	t.getOwnerComponent().getRouter().navTo("gmidPlantSelection");
+	    				}
+		    		}
 		    		else 
 		    		{
-		        			MessageToast.show("Error: GMIDs were not submitted");
+		        			MessageToast.show("Error: All GMID's are not submitted successfully. Please contact System Admin.");
 		    		}
 	    		
-	        	} // duplicate gmid country check end else
-	        }
-        },
-        // Function to save the data into the staging table when clicked on continue to plant database
-    	onContinueToPlantSelection : function () {
-    		var errorCount = 0;
-    		var successCount = 0;
-    		var GMIDShipToCountry = this._oGMIDShipToCountryViewModel.getProperty("/GMIDShipToCountryVM");
-    		
-    		// reset the error message property to false before doing any validation
-			this.resetValidationForModel();
-			// remove the Error column on the UI
-			this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",false);
-			// remove the file from the uploader
-			var fileUploader = this.getView().byId("excelFileUploader");
-			fileUploader.clear();
-			
-	        if (this.validateTextFieldValues() === false)
-	        {
-	        	// Set error message column to false (not visible by default)
-		    	this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
-	        	MessageToast.show("Please enter all mandatory fields.");          
-	        }
-	        else
-	        {
-	        	// check for duplicate GMID/Country Combination
-	        	if(this.validateUniqueGmidCountry() === true)
-	        	{
-	        		this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
-	        		MessageToast.show("GMID/Country combination already exists in the system");  
 	        	}
-	        	else if (this.validateDuplicateEntries() === false)
-	        	{
-	        		this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
-	        		MessageToast.show("The page includes duplicate GMID/Country combinations."); 
-	        	}
-		        else
-		        {
-		    		// Create current timestamp
-		    		var oDate = new Date();
-		    		
-		    		// Get the MaxID for the staging table
-		    	    var maxID =	this.getStageMaxID();
-		    	    // Get the code id for GMID Country Status
-		    	    var gmidcountrystatusID = this.getGMIDCountryStatusID();
-		    	
-		    		// loop through the rows and for each row insert data into database
-		    		// each row contains GMID Ship To combination.
-		    		for(var i = 0; i < GMIDShipToCountry.length - 1; i++) 
-		    		{
-						var GMID = GMIDShipToCountry[i].GMID;
-						var countryID = parseInt(GMIDShipToCountry[i].COUNTRY_CODE_ID,10);
-						var storedcurrencyID = parseInt(GMIDShipToCountry[i].CURRENCY_CODE_ID,10);
-						var ibprelevancyID = parseInt(GMIDShipToCountry[i].IBP_RELEVANCY_CODE_ID,10);
-						var nettingdefaultID = parseInt(GMIDShipToCountry[i].NETTING_DEFAULT_CODE_ID,10);
-						var quadrantID = parseInt(GMIDShipToCountry[i].QUADRANT_CODE_ID,10);
-						var channelID = parseInt(GMIDShipToCountry[i].CHANNEL_CODE_ID,10);
-						var marketdefaultID = parseInt(GMIDShipToCountry[i].MARKET_DEFAULT_CODE_ID,10);
-						var supplySystemFlag = parseInt(GMIDShipToCountry[i].SUPPLY_SYSTEM_FLAG_CODE_ID,10);
-						var createdBy = GMIDShipToCountry[i].CREATED_BY;
-						// create new GMIDShipToCountry object
-						var newGMID = {
-				        	ID: maxID + 1 + i,
-				        	GMID: GMID,
-				        	COUNTRY_CODE_ID: countryID,
-				        	TYPE: this._oSelectedGMIDType,
-				        	CURRENCY_CODE_ID: storedcurrencyID,
-				        	IBP_RELEVANCY_CODE_ID: ibprelevancyID,
-				        	NETTING_DEFAULT_CODE_ID: nettingdefaultID,
-				        	QUADRANT_CODE_ID:quadrantID,
-				        	CHANNEL_CODE_ID: channelID,
-				        	MARKET_DEFAULT_CODE_ID: marketdefaultID,
-				        	SUPPLY_SYSTEM_FLAG_CODE_ID: supplySystemFlag,
-				        	GMID_COUNTRY_STATUS_CODE_ID: gmidcountrystatusID,
-				        	CREATED_ON: oDate,
-				        	CREATED_BY:createdBy
-		    			};
-		    			
-		        		this._oDataModel.create("/GMID_SHIP_TO_COUNTRY_STG", newGMID,
-		        		{
-				        	success: function(){
-				        		successCount++;
-				    		},
-				    		error: function(){
-				    			errorCount++;
-							}
-		        		});
-		    		}
-		    		//Show success or error message
-		    		if(errorCount === 0) {
-		        		// navigate to plant selection
-		        		this.resetModel();
-                        this.getOwnerComponent().getRouter().navTo("gmidPlantSelection");
-		    		} 
-		    		else 
-		    		{
-		        		MessageToast.show("Error: GMIDs were not submitted");
-		    		}
-	        	} // duplicate gmid country check end else
-	        }
-        },
-        resetModel: function ()
-        {
-        	// hide the table & excel button and set the radio button to not selected
-			var tblGmid = this.getView().byId("tblGMIDRequest");
-			tblGmid.setVisible(false);
-			//var excelHBox = oView.byId("excelHBox");
-			//excelHBox.setVisible(false);
-			var rbgGMIDType = this.getView().byId("rbgGMIDType");
-			rbgGMIDType.setSelectedIndex(-1);
-			var btnSubmit = this.getView().byId("btnSubmit");
-			btnSubmit.setVisible(false);
-			var btnContinue = this.getView().byId("btnContinueToPlantSelection");
-			btnContinue.setVisible(false);
-			
-			// reset model to default 5 rows
-			var data = this._oViewModelData.GMIDShipToCountryVM;
-			for(var i = 0; i < data.length - 1; i++) 
-			{
-				data[i].GMID = "";
-    			data[i].COUNTRY_CODE_ID = -1;
-    			data[i].CURRENCY_CODE_ID = -1;
-    			data[i].IBP_RELEVANCY_CODE_ID = -1;
-    			data[i].NETTING_DEFAULT_CODE_ID = -1;
-    			data[i].QUADRANT_CODE_ID = -1;
-    			data[i].CHANNEL_CODE_ID = -1;
-    			data[i].MARKET_DEFAULT_CODE_ID = -1;
-    			data[i].SUPPLY_SYSTEM_FLAG_CODE_ID = -1;
-    			data[i].CREATED_BY = "";
-    			data[i].createNew = "";
-    			data[i].errorMessage = false;
-            }
-            
-            // remove any extra rows, only want to show 5
-            data.splice(5,data.length - 5);
-            this._oGMIDShipToCountryViewModel.refresh();
-        },
-        // below function will return the max ID from GMID_SHIP_TO_COUNTRY TABLE
-        getMaxID : function  () {
-			// Create a filter & sorter array to fetch the max ID
-			var idSortArray = [];
-			var idSort = new sap.ui.model.Sorter("ID",true);
-			idSortArray.push(idSort);
-			
-			var maxID = null;
-
-			 // Get the Country dropdown list from the CODE_MASTER table
-			 this._oDataModel.read("/GMID_SHIP_TO_COUNTRY?$top=1&$select=ID",{
-					sorters: idSortArray,
-					async: false,
-	                success: function(oData, oResponse){
-	                	//return the max ID
-	                	if(oData.results.length === 0){
-	                		maxID = 0;
-	                	}
-	                	else {maxID = oData.results[0].ID; }
-	                },
-	    		    error: function(){
-	            		MessageToast.show("Unable to retrieve max ID for GMID table.");
-	    			}
-	    		});
-	    	return maxID;
-        },
-	    // below function will return the max ID from GMID_SHIP_TO_COUNTRY_STG TABLE
-        getStageMaxID : function  () {
-			// Create a filter & sorter array to fetch the max ID
-			var idSortArray = [];
-			var idSort = new sap.ui.model.Sorter("ID",true);
-			idSortArray.push(idSort);
-			
-			var maxID = null;
-
-			 // Get the Country dropdown list from the CODE_MASTER table
-			 this._oDataModel.read("/GMID_SHIP_TO_COUNTRY_STG?$top=1&$select=ID",{
-					sorters: idSortArray,
-					async: false,
-	                success: function(oData, oResponse){
-	                	//return the max ID
-	                	if(oData.results.length === 0){
-	                		maxID = 0;
-	                	}
-	                	else {maxID = oData.results[0].ID; }
-	                },
-	    		    error: function(){
-	            		MessageToast.show("Unable to retrieve max ID for GMID Staging table.");
-	    			}
-	    		});
-	    	return maxID;
+	        	
+	        	// close busy dialog
+				t._busyDialog.close();
+			},500); // end of timeout function
         },
          // below function will return the GMID Country Status ID from CODE_Master TABLE
         getGMIDCountryStatusID : function  () {
@@ -720,11 +991,17 @@ sap.ui.define([
     		{
     			var GMID = data[i].GMID;
 				var countryID = parseInt(data[i].COUNTRY_CODE_ID,10);
-				var gmidcountrystatusID = this.checkGMIDCountryUniqueInDB(GMID,countryID);
-				if (gmidcountrystatusID !== 0)
+				if (!DataContext.checkGMIDCountryUniqueInDB(GMID,countryID))
 				{
 					isDuplicate = true;
-					data[i].errorMessage = true;
+					data[i].isError = true;
+					data[i].GMIDErrorState = "Error";
+					data[i].countryErrorState = "Error";
+					if(data[i].errorSummary !== "")
+			        {
+            			data[i].errorSummary += "\n";  
+			        }
+            		data[i].errorSummary += "GMID/Country Combination already exists in the system.";
 				}
 				else
 				{
@@ -734,34 +1011,6 @@ sap.ui.define([
     		this._oGMIDShipToCountryViewModel.refresh();
     		
 	    	return isDuplicate;
-        },
-        // below function will check for duplicate entry for GMID/Country Combination in DB
-        checkGMIDCountryUniqueInDB : function  (gmid,countryid) {
-			// Create a filter to fetch the GMID Country Status Code ID
-			var gmidcountrycodeuniqueFilterArray = [];
-			var gmidFilter = new Filter("GMID",sap.ui.model.FilterOperator.EQ,gmid);
-			gmidcountrycodeuniqueFilterArray.push(gmidFilter);
-			var countrycodeFilter = new Filter("COUNTRY_CODE_ID",sap.ui.model.FilterOperator.EQ,countryid);
-			gmidcountrycodeuniqueFilterArray.push(countrycodeFilter);
-			
-			var gmidcountryID = null;
-
-			 // Get the GMID Country Status Code ID CODE_MASTER table
-			 this._oDataModel.read("/GMID_SHIP_TO_COUNTRY?$select=ID",{
-					filters: gmidcountrycodeuniqueFilterArray,
-					async: false,
-	                success: function(oData, oResponse){
-	                //return the GMID Country ID
-	                	if(oData.results.length === 0){
-	                		gmidcountryID = 0;
-	                	}
-	                	else {gmidcountryID = oData.results[0].ID; }
-	                },
-	    		    error: function(){
-	            		MessageToast.show("Unable to retrieve Code ID for GMID Country Status.");
-	    			}
-	    		});
-	    	return gmidcountryID;
         },
         // gets the default property values and sets them in global variables
         getDefaultPropertyValues : function(){
@@ -832,142 +1081,151 @@ sap.ui.define([
 			var t = this;
 			
 			fileReader.onload = function(event){
-				var strCSV = event.target.result;
-				var oi18nModel = t.getView().getModel("i18n");
-			   
-				var headerRow = ["GMID", "COUNTRY_CODE_ID", "CURRENCY_CODE_ID","IBP_RELEVANCY_CODE_ID",
-				"NETTING_DEFAULT_CODE_ID","QUADRANT_CODE_ID","CHANNEL_CODE_ID","MARKET_DEFAULT_CODE_ID",
-				"CREATED_BY"];
-			   
-		        var allTextLines = strCSV.split(/\r\n|\n/);
-		        var excelColumnHeaders = allTextLines[0].split(",");
-		        var validHeadersFlag = true;
-		        
-		        if (excelColumnHeaders.length !== parseInt(oi18nModel.getProperty("numOfHeaderColumns"),10))
-            	{
-            		MessageToast.show("Incorrect number of columns on template.");	
-            		validHeadersFlag = false;
-            	}
-            	else
-            	{
-            		for(var i = 0; i < excelColumnHeaders.length; i++) 
-            		{
-            			// Get proper column headers from the i18n model
-		                var oGMID = oi18nModel.getProperty("eGMID");
-		                var oCountry  = oi18nModel.getProperty("eCountry");
-		                var oStoredCurrency =oi18nModel.getProperty("eStoredCurrency"); 
-		                var oIbpRelevancy  = oi18nModel.getProperty("eIBPRelevancy");
-		                var oNettingDefault = oi18nModel.getProperty("eNettingDefault");
-		                var oQuadrant = oi18nModel.getProperty("eQuadrant");
-		                var oChannel = oi18nModel.getProperty("eChannel");
-		                var oMarketDefault = oi18nModel.getProperty("eMarketDefault");
-		                var oRequestedBy  = oi18nModel.getProperty("eRequestedBy");
-		                
-			            if (excelColumnHeaders[0] !== oGMID)
+				
+				// open busy dialog
+				t._busyDialog.open();
+				
+				// need to have timeout since otherwise the busy dialog does not show during importing
+				setTimeout(function()
+				{
+					var strCSV = event.target.result;
+					var oi18nModel = t.getView().getModel("i18n");
+				   
+					var headerRow = ["GMID", "COUNTRY_CODE_ID", "CURRENCY_CODE_ID","IBP_RELEVANCY_CODE_ID",
+					"NETTING_DEFAULT_CODE_ID","QUADRANT_CODE_ID","CHANNEL_CODE_ID","MARKET_DEFAULT_CODE_ID"];
+	
+			        var allTextLines = strCSV.split(/\r\n|\n/);
+			        var excelColumnHeaders = allTextLines[0].split(",");
+			        var validHeadersFlag = true;
+			        
+			        if (excelColumnHeaders.length !== parseInt(oi18nModel.getProperty("numOfHeaderColumns"),10))
+	            	{
+	            		MessageToast.show("Incorrect number of columns on template.");	
+	            		validHeadersFlag = false;
+	            	}
+	            	else
+	            	{
+	            		for(var i = 0; i < excelColumnHeaders.length; i++) 
+	            		{
+	            			// Get proper column headers from the i18n model
+			                var oGMID = oi18nModel.getProperty("eGMID");
+			                var oCountry  = oi18nModel.getProperty("eCountry");
+			                var oStoredCurrency =oi18nModel.getProperty("eStoredCurrency"); 
+			                var oIbpRelevancy  = oi18nModel.getProperty("eIBPRelevancy");
+			                var oNettingDefault = oi18nModel.getProperty("eNettingDefault");
+			                var oQuadrant = oi18nModel.getProperty("eQuadrant");
+			                var oChannel = oi18nModel.getProperty("eChannel");
+			                var oMarketDefault = oi18nModel.getProperty("eMarketDefault");
+			                
+				            if (excelColumnHeaders[0] !== oGMID)
+				            {
+				                MessageToast.show("Incorrect template format found. The first column should be: GMID");
+				                validHeadersFlag = false;
+				            }
+				            else if (excelColumnHeaders[1] !== oCountry)
+				            {
+				                MessageToast.show("Incorrect template format found. The second column should be: Country");
+				                validHeadersFlag = false;
+				            }
+				            else if (excelColumnHeaders[2] !== oStoredCurrency)
+				            {
+				                 MessageToast.show("Incorrect template format found. The third column should be: Stored Currency");
+				                 validHeadersFlag = false;
+				            }
+				            else if (excelColumnHeaders[3] !== oIbpRelevancy)
+				            {
+				                 MessageToast.show("Incorrect template format found. The fourth column should be: IBP Relevancy");
+				                 validHeadersFlag = false;
+				           	}
+				    		else if (excelColumnHeaders[4] !== oNettingDefault)
+				    		{
+				                 MessageToast.show("Incorrect template format found. The fifth column should be: Netting Default");
+				                 validHeadersFlag = false;
+				    		}
+				    	    else if (excelColumnHeaders[5] !== oQuadrant)
+				    		{
+				                 MessageToast.show("Incorrect template format found. The sixth column should be: Quadrant");
+				                 validHeadersFlag = false;
+				    		}
+				    	    else if (excelColumnHeaders[6] !== oChannel)
+				    		{
+				                 MessageToast.show("Incorrect template format found. The seventh column should be: Channel");
+				                 validHeadersFlag = false;
+				    		}
+				    	    else if (excelColumnHeaders[7] !== oMarketDefault)
+				    		{
+				                 MessageToast.show("Incorrect template format found. The eight column should be: Market Default Flag");
+				                 validHeadersFlag = false;
+				    		}
+	            		} // end of for loop
+	            	} // end of else
+	
+					// if all the headers are correct
+			        if(validHeadersFlag)
+			        {
+		            	// clear out the current data on the page
+				        t._oViewModelData.GMIDShipToCountryVM.splice(0,t._oViewModelData.GMIDShipToCountryVM.length);
+				        // loop through all the rows, the last row is empty so do not include it
+			            for (var k = 1; k < allTextLines.length - 1; k++) 
 			            {
-			                MessageToast.show("Incorrect template format found. The first column should be: GMID");
-			                validHeadersFlag = false;
+			            	// get a single row
+			            	var row = allTextLines[k].split(",");
+			               
+		                	// create new empty row
+							 var obj = {
+			    				"GMID": "",
+				        		"COUNTRY_CODE_ID": -1,
+				        		"CURRENCY_CODE_ID": -1,
+				        		"IBP_RELEVANCY_CODE_ID": -1,
+				        		"NETTING_DEFAULT_CODE_ID": -1,
+				        		"QUADRANT_CODE_ID": -1,
+				        		"CHANNEL_CODE_ID": -1,
+				        		"MARKET_DEFAULT_CODE_ID": -1,
+				        		"createNew" : false,
+				        		"isError":false
+								};
+									
+		                	// get a single row from the Excel file
+		            		// convert the labels to CODE ID's
+		            		var convertedRow = t.convertLabelToCodeId(row);
+		            		
+		            		// fill the obj with values
+							for (var j = 0; j < convertedRow.length; j++) 
+							{
+							    obj[headerRow[j]] = convertedRow[j];
+							}
+							// set default supply system flag values for both seeds and crop protection
+							if(t._oSelectedGMIDType === t._oSeed){
+									obj["SUPPLY_SYSTEM_FLAG_CODE_ID"] = t._defaultSupplySystemFlagForSeed;
+	        				}
+	        				else{
+	        					obj["SUPPLY_SYSTEM_FLAG_CODE_ID"] = t._defaultSupplySystemFlagForCP;
+	        				}
+							
+							// push the object to our model
+							t._oViewModelData.GMIDShipToCountryVM.push(obj);
 			            }
-			            else if (excelColumnHeaders[1] !== oCountry)
-			            {
-			                MessageToast.show("Incorrect template format found. The second column should be: Country");
-			                validHeadersFlag = false;
-			            }
-			            else if (excelColumnHeaders[2] !== oStoredCurrency)
-			            {
-			                 MessageToast.show("Incorrect template format found. The third column should be: Stored Currency");
-			                 validHeadersFlag = false;
-			            }
-			            else if (excelColumnHeaders[3] !== oIbpRelevancy)
-			            {
-			                 MessageToast.show("Incorrect template format found. The fourth column should be: IBP Relevancy");
-			                 validHeadersFlag = false;
-			           	}
-			    		else if (excelColumnHeaders[4] !== oNettingDefault)
-			    		{
-			                 MessageToast.show("Incorrect template format found. The fifth column should be: Netting Default");
-			                 validHeadersFlag = false;
-			    		}
-			    	    else if (excelColumnHeaders[5] !== oQuadrant)
-			    		{
-			                 MessageToast.show("Incorrect template format found. The sixth column should be: Quadrant");
-			                 validHeadersFlag = false;
-			    		}
-			    	    else if (excelColumnHeaders[6] !== oChannel)
-			    		{
-			                 MessageToast.show("Incorrect template format found. The seventh column should be: Channel");
-			                 validHeadersFlag = false;
-			    		}
-			    	    else if (excelColumnHeaders[7] !== oMarketDefault)
-			    		{
-			                 MessageToast.show("Incorrect template format found. The eight column should be: Market Default Flag");
-			                 validHeadersFlag = false;
-			    		}
-			    	    else if (excelColumnHeaders[8] !== oRequestedBy)
-			    		{
-			                 MessageToast.show("Incorrect template format found. The ninth column should be: Requested By");
-			                 validHeadersFlag = false;
-			    		}
-            		} // end of for loop
-            	} // end of else
-
-				// if all the headers are correct
-		        if(validHeadersFlag)
-		        {
-	            	// clear out the current data on the page
-			        t._oViewModelData.GMIDShipToCountryVM.splice(0,t._oViewModelData.GMIDShipToCountryVM.length);
-			        // loop through all the rows, the last row is empty so do not include it
-		            for (var k = 1; k < allTextLines.length - 1; k++) 
-		            {
-		            	// get a single row
-		            	var row = allTextLines[k].split(",");
-		               
-	                	// create new empty row
-						 var obj = {
-		    				"GMID": "",
-			        		"COUNTRY_CODE_ID": -1,
-			        		"CURRENCY_CODE_ID": -1,
-			        		"IBP_RELEVANCY_CODE_ID": -1,
-			        		"NETTING_DEFAULT_CODE_ID": -1,
-			        		"QUADRANT_CODE_ID": -1,
-			        		"CHANNEL_CODE_ID": -1,
-			        		"MARKET_DEFAULT_CODE_ID": -1,
-			        		"CREATED_BY":"",
-			        		"createNew" : false,
-			        		"errorMessage":false
-							};
-								
-	                	// get a single row from the Excel file
-	            		// convert the labels to CODE ID's
-	            		var convertedRow = t.convertLabelToCodeId(row);
-	            		
-	            		// fill the obj with values
-						for (var j = 0; j < convertedRow.length; j++) 
-						{
-						    obj[headerRow[j]] = convertedRow[j];
-						}
-						// set default supply system flag values for both seeds and crop protection
-						if(t._oSelectedGMIDType === t._oSeed){
-								obj["SUPPLY_SYSTEM_FLAG_CODE_ID"] = t._defaultSupplySystemFlagForSeed;
-        				}
-        				else{
-        					obj["SUPPLY_SYSTEM_FLAG_CODE_ID"] = t._defaultSupplySystemFlagForCP;
-        				}
-						
-						// push the object to our model
-						t._oViewModelData.GMIDShipToCountryVM.push(obj);
-		            }
-		            
-		        	if (t._validDataFlag === true)
-			    	{
-			    	 	MessageToast.show("Invalid/empty fields were found and defaulted during import.");
-			    	}
-		            // add empty row a the bottom;
-		            t.addEmptyObject();
-		            // refresh the view model
-		            t._oGMIDShipToCountryViewModel.refresh();
 			            
-			    }  // end valid headers flag check
+			        	if (t._validDataFlag === true)
+				    	{
+				    	 	MessageToast.show("Invalid/empty fields were found and defaulted during import.");
+				    	}
+			            // add empty row a the bottom;
+			            t.addEmptyObject();
+			            // close busy dialog
+						t._busyDialog.close();
+			            // refresh the view model
+			            t._oGMIDShipToCountryViewModel.refresh();
+				            
+				    }  // end valid headers flag check
+				    else
+				    {
+				    	 // close busy dialog
+						t._busyDialog.close();
+				    }
+
+				}, 500);
+				
 			}; // end file read on load function
         },
         errorHandler : function(event){
@@ -1017,7 +1275,7 @@ sap.ui.define([
         	}
         	else
         	{
-        	   	row[3] = -1;
+        	   	row[3] = this._defaultIBPRelevancy;
         		this._validDataFlag = true;
         	}
         	var nettingDefaultobj = nettingDefaultList.find(function(data){return data.LABEL === row[4].trim(); });
@@ -1087,10 +1345,7 @@ sap.ui.define([
          	var oUploadCollection = this.getView().byId("ucDownloadTemplate");
 			var oUploadCollectionItem = this.getView().byId("uciDownloadTemplate");
 			oUploadCollection.downloadItem(oUploadCollectionItem, true);
-		},
-		// navigate back to the homepage
-		onHome: function(){
-				this.getOwnerComponent().getRouter().navTo("home");
 		}
   	});
+
 });

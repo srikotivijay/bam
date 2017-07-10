@@ -87,72 +87,84 @@
 		},
 		"routing": {
 			"config": {
-			"routerClass": "sap.m.routing.Router",
-			"viewType": "XML",
-			"viewPath": "bam/view",
-			"controlId": "home",
-			"transition": "slide",
-			"controlAggregation": "pages"
-			},
-			"routes": [
-				{
-					"pattern": "",
-					"name": "home",
-					"target": "home"
-				},
-				{
-					"pattern": "gmidSubmission",
-					"name": "gmidSubmission",
-					"target": "gmidSubmission"
-				},
-				{
-					"pattern": "gmidPlantSelection",
-					"name": "gmidPlantSelection",
-					"target": "gmidPlantSelection"
-				},
-				{
-					"pattern": "maintainAttributes",
-					"name": "maintainAttributes",
-					"target": "maintainAttributes"
-				},
-				{
-					"pattern": "editAttributesSingle/{editAttributesID}",
-					"name": "editAttributesSingle",
-					"target": "editAttributesSingle"
-				},
-				{
-					"pattern": "editAttributesMultiple/{editAttributesIDs}",
-					"name": "editAttributesMultiple",
-					"target": "editAttributesMultiple"
+				"routerClass": "sap.m.routing.Router",
+				"viewType": "XML",
+				"viewPath": "bam/view",
+				"controlId": "home",
+				"transition": "slide",
+				"controlAggregation": "pages",
+				"bypassed": {
+					"target": "notFound"
 				}
-			],
+			},
+			"routes": [{
+				"pattern": "",
+				"name": "home",
+				"target": "home"
+			}, {
+				"pattern": "gmidSubmission",
+				"name": "gmidSubmission",
+				"target": "gmidSubmission"
+			}, {
+				"pattern": "gmidPlantSelection",
+				"name": "gmidPlantSelection",
+				"target": "gmidPlantSelection"
+			}, {
+				"pattern": "maintainAttributes",
+				"name": "maintainAttributes",
+				"target": "maintainAttributes"
+			}, {
+				"pattern": "editAttributesSingle/{editAttributesID}",
+				"name": "editAttributesSingle",
+				"target": "editAttributesSingle"
+			}, {
+				"pattern": "editAttributesMultiple/{editAttributesIDs}",
+				"name": "editAttributesMultiple",
+				"target": "editAttributesMultiple"
+			}, {
+				"pattern": "notFound",
+				"name": "notFound",
+				"target": "notFound"
+			}, {
+				"pattern": "accessDenied",
+				"name": "accessDenied",
+				"target": "accessDenied"
+			}],
 			"targets": {
 				"home": {
-						"viewName": "Home",
-						"viewId": "home",
-						"transition": "flip"
+					"viewName": "Home",
+					"viewId": "home",
+					"transition": "flip"
 				},
 				"gmidSubmission": {
-						"viewName": "GMIDSubmission",
-						"viewId": "gmidSubmission"
+					"viewName": "GMIDSubmission",
+					"viewId": "gmidSubmission"
 				},
 				"gmidPlantSelection": {
-						"viewName": "PlantSelection",
-						"viewId": "plantSelection"
+					"viewName": "PlantSelection",
+					"viewId": "plantSelection"
 				},
 				"maintainAttributes": {
-						"viewName": "MaintainAttributes",
-						"viewId": "maintainAttributes"
+					"viewName": "MaintainAttributes",
+					"viewId": "maintainAttributes"
 				},
 				"editAttributesSingle": {
-						"viewName": "EditAttributesSingle",
-						"viewId": "editAttributesSingle"
+					"viewName": "EditAttributesSingle",
+					"viewId": "editAttributesSingle"
 				},
 				"editAttributesMultiple": {
-						"viewName": "EditAttributesMultiple",
-						"viewId": "editAttributesMultiple"
+					"viewName": "EditAttributesMultiple",
+					"viewId": "editAttributesMultiple"
+				},
+				"notFound": {
+					"viewName": "NotFound",
+					"transition": "show"
+				},
+				"accessDenied": {
+					"viewName": "AccessDenied",
+					"viewId": "accessDenied"
 				}
-	    	}
-		}	
+			}
+		}
 	}
 }
