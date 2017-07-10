@@ -2,8 +2,9 @@ sap.ui.define([
 		"sap/ui/core/mvc/Controller",
 		"sap/m/MessageToast",
 		"sap/m/MessageBox",
-		"bam/services/DataContext"
-	], function (Controller,MessageToast,MessageBox,DataContext) {
+		"bam/services/DataContext",
+		"sap/ui/model/resource/ResourceModel"
+	], function (Controller,MessageToast,MessageBox,DataContext,ResourceModel) {
 		"use strict";
 
 	return Controller.extend("bam.controller.MaintainAttributes", {
@@ -16,6 +17,13 @@ sap.ui.define([
 		    	this._oModel = new sap.ui.model.json.JSONModel();
 	    		this._oModel.setProperty("/showEditButton",false);
 	    		this.getView().setModel(this._oModel,"MaintainAttributesVM");
+	    		
+	    		var oi18nModel = new ResourceModel({
+                	bundleName: "bam.i18n.i18n"
+            	});
+	    		// get the Module settings for i18n model
+        		var maintainAttributes = oi18nModel.getProperty("Module.maintainAttributes");
+        		var actionEdit = oi18nModel.getProperty("Module.actionEdit");
 		    	
 		    	// getting permissions for the current logged in user
 				var permissions = DataContext.getUserPermissions();
@@ -23,7 +31,7 @@ sap.ui.define([
 				// ATTRIBUTE in this case means MODULE
 				for(var i = 0; i < permissions.length; i++)
 				{
-					if(permissions[i].ATTRIBUTE === "MAINTAIN_ATTRIBUTES" && permissions[i].ACTION === "EDIT")
+					if(permissions[i].ATTRIBUTE === maintainAttributes && permissions[i].ACTION === actionEdit)
 					{
 						this._oModel.setProperty("/showEditButton",true);
 						// break since the user may have more than one role, as long as one of the user roles has permission to edit we can show the button

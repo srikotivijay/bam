@@ -528,25 +528,53 @@ sap.ui.define([
         	var data = this._oViewModelData.GMIDShipToCountryVM;
         	var gmidHasPlant = true;
         	
-    		var batchArray = [];
-			for(var i = 0; i < data.length - 1; i++) 
-		    {
-		    	batchArray.push(this._oDataModel.createBatchOperation("GMID_SHIP_FROM_PLANT","READ",null));
-			}
-			this._oDataModel.addBatchReadOperations(batchArray);
+        	// REFACTORING DO LATER
+   // 		var batchArray = [];
+			// for(var i = 0; i < data.length - 1; i++) 
+		 //   {
+		 //   	batchArray.push(this._oDataModel.createBatchOperation("GMID_SHIP_FROM_PLANT","READ",null));
+			// }
+			// this._oDataModel.addBatchReadOperations(batchArray);
+			
+			 var oi18nModel = this.getView().getModel("i18n");
+        	  // get the GMID status for i18n model
+        	 var z1gmid = oi18nModel.getProperty("z1gmidstatus");
+        	 var zcgmid = oi18nModel.getProperty("zcgmidstatus");
+        	 var z9gmid = oi18nModel.getProperty("z9gmidstatus");
         	
 	        for(var i = 0; i < data.length - 1; i++) 
 	        {
 	        	if(data[i].GMID !== "")
 	        	{
+	        		var filterArray = [];
+	        		
 		        	// Create a filter to fetch the GMID Country Status Code ID
-					var gmidFilterArray = [];
 					var gmidFilter = new Filter("GMID",sap.ui.model.FilterOperator.EQ,this.lpadstring(data[i].GMID));
-					gmidFilterArray.push(gmidFilter);
+					filterArray.push(gmidFilter);
+					
+					// adding plant material status filter - Z1
+					var z1gmidFilter = new Filter("MATERIAL_STATUS_FILTER",sap.ui.model.FilterOperator.NE,z1gmid);
+					
+					// adding plant material status filter - ZC
+					var zcgmidFilter = new Filter("MATERIAL_STATUS_FILTER",sap.ui.model.FilterOperator.NE,zcgmid);
+					
+					// adding plant material status filter - Z9
+					var z9gmidFilter = new Filter("MATERIAL_STATUS_FILTER",sap.ui.model.FilterOperator.NE,z9gmid);
+					
+					var statusFilterArray = new Filter ({
+						filters : [
+							z1gmidFilter,
+							zcgmidFilter,
+							z9gmidFilter
+							],
+							and : true
+					});
+					
+					filterArray.push(statusFilterArray);
 		
 					 // Get the GMID Country Status Code ID CODE_MASTER table
-					 this._oDataModel.read("/GMID_SHIP_FROM_PLANT",{
-							filters: gmidFilterArray,
+					 this._oDataModel.read("/V_GMID_SHIP_FROM_PLANT",{
+							filters: filterArray,
 							async: false,
 			                success: function(oData, oResponse){
 			                //return the GMID Country ID
@@ -558,7 +586,7 @@ sap.ui.define([
 			                		{
 			                			data[i].errorSummary += "\n";  
 			                		}
-			                		data[i].errorSummary += "Ship from Plant is not available for the GMID.";  
+			                		data[i].errorSummary += "Valid Ship from Plant is not available for the GMID.";  
 		
 			                	}
 			                },

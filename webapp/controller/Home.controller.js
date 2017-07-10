@@ -1,7 +1,8 @@
 sap.ui.define([
 		"sap/ui/core/mvc/Controller",
-		"bam/services/DataContext"
-	], function (Controller,DataContext) {
+		"bam/services/DataContext",
+		"sap/ui/model/resource/ResourceModel"
+	], function (Controller,DataContext,ResourceModel) {
 		"use strict";
 
 	return Controller.extend("bam.controller.Home", {
@@ -14,13 +15,21 @@ sap.ui.define([
 			// hide the GMID Submission tile by default, if the user has no roles then we hide the tile
 			oModel.setProperty("/showGMIDSubmission",false);    
 			
+			var oi18nModel = new ResourceModel({
+                bundleName: "bam.i18n.i18n"
+            });
+			 
+        	 // get the Module settings for i18n model
+        	 var gmidSubmission = oi18nModel.getProperty("Module.gmidSubmission");
+        	 var actionAdd = oi18nModel.getProperty("Module.actionAdd");
+			
 			// getting permissions for the current logged in user
 			var permissions = DataContext.getUserPermissions();
 			// check to see if the permission list includes "ADD" action for the GMID Submission Module
 			// ATTRIBUTE in this case means MODULE
 			for(var i = 0; i < permissions.length; i++)
 			{
-				if(permissions[i].ATTRIBUTE === "GMID_SUBMISSION" && permissions[i].ACTION === "ADD")
+				if(permissions[i].ATTRIBUTE === gmidSubmission && permissions[i].ACTION === actionAdd)
 				{
 					oModel.setProperty("/showGMIDSubmission",true);
 					// break since the user may have more than one role, as long as one of the user roles has permission we can show the tile
