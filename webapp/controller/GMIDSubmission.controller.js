@@ -13,13 +13,9 @@ sap.ui.define([
      var firstTimePageLoad = true;
 	return Controller.extend("bam.controller.GMIDSubmission", {
 		onInit : function () {
+			
 			// Get logged in user id
-			var promise = new Promise(function(resolve, reject) {
-				DataContext.getUserID()
-				.then(function(data) {
-					loggedInUserID = data;
-				});
-			});
+			loggedInUserID = DataContext.getUserID();
 
 			// Create view model for 5 rows to show by default on page load
 			var initData = [];
@@ -289,7 +285,14 @@ sap.ui.define([
 			},
 		// force init method to be called everytime we naviagte to Maintain Attribuets page 
 		_onRouteMatched : function (oEvent) {
-			this.onInit();
+			if(DataContext.isBAMUser() === false)
+			{
+				this.getOwnerComponent().getRouter().navTo("accessDenied");
+			}
+			else
+			{
+				this.onInit();
+			}
 		},
 		// navigate back to the homepage
 		onHome: function(){

@@ -26,17 +26,75 @@ sap.ui.define([
 		
 		function getUserID()
 		{
-			return new Promise(function (resolve, reject) {
-				var oDataServiceURL = "/services/userapi/currentUser";
-				
-				callService(oDataServiceURL)
-				.then(function(userID) {
-					resolve(userID);	
-				})
-				.catch(function(error) {
-					reject(error);
-				});
+			var result;
+			$.ajax({
+			    url : "/services/userapi/currentUser",
+			    type : "get",
+			    async: false,
+			    success : function(data) {
+			    	if(data !== "" && data !== null)
+			    	{
+			    		result = data.name;
+			    	}
+			    	else
+			    	{
+			    		result = "";
+			    	}
+			    	
+			    },
+			    error: function() {
+			    	MessageToast.show("Error getting user ID. Please contact System Admin.");                         
+					result = "";
+			    }
 			});
+			 
+			return result;
+		}
+		
+		//function that checks whether the current logged in user should have access to BAM or not
+		function isBAMUser()
+		{
+			var result;
+			$.ajax({
+			    url : "/services/userapi/currentUser",
+			    type : "get",
+			    async: false,
+			    success : function(data) {
+			    	if(data !== "" && data !== null)
+			    	{
+			    		oDataModel.read("USER", {
+							async: false,
+							filters: [ 
+								new Filter("USER_ID", FilterOperator.EQ, data.name)
+							],
+							success: function(oData, oResponse) {
+								if(oData.results.length !== 0)
+								{
+									result = true;
+								}
+								else
+								{
+									result = false;
+								}
+							},
+							error: function(oError) {
+								MessageToast.show("Error getting user information. Please contact System Admin.");                         
+								result = false;
+							}
+						});	
+			    	}
+			    	else
+			    	{
+			    		result = false;
+			    	}
+			    },
+			    error: function() {
+			    	MessageToast.show("Error getting user information. Please contact System Admin.");                         
+					result = false;
+			    }
+			});
+			 
+			return result;
 		}
 		
 		function getUserMapping(userID) {
@@ -194,7 +252,8 @@ sap.ui.define([
 			getUserID: getUserID,
 			checkGMIDCountryUniqueInDB: checkGMIDCountryUniqueInDB,
 			getMaxID: getMaxID,
-			getUserPermissions: getUserPermissions
+			getUserPermissions: getUserPermissions,
+			isBAMUser : isBAMUser
 		};
 	
 		return exports;

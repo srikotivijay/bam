@@ -16,128 +16,115 @@ sap.ui.define([
 		//
 		onInit : function () {
 			
-			var t = this;
-			
-			var promise = new Promise(function(resolve, reject) {
-				DataContext.getUserID()
-				.then(function(data) {
-					loggedInUserID = data;
+			// Get logged in user id
+			loggedInUserID = DataContext.getUserID();
 					
-					// define a global variable for the oData model		    
-				     t._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
-				    // Create view model for the page
-				    var oModel = new sap.ui.model.json.JSONModel();
+			// define a global variable for the oData model		    
+		    this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
+		    // Create view model for the page
+		    var oModel = new sap.ui.model.json.JSONModel();
 
-				    
-				     // Create Message model
-			    	t._oMessageModel = new sap.ui.model.json.JSONModel();
-			    	t._oMessageModel.setProperty("/NumOfGMIDSubmitted",0);
-			    	t.getView().setModel(t._oMessageModel,"MessageVM");
-			    	 var oi18nModel = t.getView().getModel("i18n");
-        			 // get the GMID status for i18n model
-        			var z1gmid = oi18nModel.getProperty("z1gmidstatus");
-        			var zcgmid = oi18nModel.getProperty("zcgmidstatus");
-        			var z9gmid = oi18nModel.getProperty("z9gmidstatus");
-        			//making filter for plant status
-        			// Get the GMID Plant combinations for the GMID-Country combination selected by the user
-					// Create a filter & sorter array (pending depending on user id logic)
-					//
-        			var filterArray=[];
-        			var userFilter = new Filter("CREATED_BY",sap.ui.model.FilterOperator.EQ,loggedInUserID);
-        			filterArray.push(userFilter);
-        			var z1gmidFilter = new Filter("FILTER_MATERIAL_STATUS",sap.ui.model.FilterOperator.NE,z1gmid);
-					var zcgmidFilter = new Filter("FILTER_MATERIAL_STATUS",sap.ui.model.FilterOperator.NE,zcgmid);
-					var z9gmidFilter = new Filter("FILTER_MATERIAL_STATUS",sap.ui.model.FilterOperator.NE,z9gmid);
-				
-        			var statusFilter = new Filter ({
-						filters : [
-							z1gmidFilter,
-							zcgmidFilter,
-							z9gmidFilter
-							],
-							and : true
-					});
-					filterArray.push(statusFilter);
-			    	
-				    // Get the GMID Plant combinations for the GMID-Country combination selected by the user
-					// Create a filter & sorter array (pending depending on user id logic)
-					var userSortArray = [];
-					var userSort = new sap.ui.model.Sorter("GMID",false);
-					userSortArray.push(userSort);
-					
-					t._oDataModel.read("/V_GMID_COUNTRY_SHIP_FROM_PLANT",{
-						filters: filterArray,
-						sorters: userSortArray,
-						async: false,
-		                success: function(oData, oResponse){
-		                var groupedGMIDCountry = [];
-		                
-				        //common code to check duplicates
-						var hash = (function() {
-						    var keys = {};
-							    return {
-							        contains: function(key) {
-							            return keys[key] === true;
-							        },
-							        add: function(key) {
-							            if (keys[key] !== true)
-							            {
-							                keys[key] = true;
-							            }
-							        }
-							    };
-							})();
-							
-						var key = null;
-				                
-						//loop through the rows of the retruened data
-						for (var i = 0; i < oData.results.length; i++) {
-							var item =  oData.results[i];
-							key = item.GMID + ";" + item.COUNTRY;
-						    //check for the gmid and country combination key 
-						    if(!hash.contains(key))
-						    {
-						    	//if its a new combination add the key to existing list of combinations
-						        hash.add(key);
-						        groupedGMIDCountry.push({ID: item.ID,
-						        						 GMID:item.GMID, 
-						        						 COUNTRY:item.COUNTRY, 
-						        						 COUNTRY_CODE_ID: item.COUNTRY_CODE_ID,
-			        									 CURRENCY_CODE_ID: item.CURRENCY_CODE_ID,
-			        									 IBP_RELEVANCY_CODE_ID: item.IBP_RELEVANCY_CODE_ID,
-			        									 NETTING_DEFAULT_CODE_ID: item.NETTING_DEFAULT_CODE_ID,
-			        									 QUADRANT_CODE_ID:item.QUADRANT_CODE_ID,
-			        									 CHANNEL_CODE_ID: item.CHANNEL_CODE_ID,
-			        									 MARKET_DEFAULT_CODE_ID: item.MARKET_DEFAULT_CODE_ID,
-			        									 SUPPLY_SYSTEM_FLAG_CODE_ID: item.SUPPLY_SYSTEM_FLAG_CODE_ID,
-			        									 TYPE: item.TYPE,
-			        									 GMID_COUNTRY_STATUS_CODE_ID:item.GMID_COUNTRY_STATUS_CODE_ID,
-			        									 CREATED_BY: item.CREATED_BY,
-						        						 PLANTS:[],
-						        						 errorState: "None"});
-							}
-						    //find the object for the gmid and country combination and push the plant code to the nested plant object
-						    groupedGMIDCountry.find(function(data){return data.GMID === item.GMID && data.COUNTRY === item.COUNTRY;}).PLANTS.push({PLANT_CODE: item.PLANT_CODE,PLANT_CODE_ID : item.GMID_SHIP_FROM_PLANT_ID,IS_SELECTED:false});
-						}
-						
-		                // Bind the Country data to the GMIDShipToCountry model
-		                oModel.setProperty("/PlantSelectionVM",groupedGMIDCountry);
-		                // save the original view model into a variable, used later for deletion of rows in staging column
-		                originalGMIDCountry = JSON.parse(JSON.stringify(groupedGMIDCountry));
-		                },
-		    		    error: function(){
-		            		MessageToast.show("Unable to retrieve user data.");
-		    			}
-			    	});
-				    t.getView().setModel(oModel);
-				    // define a global variable for the view model and the view model data
-				    t._oPlantSelectionViewModel = oModel;
-				    t._oViewModelData = t._oPlantSelectionViewModel.getData();
-					
-					
-				});
+	    	var oi18nModel = this.getView().getModel("i18n");
+			// get the GMID status for i18n model
+			var z1gmid = oi18nModel.getProperty("z1gmidstatus");
+			var zcgmid = oi18nModel.getProperty("zcgmidstatus");
+			var z9gmid = oi18nModel.getProperty("z9gmidstatus");
+			//making filter for plant status
+			// Get the GMID Plant combinations for the GMID-Country combination selected by the user
+			// Create a filter & sorter array (pending depending on user id logic)
+			//
+			var filterArray=[];
+			var userFilter = new Filter("CREATED_BY",sap.ui.model.FilterOperator.EQ,loggedInUserID);
+			filterArray.push(userFilter);
+			var z1gmidFilter = new Filter("FILTER_MATERIAL_STATUS",sap.ui.model.FilterOperator.NE,z1gmid);
+			var zcgmidFilter = new Filter("FILTER_MATERIAL_STATUS",sap.ui.model.FilterOperator.NE,zcgmid);
+			var z9gmidFilter = new Filter("FILTER_MATERIAL_STATUS",sap.ui.model.FilterOperator.NE,z9gmid);
+		
+			var statusFilter = new Filter ({
+				filters : [
+					z1gmidFilter,
+					zcgmidFilter,
+					z9gmidFilter
+					],
+					and : true
 			});
-		    
+			filterArray.push(statusFilter);
+	    	
+		    // Get the GMID Plant combinations for the GMID-Country combination selected by the user
+			// Create a filter & sorter array (pending depending on user id logic)
+			var userSortArray = [];
+			var userSort = new sap.ui.model.Sorter("GMID",false);
+			userSortArray.push(userSort);
+			
+			this._oDataModel.read("/V_GMID_COUNTRY_SHIP_FROM_PLANT",{
+				filters: filterArray,
+				sorters: userSortArray,
+				async: false,
+                success: function(oData, oResponse){
+                var groupedGMIDCountry = [];
+                
+		        //common code to check duplicates
+				var hash = (function() {
+				    var keys = {};
+					    return {
+					        contains: function(key) {
+					            return keys[key] === true;
+					        },
+					        add: function(key) {
+					            if (keys[key] !== true)
+					            {
+					                keys[key] = true;
+					            }
+					        }
+					    };
+					})();
+					
+				var key = null;
+		                
+				//loop through the rows of the retruened data
+				for (var i = 0; i < oData.results.length; i++) {
+					var item =  oData.results[i];
+					key = item.GMID + ";" + item.COUNTRY;
+				    //check for the gmid and country combination key 
+				    if(!hash.contains(key))
+				    {
+				    	//if its a new combination add the key to existing list of combinations
+				        hash.add(key);
+				        groupedGMIDCountry.push({ID: item.ID,
+				        						 GMID:item.GMID, 
+				        						 COUNTRY:item.COUNTRY, 
+				        						 COUNTRY_CODE_ID: item.COUNTRY_CODE_ID,
+	        									 CURRENCY_CODE_ID: item.CURRENCY_CODE_ID,
+	        									 IBP_RELEVANCY_CODE_ID: item.IBP_RELEVANCY_CODE_ID,
+	        									 NETTING_DEFAULT_CODE_ID: item.NETTING_DEFAULT_CODE_ID,
+	        									 QUADRANT_CODE_ID:item.QUADRANT_CODE_ID,
+	        									 CHANNEL_CODE_ID: item.CHANNEL_CODE_ID,
+	        									 MARKET_DEFAULT_CODE_ID: item.MARKET_DEFAULT_CODE_ID,
+	        									 SUPPLY_SYSTEM_FLAG_CODE_ID: item.SUPPLY_SYSTEM_FLAG_CODE_ID,
+	        									 TYPE: item.TYPE,
+	        									 GMID_COUNTRY_STATUS_CODE_ID:item.GMID_COUNTRY_STATUS_CODE_ID,
+	        									 CREATED_BY: item.CREATED_BY,
+				        						 PLANTS:[],
+				        						 errorState: "None"});
+					}
+				    //find the object for the gmid and country combination and push the plant code to the nested plant object
+				    groupedGMIDCountry.find(function(data){return data.GMID === item.GMID && data.COUNTRY === item.COUNTRY;}).PLANTS.push({PLANT_CODE: item.PLANT_CODE,PLANT_CODE_ID : item.GMID_SHIP_FROM_PLANT_ID,IS_SELECTED:false});
+				}
+				
+                // Bind the Country data to the GMIDShipToCountry model
+                oModel.setProperty("/PlantSelectionVM",groupedGMIDCountry);
+                // save the original view model into a variable, used later for deletion of rows in staging column
+                originalGMIDCountry = JSON.parse(JSON.stringify(groupedGMIDCountry));
+                },
+    		    error: function(){
+            		MessageToast.show("Unable to retrieve user data.");
+    			}
+	    	});
+		    this.getView().setModel(oModel);
+		    // define a global variable for the view model and the view model data
+		    this._oPlantSelectionViewModel = oModel;
+		    this._oViewModelData = this._oPlantSelectionViewModel.getData();
+
 		    if(firstTimePageLoad)
 	    	{
 	    		var oRouter = this.getRouter();
@@ -150,7 +137,14 @@ sap.ui.define([
 			},
 		// force init method to be called everytime we naviagte to Maintain Attribuets page 
 		_onRouteMatched : function (oEvent) {
-			this.onInit();
+			if(DataContext.isBAMUser() === false)
+			{
+				this.getOwnerComponent().getRouter().navTo("accessDenied");
+			}
+			else
+			{
+				this.onInit();
+			}
 		},
 		// navigate back to the homepage
 		onHome: function(){

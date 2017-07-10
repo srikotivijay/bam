@@ -14,13 +14,9 @@ sap.ui.define([
 	var loggedInUserID;
 	return Controller.extend("bam.controller.EditAttributesMultiple", {
 		onInit : function () {
+			
 			// Get logged in user id
-			var promise = new Promise(function(resolve, reject) {
-				DataContext.getUserID()
-				.then(function(data) {
-					loggedInUserID = data;
-				});
-			});
+			loggedInUserID = DataContext.getUserID();
 				
 	    	//	Create model and set it to initial data
 	    	var oModel = new sap.ui.model.json.JSONModel();
@@ -226,9 +222,17 @@ sap.ui.define([
 		},
 		//	get the paramter values and set the view model according to it
 		_onRouteMatched : function (oEvent) {
-			this.setPageToInitialState();
-			var editAttributesIDs = oEvent.getParameter("arguments").editAttributesIDs.split(",");
-			this.setGMIDCountryDefaultVM(editAttributesIDs);
+			// If the user does not exist in the BAM database, redirect them to the denied access page
+			if(DataContext.isBAMUser() === false)
+			{
+				this.getOwnerComponent().getRouter().navTo("accessDenied");
+			}
+			else
+			{
+				this.setPageToInitialState();
+				var editAttributesIDs = oEvent.getParameter("arguments").editAttributesIDs.split(",");
+				this.setGMIDCountryDefaultVM(editAttributesIDs);
+			}
 		},
 		showControl: function(value){
 				return !!value;

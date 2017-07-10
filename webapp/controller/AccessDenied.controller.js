@@ -9,7 +9,7 @@ sap.ui.define([
 		"bam/services/DataContext"
 	], function (Controller, JSONModel, MessageToast, MessageBox, ResourceModel,Filter,History,DataContext) {
 		"use strict";
-	return Controller.extend("bam.controller.NotFound", {
+	return Controller.extend("bam.controller.AccessDenied", {
 		onInit: function () {
     	}
 		

@@ -37,8 +37,15 @@ sap.ui.define([
 		},
 		// force init method to be called everytime we naviagte to the home page 
 		_onRouteMatched : function (oEvent) {
-			
-			this.onInit();
+			// If the user does not exist in the BAM database, redirect them to the denied access page
+			if(DataContext.isBAMUser() === false)
+			{
+				this.getOwnerComponent().getRouter().navTo("accessDenied");
+			}
+			else
+			{
+				this.onInit();
+			}
 		},
 		// Navigate to GMID Submission page
 		onGoToGMIDSubmission : function(){
