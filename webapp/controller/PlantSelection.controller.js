@@ -403,19 +403,45 @@ sap.ui.define([
         },
         validateDuplicateRecords : function()
         {
-        	var GMIDShipToCountry = this._oPlantSelectionViewModel.getProperty("/PlantSelectionVM");
-        	var noDuplicates = true;
+        	// loop through the rows and for each row check for duplicate entry in DB
+            // each row contains GMID Ship To combination.
+            var data = this._oPlantSelectionViewModel.getProperty("/PlantSelectionVM");
+           // prepare an array of GMIDs from the UI
+            var gmidList = [];
+            var gmid; 
+            for(var j = 0; j < data.length; j++) 
+            {
+                // every time empty the GMID object
+                gmid= {"GMID": ""};
+                gmid.GMID = data[j].GMID;
+                gmidList.push(gmid);
+            }
+            
+        	var gmidCountryRecords = DataContext.getGMIDListFromDB(gmidList);                           
+            var noDuplicates = true;
+            for(var i = 0; i < data.length; i++) 
+            {
+                var GMID = data[i].GMID;
+                var countryID = parseInt(data[i].COUNTRY_CODE_ID,10);
+                // loop the GMID Country Records from DB to check Unique
+                for(var k = 0; k < gmidCountryRecords.length; k++) 
+                {
+                    // check if GMID and Country Combinations exists in DB
+		            if (GMID === gmidCountryRecords[k].GMID && countryID === gmidCountryRecords[k].COUNTRY_CODE_ID)
+		            {
+		                noDuplicates = false;
+	        			data[i].errorState = "Error";
+		            }
+		            else
+		            {
+		                continue;
+		            }
+                }
+            }
         	
-        	for(var i = 0; i < GMIDShipToCountry.length; i++)
-	        {
-	        	if(!DataContext.checkGMIDCountryUniqueInDB(GMIDShipToCountry[i].GMID,GMIDShipToCountry[i].COUNTRY_CODE_ID))
-	        	{
-	        		noDuplicates = false;
-	        		GMIDShipToCountry[i].errorState = "Error";
-	        	}
-	        }
-	         this._oPlantSelectionViewModel.refresh();
-	          return noDuplicates;
+        
+	        this._oPlantSelectionViewModel.refresh();
+        	return noDuplicates;
         },
         resetValidation: function()
         {
