@@ -46,7 +46,7 @@ sap.ui.define([
 			// Assigning view model for the page
 		    var oModel = new sap.ui.model.json.JSONModel({GMIDShipToCountryVM : initData});
 		    // Create table model, set size limit to 300, add an empty row
-		    oModel.setSizeLimit(300);
+		    oModel.setSizeLimit(2000);
 		    // define a global variable for the view model, the view model data and oData model
 		    this._oGMIDShipToCountryViewModel = oModel;
 		    this._oViewModelData = this._oGMIDShipToCountryViewModel.getData();
@@ -352,16 +352,11 @@ sap.ui.define([
         validateGmidShipFromPlant :function()
         {
         	var data = this._oViewModelData.GMIDShipToCountryVM;
-        	var gmidHasPlant = true;
-        	
-        	// REFACTORING DO LATER
-   // 		var batchArray = [];
-			// for(var i = 0; i < data.length - 1; i++) 
-		 //   {
-		 //   	batchArray.push(this._oDataModel.createBatchOperation("GMID_SHIP_FROM_PLANT","READ",null));
-			// }
-			// this._oDataModel.addBatchReadOperations(batchArray);
-			
+        	 var gmidList = this.gmidList();
+             var viewpath = "V_GMID_SHIP_FROM_PLANT";
+             // get all the GMID/Plants data for the GMIDS entered in UI
+             var gmidPlantRecords = DataContext.getGMIDListFromDB(gmidList,viewpath); 
+        	 var IsAllgmidHasPlant = true;
         	  // get the GMID status for i18n model
         	 var z1gmid = this._oi18nModel.getProperty("z1gmidstatus");
         	 var zcgmid = this._oi18nModel.getProperty("zcgmidstatus");
@@ -371,140 +366,115 @@ sap.ui.define([
 	        {
 	        	if(data[i].GMID !== "")
 	        	{
-	        		var filterArray = [];
-	        		
-		        	// Create a filter to fetch the GMID Country Status Code ID
-					var gmidFilter = new Filter("GMID",sap.ui.model.FilterOperator.EQ,this.lpadstring(data[i].GMID));
-					filterArray.push(gmidFilter);
-					
-					// adding plant material status filter - Z1
-					var z1gmidFilter = new Filter("MATERIAL_STATUS_FILTER",sap.ui.model.FilterOperator.NE,z1gmid);
-					
-					// adding plant material status filter - ZC
-					var zcgmidFilter = new Filter("MATERIAL_STATUS_FILTER",sap.ui.model.FilterOperator.NE,zcgmid);
-					
-					// adding plant material status filter - Z9
-					var z9gmidFilter = new Filter("MATERIAL_STATUS_FILTER",sap.ui.model.FilterOperator.NE,z9gmid);
-					
-					var statusFilterArray = new Filter ({
-						filters : [
-							z1gmidFilter,
-							zcgmidFilter,
-							z9gmidFilter
-							],
-							and : true
-					});
-					
-					filterArray.push(statusFilterArray);
-		
-					 // Get the GMID Country Status Code ID CODE_MASTER table
-					 this._oDataModel.read("/V_GMID_SHIP_FROM_PLANT",{
-							filters: filterArray,
-							async: false,
-			                success: function(oData, oResponse){
-			                //return the GMID Country ID
-			                	if(oData.results.length === 0)
-			                	{
+	        		var gmidHasPlant = true;
+	        		for(var k = 0; k < gmidPlantRecords.length; k++) 
+                     {
+	                    // loop the GMID Country Status Records to check whether GMID is valid
+	                     if ((this.lpadstring(data[i].GMID)=== gmidPlantRecords[k].GMID) && (z1gmid !== gmidPlantRecords[k].MATERIAL_STATUS_FILTER && zcgmid !== gmidPlantRecords[k].MATERIAL_STATUS_FILTER
+	                    			&& z9gmid !== gmidPlantRecords[k].MATERIAL_STATUS_FILTER ))
+                    			{
 			                		gmidHasPlant = false;
-			                		data[i].isError = true;
-			                		if(data[i].errorSummary !== "")
-			                		{
-			                			data[i].errorSummary += "\n";  
-			                		}
-			                		data[i].errorSummary += "Valid Ship from Plant is not available for the GMID.";  
-		
-			                	}
-			                },
-			    		    error: function(){
-			            		MessageToast.show("Unable to retrieve plants for GMID. Please contact admin.");
-			    			}
-			    		});
-		        }
-	        }
+		            			}
+				          else
+		                	   {
+		                	   	continue;
+		                	   }
+	        	  } // end for  for loop gmidPlantRecords
+	        	  if (gmidHasPlant === false)
+			        	  {
+		    	  		        IsAllgmidHasPlant = false;
+		                		data[i].isError = true;
+		                		data[i].GMIDErrorState = "Error";
+				                if(data[i].errorSummary !== "")
+				                {
+				                	data[i].errorSummary += "\n";  
+				                }
+				                data[i].errorSummary += "Valid Ship from Plant is not available for the GMID.";
+				        	  } // end for validgmidinput if
+		        } // end for if(data[i].GMID !== "")
+	        } // end for outer for loop
 	        // if for each GMID a plant exists, return true, else return false
-	        return gmidHasPlant;
-	        
+	        return IsAllgmidHasPlant;
         },
         // validating whether entered GMID have valid status
-        validateGMIDbyStatus : function  (gmid) {
+        validateGMIDbyStatus : function  () {
+            var gmiddata = this._oViewModelData.GMIDShipToCountryVM;
+            // prepare an array of GMIDs from the UI
+             var gmidList = this.gmidList();
+             var viewpath = "V_VALIDATE_GMID";
+             // below function will get all the GMID Country Records for the GMID's entered in UI
+             var gmidCountryRecords = DataContext.getGMIDListFromDB(gmidList,viewpath);                           
+        	 var oi18nModel = this.getView().getModel("i18n");
         	  // get the GMID status for i18n model
-        	 var z1gmid = this._oi18nModel.getProperty("z1gmidstatus");
-        	 var zcgmid = this._oi18nModel.getProperty("zcgmidstatus");
-        	 var z9gmid = this._oi18nModel.getProperty("z9gmidstatus");
-        	 var prdGMID = this._oi18nModel.getProperty("prdGMID");
-        	 var gmiddata = this._oViewModelData.GMIDShipToCountryVM;
-        	 var validgmidwithstatus = true;
+        	 var z1gmid = oi18nModel.getProperty("z1gmidstatus");
+        	 var zcgmid = oi18nModel.getProperty("zcgmidstatus");
+        	 var z9gmid = oi18nModel.getProperty("z9gmidstatus");
+        	 var prdGMID = oi18nModel.getProperty("prdGMID");
+        	 var IsAllvalidgmidswithstatus = true;
+ 
         	for(var i = 0; i < gmiddata.length - 1; i++) 
 	        {
 	        	if(gmiddata[i].GMID !== "")
 	        	{
-	        		// Create a filter to fetch the GMID Country Status Code ID
-					var gmidFilterArray = [];
-					var gmidFilter = new Filter("GMID",sap.ui.model.FilterOperator.EQ,this.lpadstring(gmiddata[i].GMID));
-					gmidFilterArray.push(gmidFilter);
-					var z1gmidFilter = new Filter("MATERIAL_STATUS",sap.ui.model.FilterOperator.EQ,z1gmid);
-					var zcgmidFilter = new Filter("MATERIAL_STATUS",sap.ui.model.FilterOperator.EQ,zcgmid);
-					var z9gmidFilter = new Filter("MATERIAL_STATUS",sap.ui.model.FilterOperator.EQ,z9gmid);
-					var prdGMIDFilter = new Filter("SOURCE",sap.ui.model.FilterOperator.EQ,prdGMID);
-					var gmidstatusFilter = new Filter ({
-						filters : [
-							z1gmidFilter,
-							zcgmidFilter,
-							z9gmidFilter,
-							prdGMIDFilter
-							],
-							and : false
-					});
-					gmidFilterArray.push(gmidstatusFilter);
-					 // verify if the GMID entered belongs to Z1,ZC,Z9 or prdGMID status
-					 this._oDataModel.read("/V_GMID_PRODUCT_HIERARCHY?$select=GMID",{
-						filters: gmidFilterArray,
-						async: false,
-		                success: function(oData, oResponse){
-		                    //check if GMID exists
-		                	if(oData.results.length !== 0){
-		                		validgmidwithstatus = false;
-		                		gmiddata[i].isError = true;
-		                		gmiddata[i].GMIDErrorState = "Error";
-				                if(gmiddata[i].errorSummary !== "")
-				                {
-				                	gmiddata[i].errorSummary += "\n";  
-				                }
-				                gmiddata[i].errorSummary += "GMID has an invalid status or does not exists in PRM system.";  
-		                	}
-		                	
-		                },
-		    		    error: function(){
-		            		MessageToast.show("Unable to retrieve GMID status from database. Please contact admin.");
-		    			}
-		    		});
-	        	}
-	        }
-	        return validgmidwithstatus;
+	        		var validgmidwithstatus = false;
+	        		for(var k = 0; k < gmidCountryRecords.length; k++) 
+                     {
+	                    // loop the GMID Country Status Records to check whether GMID is valid and with valid material status
+	                     if ((this.lpadstring(gmiddata[i].GMID) === gmidCountryRecords[k].GMID) && (z1gmid === gmidCountryRecords[k].MATERIAL_STATUS || zcgmid === gmidCountryRecords[k].MATERIAL_STATUS ||
+	                    		z9gmid === gmidCountryRecords[k].MATERIAL_STATUS || prdGMID === gmidCountryRecords[k].SOURCE))
+	                    			{
+				                		validgmidwithstatus = true;
+			            			}
+					               else
+			                	   {
+			                	   	 continue;
+			                	   }
+	        	   }
+		        	  if (validgmidwithstatus === false)
+					        	  {
+				    	  		        IsAllvalidgmidswithstatus = false;
+				                		gmiddata[i].isError = true;
+				                		gmiddata[i].GMIDErrorState = "Error";
+						                if(gmiddata[i].errorSummary !== "")
+						                {
+						                	gmiddata[i].errorSummary += "\n";  
+						                }
+						                gmiddata[i].errorSummary += "GMID has an invalid status or does not exists in PRM system.";  
+					        	  } // end for validgmidinput if
+	        	} // end for if(data[i].GMID !== "")
+	        } // end for outer for loop
+	        return IsAllvalidgmidswithstatus;
         },
         // below function will validate whether entered GMID is valid or not
         validateGMID : function()
         {
-        	var gmiddata = this._oViewModelData.GMIDShipToCountryVM;
-        	var validgmid = true;
+        	 var gmiddata = this._oViewModelData.GMIDShipToCountryVM;
+        	 // prepare an array of GMIDs from the UI
+             var gmidList = this.gmidList();
+             var viewpath = "V_VALIDATE_GMID";
+             // get all the GMID's with the Status for the GMID's entered in UI
+             var gmidRecords = DataContext.getGMIDListFromDB(gmidList,viewpath); 
+         	 var IsAllvalidgmids = true;
         	for(var i = 0; i < gmiddata.length - 1; i++) 
-	        {
+	        { 
 	        	if(gmiddata[i].GMID !== "")
 	        	{
-	        		// Create a filter to fetch the GMID Country Status Code ID
-					var gmidFilterArray = [];
-					var gmidFilter = new Filter("GMID",sap.ui.model.FilterOperator.EQ,this.lpadstring(gmiddata[i].GMID));
-					gmidFilterArray.push(gmidFilter);
-					var gmidtypeFilter = new Filter("VALUE_CENTER_DESC",sap.ui.model.FilterOperator.EQ,this._oSelectedGMIDType.toUpperCase());
-					gmidFilterArray.push(gmidtypeFilter);
-					 // verify if the GMID entered has the same value center as the selected template
-					this._oDataModel.read("/V_GMID_PRODUCT_HIERARCHY?$select=GMID",{
-					filters: gmidFilterArray,
-					async: false,
-	                success: function(oData, oResponse){
-	                    //check if GMID exists
-	                	if(oData.results.length === 0){
-	                		validgmid = false;
+	        		var validgmid = false;
+	        		for(var k = 0; k < gmidRecords.length; k++) 
+                     {
+	                    // loop the GMID  Records to check whether GMID is valid
+	                     if ((this.lpadstring(gmiddata[i].GMID) === gmidRecords[k].GMID) && (this._oSelectedGMIDType.toUpperCase() === gmidRecords[k].VALUE_CENTER_DESC))
+	                    	{
+	                    		validgmid =  true;
+			               }
+			                else
+	                	   {
+	                	   		continue;
+	                	   }
+	        	  }
+	        	  if (validgmid === false)
+		        	  {
+	    	  		        IsAllvalidgmids = false;
 	                		gmiddata[i].isError = true;
 	                		gmiddata[i].GMIDErrorState = "Error";
 			                if(gmiddata[i].errorSummary !== "")
@@ -512,22 +482,31 @@ sap.ui.define([
 			                	gmiddata[i].errorSummary += "\n";  
 			                }
 			                gmiddata[i].errorSummary += "Invalid GMID - GMID does not exist.";  
-	                	}
-	                },
-	    		    error: function(){
-	            		MessageToast.show("Unable to retrieve GMID value center from database. Please contact admin.");
-	    			}
-	    			});
-	        	}
-	        }
-	        return validgmid;
-        	
+		        	  } // end for validgmidinput if
+	        	  } // end for gmiddata[i].GMID !==
+	        } // end for outre for loop
+	        return IsAllvalidgmids;
         },
          // below function will left pad GMID with leading zeroes if length is less than 8
         lpadstring : function(gmid) {
     			while (gmid.length < 8)
         		gmid = "0" + gmid;
     		return gmid;
+        },
+        // below function will return the list of GMIDS from the UI
+        gmidList : function(){
+        	var gmiddata = this._oViewModelData.GMIDShipToCountryVM;
+        	var gmid; 
+        	 // prepare an array of GMIDs from the UI
+            var gmidList = [];
+            for(var j = 0; j < gmiddata.length - 1; j++) 
+            {
+	            // every time empty the GMID object
+	             gmid= {"GMID": "" };
+	             gmid.GMID = gmiddata[j].GMID;
+	             gmidList.push(gmid);
+            }
+            return gmidList;
         },
         // function to check if the field is numeric
         numValidationCheck : function (oEvent) {
@@ -670,7 +649,7 @@ sap.ui.define([
 		    		// Get the MaxID
 		    	    var maxID =	DataContext.getMaxID(tablePath);
 		    	    // Get the code id for GMID Country Status
-		    	    var gmidcountrystatusID = t.getGMIDCountryStatusID();
+		    	    var gmidcountrystatusID = DataContext.getGMIDCountryStatusID();
 		    	    
 		    		// loop through the rows and for each row insert data into database
 		    		// each row contains GMID Ship To combination.
@@ -781,21 +760,14 @@ sap.ui.define([
             // each row contains GMID Ship To combination.
             var data = this._oViewModelData.GMIDShipToCountryVM;
            // prepare an array of GMIDs from the UI
-            var gmidList = [];
-            var gmid; 
-            for(var j = 0; j < data.length - 1; j++) 
-            {
-                // every time empty the GMID object
-                gmid= {"GMID": ""};
-                gmid.GMID = data[j].GMID;
-                gmidList.push(gmid);
-            }
+            var gmidList = this.gmidList();
 	        // need to pass the above array to the DB to get the duplicate records
-            var gmidCountryRecords = DataContext.getGMIDListFromDB(gmidList);                           
+	        var viewpath = "V_VALIDATE_GMID_COUNTRY";
+            var gmidCountryRecords = DataContext.getGMIDListFromDB(gmidList,viewpath);                           
             var isDuplicate = false;
             for(var i = 0; i < data.length - 1; i++) 
             {
-                var GMID = data[i].GMID;
+                var GMID = this.lpadstring(data[i].GMID);
                 var countryID = parseInt(data[i].COUNTRY_CODE_ID,10);
                 // loop the GMID Country Records from DB to check Unique
                 for(var k = 0; k < gmidCountryRecords.length; k++) 

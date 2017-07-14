@@ -197,7 +197,7 @@ sap.ui.define([
 		}
 		
 		// function to get unique GMID/Country Combinations from DB
-    	function getGMIDListFromDB(gmidList) {
+    	function getGMIDListFromDB(gmidList,viewpath) {
             var result;                            
             var gmidFilterArray = [];
             gmidList.forEach(function(item) {
@@ -211,7 +211,7 @@ sap.ui.define([
 	            gmidFilterArray.push(gmidFilterList);
             });
             // Get data for all GMIDS Entered in UI
-            oDataModel.read("V_VALIDATE_GMID_COUNTRY", {
+            oDataModel.read(viewpath, {
                 filters: gmidFilterArray,
                 async: false,
 				success: function(oData, oResponse) {

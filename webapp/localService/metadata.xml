@@ -38,7 +38,6 @@
 <Property Name="CHANNEL_CODE_ID" Type="Edm.Int32"/>
 <Property Name="MARKET_DEFAULT_CODE_ID" Type="Edm.Int32" Nullable="false"/>
 <Property Name="SUPPLY_SYSTEM_FLAG_CODE_ID" Type="Edm.Int32"/>
-<Property Name="FINANCE_SYSTEM_FLAG_CODE_ID" Type="Edm.Int32"/>
 <Property Name="GMID_COUNTRY_STATUS_CODE_ID" Type="Edm.Int32" Nullable="false"/>
 <Property Name="DEMAND_ATTRIBUTE1" Type="Edm.String" MaxLength="1000"/>
 <Property Name="DEMAND_ATTRIBUTE2" Type="Edm.String" MaxLength="1000"/>
@@ -65,6 +64,7 @@
 <Property Name="IBP_STATUS" Type="Edm.String" MaxLength="50"/>
 <Property Name="IBP_RESPONSE_DESC" Type="Edm.String" MaxLength="500"/>
 <Property Name="RCU_CODE" Type="Edm.String" MaxLength="10"/>
+<Property Name="FINANCE_SYSTEM_FLAG" Type="Edm.String" MaxLength="10"/>
 </EntityType>
 <EntityType Name="GMID_SHIP_TO_COUNTRY_STGType">
 <Key>
@@ -149,7 +149,7 @@
 <Property Name="MARKET_DEFAULT" Type="Edm.String" Nullable="false" MaxLength="500"/>
 <Property Name="SUPPLY_SYSTEM_FLAG_CODE" Type="Edm.String" Nullable="false" MaxLength="50"/>
 <Property Name="SUPPLY_SYSTEM_FLAG" Type="Edm.String" Nullable="false" MaxLength="500"/>
-<Property Name="FINANCE_SYSTEM_FLAG_CODE" Type="Edm.String" MaxLength="50"/>
+<Property Name="FINANCE_SYSTEM_FLAG" Type="Edm.String" MaxLength="10"/>
 <Property Name="DEMAND_ATTRIBUTE1" Type="Edm.String" MaxLength="1000"/>
 <Property Name="DEMAND_ATTRIBUTE2" Type="Edm.String" MaxLength="1000"/>
 <Property Name="MARKETING_ATTRIBUTE1" Type="Edm.String" MaxLength="1000"/>
@@ -243,7 +243,7 @@
 <Key>
 <PropertyRef Name="USER_ID"/>
 </Key>
-<Property Name="USER_ID" Type="Edm.String" Nullable="false" MaxLength="10"/>
+<Property Name="USER_ID" Type="Edm.String" Nullable="false" MaxLength="12"/>
 <Property Name="USER_NAME" Type="Edm.String" MaxLength="50"/>
 <Property Name="EMAIL" Type="Edm.String" MaxLength="50"/>
 <Property Name="VALID_FLAG" Type="Edm.String" MaxLength="1"/>
@@ -261,6 +261,23 @@
 <Property Name="MATERIAL_STATUS" Type="Edm.String" MaxLength="10"/>
 <Property Name="MATERIAL_STATUS_FILTER" Type="Edm.String" Nullable="false" MaxLength="10"/>
 </EntityType>
+<EntityType Name="V_VALIDATE_GMID_COUNTRYType">
+<Key>
+<PropertyRef Name="ID"/>
+</Key>
+<Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="GMID" Type="Edm.String" Nullable="false" MaxLength="10"/>
+<Property Name="COUNTRY_CODE_ID" Type="Edm.Int32" Nullable="false"/>
+</EntityType>
+<EntityType Name="V_VALIDATE_GMIDType">
+<Key>
+<PropertyRef Name="GMID"/>
+</Key>
+<Property Name="GMID" Type="Edm.String" Nullable="false" MaxLength="10"/>
+<Property Name="VALUE_CENTER_DESC" Type="Edm.String" MaxLength="250"/>
+<Property Name="MATERIAL_STATUS" Type="Edm.String" MaxLength="50"/>
+<Property Name="SOURCE" Type="Edm.String" MaxLength="50"/>
+</EntityType>
 <EntityContainer Name="BAMDataService" m:IsDefaultEntityContainer="true">
 <EntitySet Name="CODE_MASTER" EntityType="ODataService.BAMDataService.CODE_MASTERType"/>
 <EntitySet Name="GMID_SHIP_TO_COUNTRY" EntityType="ODataService.BAMDataService.GMID_SHIP_TO_COUNTRYType"/>
@@ -273,6 +290,8 @@
 <EntitySet Name="V_GMID_PRODUCT_HIERARCHY" EntityType="ODataService.BAMDataService.V_GMID_PRODUCT_HIERARCHYType"/>
 <EntitySet Name="USER" EntityType="ODataService.BAMDataService.USERType"/>
 <EntitySet Name="V_GMID_SHIP_FROM_PLANT" EntityType="ODataService.BAMDataService.V_GMID_SHIP_FROM_PLANTType"/>
+<EntitySet Name="V_VALIDATE_GMID_COUNTRY" EntityType="ODataService.BAMDataService.V_VALIDATE_GMID_COUNTRYType"/>
+<EntitySet Name="V_VALIDATE_GMID" EntityType="ODataService.BAMDataService.V_VALIDATE_GMIDType"/>
 </EntityContainer>
 </Schema>
 </edmx:DataServices>
