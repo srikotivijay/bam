@@ -352,10 +352,9 @@ sap.ui.define([
         validateGmidShipFromPlant :function()
         {
         	var data = this._oViewModelData.GMIDShipToCountryVM;
-        	 var gmidList = this.gmidList();
              var viewpath = "V_GMID_SHIP_FROM_PLANT";
              // get all the GMID/Plants data for the GMIDS entered in UI
-             var gmidPlantRecords = DataContext.getGMIDListFromDB(gmidList,viewpath); 
+             var gmidPlantRecords = DataContext.getGMIDListFromDB(this._gmidList,viewpath); 
         	 var IsAllgmidHasPlant = true;
         	  // get the GMID status for i18n model
         	 var z1gmid = this._oi18nModel.getProperty("z1gmidstatus");
@@ -370,27 +369,27 @@ sap.ui.define([
 	        		for(var k = 0; k < gmidPlantRecords.length; k++) 
                      {
 	                    // loop the GMID Country Status Records to check whether GMID is valid
-	                     if ((this.lpadstring(data[i].GMID)=== gmidPlantRecords[k].GMID) && (z1gmid !== gmidPlantRecords[k].MATERIAL_STATUS_FILTER && zcgmid !== gmidPlantRecords[k].MATERIAL_STATUS_FILTER
+	                    if ((this.lpadstring(data[i].GMID)=== gmidPlantRecords[k].GMID) && (z1gmid !== gmidPlantRecords[k].MATERIAL_STATUS_FILTER && zcgmid !== gmidPlantRecords[k].MATERIAL_STATUS_FILTER
 	                    			&& z9gmid !== gmidPlantRecords[k].MATERIAL_STATUS_FILTER ))
-                    			{
-			                		gmidHasPlant = false;
-		            			}
-				          else
-		                	   {
-		                	   	continue;
-		                	   }
+            			{
+	                		gmidHasPlant = false;
+            			}
+			        	else
+                		{
+                	   		continue;
+                		}
 	        	  } // end for  for loop gmidPlantRecords
 	        	  if (gmidHasPlant === false)
-			        	  {
-		    	  		        IsAllgmidHasPlant = false;
-		                		data[i].isError = true;
-		                		data[i].GMIDErrorState = "Error";
-				                if(data[i].errorSummary !== "")
-				                {
-				                	data[i].errorSummary += "\n";  
-				                }
-				                data[i].errorSummary += "Valid Ship from Plant is not available for the GMID.";
-				        	  } // end for validgmidinput if
+	        	  {
+  	               IsAllgmidHasPlant = false;
+	        		data[i].isError = true;
+	        		data[i].GMIDErrorState = "Error";
+	                if(data[i].errorSummary !== "")
+	                {
+	                	data[i].errorSummary += "\n";  
+	                }
+	                data[i].errorSummary += "No Valid Ship from Plants are available for the GMID.";
+	        	  } // end for validgmidinput if
 		        } // end for if(data[i].GMID !== "")
 	        } // end for outer for loop
 	        // if for each GMID a plant exists, return true, else return false
@@ -399,11 +398,9 @@ sap.ui.define([
         // validating whether entered GMID have valid status
         validateGMIDbyStatus : function  () {
             var gmiddata = this._oViewModelData.GMIDShipToCountryVM;
-            // prepare an array of GMIDs from the UI
-             var gmidList = this.gmidList();
              var viewpath = "V_VALIDATE_GMID";
              // below function will get all the GMID Country Records for the GMID's entered in UI
-             var gmidCountryRecords = DataContext.getGMIDListFromDB(gmidList,viewpath);                           
+             var gmidCountryRecords = DataContext.getGMIDListFromDB(this._gmidList,viewpath);                           
         	 var oi18nModel = this.getView().getModel("i18n");
         	  // get the GMID status for i18n model
         	 var z1gmid = oi18nModel.getProperty("z1gmidstatus");
@@ -416,31 +413,31 @@ sap.ui.define([
 	        {
 	        	if(gmiddata[i].GMID !== "")
 	        	{
-	        		var validgmidwithstatus = false;
+	        		var validgmidwithstatus = true;
 	        		for(var k = 0; k < gmidCountryRecords.length; k++) 
                      {
 	                    // loop the GMID Country Status Records to check whether GMID is valid and with valid material status
 	                     if ((this.lpadstring(gmiddata[i].GMID) === gmidCountryRecords[k].GMID) && (z1gmid === gmidCountryRecords[k].MATERIAL_STATUS || zcgmid === gmidCountryRecords[k].MATERIAL_STATUS ||
 	                    		z9gmid === gmidCountryRecords[k].MATERIAL_STATUS || prdGMID === gmidCountryRecords[k].SOURCE))
-	                    			{
-				                		validgmidwithstatus = true;
-			            			}
-					               else
-			                	   {
-			                	   	 continue;
-			                	   }
+            			{
+	                		validgmidwithstatus = false;
+            			}
+		               else
+	            	   {
+	            	   	 continue;
+	            	   }
 	        	   }
-		        	  if (validgmidwithstatus === false)
-					        	  {
-				    	  		        IsAllvalidgmidswithstatus = false;
-				                		gmiddata[i].isError = true;
-				                		gmiddata[i].GMIDErrorState = "Error";
-						                if(gmiddata[i].errorSummary !== "")
-						                {
-						                	gmiddata[i].errorSummary += "\n";  
-						                }
-						                gmiddata[i].errorSummary += "GMID has an invalid status or does not exists in PRM system.";  
-					        	  } // end for validgmidinput if
+	        	  if (validgmidwithstatus === false)
+	        	  {
+		  		        IsAllvalidgmidswithstatus = false;
+	            		gmiddata[i].isError = true;
+	            		gmiddata[i].GMIDErrorState = "Error";
+		                if(gmiddata[i].errorSummary !== "")
+		                {
+		                	gmiddata[i].errorSummary += "\n";  
+		                }
+		                gmiddata[i].errorSummary += "GMID has an invalid status or does not exists in PRM system.";  
+	        	  } // end for validgmidinput if
 	        	} // end for if(data[i].GMID !== "")
 	        } // end for outer for loop
 	        return IsAllvalidgmidswithstatus;
@@ -449,11 +446,9 @@ sap.ui.define([
         validateGMID : function()
         {
         	 var gmiddata = this._oViewModelData.GMIDShipToCountryVM;
-        	 // prepare an array of GMIDs from the UI
-             var gmidList = this.gmidList();
              var viewpath = "V_VALIDATE_GMID";
              // get all the GMID's with the Status for the GMID's entered in UI
-             var gmidRecords = DataContext.getGMIDListFromDB(gmidList,viewpath); 
+             var gmidRecords = DataContext.getGMIDListFromDB(this._gmidList,viewpath); 
          	 var IsAllvalidgmids = true;
         	for(var i = 0; i < gmiddata.length - 1; i++) 
 	        { 
@@ -471,7 +466,7 @@ sap.ui.define([
 	                	   {
 	                	   		continue;
 	                	   }
-	        	  }
+	        		}
 	        	  if (validgmid === false)
 		        	  {
 	    	  		        IsAllvalidgmids = false;
@@ -592,16 +587,25 @@ sap.ui.define([
 			//open busy dialog
 			this._busyDialog.open();
 			// need to declare local this variable to call global functions in the timeout function
+			
+			// prepare an array of GMIDs from the UI
+            this._gmidList = this.gmidList();
 			var t = this;
 			
 			// setting timeout function in order to show the busy dialog before doing all the validation
 			setTimeout(function()
 			{
+				
 				if (t.validateTextFieldValues() === false)
 		        {
 		        	// Set error message column to false (not visible by default)
 			    	t._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
 		        }
+				// check of invalid GMID entry by checking the status of GMID
+	        	if (t.validateGMIDbyStatus() === false)
+	        	{
+	        		t._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
+	        	}
 		        // if crop protection is selected and the GMID/plant combination does not exist, return error
 		        if(t._oSelectedGMIDType === t._oCropProtection && t.validateGmidShipFromPlant() === false)
 	        	{
@@ -619,11 +623,6 @@ sap.ui.define([
 	        	}
 	        	// check if GMID entered is valid
 	        	if (t.validateGMID() === false)
-	        	{
-	        		t._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
-	        	}
-	        	// check of invalid GMID entry by checking the status of GMID
-	        	if (t.validateGMIDbyStatus() === false)
 	        	{
 	        		t._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
 	        	}
@@ -759,11 +758,9 @@ sap.ui.define([
             // loop through the rows and for each row check for duplicate entry in DB
             // each row contains GMID Ship To combination.
             var data = this._oViewModelData.GMIDShipToCountryVM;
-           // prepare an array of GMIDs from the UI
-            var gmidList = this.gmidList();
 	        // need to pass the above array to the DB to get the duplicate records
 	        var viewpath = "V_VALIDATE_GMID_COUNTRY";
-            var gmidCountryRecords = DataContext.getGMIDListFromDB(gmidList,viewpath);                           
+            var gmidCountryRecords = DataContext.getGMIDListFromDB(this._gmidList,viewpath);                           
             var isDuplicate = false;
             for(var i = 0; i < data.length - 1; i++) 
             {
@@ -891,14 +888,14 @@ sap.ui.define([
 	            		for(var i = 0; i < excelColumnHeaders.length; i++) 
 	            		{
 	            			// Get proper column headers from the i18n model
-			                var oGMID = this._oi18nModel.getProperty("eGMID");
-			                var oCountry  = this._oi18nModel.getProperty("eCountry");
-			                var oStoredCurrency =this._oi18nModel.getProperty("eStoredCurrency"); 
-			                var oIbpRelevancy  = this._oi18nModel.getProperty("eIBPRelevancy");
-			                var oNettingDefault = this._oi18nModel.getProperty("eNettingDefault");
-			                var oQuadrant = this._oi18nModel.getProperty("eQuadrant");
-			                var oChannel = this._oi18nModel.getProperty("eChannel");
-			                var oMarketDefault = this._oi18nModel.getProperty("eMarketDefault");
+			                var oGMID = t._oi18nModel.getProperty("eGMID");
+			                var oCountry  = t._oi18nModel.getProperty("eCountry");
+			                var oStoredCurrency =t._oi18nModel.getProperty("eStoredCurrency"); 
+			                var oIbpRelevancy  = t._oi18nModel.getProperty("eIBPRelevancy");
+			                var oNettingDefault = t._oi18nModel.getProperty("eNettingDefault");
+			                var oQuadrant = t._oi18nModel.getProperty("eQuadrant");
+			                var oChannel = t._oi18nModel.getProperty("eChannel");
+			                var oMarketDefault = t._oi18nModel.getProperty("eMarketDefault");
 			                
 				            if (excelColumnHeaders[0] !== oGMID)
 				            {
