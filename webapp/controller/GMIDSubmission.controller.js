@@ -725,34 +725,6 @@ sap.ui.define([
 				t._busyDialog.close();
 			},500); // end of timeout function
         },
-         // below function will return the GMID Country Status ID from CODE_Master TABLE
-        getGMIDCountryStatusID : function  () {
-        	 // by default while creating the new GMID, the GMID Country Status will be Submitted
-        	 var ogmidcountryStatus = this._oi18nModel.getProperty("submitted");
-    	    
-			// Create a filter to fetch the GMID Country Status Code ID
-			var gmidcountrycodeFilterArray = [];
-			var gmidcountrycodetypeFilter = new Filter("CODE_TYPE",sap.ui.model.FilterOperator.EQ,"GMID_COUNTRY_STATUS");
-			gmidcountrycodeFilterArray.push(gmidcountrycodetypeFilter);
-			var gmidcountrycodekeyFilter = new Filter("CODE_KEY",sap.ui.model.FilterOperator.EQ,ogmidcountryStatus);
-			gmidcountrycodeFilterArray.push(gmidcountrycodekeyFilter);
-			
-			var gmidcountrystatusID = null;
-
-			 // Get the GMID Country Status Code ID CODE_MASTER table
-			 this._oDataModel.read("/CODE_MASTER?$select=ID",{
-					filters: gmidcountrycodeFilterArray,
-					async: false,
-	                success: function(oData, oResponse){
-	                	//return the Code ID
-	                   gmidcountrystatusID = oData.results[0].ID; 
-	                },
-	    		    error: function(){
-	            		MessageToast.show("Unable to retrieve Code ID for GMID Country Status.");
-	    			}
-	    		});
-	    	return gmidcountrystatusID;
-        },
         // method to check for duplicate Gmid and Country combination
         validateUniqueGmidCountry : function (){
             // loop through the rows and for each row check for duplicate entry in DB
