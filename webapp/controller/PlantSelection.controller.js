@@ -196,7 +196,7 @@ sap.ui.define([
     		// Get the MaxID for the GMID Ship to Country
     	    var maxGMIDShipToID = DataContext.getMaxID("/GMID_SHIP_TO_COUNTRY");
     	    // Get the code id for GMID Country Status
-    	    var gmidcountrystatusID = this.getGMIDCountryStatusID();
+    	    var gmidcountrystatusID = DataContext.getGMIDCountryStatusID();
     	    
     	    // reset the validation on the screen
     	    this.resetValidation();
@@ -344,35 +344,6 @@ sap.ui.define([
 	    		
 	    	} // end of else validation at least one plant selected
 	    },
-         // below function will return the GMID Country Status ID from CODE_Master TABLE
-        getGMIDCountryStatusID : function  () {
-        	 var oi18nModel = this.getView().getModel("i18n");
-        	 // by default while creating the new GMID, the GMID Country Status will be Submitted
-        	 var ogmidcountryStatus = oi18nModel.getProperty("submitted");
-    	    
-			// Create a filter to fetch the GMID Country Status Code ID
-			var gmidcountrycodeFilterArray = [];
-			var gmidcountrycodetypeFilter = new Filter("CODE_TYPE",sap.ui.model.FilterOperator.EQ,"GMID_COUNTRY_STATUS");
-			gmidcountrycodeFilterArray.push(gmidcountrycodetypeFilter);
-			var gmidcountrycodekeyFilter = new Filter("CODE_KEY",sap.ui.model.FilterOperator.EQ,ogmidcountryStatus);
-			gmidcountrycodeFilterArray.push(gmidcountrycodekeyFilter);
-			
-			var gmidcountrystatusID = null;
-
-			 // Get the GMID Country Status Code ID CODE_MASTER table
-			 this._oDataModel.read("/CODE_MASTER?$select=ID",{
-					filters: gmidcountrycodeFilterArray,
-					async: false,
-	                success: function(oData, oResponse){
-	                	//return the Code ID
-	                   gmidcountrystatusID = oData.results[0].ID; 
-	                },
-	    		    error: function(){
-	            		MessageToast.show("Unable to retrieve Code ID for GMID Country Status.");
-	    			}
-	    		});
-	    	return gmidcountrystatusID;
-        },
         validatePlantSelection :function()
         {
 	        var GMIDShipToCountry = this._oPlantSelectionViewModel.getProperty("/PlantSelectionVM");

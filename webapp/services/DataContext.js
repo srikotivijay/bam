@@ -3,13 +3,18 @@ sap.ui.define([
 	"sap/ui/core/routing/History",
 	"sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator",
-	"sap/m/MessageToast"
-],function (Controller, History,Filter, FilterOperator,MessageToast) {
+	"sap/m/MessageToast",
+	"sap/ui/model/resource/ResourceModel"
+],function (Controller, History,Filter, FilterOperator,MessageToast,ResourceModel) {
 	
 		var oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", {
 						json: true,
 						tokenHandling: true
 					});
+					
+		var oi18nModel = new ResourceModel({
+                bundleName: "bam.i18n.i18n"
+            });
 	
 		function callService(url) {
 			return new Promise(function(resolve, reject) {
@@ -328,6 +333,36 @@ sap.ui.define([
 	    	});
 	    	return result;
 		}
+		// below function will return the GMID Country Status ID from CODE_Master TABLE
+		function getGMIDCountryStatusID()
+		{
+			// by default while creating the new GMID, the GMID Country Status will be Submitted
+        	 var ogmidcountryStatus = oi18nModel.getProperty("submitted");
+    	    
+			// Create a filter to fetch the GMID Country Status Code ID
+			var gmidcountrycodeFilterArray = [];
+			var gmidcountrycodetypeFilter = new Filter("CODE_TYPE",sap.ui.model.FilterOperator.EQ,"GMID_COUNTRY_STATUS");
+			gmidcountrycodeFilterArray.push(gmidcountrycodetypeFilter);
+			var gmidcountrycodekeyFilter = new Filter("CODE_KEY",sap.ui.model.FilterOperator.EQ,ogmidcountryStatus);
+			gmidcountrycodeFilterArray.push(gmidcountrycodekeyFilter);
+			
+			var gmidcountrystatusID = null;
+
+			// Get the GMID Country Status Code ID CODE_MASTER table
+			oDataModel.read("/CODE_MASTER?$select=ID",{
+					filters: gmidcountrycodeFilterArray,
+					async: false,
+	                success: function(oData, oResponse){
+	                	//return the Code ID
+	                   gmidcountrystatusID = oData.results[0].ID; 
+	                },
+	    		    error: function(){
+	            		MessageToast.show("Unable to retrieve Code ID for GMID Country Status.");
+	    			}
+	    		});
+	    	return gmidcountrystatusID;
+		}
+         
 		var exports = {
 			getAttributeListBasedOnUserID: getAttributeListBasedOnUserID,
 			getUserID: getUserID,
@@ -336,7 +371,8 @@ sap.ui.define([
 			getUserPermissions: getUserPermissions,
 			isBAMUser : isBAMUser,
 			getDropdownValues: getDropdownValues,
-			deleteStagingData: deleteStagingData
+			deleteStagingData: deleteStagingData,
+			getGMIDCountryStatusID: getGMIDCountryStatusID
 		};
 	
 		return exports;
