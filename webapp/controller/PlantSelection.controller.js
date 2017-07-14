@@ -387,8 +387,8 @@ sap.ui.define([
                 gmid.GMID = data[j].GMID;
                 gmidList.push(gmid);
             }
-            
-        	var gmidCountryRecords = DataContext.getGMIDListFromDB(gmidList);                           
+            var viewPath = "V_VALIDATE_GMID_COUNTRY";
+        	var gmidCountryRecords = DataContext.getGMIDListFromDB(gmidList,viewPath);                           
             var noDuplicates = true;
             for(var i = 0; i < data.length; i++) 
             {

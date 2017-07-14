@@ -53,11 +53,6 @@ sap.ui.define([
 		    this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
 		    this.getView().setModel(oModel);
 		    this.addEmptyObject();
-		    
-		    // Create Message model -- NOT USED
-	    	this._oMessageModel = new sap.ui.model.json.JSONModel();
-	    	this._oMessageModel.setProperty("/NumOfGMIDSubmitted",0);
-	    	this.getView().setModel(this._oMessageModel,"MessageVM");
 	    	
 	    	  // Set error message column to false (not visible by default)
 		    this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",false);
@@ -365,14 +360,14 @@ sap.ui.define([
 	        {
 	        	if(data[i].GMID !== "")
 	        	{
-	        		var gmidHasPlant = true;
+	        		var gmidHasPlant = false;
 	        		for(var k = 0; k < gmidPlantRecords.length; k++) 
                      {
 	                    // loop the GMID Country Status Records to check whether GMID is valid
 	                    if ((this.lpadstring(data[i].GMID)=== gmidPlantRecords[k].GMID) && (z1gmid !== gmidPlantRecords[k].MATERIAL_STATUS_FILTER && zcgmid !== gmidPlantRecords[k].MATERIAL_STATUS_FILTER
 	                    			&& z9gmid !== gmidPlantRecords[k].MATERIAL_STATUS_FILTER ))
             			{
-	                		gmidHasPlant = false;
+	                		gmidHasPlant = true;
             			}
 			        	else
                 		{
@@ -381,7 +376,7 @@ sap.ui.define([
 	        	  } // end for  for loop gmidPlantRecords
 	        	  if (gmidHasPlant === false)
 	        	  {
-  	               IsAllgmidHasPlant = false;
+  	            	IsAllgmidHasPlant = false;
 	        		data[i].isError = true;
 	        		data[i].GMIDErrorState = "Error";
 	                if(data[i].errorSummary !== "")
