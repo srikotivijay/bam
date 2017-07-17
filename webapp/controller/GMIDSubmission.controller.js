@@ -860,91 +860,88 @@ sap.ui.define([
 	            	}
 	            	else
 	            	{
-	            		for(var i = 0; i < excelColumnHeaders.length; i++) 
-	            		{
-	            			// Get proper column headers from the i18n model
-			                var oGMID = t._oi18nModel.getProperty("eGMID");
-			                var oCountry  = t._oi18nModel.getProperty("eCountry");
-			                var oStoredCurrency =t._oi18nModel.getProperty("eStoredCurrency"); 
-			                var oIbpRelevancy  = t._oi18nModel.getProperty("eIBPRelevancy");
-			                var oNettingDefault = t._oi18nModel.getProperty("eNettingDefault");
-			                var oQuadrant = t._oi18nModel.getProperty("eQuadrant");
-			                var oChannel = t._oi18nModel.getProperty("eChannel");
-			                var oMarketDefault = t._oi18nModel.getProperty("eMarketDefault");
-			                
-				            if (excelColumnHeaders[0] !== oGMID)
-				            {
-				                MessageBox.alert("Incorrect template format found. The first column should be: GMID",
-								{
-									icon : MessageBox.Icon.ERROR,
-									title : "Error"
-								});
-				                validHeadersFlag = false;
-				            }
-				            else if (excelColumnHeaders[1] !== oCountry)
-				            {
-				            	MessageBox.alert("Incorrect template format found. The second column should be: Country",
-								{
-									icon : MessageBox.Icon.ERROR,
-									title : "Error"
-								});
-				                validHeadersFlag = false;
-				            }
-				            else if (excelColumnHeaders[2] !== oStoredCurrency)
-				            {
-				            	MessageBox.alert("Incorrect template format found. The third column should be: Stored Currency",
-								{
-									icon : MessageBox.Icon.ERROR,
-									title : "Error"
-								});
-				                 validHeadersFlag = false;
-				            }
-				            else if (excelColumnHeaders[3] !== oIbpRelevancy)
-				            {
-				            	MessageBox.alert("Incorrect template format found. The fourth column should be: IBP Relevancy",
-								{
-									icon : MessageBox.Icon.ERROR,
-									title : "Error"
-								});
-				                 validHeadersFlag = false;
-				           	}
-				    		else if (excelColumnHeaders[4] !== oNettingDefault)
-				    		{
-				    			MessageBox.alert("Incorrect template format found. The fifth column should be: Netting Default",
-								{
-									icon : MessageBox.Icon.ERROR,
-									title : "Error"
-								});
-				                 validHeadersFlag = false;
-				    		}
-				    	    else if (excelColumnHeaders[5] !== oQuadrant)
-				    		{
-				    			MessageBox.alert("Incorrect template format found. The sixth column should be: Quadrant",
-								{
-									icon : MessageBox.Icon.ERROR,
-									title : "Error"
-								});
-				                 validHeadersFlag = false;
-				    		}
-				    	    else if (excelColumnHeaders[6] !== oChannel)
-				    		{
-				    			MessageBox.alert("Incorrect template format found. The seventh column should be: Channel",
-								{
-									icon : MessageBox.Icon.ERROR,
-									title : "Error"
-								});
-				                 validHeadersFlag = false;
-				    		}
-				    	    else if (excelColumnHeaders[7] !== oMarketDefault)
-				    		{
-				    			MessageBox.alert("Incorrect template format found. The eight column should be:  Market Default Flag",
-								{
-									icon : MessageBox.Icon.ERROR,
-									title : "Error"
-								});
-				                 validHeadersFlag = false;
-				    		}
-	            		} // end of for loop
+            			// Get proper column headers from the i18n model
+		                var oGMID = t._oi18nModel.getProperty("eGMID");
+		                var oCountry  = t._oi18nModel.getProperty("eCountry");
+		                var oStoredCurrency =t._oi18nModel.getProperty("eStoredCurrency"); 
+		                var oIbpRelevancy  = t._oi18nModel.getProperty("eIBPRelevancy");
+		                var oNettingDefault = t._oi18nModel.getProperty("eNettingDefault");
+		                var oQuadrant = t._oi18nModel.getProperty("eQuadrant");
+		                var oChannel = t._oi18nModel.getProperty("eChannel");
+		                var oMarketDefault = t._oi18nModel.getProperty("eMarketDefault");
+		                
+			            if (excelColumnHeaders[0] !== oGMID)
+			            {
+			                MessageBox.alert("Incorrect template format found. The first column should be: GMID",
+							{
+								icon : MessageBox.Icon.ERROR,
+								title : "Error"
+							});
+			                validHeadersFlag = false;
+			            }
+			            else if (excelColumnHeaders[1] !== oCountry)
+			            {
+			            	MessageBox.alert("Incorrect template format found. The second column should be: Country",
+							{
+								icon : MessageBox.Icon.ERROR,
+								title : "Error"
+							});
+			                validHeadersFlag = false;
+			            }
+			            else if (excelColumnHeaders[2] !== oStoredCurrency)
+			            {
+			            	MessageBox.alert("Incorrect template format found. The third column should be: Stored Currency",
+							{
+								icon : MessageBox.Icon.ERROR,
+								title : "Error"
+							});
+			                 validHeadersFlag = false;
+			            }
+			            else if (excelColumnHeaders[3] !== oIbpRelevancy)
+			            {
+			            	MessageBox.alert("Incorrect template format found. The fourth column should be: IBP Relevancy",
+							{
+								icon : MessageBox.Icon.ERROR,
+								title : "Error"
+							});
+			                 validHeadersFlag = false;
+			           	}
+			    		else if (excelColumnHeaders[4] !== oNettingDefault)
+			    		{
+			    			MessageBox.alert("Incorrect template format found. The fifth column should be: Netting Default",
+							{
+								icon : MessageBox.Icon.ERROR,
+								title : "Error"
+							});
+			                 validHeadersFlag = false;
+			    		}
+			    	    else if (excelColumnHeaders[5] !== oQuadrant)
+			    		{
+			    			MessageBox.alert("Incorrect template format found. The sixth column should be: Quadrant",
+							{
+								icon : MessageBox.Icon.ERROR,
+								title : "Error"
+							});
+			                 validHeadersFlag = false;
+			    		}
+			    	    else if (excelColumnHeaders[6] !== oChannel)
+			    		{
+			    			MessageBox.alert("Incorrect template format found. The seventh column should be: Channel",
+							{
+								icon : MessageBox.Icon.ERROR,
+								title : "Error"
+							});
+			                 validHeadersFlag = false;
+			    		}
+			    	    else if (excelColumnHeaders[7] !== oMarketDefault)
+			    		{
+			    			MessageBox.alert("Incorrect template format found. The eight column should be:  Market Default Flag",
+							{
+								icon : MessageBox.Icon.ERROR,
+								title : "Error"
+							});
+			                 validHeadersFlag = false;
+			    		}
 	            	} // end of else
 	
 					// if all the headers are correct
