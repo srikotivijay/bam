@@ -711,7 +711,11 @@ sap.ui.define([
 		    		}
 		    		else 
 		    		{
-		        			MessageToast.show("Error: All GMID's are not submitted successfully. Please contact System Admin.");
+	        			MessageBox.alert("Error: All GMID's are not submitted successfully. Please contact System Admin.",
+							{
+								icon : MessageBox.Icon.ERROR,
+								title : "Error"
+						});
 		    		}
 	    		
 	        	}
@@ -847,7 +851,11 @@ sap.ui.define([
 			        
 			        if (excelColumnHeaders.length !== parseInt(t._oi18nModel.getProperty("numOfHeaderColumns"),10))
 	            	{
-	            		MessageToast.show("Incorrect number of columns on template.");	
+	            		MessageBox.alert("Incorrect number of columns on template.",
+								{
+									icon : MessageBox.Icon.ERROR,
+									title : "Error"
+							});
 	            		validHeadersFlag = false;
 	            	}
 	            	else
@@ -866,42 +874,74 @@ sap.ui.define([
 			                
 				            if (excelColumnHeaders[0] !== oGMID)
 				            {
-				                MessageToast.show("Incorrect template format found. The first column should be: GMID");
+				                MessageBox.alert("Incorrect template format found. The first column should be: GMID",
+								{
+									icon : MessageBox.Icon.ERROR,
+									title : "Error"
+								});
 				                validHeadersFlag = false;
 				            }
 				            else if (excelColumnHeaders[1] !== oCountry)
 				            {
-				                MessageToast.show("Incorrect template format found. The second column should be: Country");
+				            	MessageBox.alert("Incorrect template format found. The first column should be: Country",
+								{
+									icon : MessageBox.Icon.ERROR,
+									title : "Error"
+								});
 				                validHeadersFlag = false;
 				            }
 				            else if (excelColumnHeaders[2] !== oStoredCurrency)
 				            {
-				                 MessageToast.show("Incorrect template format found. The third column should be: Stored Currency");
+				            	MessageBox.alert("Incorrect template format found. The first column should be: Stored Currency",
+								{
+									icon : MessageBox.Icon.ERROR,
+									title : "Error"
+								});
 				                 validHeadersFlag = false;
 				            }
 				            else if (excelColumnHeaders[3] !== oIbpRelevancy)
 				            {
-				                 MessageToast.show("Incorrect template format found. The fourth column should be: IBP Relevancy");
+				            	MessageBox.alert("Incorrect template format found. The first column should be: IBP Relevancy",
+								{
+									icon : MessageBox.Icon.ERROR,
+									title : "Error"
+								});
 				                 validHeadersFlag = false;
 				           	}
 				    		else if (excelColumnHeaders[4] !== oNettingDefault)
 				    		{
-				                 MessageToast.show("Incorrect template format found. The fifth column should be: Netting Default");
+				    			MessageBox.alert("Incorrect template format found. The first column should be: Netting Default",
+								{
+									icon : MessageBox.Icon.ERROR,
+									title : "Error"
+								});
 				                 validHeadersFlag = false;
 				    		}
 				    	    else if (excelColumnHeaders[5] !== oQuadrant)
 				    		{
-				                 MessageToast.show("Incorrect template format found. The sixth column should be: Quadrant");
+				    			MessageBox.alert("Incorrect template format found. The first column should be: Quadrant",
+								{
+									icon : MessageBox.Icon.ERROR,
+									title : "Error"
+								});
 				                 validHeadersFlag = false;
 				    		}
 				    	    else if (excelColumnHeaders[6] !== oChannel)
 				    		{
-				                 MessageToast.show("Incorrect template format found. The seventh column should be: Channel");
+				    			MessageBox.alert("Incorrect template format found. The first column should be: Channel",
+								{
+									icon : MessageBox.Icon.ERROR,
+									title : "Error"
+								});
 				                 validHeadersFlag = false;
 				    		}
 				    	    else if (excelColumnHeaders[7] !== oMarketDefault)
 				    		{
-				                 MessageToast.show("Incorrect template format found. The eight column should be: Market Default Flag");
+				    			MessageBox.alert("Incorrect template format found. The first column should be:  Market Default Flag",
+								{
+									icon : MessageBox.Icon.ERROR,
+									title : "Error"
+								});
 				                 validHeadersFlag = false;
 				    		}
 	            		} // end of for loop
@@ -955,7 +995,11 @@ sap.ui.define([
 			            
 			        	if (t._validDataFlag === true)
 				    	{
-				    	 	MessageToast.show("Invalid/empty fields were found and defaulted during import.");
+				    		MessageBox.alert("Invalid/empty fields were found and defaulted during import.",
+							{
+								icon : MessageBox.Icon.ERROR,
+								title : "Error"
+							});
 				    	}
 			            // add empty row a the bottom;
 			            t.addEmptyObject();
@@ -976,7 +1020,12 @@ sap.ui.define([
 			}; // end file read on load function
         },
         errorHandler : function(event){
-        	MessageToast("Error reading CSV file, please ensure the file is in CSV format.");
+        	MessageBox.alert("Error reading CSV file, please ensure the file is in CSV format.",
+			{
+				icon : MessageBox.Icon.ERROR,
+				title : "Error"
+			});
+        	
         },
         convertLabelToCodeId : function(row) {
         	// get all the dropdownlists

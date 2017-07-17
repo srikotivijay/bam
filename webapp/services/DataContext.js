@@ -4,8 +4,9 @@ sap.ui.define([
 	"sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator",
 	"sap/m/MessageToast",
-	"sap/ui/model/resource/ResourceModel"
-],function (Controller, History,Filter, FilterOperator,MessageToast,ResourceModel) {
+	"sap/ui/model/resource/ResourceModel",
+	"sap/m/MessageBox"
+],function (Controller, History,Filter, FilterOperator,MessageToast,ResourceModel,MessageBox) {
 	
 		var oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", {
 						json: true,
@@ -48,7 +49,11 @@ sap.ui.define([
 			    	
 			    },
 			    error: function() {
-			    	MessageToast.show("Error getting user ID. Please contact System Admin.");                         
+			    	MessageBox.alert("Error getting user ID. Please contact System Admin.",
+							{
+								icon : MessageBox.Icon.ERROR,
+								title : "Error"
+					});
 					result = "";
 			    }
 			});
@@ -83,7 +88,11 @@ sap.ui.define([
 								}
 							},
 							error: function(oError) {
-								MessageToast.show("Error getting user information. Please contact System Admin.");                         
+								MessageBox.alert("Error getting user information. Please contact System Admin.",
+								{
+									icon : MessageBox.Icon.ERROR,
+									title : "Error"
+								});
 								result = false;
 							}
 						});	
@@ -94,7 +103,11 @@ sap.ui.define([
 			    	}
 			    },
 			    error: function() {
-			    	MessageToast.show("Error getting user information. Please contact System Admin.");                         
+			    	MessageBox.alert("Error getting user information. Please contact System Admin.",
+					{
+						icon : MessageBox.Icon.ERROR,
+						title : "Error"
+					});                       
 					result = false;
 			    }
 			});
@@ -158,15 +171,23 @@ sap.ui.define([
 			            	result = permissionList;
 						},
 						error: function(oError) {
-							MessageToast.show("Error getting user roles. Please contact System Admin.");                         
+							MessageBox.alert("Error getting user roles. Please contact System Admin.",
+							{
+								icon : MessageBox.Icon.ERROR,
+								title : "Error"
+							});
 							result = [];
 						}
 					});	
 			    
 			    },
 			    error: function() {
-			       MessageToast.show("Error getting user roles. Please contact System Admin.");                         
-							result = [];
+			       MessageBox.alert("Error getting user roles. Please contact System Admin.",
+					{
+						icon : MessageBox.Icon.ERROR,
+						title : "Error"
+					});                       
+					result = [];
 			    }
 			 });
 			 
@@ -223,7 +244,11 @@ sap.ui.define([
             		result = GMIDCountryList;
                 },
                 error: function(oError) {
-                    MessageToast.show("Error getting GMID/Country List. Please contact System Admin.");                         
+                    MessageBox.alert("Error getting GMID/Country List. Please contact System Admin.",
+					{
+						icon : MessageBox.Icon.ERROR,
+						title : "Error"
+					});    
                     result = [];
                 }
             });
@@ -252,7 +277,11 @@ sap.ui.define([
 	                	else {maxID = oData.results[0].ID; }
 	                },
 	    		    error: function(){
-	            		MessageToast.show("Unable to retrieve max ID for GMID Ship from table.");
+	    		    	MessageBox.alert("Unable to retrieve max ID for GMID Ship from table. Please contact System Admin.",
+						{
+							icon : MessageBox.Icon.ERROR,
+							title : "Error"
+						}); 
 	    			}
 	    		});
 	    	return maxID;
@@ -289,14 +318,22 @@ sap.ui.define([
 				    	function(oError)
 				    	{
 				    		result = false;
-				    		MessageToast.show("Unable to delete staging records for user. Please contact System Admin.");
+				    		MessageBox.alert("Unable to delete staging records for user. Please contact System Admin.",
+							{
+								icon : MessageBox.Icon.ERROR,
+								title : "Error"
+							});
 				    	}
 				    );
 					
                 },
     		    error: function(){
     		    	result = false;
-            		MessageToast.show("Unable to retrieve staging records for user. Please contact System Admin.");
+            		MessageBox.alert("Unable to delete staging records for user. Please contact System Admin.",
+					{
+						icon : MessageBox.Icon.ERROR,
+						title : "Error"
+					});
     			}
 			});
 			
@@ -327,7 +364,11 @@ sap.ui.define([
 		                result =  oData.results;
 	                },
 	    		    error: function(){
-	            		MessageToast.show("Unable to retrieve countries.");
+    		    		MessageBox.alert("Unable to retrieve dropdown values for " + dropdownType + " Please contact System Admin.",
+						{
+							icon : MessageBox.Icon.ERROR,
+							title : "Error"
+						});
 	            		result = [];
 	    			}
 	    	});
@@ -357,7 +398,11 @@ sap.ui.define([
 	                   gmidcountrystatusID = oData.results[0].ID; 
 	                },
 	    		    error: function(){
-	            		MessageToast.show("Unable to retrieve Code ID for GMID Country Status.");
+    		    		MessageBox.alert("Unable to retrieve Code ID for GMID Country Status.",
+						{
+							icon : MessageBox.Icon.ERROR,
+							title : "Error"
+						});
 	    			}
 	    		});
 	    	return gmidcountrystatusID;
