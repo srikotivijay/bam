@@ -883,7 +883,7 @@ sap.ui.define([
 				            }
 				            else if (excelColumnHeaders[1] !== oCountry)
 				            {
-				            	MessageBox.alert("Incorrect template format found. The first column should be: Country",
+				            	MessageBox.alert("Incorrect template format found. The second column should be: Country",
 								{
 									icon : MessageBox.Icon.ERROR,
 									title : "Error"
@@ -892,7 +892,7 @@ sap.ui.define([
 				            }
 				            else if (excelColumnHeaders[2] !== oStoredCurrency)
 				            {
-				            	MessageBox.alert("Incorrect template format found. The first column should be: Stored Currency",
+				            	MessageBox.alert("Incorrect template format found. The third column should be: Stored Currency",
 								{
 									icon : MessageBox.Icon.ERROR,
 									title : "Error"
@@ -901,7 +901,7 @@ sap.ui.define([
 				            }
 				            else if (excelColumnHeaders[3] !== oIbpRelevancy)
 				            {
-				            	MessageBox.alert("Incorrect template format found. The first column should be: IBP Relevancy",
+				            	MessageBox.alert("Incorrect template format found. The fourth column should be: IBP Relevancy",
 								{
 									icon : MessageBox.Icon.ERROR,
 									title : "Error"
@@ -910,7 +910,7 @@ sap.ui.define([
 				           	}
 				    		else if (excelColumnHeaders[4] !== oNettingDefault)
 				    		{
-				    			MessageBox.alert("Incorrect template format found. The first column should be: Netting Default",
+				    			MessageBox.alert("Incorrect template format found. The fifth column should be: Netting Default",
 								{
 									icon : MessageBox.Icon.ERROR,
 									title : "Error"
@@ -919,7 +919,7 @@ sap.ui.define([
 				    		}
 				    	    else if (excelColumnHeaders[5] !== oQuadrant)
 				    		{
-				    			MessageBox.alert("Incorrect template format found. The first column should be: Quadrant",
+				    			MessageBox.alert("Incorrect template format found. The sixth column should be: Quadrant",
 								{
 									icon : MessageBox.Icon.ERROR,
 									title : "Error"
@@ -928,7 +928,7 @@ sap.ui.define([
 				    		}
 				    	    else if (excelColumnHeaders[6] !== oChannel)
 				    		{
-				    			MessageBox.alert("Incorrect template format found. The first column should be: Channel",
+				    			MessageBox.alert("Incorrect template format found. The seventh column should be: Channel",
 								{
 									icon : MessageBox.Icon.ERROR,
 									title : "Error"
@@ -937,7 +937,7 @@ sap.ui.define([
 				    		}
 				    	    else if (excelColumnHeaders[7] !== oMarketDefault)
 				    		{
-				    			MessageBox.alert("Incorrect template format found. The first column should be:  Market Default Flag",
+				    			MessageBox.alert("Incorrect template format found. The eight column should be:  Market Default Flag",
 								{
 									icon : MessageBox.Icon.ERROR,
 									title : "Error"
