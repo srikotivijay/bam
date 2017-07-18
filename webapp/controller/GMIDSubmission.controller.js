@@ -493,7 +493,7 @@ sap.ui.define([
             {
 	            // every time empty the GMID object
 	             gmid= {"GMID": "" };
-	             gmid.GMID = gmiddata[j].GMID;
+	             gmid.GMID = this.lpadstring(gmiddata[j].GMID);
 	             gmidList.push(gmid);
             }
             return gmidList;
