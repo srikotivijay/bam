@@ -121,6 +121,11 @@
 				"pattern": "editAttributesMultiple/{editAttributesIDs}",
 				"name": "editAttributesMultiple",
 				"target": "editAttributesMultiple"
+			},
+			{
+				"pattern": "GMIDPlant",
+				"name": "GMIDPlant",
+				"target": "GMIDPlant"
 			}, {
 				"pattern": "notFound",
 				"name": "notFound",
@@ -155,6 +160,10 @@
 				"editAttributesMultiple": {
 					"viewName": "EditAttributesMultiple",
 					"viewId": "editAttributesMultiple"
+				},
+				"GMIDPlant": {
+					"viewName": "GMIDPlant",
+					"viewId": "GMIDPlant"
 				},
 				"notFound": {
 					"viewName": "NotFound",

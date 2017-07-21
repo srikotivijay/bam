@@ -471,7 +471,7 @@ sap.ui.define([
 			                {
 			                	gmiddata[i].errorSummary += "\n";  
 			                }
-			                gmiddata[i].errorSummary += "Invalid GMID - GMID does not exist.";  
+			                gmiddata[i].errorSummary += "The GMID does not belong to " + this._oSelectedGMIDType.toUpperCase();  
 		        	  } // end for validgmidinput if
 	        	  } // end for gmiddata[i].GMID !==
 	        } // end for outre for loop

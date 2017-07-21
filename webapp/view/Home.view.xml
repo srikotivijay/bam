@@ -3,12 +3,15 @@
 		<pages>
 			<Page title="{i18n>title}">
 				<content>
-					<TileContainer allowAdd="true" id="tlCntHome" height="400px" width="55%">
+					<TileContainer allowAdd="true" id="tlCntHome" height="400px" width="80%">
 				        <tiles>
 				        	<StandardTile visible="{/showGMIDSubmission}" title="{i18n>gmidSubmission}" info="{i18n>gmidSubmissionHelptext}" icon="sap-icon://add-product" activeIcon="sap-icon://add-product" infoState="Success" id="tlGMIDSubmission" class="sapUiLargeMarginEnd" press="onGoToGMIDSubmission"/>
 				        </tiles>
 				        <tiles>
 				        	<StandardTile title="{i18n>maintainAttributes}" info="{i18n>maintainAttributesHelptext}" icon="sap-icon://user-edit" activeIcon="sap-icon://user-edit" infoState="Success" id="tlMaintainAttributes" class="sapUiLargeMarginEnd" press="onGoToMaintainAttributes"/>
+				        </tiles>
+				         <tiles>
+				        	<StandardTile title="{i18n>plantAssignment}" info="{i18n>plantAssignmentHelptext}" icon="sap-icon://add-activity" activeIcon="sap-icon://add-activity" infoState="Success" id="tlPlantAssignment" class="sapUiLargeMarginEnd" press="onGoToPlantAssignment"/>
 				        </tiles>
 				    </TileContainer>
 				</content>
