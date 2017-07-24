@@ -48,7 +48,7 @@ sap.ui.define([
 				oRouter.getRoute("gmidPlantAssignment").attachMatched(this._onRouteMatched, this);
 				firstTimePageLoad = false;
 	    	}
-			var gmidPlantAssignmentRecords;
+			var gmidPlantAssignmentRecords = [];
 		    // Get the GMID Plant combinations for the GMID-Country combination selected by the user
 		    var viewpath = "V_GMID_COUNTRY_PLANT_STATUS";
 		    	if(this._gmidIDs !== undefined)
@@ -57,33 +57,29 @@ sap.ui.define([
 			             gmidPlantAssignmentRecords = DataContext.getGMIDCountryPlantListFromDB(this._gmidIDsList,viewpath); 
 					}
 					
-		if (gmidPlantAssignmentRecords.length !==0){
-				//loop through the rows of the retruened data
-				for (var i = 0; i < gmidPlantAssignmentRecords.length; i++) {
-					var item =  gmidPlantAssignmentRecords.results[i];
-					key = item.GMID + ";" + item.COUNTRY_CODE;
-				    //check for the gmid and country combination key 
-				    if(!hash.contains(key))
-				    {
-				    	//if its a new combination add the key to existing list of combinations
-				        hash.add(key);
-				        groupedGMIDPlantCountry.push({ID: item.ID,
-				        						 GMID:item.GMID, 
-				        						 COUNTRY_CODE:item.COUNTRY_CODE, 
-				        						 PLANT_CODE: item.PLANT_CODE,
-	        									 IS_SELECTED: item.IS_SELECTED,
-	        									 PLANT_STATUS: item.PLANT_STATUS,
-	        									 PLANT_STATUS_DESC: item.PLANT_STATUS_DESC,
-				        						 PLANTS:[]});
+			if (gmidPlantAssignmentRecords.length !==0){
+					//loop through the rows of the retruened data
+					for (var i = 0; i < gmidPlantAssignmentRecords.length; i++) {
+						var item =  gmidPlantAssignmentRecords[i];
+						key = item.GMID + ";" + item.COUNTRY_CODE;
+					    //check for the gmid and country combination key 
+					    if(!hash.contains(key))
+					    {
+					    	//if its a new combination add the key to existing list of combinations
+					        hash.add(key);
+					        groupedGMIDPlantCountry.push({ID: item.ID,
+					        						 GMID:item.GMID, 
+					        						 COUNTRY_CODE:item.COUNTRY_CODE,
+					        						 PLANTS:[]});
+						}
+					    //find the object for the gmid and country combination and push the plant code to the nested plant object
+					    groupedGMIDPlantCountry.find(function(data){return data.GMID === item.GMID && data.COUNTRY_CODE === item.COUNTRY_CODE;}).PLANTS.push({PLANT_CODE: item.PLANT_CODE,IS_SELECTED : item.IS_SELECTED,PLANT_STATUS: item.PLANT_STATUS, PLANT_STATUS_DESC: item.PLANT_STATUS_DESC});
 					}
-				    //find the object for the gmid and country combination and push the plant code to the nested plant object
-				    groupedGMIDPlantCountry.find(function(data){return data.GMID === item.GMID && data.COUNTRY_CODE === item.COUNTRY_CODE;}).PLANTS.push({PLANT_CODE: item.PLANT_CODE,IS_SELECTED : item.IS_SELECTED});
-				}
-		}
+			}
 				
-                // Bind the Country data to the GMIDShipToCountry model
-                oModel.setProperty("/PlantSelectionVM",groupedGMIDPlantCountry);
-
+            // Bind the Country data to the GMIDShipToCountry model
+            oModel.setProperty("/GMIDPlantAssignmentVM",groupedGMIDPlantCountry);
+            this.getView().setModel(oModel);
     	},
     	getRouter : function () {
 				return sap.ui.core.UIComponent.getRouterFor(this);

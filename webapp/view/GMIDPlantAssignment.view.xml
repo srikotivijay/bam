@@ -21,32 +21,30 @@
 						    </Column>
 					        <Column id="clmHdrPlant">
 					            <header>
-					                <Label text="{i18n>plant}" id="lblHdrPlant"/>
+					                <Label text="{i18n>plant} - {i18n>plantstatus} ({i18n>plantstatusdesc})" id="lblHdrPlant"/>
 					            </header>
 					        </Column>
-					       <Column id="clmHdrPlantStatus">
-					            <header>
-					                <Label text="{i18n>plantstatus}" id="lblHdrPlantStatus"/>
-					            </header>
-					        </Column>
-					        <Column id="clmHdrPlantStatusDesc">
-					            <header>
-					                <Label text="{i18n>plantstatusdesc}" id="lblHdrPlantStatusDesc"/>
-					            </header>
-					        </Column>
+					        <!--<Column id="clmHdrPlantStatus">-->
+					        <!--    <header>-->
+					        <!--        <Label text="{i18n>plantstatus}" id="lblHdrPlantStatus"/>-->
+					        <!--    </header>-->
+					        <!--</Column>-->
+					        <!--<Column id="clmHdrPlantStatusDesc">-->
+					        <!--    <header>-->
+					        <!--        <Label text="{i18n>plantstatusdesc}" id="lblHdrPlantStatusDesc"/>-->
+					        <!--    </header>-->
+					        <!--</Column>-->
 					    </columns>
 					    <items>
 					        <ColumnListItem id="cliPlantSelection">
 					            <cells>
 					            	<Label id="lblGMID" text="{GMID}"/>
-					            	<Label id="lblCountry" text="{COUNTRY}"/>
+					            	<Label id="lblCountry" text="{COUNTRY_CODE}"/>
 					            	<List items="{path: 'PLANTS', templateShareable : true}" mode="MultiSelect">
 					            		<items>
-											<ObjectListItem title="{PLANT_CODE}" type="Active" selected="{IS_SELECTED}"/>
+											<ObjectListItem title="{PLANT_CODE} - {PLANT_STATUS} ({PLANT_STATUS_DESC})" type="Active" selected="false"/>
 										</items>
 									</List>
-									<Label id="lblPlantStatus" text="{PLANT_STATUS}"/>
-									<Label id="lblPlantStatusDesc" text="{PLANT_STATUS_DESC}"/>
 					            </cells>
 					        </ColumnListItem>
 					    </items>
@@ -55,7 +53,7 @@
 				<Toolbar width="100%" id="tbrSubmit">
 				     <content>
 				         <ToolbarSpacer id="tbrSpSubmit"/>
-							 <Button text="{i18n>cancel}" width="100px" id="btnCancel" press="onCancel" class="sapUiLargeMarginEnd"/>
+							 <!--<Button text="{i18n>cancel}" width="100px" id="btnCancel" press="onCancel" class="sapUiLargeMarginEnd"/>-->
 				          </content>
 				 </Toolbar>
 				</content>
