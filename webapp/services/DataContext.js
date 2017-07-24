@@ -412,17 +412,16 @@ sap.ui.define([
     	function getGMIDCountryPlantListFromDB(gmididsList,viewpath) {
             var result;                            
             var gmididFilterArray = [];
-            for(var i = 0; i < gmididsList.length; i++)
-            {
-            	 var gmididFilter = new Filter("GMID",sap.ui.model.FilterOperator.EQ,gmididsList[i]);
-            	 var gmididFilterList = new Filter ({
+            gmididsList.forEach(function(item) {
+	            var gmidFilter = new Filter("ID",sap.ui.model.FilterOperator.EQ,item.ID);
+	            var gmidFilterList = new Filter ({
                     filters : [
-                        gmididFilter
+                        gmidFilter
                         ],
-                        and : false
+                        and : true
                     });
-	            gmididFilterArray.push(gmididFilterList);
-            }
+	            gmididFilterArray.push(gmidFilterList);
+            });
             // Get data for all GMIDS Entered in UI
             oDataModel.read(viewpath, {
                 filters: gmididFilterArray,
@@ -434,7 +433,7 @@ sap.ui.define([
 		            //GMIDCountryPlantList.push(item);
 		          //  });
             	//	result = GMIDCountryPlantList;
-            		result = oData.result;
+            		result = oData.results;
                 },
                 error: function(oError) {
                     MessageBox.alert("Error getting GMID/Country Plant List. Please contact System Admin.",
