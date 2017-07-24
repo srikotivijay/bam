@@ -407,7 +407,47 @@ sap.ui.define([
 	    		});
 	    	return gmidcountrystatusID;
 		}
-         
+        
+        // function to get GMID/Country Plant Combinations from DB
+    	function getGMIDCountryPlantListFromDB(gmididsList,viewpath) {
+            var result;                            
+            var gmididFilterArray = [];
+            for(var i = 0; i < gmididsList.length; i++)
+            {
+            	 var gmididFilter = new Filter("GMID",sap.ui.model.FilterOperator.EQ,gmididsList[i]);
+            	 var gmididFilterList = new Filter ({
+                    filters : [
+                        gmididFilter
+                        ],
+                        and : false
+                    });
+	            gmididFilterArray.push(gmididFilterList);
+            }
+            // Get data for all GMIDS Entered in UI
+            oDataModel.read(viewpath, {
+                filters: gmididFilterArray,
+                async: false,
+				success: function(oData, oResponse) {
+                   // var GMIDCountryPlantList = [];
+		            // get all the GMID/Country List for each row returned
+		           // oData.results.forEach(function(item) {
+		            //GMIDCountryPlantList.push(item);
+		          //  });
+            	//	result = GMIDCountryPlantList;
+            		result = oData.result;
+                },
+                error: function(oError) {
+                    MessageBox.alert("Error getting GMID/Country Plant List. Please contact System Admin.",
+					{
+						icon : MessageBox.Icon.ERROR,
+						title : "Error"
+					});    
+                    result = [];
+                }
+            });
+			return result;
+		}
+		
 		var exports = {
 			getAttributeListBasedOnUserID: getAttributeListBasedOnUserID,
 			getUserID: getUserID,
@@ -417,7 +457,8 @@ sap.ui.define([
 			isBAMUser : isBAMUser,
 			getDropdownValues: getDropdownValues,
 			deleteStagingData: deleteStagingData,
-			getGMIDCountryStatusID: getGMIDCountryStatusID
+			getGMIDCountryStatusID: getGMIDCountryStatusID,
+			getGMIDCountryPlantListFromDB : getGMIDCountryPlantListFromDB
 		};
 	
 		return exports;

@@ -56,7 +56,7 @@ sap.ui.define([
 		},
 		// Navigate to Maintain Attributes page
 		onGoToPlantAssignment: function(){
-			this.getOwnerComponent().getRouter().navTo("GMIDPlant");
+			this.getOwnerComponent().getRouter().navTo("gmidPlant");
 		}
   	});
 });
