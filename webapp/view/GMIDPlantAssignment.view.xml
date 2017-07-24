@@ -42,7 +42,7 @@
 					            	<Label id="lblCountry" text="{COUNTRY_CODE}"/>
 					            	<List items="{path: 'PLANTS', templateShareable : true}" mode="MultiSelect">
 					            		<items>
-											<ObjectListItem title="{PLANT_CODE} - {PLANT_STATUS} ({PLANT_STATUS_DESC})" type="Active" selected="false"/>
+											<ObjectListItem title="{PLANT_CODE} - {PLANT_STATUS} ({PLANT_STATUS_DESC})" type="Active" selected="{IS_SELECTED}"/>
 										</items>
 									</List>
 					            </cells>

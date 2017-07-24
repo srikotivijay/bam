@@ -410,15 +410,15 @@ sap.ui.define([
         
         // function to get GMID/Country Plant Combinations from DB
     	function getGMIDCountryPlantListFromDB(gmididsList,viewpath) {
-            var result;                            
+           var result;                            
             var gmididFilterArray = [];
-            gmididsList.forEach(function(item) {
+              gmididsList.forEach(function(item) {
 	            var gmidFilter = new Filter("ID",sap.ui.model.FilterOperator.EQ,item.ID);
 	            var gmidFilterList = new Filter ({
                     filters : [
                         gmidFilter
                         ],
-                        and : true
+                        and : false
                     });
 	            gmididFilterArray.push(gmidFilterList);
             });

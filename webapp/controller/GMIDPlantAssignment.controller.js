@@ -51,7 +51,7 @@ sap.ui.define([
 			var gmidPlantAssignmentRecords = [];
 		    // Get the GMID Plant combinations for the GMID-Country combination selected by the user
 		    var viewpath = "V_GMID_COUNTRY_PLANT_STATUS";
-		    	if(this._gmidIDs !== undefined)
+		    	if(this._gmidIDsList !== undefined)
 					{
 			             // get all the GMID/Plants data for the GMIDS entered in UI
 			             gmidPlantAssignmentRecords = DataContext.getGMIDCountryPlantListFromDB(this._gmidIDsList,viewpath); 
@@ -71,6 +71,14 @@ sap.ui.define([
 					        						 GMID:item.GMID, 
 					        						 COUNTRY_CODE:item.COUNTRY_CODE,
 					        						 PLANTS:[]});
+						}
+						if (item.IS_SELECTED === "FALSE")
+						{
+							item.IS_SELECTED = false;
+						}
+						else
+						{
+							item.IS_SELECTED = true;
 						}
 					    //find the object for the gmid and country combination and push the plant code to the nested plant object
 					    groupedGMIDPlantCountry.find(function(data){return data.GMID === item.GMID && data.COUNTRY_CODE === item.COUNTRY_CODE;}).PLANTS.push({PLANT_CODE: item.PLANT_CODE,IS_SELECTED : item.IS_SELECTED,PLANT_STATUS: item.PLANT_STATUS, PLANT_STATUS_DESC: item.PLANT_STATUS_DESC});
@@ -92,17 +100,18 @@ sap.ui.define([
 			}
 			else
 			{
-					var gmid; 
-        	 // prepare an array of GMIDs from the UI
-        		 this._gmidIDsList = [];
 				this._gmidIDs = oEvent.getParameter("arguments").gmidids.split(",");
-				for(var j = 0; j < 	this._gmidIDs.length; j++) 
-		            {
-			            // every time empty the GMID object
-			             gmid= {"GMID": "" };
-			             gmid.ID = this._gmidIDs[0];
-			             this._gmidIDsList.push(gmid);
-		            }
+				var gmid; 
+	        	 // prepare an array of GMIDs from the UI
+	            var gmidList = [];
+	            for(var j = 0; j < this._gmidIDs.length; j++) 
+	            {
+		            // every time empty the GMID object
+		             gmid= {"ID": "" };
+		             gmid.ID =this._gmidIDs[j];
+		             gmidList.push(gmid);
+	            }
+	            this._gmidIDsList = gmidList;
 				this.onInit();
 			}
 		},
