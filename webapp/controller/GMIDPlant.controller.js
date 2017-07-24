@@ -70,18 +70,7 @@ sap.ui.define([
 				this._oSmartTable = this.getView().byId("smartTblBAMAttributes").getTable();
 				// check if more than or less than 1 checkbox is checked
 				var index,context,path,indexOfParentheses1,indexOfParentheses2;
-				if(this._oSmartTable.getSelectedIndices().length === 1){
-					index = this._oSmartTable.getSelectedIndices();
-					context = this._oSmartTable.getContextByIndex(index[0]); 
-					path = context.getPath();
-					indexOfParentheses1 = path.indexOf("(");
-					indexOfParentheses2 = path.indexOf(")");
-					// navigate to single edit page
-					this.getOwnerComponent().getRouter().navTo("gmidPlantAssignment",{
-						 editAttributesID : path.substring(indexOfParentheses1 + 1,indexOfParentheses2)
-					});
-				}
-				else if(this._oSmartTable.getSelectedIndices().length > 1){
+				 if(this._oSmartTable.getSelectedIndices().length >= 1){
 					index = this._oSmartTable.getSelectedIndices();
 					var gmidids="";
 					for (var i=0;i < index.length;i++)
@@ -100,8 +89,8 @@ sap.ui.define([
 					//indexOfParentheses1 = path.indexOf("(");
 					//indexOfParentheses2 = path.indexOf(")");
 					// navigate to multiple edit page
-					this.getOwnerComponent().getRouter().navTo("editAttributesMultiple",{
-						 editAttributesIDs : gmidids
+					this.getOwnerComponent().getRouter().navTo("gmidPlantAssignment",{
+						 gmidids : gmidids
 					});
 				}
 				else
