@@ -43,7 +43,7 @@ sap.ui.define([
 		    	
 		    	//attach _onRouteMatched to be called everytime on navigation to Maintain Attributes page
 		    	var oRouter = this.getRouter();
-				oRouter.getRoute("GMIDPlant").attachMatched(this._onRouteMatched, this);
+				oRouter.getRoute("gmidPlant").attachMatched(this._onRouteMatched, this);
 			},
 			getRouter : function () {
 				return sap.ui.core.UIComponent.getRouterFor(this);
@@ -65,7 +65,7 @@ sap.ui.define([
 				this.getOwnerComponent().getRouter().navTo("home");
 			},
 			// navigate to edit attribute page on click of edit
-			onPlantAssignment: function(){
+			onViewPlantAssignment: function(){
 				// get the smart table control
 				this._oSmartTable = this.getView().byId("smartTblBAMAttributes").getTable();
 				// check if more than or less than 1 checkbox is checked
@@ -77,7 +77,7 @@ sap.ui.define([
 					indexOfParentheses1 = path.indexOf("(");
 					indexOfParentheses2 = path.indexOf(")");
 					// navigate to single edit page
-					this.getOwnerComponent().getRouter().navTo("editAttributesSingle",{
+					this.getOwnerComponent().getRouter().navTo("gmidPlantAssignment",{
 						 editAttributesID : path.substring(indexOfParentheses1 + 1,indexOfParentheses2)
 					});
 				}
