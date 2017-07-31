@@ -61,7 +61,7 @@ sap.ui.define([
 					//loop through the rows of the retruened data
 					for (var i = 0; i < gmidPlantAssignmentRecords.length; i++) {
 						var item =  gmidPlantAssignmentRecords[i];
-						key = item.GMID + ";" + item.COUNTRY_CODE;
+						key = item.GMID + ";" + item.COUNTRY;
 					    //check for the gmid and country combination key 
 					    if(!hash.contains(key))
 					    {
@@ -69,7 +69,7 @@ sap.ui.define([
 					        hash.add(key);
 					        groupedGMIDPlantCountry.push({ID: item.ID,
 					        						 GMID:item.GMID, 
-					        						 COUNTRY_CODE:item.COUNTRY_CODE,
+					        						 COUNTRY:item.COUNTRY,
 					        						 PLANTS:[]});
 						}
 						// check if the plant code is already associated with GMID Country combination
@@ -83,7 +83,7 @@ sap.ui.define([
 							item.IS_SELECTED = true;
 						}
 					    //find the object for the gmid and country combination and push the plant code to the nested plant object
-					    groupedGMIDPlantCountry.find(function(data){return data.GMID === item.GMID && data.COUNTRY_CODE === item.COUNTRY_CODE;}).PLANTS.push({PLANT_CODE: item.PLANT_CODE,IS_SELECTED : item.IS_SELECTED,PLANT_STATUS: item.PLANT_STATUS, PLANT_STATUS_DESC: item.PLANT_STATUS_DESC});
+					    groupedGMIDPlantCountry.find(function(data){return data.GMID === item.GMID && data.COUNTRY === item.COUNTRY;}).PLANTS.push({PLANT_CODE: item.PLANT_CODE,IS_SELECTED : item.IS_SELECTED,PLANT_STATUS: item.PLANT_STATUS, PLANT_STATUS_DESC: item.PLANT_STATUS_DESC});
 					}
 			}
 				
