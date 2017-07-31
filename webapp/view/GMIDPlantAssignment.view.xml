@@ -41,8 +41,8 @@
 					            	<Label id="lblGMID" text="{GMID}"/>
 					            	<Label id="lblCountry" text="{COUNTRY_CODE}"/>
 					            	<List items="{path: 'PLANTS', templateShareable : true}" mode="MultiSelect">
-					            		<items>
-											<ObjectListItem title="{PLANT_CODE} - {PLANT_STATUS} ({PLANT_STATUS_DESC})" type="Active" selected="{IS_SELECTED}"/>
+					            		<items >
+											<ObjectListItem title="{PLANT_CODE} - {PLANT_STATUS} ({PLANT_STATUS_DESC})" type="Active" selected="{IS_SELECTED}" />
 										</items>
 									</List>
 					            </cells>
@@ -53,7 +53,7 @@
 				<Toolbar width="100%" id="tbrSubmit">
 				     <content>
 				         <ToolbarSpacer id="tbrSpSubmit"/>
-							 <!--<Button text="{i18n>cancel}" width="100px" id="btnCancel" press="onCancel" class="sapUiLargeMarginEnd"/>-->
+							 <Button text="{i18n>cancel}" width="100px" id="btnCancel" press="onCancel" class="sapUiLargeMarginEnd"/>
 				          </content>
 				 </Toolbar>
 				</content>

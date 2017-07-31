@@ -22,7 +22,6 @@ sap.ui.define([
                 	bundleName: "bam.i18n.i18n"
             	});
             	
-            	this._oModel.setProperty("/plantAssignmentText",oi18nModel.getProperty("viewPlants"));
 	    		// get the Module settings for i18n model
         		var plantAssignment = oi18nModel.getProperty("Module.plantAssignment");
         		var actionAdd = oi18nModel.getProperty("Module.actionAdd");
@@ -39,6 +38,16 @@ sap.ui.define([
 						// break since the user may have more than one role, as long as one of the user roles has permission to edit we can show the button
 						break;
 					}
+					else
+					{
+						if(permissions[i].ATTRIBUTE === plantAssignment && permissions[i].ACTION === actionAdd)
+						{
+							this._oModel.setProperty("/plantAssignmentText",oi18nModel.getProperty("viewPlants"));
+							// break since the user may have more than one role, as long as one of the user roles has permission to view we can show the button
+							break;
+						}
+					}
+					// change button text to Add
 				}
 		    	
 		    	//attach _onRouteMatched to be called everytime on navigation to Maintain Attributes page
@@ -75,27 +84,22 @@ sap.ui.define([
 					var gmidids="";
 					for (var i=0;i < index.length;i++)
 					{
-				
-					context = this._oSmartTable.getContextByIndex(index[i]); 	
-					path = context.getPath();
-					indexOfParentheses1 = path.indexOf("(");
-					indexOfParentheses2 = path.indexOf(")");
-					gmidids+=path.substring(indexOfParentheses1 + 1,indexOfParentheses2);
-					gmidids+=",";
-					// navigate to multiple edit page
+						context = this._oSmartTable.getContextByIndex(index[i]); 	
+						path = context.getPath();
+						indexOfParentheses1 = path.indexOf("(");
+						indexOfParentheses2 = path.indexOf(")");
+						gmidids+=path.substring(indexOfParentheses1 + 1,indexOfParentheses2);
+						gmidids+=",";
 					}
 					gmidids = gmidids.substring(0, gmidids.length - 1);
-					//path = context.getPath();
-					//indexOfParentheses1 = path.indexOf("(");
-					//indexOfParentheses2 = path.indexOf(")");
-					// navigate to multiple edit page
+					// navigate to gmid plant assignment page
 					this.getOwnerComponent().getRouter().navTo("gmidPlantAssignment",{
 						 gmidids : gmidids
 					});
 				}
 				else
 				{
-					MessageBox.alert("Please select one GMID - Country record for edit.",
+					MessageBox.alert("Please select one GMID - Country record for view.",
 						{
 							icon : MessageBox.Icon.ERROR,
 							title : "Error"

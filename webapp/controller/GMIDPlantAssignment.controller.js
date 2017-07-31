@@ -72,7 +72,9 @@ sap.ui.define([
 					        						 COUNTRY_CODE:item.COUNTRY_CODE,
 					        						 PLANTS:[]});
 						}
-						if (item.IS_SELECTED === "FALSE")
+						// check if the plant code is already associated with GMID Country combination
+						// if associated make it as selected
+						if (item.IS_SELECTED === "false")
 						{
 							item.IS_SELECTED = false;
 						}
