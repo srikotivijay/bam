@@ -193,8 +193,7 @@ sap.ui.define([
     	
     		// Create current timestamp
     		var oDate = new Date();
-    		// Get the MaxID for the GMID Ship to Country
-    	    var maxGMIDShipToID = DataContext.getMaxID("/GMID_SHIP_TO_COUNTRY");
+    	
     	    // Get the code id for GMID Country Status
     	    var gmidcountrystatusID = DataContext.getGMIDCountryStatusID();
     	    
@@ -242,7 +241,7 @@ sap.ui.define([
 					var selectedGMIDType = GMIDShipToCountry[i].TYPE;
 					// create new GMIDShipToCountry object
 					var newGMID = {
-			        	ID: maxGMIDShipToID + 1 + i,
+			        	ID: 1,
 			        	GMID: GMID,
 			        	COUNTRY_CODE_ID: countryID,
 			        	CURRENCY_CODE_ID: storedcurrencyID,
@@ -259,6 +258,7 @@ sap.ui.define([
 	    			};
 	    			
 	    			var maxGMIDShipFromPlantID = DataContext.getMaxID("/GMID_COUNTRY_SHIP_FROM_PLANT");
+	    				// Get the MaxID for the GMID Ship to Country
 	    			
 	        		this._oDataModel.create("/GMID_SHIP_TO_COUNTRY", newGMID,
 	        		{
@@ -266,7 +266,7 @@ sap.ui.define([
 			        		successGMIDShipToCount++;
 			        		// Get the MaxID for the GMID Ship from Plant
 
-	    	    			
+	    	    			 var maxGMIDShipToID = DataContext.getMaxID("/GMID_SHIP_TO_COUNTRY");
 			        		// once data is inserted into GMID Ship to Country, 
 			        		// insert the data into GMID_COUNTRY_SHIP_FROM_PLANT
 			        		// each GMID Country combination can have one or more plants
@@ -281,8 +281,8 @@ sap.ui.define([
 										var gmidshipfromplantcreatedBy =  GMIDShipToCountry[i].CREATED_BY;
 										// create new GMIDShipFromPlant object
 										var newGMIDShipFromPlant = {
-								        	ID: maxGMIDShipFromPlantID + 1 + j,
-								        	GMID_SHIP_TO_COUNTRY_ID: maxGMIDShipToID + 1 + i,
+								        	ID: 1 ,
+								        	GMID_SHIP_TO_COUNTRY_ID: maxGMIDShipToID,
 								        	GMID_SHIP_FROM_PLANT_ID: gmidshipfromplantID,
 								        	CREATED_ON: oDate,
 								        	CREATED_BY:gmidshipfromplantcreatedBy

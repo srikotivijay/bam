@@ -674,7 +674,7 @@ sap.ui.define([
 						var createdBy = loggedInUserID;
 						// create new GMIDShipToCountry object
 						var newGMID = {
-				        	ID: maxID + 1 + i,
+				        	ID: 1 ,
 				        	GMID: GMID,
 				        	COUNTRY_CODE_ID: countryID,
 				        	CURRENCY_CODE_ID: storedcurrencyID,
