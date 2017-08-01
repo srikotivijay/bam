@@ -5,8 +5,9 @@ sap.ui.define([
 		"sap/m/MessageBox",
 		"sap/ui/model/resource/ResourceModel",
 		"sap/ui/model/Filter",
+		"sap/ui/core/routing/History",
 		"bam/services/DataContext"
-	], function (Controller, JSONModel, MessageToast, MessageBox, ResourceModel,Filter,DataContext) {
+	], function (Controller, JSONModel, MessageToast, MessageBox, ResourceModel,Filter,History,DataContext) {
 		"use strict";
 
 	var firstTimePageLoad = true;
@@ -117,14 +118,17 @@ sap.ui.define([
 				this.onInit();
 			}
 		},
-		// navigate back to the homepage
-		onHome: function(){
-				this.getOwnerComponent().getRouter().navTo("home");
-		},
-		//cancel click on Gmid Plant  page
-		onCancel: function(){
-			var curr = this;
-	        curr.getOwnerComponent().getRouter().navTo("gmidPlant");
+		// navigate back to GMID Plants Page
+		onNavBack: function () {
+			var oHistory = History.getInstance();
+			var sPreviousHash = oHistory.getPreviousHash();
+	
+			if (sPreviousHash !== undefined) {
+				window.history.go(-1);
+			} else {
+				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+				oRouter.navTo("gmidPlant", true);
+			}
 		}
   	});
 });

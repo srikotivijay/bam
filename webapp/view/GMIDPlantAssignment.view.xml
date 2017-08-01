@@ -1,10 +1,7 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:layout="sap.ui.layout" xmlns:html="http://www.w3.org/1999/xhtml" controllerName="bam.controller.GMIDPlantAssignment">
 	<App id="gmidPlantAssignment">
 		<pages>
-			<Page title="{i18n>title}" class="sapUiResponsiveContentPadding">
-				<headerContent>
-					<Button id="btnHome" icon="sap-icon://home" tooltip="{i18n>home}" press="onHome"/>
-				</headerContent>
+			<Page title="{i18n>title}" class="sapUiResponsiveContentPadding" showNavButton="true" navButtonPress="onNavBack">
 				<content>
 				<ScrollContainer horizontal="true"> 
 					<Table noDataText="No records to display" id="tblGMIDPlantAssignment" width="auto" items="{/GMIDPlantAssignmentVM}">
@@ -14,7 +11,7 @@
 							        <Label text="{i18n>gmid}" id="lblHdrGMID"/>
 							    </header>
 						    </Column>
-						    <Column id="clmHdrCountry" width="150px">
+						    <Column id="clmHdrCountry" width="250px">
 							    <header>
 							        <Label text="{i18n>country}" id="lblHdrCountry"/>
 							    </header>
@@ -53,7 +50,7 @@
 				<Toolbar width="100%" id="tbrSubmit">
 				     <content>
 				         <ToolbarSpacer id="tbrSpSubmit"/>
-							 <Button text="{i18n>cancel}" width="100px" id="btnCancel" press="onCancel" class="sapUiLargeMarginEnd"/>
+							 <!--<Button text="{i18n>cancel}" width="100px" id="btnCancel" press="onCancel" class="sapUiLargeMarginEnd"/>-->
 				          </content>
 				 </Toolbar>
 				</content>
