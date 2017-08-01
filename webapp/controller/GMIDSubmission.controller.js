@@ -559,7 +559,20 @@ sap.ui.define([
     		var errorCount = 0;
     		var successCount = 0;
     		var GMIDShipToCountry = this._oGMIDShipToCountryViewModel.getProperty("/GMIDShipToCountryVM");
-		
+    		  // current limit for saving is 200 records
+			  // check if GMID Submission Grid  has more than 200 records
+			  // if more than 200 than show a validation message to user
+			 var maxLimitSubmit = parseInt(this._oi18nModel.getProperty("MaxLimit"),10);
+			 var maxLimitSubmitText = this._oi18nModel.getProperty("MaxLimitSubmit.text");
+			 	if (GMIDShipToCountry.length > maxLimitSubmit)
+			        {
+			        	MessageBox.alert(maxLimitSubmitText,
+			        	{
+			        		icon : MessageBox.Icon.ERROR,
+							title : "Error"
+			        	});
+			        	return;
+			        }
 			
     		// if there are no GMIDs show a validation message
     		if (GMIDShipToCountry.length === 1)
@@ -661,7 +674,7 @@ sap.ui.define([
 						var createdBy = loggedInUserID;
 						// create new GMIDShipToCountry object
 						var newGMID = {
-				        	ID: maxID + 1 + i,
+				        	ID: 1 ,
 				        	GMID: GMID,
 				        	COUNTRY_CODE_ID: countryID,
 				        	CURRENCY_CODE_ID: storedcurrencyID,
@@ -848,7 +861,22 @@ sap.ui.define([
 			        var allTextLines = strCSV.split(/\r\n|\n/);
 			        var excelColumnHeaders = allTextLines[0].split(",");
 			        var validHeadersFlag = true;
-			        
+			        // current limit for excel upload is 200 records
+			        // check if excel has more than 200 records
+			        // if more than 200 than show a validation message to user
+			        var maxLimitExcel = parseInt(t._oi18nModel.getProperty("MaxLimit"),10);
+			        var maxLimitExcelText = t._oi18nModel.getProperty("MaxLimitExcel.text");
+			        if (allTextLines.length > maxLimitExcel)
+			        {
+			        	MessageBox.alert(maxLimitExcelText,
+			        	{
+			        		icon : MessageBox.Icon.ERROR,
+							title : "Error"
+			        	});
+			        	 // close busy dialog
+						t._busyDialog.close();
+			        	return;
+			        }
 			        if (excelColumnHeaders.length !== parseInt(t._oi18nModel.getProperty("numOfHeaderColumns"),10))
 	            	{
 	            		MessageBox.alert("Incorrect number of columns on template.",

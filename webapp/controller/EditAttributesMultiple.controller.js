@@ -490,6 +490,19 @@ sap.ui.define([
 		//click of submit button
 		onSubmit: function(){
 			var curr = this;
+			// Check if any Attributes have the comma or semicolon,
+			// need to show message to use if either of these ( , or ;) are entered
+		    //get the list of updated attributes where special characters are entered
+		   var invalidCharUpdatedAttributes = curr.getInvalidCharUpdatedAttributes();
+	  	   if (invalidCharUpdatedAttributes !== "")
+	        {
+	        	MessageBox.alert("Special characters comma and semi-colon are not allowed in " + invalidCharUpdatedAttributes + ".",
+		        	{
+		        		icon : MessageBox.Icon.ERROR,
+						title : "Error"
+		        	});
+		        	return;
+	        }
 			//get the list of updated attributes
 			var updatedAttributesList = curr.getUpdatedAttributes();
 			// check if there are any changes to be updated
@@ -512,6 +525,37 @@ sap.ui.define([
 	       		});
 			}
 		},
+		  //get the list of  attributes in string format where invalid characters has been entered
+			getInvalidCharUpdatedAttributes: function(){
+				// get the crop protection and seeds value from i18n file
+		    	var oi18nModel = this.getView().getModel("i18n");
+				var invalidCharacterAttributesString = "";
+				if (this.getView().byId("txtDemandAtt1").getValue().indexOf(",") >= 0 || this.getView().byId("txtDemandAtt1").getValue().indexOf(";") >= 0){
+					invalidCharacterAttributesString += oi18nModel.getProperty("demandAtt1");
+					invalidCharacterAttributesString += ", ";
+				}
+				if (this.getView().byId("txtDemandAtt2").getValue().indexOf(",") >= 0 || this.getView().byId("txtDemandAtt2").getValue().indexOf(";") >= 0){
+					invalidCharacterAttributesString += oi18nModel.getProperty("demandAtt2");
+					invalidCharacterAttributesString += ", ";
+				}
+				if (this.getView().byId("txtMktAtt1").getValue().indexOf(",") >= 0 || this.getView().byId("txtMktAtt1").getValue().indexOf(";") >= 0){
+					invalidCharacterAttributesString += oi18nModel.getProperty("mktAtt1");
+					invalidCharacterAttributesString += ", ";
+				}
+				if (this.getView().byId("txtMktAtt2").getValue().indexOf(",") >= 0 || this.getView().byId("txtMktAtt2").getValue().indexOf(";") >= 0){
+					invalidCharacterAttributesString += oi18nModel.getProperty("mktAtt2");
+					invalidCharacterAttributesString += ", ";
+				}
+				if (this.getView().byId("txtSupplyAtt1").getValue().indexOf(",") >= 0 || this.getView().byId("txtSupplyAtt1").getValue().indexOf(";") >= 0){
+					invalidCharacterAttributesString += oi18nModel.getProperty("supplyAtt1");
+					invalidCharacterAttributesString += ", ";
+				}
+				if (this.getView().byId("txtSupplyAtt2").getValue().indexOf(",") >= 0 || this.getView().byId("txtSupplyAtt2").getValue().indexOf(";") >= 0){
+					invalidCharacterAttributesString += oi18nModel.getProperty("supplyAtt2");
+					invalidCharacterAttributesString += ", ";
+				}
+				return invalidCharacterAttributesString.substring(0, invalidCharacterAttributesString.length - 2);
+			},
 		//create object of updated attributes only
 		createUpdateObject: function(){
 			// Create current timestamp
