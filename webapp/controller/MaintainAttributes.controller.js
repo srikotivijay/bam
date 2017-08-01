@@ -7,6 +7,7 @@ sap.ui.define([
 	], function (Controller,MessageToast,MessageBox,DataContext,ResourceModel) {
 		"use strict";
 
+	var firstTimePageLoad = true;
 	return Controller.extend("bam.controller.MaintainAttributes", {
 			onInit : function () {
 				 // define a global variable for the oData model		    
@@ -39,9 +40,12 @@ sap.ui.define([
 					}
 				}
 		    	
-		    	//attach _onRouteMatched to be called everytime on navigation to Maintain Attributes page
-		    	var oRouter = this.getRouter();
-				oRouter.getRoute("maintainAttributes").attachMatched(this._onRouteMatched, this);
+		    	if(firstTimePageLoad)
+		    	{
+		    		//attach _onRouteMatched to be called everytime on navigation to Maintain Attributes page
+		    		var oRouter = this.getRouter();
+					oRouter.getRoute("maintainAttributes").attachMatched(this._onRouteMatched, this);
+		    	}
 			},
 			getRouter : function () {
 				return sap.ui.core.UIComponent.getRouterFor(this);
@@ -55,7 +59,14 @@ sap.ui.define([
 				}
 				else
 				{
-					this.onInit();
+					if(firstTimePageLoad)
+					{
+						firstTimePageLoad = false;
+					}
+					else
+					{
+						this.onInit();
+					}
 				}
 			},
 			// navigate back to the homepage
