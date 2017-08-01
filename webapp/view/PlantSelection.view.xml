@@ -24,9 +24,14 @@
 							        <Label text="{i18n>country}" id="lblHdrCountry"/>
 							    </header>
 						    </Column>
-					        <Column id="clmHdrPlant">
+					        <Column id="clmHdrPlant" width="25px">
 					            <header>
-					                <Label text="{i18n>plant}" id="lblHdrPlant"/>
+					                <Label text="" id="lblHdrPlant"/>
+					            </header>
+					        </Column>
+					           <Column id="clmHdrPlantCode">
+					            <header>
+					                <Label text="{i18n>plantCode}" id="lblHdrPlantCode"/>
 					            </header>
 					        </Column>
 					      
@@ -39,7 +44,12 @@
 					            	<Label id="lblCountry" text="{COUNTRY}"/>
 					            	<List items="{path: 'PLANTS', templateShareable : true}" mode="MultiSelect">
 					            		<items>
-											<ObjectListItem title="{PLANT_CODE}" type="Active" selected="{IS_SELECTED}"/>
+											<ObjectListItem type="Active" selected="{IS_SELECTED}"/>
+										</items>
+									</List>
+									<List items="{path: 'PLANTS', templateShareable : true}">
+					            		<items>
+											<ObjectListItem title="{PLANT_CODE}"/>
 										</items>
 									</List>
 					            </cells>
