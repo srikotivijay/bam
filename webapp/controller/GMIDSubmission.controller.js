@@ -16,7 +16,8 @@ sap.ui.define([
 			
 			// Get logged in user id
 			loggedInUserID = DataContext.getUserID();
-
+			// defualt set change varaible to false
+            this._isChanged =  false;
 			// Create view model for 5 rows to show by default on page load
 			var initData = [];
 			for (var i = 0; i < 5; i++) {
@@ -258,7 +259,31 @@ sap.ui.define([
         // This functions takes one row and check each field to see if it is filled in, if not -> highlight in red
         checkForEmptyFields: function (row) {
         	var errorsFound = false;
-        	
+        	var data = this._oViewModelData.GMIDShipToCountryVM;
+        	// below check needs to be performed if we have more than one row, if only one row in grid no need to check
+        	// dont validate the fields if nothing is changed for the row, i.e. user does not wnat to enter any data
+        	if ((data.length > 2) && (this._isChanged === true)){
+	        	if(this._oSelectedGMIDType === this._oSeed){
+	        			if ((row.GMID === "") && (parseInt(row.COUNTRY_CODE_ID,10) === -1) && (parseInt(row.CURRENCY_CODE_ID,10) === -1)&& (parseInt(row.IBP_RELEVANCY_CODE_ID,10) === this._defaultIBPRelevancy)
+	        		    &&	(parseInt(row.NETTING_DEFAULT_CODE_ID,10) === -1) && (parseInt(row.QUADRANT_CODE_ID,10) === this._defaultQuadrantForSeed) 
+	        		    && (parseInt(row.CHANNEL_CODE_ID,10) === this._defaultChannelForSeed) && (parseInt(row.MARKET_DEFAULT_CODE_ID,10) === -1))
+	        		    {
+	        		    	errorsFound = false;
+	        		    	return errorsFound;
+	        		    }
+	        	}
+	        	else
+	        	{
+	        			if ((row.GMID === "") && (parseInt(row.COUNTRY_CODE_ID,10) === -1) && (parseInt(row.CURRENCY_CODE_ID,10) === -1) && (parseInt(row.IBP_RELEVANCY_CODE_ID,10) === this._defaultIBPRelevancy)
+	        		    &&	(parseInt(row.NETTING_DEFAULT_CODE_ID,10) === -1) && (parseInt(row.QUADRANT_CODE_ID,10) === -1)	&& (parseInt(row.CHANNEL_CODE_ID,10) === -1)
+	        		    && (parseInt(row.MARKET_DEFAULT_CODE_ID,10) === this._defaultMarketingFlagForCP))
+	        		     {
+	        		    	errorsFound = false;
+	        		    	return errorsFound;
+	        		     }
+	        		    
+	        	}
+        	}
     		if (row.GMID === "")
             {
             	row.GMIDErrorState = "Error";
@@ -303,6 +328,8 @@ sap.ui.define([
         },
         // This functions sets the value state of each control to None. This is to clear red input boxes when errors were found durin submission.
     	onChange: function(oEvent){
+    		// update ischanged to true for any attribute changed
+    		this._isChanged = true;
 			var sourceControl = oEvent.getSource();
 			sourceControl.setValueStateText("");
 			sourceControl.setValueState(sap.ui.core.ValueState.None);
@@ -500,6 +527,8 @@ sap.ui.define([
         },
         // function to check if the field is numeric
         numValidationCheck : function (oEvent) {
+        	// update ischanged to true for any GMID attribute changed
+    		this._isChanged = true;
         	oEvent.getSource().setValueStateText("");
 			oEvent.getSource().setValueState(sap.ui.core.ValueState.None);
         	var sNumber = "";
