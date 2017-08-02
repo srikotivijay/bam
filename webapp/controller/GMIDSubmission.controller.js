@@ -311,7 +311,7 @@ sap.ui.define([
         var data = this._oViewModelData.GMIDShipToCountryVM;
         // below check needs to be performed if we have more than one row, if only one row in grid no need to check
         	// dont validate the fields if nothing is changed for the row, i.e. user does not wnat to enter any data
-        	if ((data.length > 2) && (this._isChanged === true)){
+        	if ((data.length >= 2) && (this._isChanged === true)){
 	        	if(this._oSelectedGMIDType === this._oSeed){
 	        			if ((row.GMID === "") && (parseInt(row.COUNTRY_CODE_ID,10) === -1) && (parseInt(row.CURRENCY_CODE_ID,10) === -1)&& (parseInt(row.IBP_RELEVANCY_CODE_ID,10) === this._defaultIBPRelevancy)
 	        		    &&	(parseInt(row.NETTING_DEFAULT_CODE_ID,10) === -1) && (parseInt(row.QUADRANT_CODE_ID,10) === this._defaultQuadrantForSeed) 
