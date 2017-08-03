@@ -29,6 +29,7 @@
 					                <Label text="{i18n>plant}" id="lblHdrPlant"/>
 					            </header>
 					        </Column>
+					      
 					    </columns>
 					    <items>
 					        <ColumnListItem id="cliPlantSelection" highlight="{errorState}">
@@ -36,10 +37,10 @@
 					            	<Button id="btnRemoveRow" icon="sap-icon://delete" press="onRemoveRow"/>
 					            	<Label id="lblGMID" text="{GMID}"/>
 					            	<Label id="lblCountry" text="{COUNTRY}"/>
-					            	<List items="{path: 'PLANTS', templateShareable : true}">
-					            		<CustomListItem>
-											<CheckBox text="{PLANT_CODE}" selected="{IS_SELECTED}"/>
-										</CustomListItem>
+					            	<List items="{path: 'PLANTS', templateShareable : true}" mode="MultiSelect">
+					            		<items>
+											<ObjectListItem title="{PLANT_CODE}" type="Active" selected="{IS_SELECTED}"/>
+										</items>
 									</List>
 					            </cells>
 					        </ColumnListItem>

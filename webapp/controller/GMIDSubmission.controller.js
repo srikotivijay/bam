@@ -16,8 +16,7 @@ sap.ui.define([
 			
 			// Get logged in user id
 			loggedInUserID = DataContext.getUserID();
-			// defualt set change varaible to false
-            this._isChanged =  false;
+
 			// Create view model for 5 rows to show by default on page load
 			var initData = [];
 			for (var i = 0; i < 5; i++) {
@@ -259,11 +258,7 @@ sap.ui.define([
         // This functions takes one row and check each field to see if it is filled in, if not -> highlight in red
         checkForEmptyFields: function (row) {
         	var errorsFound = false;
-        	var strValidate = this._oi18nModel.getProperty("validation");
-			if (this.checkEmptyRows(row,strValidate) === false)
-			{
-				return errorsFound;
-			}
+        	
     		if (row.GMID === "")
             {
             	row.GMIDErrorState = "Error";
@@ -306,47 +301,8 @@ sap.ui.define([
             }
             return errorsFound;
         },
-        checkEmptyRows : function(row,strtype){
-        var errorsFound = false;
-        var data = this._oViewModelData.GMIDShipToCountryVM;
-        // below check needs to be performed if we have more than one row, if only one row in grid no need to check
-        	// dont validate the fields if nothing is changed for the row, i.e. user does not wnat to enter any data
-        	if ((data.length >= 2) && (this._isChanged === true)){
-	        	if(this._oSelectedGMIDType === this._oSeed){
-	        			if ((row.GMID === "") && (parseInt(row.COUNTRY_CODE_ID,10) === -1) && (parseInt(row.CURRENCY_CODE_ID,10) === -1)&& (parseInt(row.IBP_RELEVANCY_CODE_ID,10) === this._defaultIBPRelevancy)
-	        		    &&	(parseInt(row.NETTING_DEFAULT_CODE_ID,10) === -1) && (parseInt(row.QUADRANT_CODE_ID,10) === this._defaultQuadrantForSeed) 
-	        		    && (parseInt(row.CHANNEL_CODE_ID,10) === this._defaultChannelForSeed) && (parseInt(row.MARKET_DEFAULT_CODE_ID,10) === -1))
-	        		    {
-	        		    	errorsFound = false;
-	        		    	return errorsFound;
-	        		    }
-	        		    else
-	        		    {
-	        		    	if (strtype === "Submission")
-	        		    	return true;
-	        		    }
-	        	}
-	        	else
-	        	{
-	        			if ((row.GMID === "") && (parseInt(row.COUNTRY_CODE_ID,10) === -1) && (parseInt(row.CURRENCY_CODE_ID,10) === -1) && (parseInt(row.IBP_RELEVANCY_CODE_ID,10) === this._defaultIBPRelevancy)
-	        		    &&	(parseInt(row.NETTING_DEFAULT_CODE_ID,10) === -1) && (parseInt(row.QUADRANT_CODE_ID,10) === -1)	&& (parseInt(row.CHANNEL_CODE_ID,10) === -1)
-	        		    && (parseInt(row.MARKET_DEFAULT_CODE_ID,10) === this._defaultMarketingFlagForCP))
-	        		     {
-	        		    	errorsFound = false;
-	        		    	return errorsFound;
-	        		     }
-	        		    else
-	        		    {
-	        		    	if (strtype === "Submission")
-	        		    	return true;
-	        		    }
-	        	}
-        	}
-        },
         // This functions sets the value state of each control to None. This is to clear red input boxes when errors were found durin submission.
     	onChange: function(oEvent){
-    		// update ischanged to true for any attribute changed
-    		this._isChanged = true;
 			var sourceControl = oEvent.getSource();
 			sourceControl.setValueStateText("");
 			sourceControl.setValueState(sap.ui.core.ValueState.None);
@@ -515,7 +471,7 @@ sap.ui.define([
 			                {
 			                	gmiddata[i].errorSummary += "\n";  
 			                }
-			                gmiddata[i].errorSummary += "The GMID does not belong to " + this._oSelectedGMIDType.toUpperCase();  
+			                gmiddata[i].errorSummary += "Invalid GMID - GMID does not exist.";  
 		        	  } // end for validgmidinput if
 	        	  } // end for gmiddata[i].GMID !==
 	        } // end for outre for loop
@@ -544,8 +500,6 @@ sap.ui.define([
         },
         // function to check if the field is numeric
         numValidationCheck : function (oEvent) {
-        	// update ischanged to true for any GMID attribute changed
-    		this._isChanged = true;
         	oEvent.getSource().setValueStateText("");
 			oEvent.getSource().setValueState(sap.ui.core.ValueState.None);
         	var sNumber = "";
@@ -608,18 +562,17 @@ sap.ui.define([
     		  // current limit for saving is 200 records
 			  // check if GMID Submission Grid  has more than 200 records
 			  // if more than 200 than show a validation message to user
-			 var maxLimitSubmit = parseInt(this._oi18nModel.getProperty("MaxLimit"),10) ;
+			 var maxLimitSubmit = parseInt(this._oi18nModel.getProperty("MaxLimit"),10);
 			 var maxLimitSubmitText = this._oi18nModel.getProperty("MaxLimitSubmit.text");
-			 // adding one to account for the extra line at the bottom
-		 	if (GMIDShipToCountry.length > (maxLimitSubmit + 1))
-		        {
-		        	MessageBox.alert(maxLimitSubmitText,
-		        	{
-		        		icon : MessageBox.Icon.ERROR,
-						title : "Error"
-		        	});
-		        	return;
-		        }
+			 	if (GMIDShipToCountry.length > maxLimitSubmit)
+			        {
+			        	MessageBox.alert(maxLimitSubmitText,
+			        	{
+			        		icon : MessageBox.Icon.ERROR,
+							title : "Error"
+			        	});
+			        	return;
+			        }
 			
     		// if there are no GMIDs show a validation message
     		if (GMIDShipToCountry.length === 1)
@@ -704,55 +657,49 @@ sap.ui.define([
 		    	    var maxID =	DataContext.getMaxID(tablePath);
 		    	    // Get the code id for GMID Country Status
 		    	    var gmidcountrystatusID = DataContext.getGMIDCountryStatusID();
-		    	    var strSubmission = t._oi18nModel.getProperty("submission");
 		    	    
 		    		// loop through the rows and for each row insert data into database
 		    		// each row contains GMID Ship To combination.
 		    		for(var i = 0; i < GMIDShipToCountry.length - 1; i++) 
-		    		{   
-		    			// while saving we need to ignore the records which are not modified or altered
-		    			// save only those records which are entered or updated
-		    			if(t.checkEmptyRows(GMIDShipToCountry[i],strSubmission) === true)
-		    			{
-							var GMID = t.lpadstring(GMIDShipToCountry[i].GMID);
-							var countryID = parseInt(GMIDShipToCountry[i].COUNTRY_CODE_ID,10);
-							var storedcurrencyID = parseInt(GMIDShipToCountry[i].CURRENCY_CODE_ID,10);
-							var ibprelevancyID = parseInt(GMIDShipToCountry[i].IBP_RELEVANCY_CODE_ID,10);
-							var nettingdefaultID = parseInt(GMIDShipToCountry[i].NETTING_DEFAULT_CODE_ID,10);
-							var quadrantID = parseInt(GMIDShipToCountry[i].QUADRANT_CODE_ID,10);
-							var channelID = parseInt(GMIDShipToCountry[i].CHANNEL_CODE_ID,10);
-							var marketdefaultID = parseInt(GMIDShipToCountry[i].MARKET_DEFAULT_CODE_ID,10);
-							var supplySystemFlag = parseInt(GMIDShipToCountry[i].SUPPLY_SYSTEM_FLAG_CODE_ID,10);
-							var createdBy = loggedInUserID;
-							// create new GMIDShipToCountry object
-							var newGMID = {
-					        	ID: 1 ,
-					        	GMID: GMID,
-					        	COUNTRY_CODE_ID: countryID,
-					        	CURRENCY_CODE_ID: storedcurrencyID,
-					        	IBP_RELEVANCY_CODE_ID: ibprelevancyID,
-					        	NETTING_DEFAULT_CODE_ID: nettingdefaultID,
-					        	QUADRANT_CODE_ID:quadrantID,
-					        	CHANNEL_CODE_ID: channelID,
-					        	MARKET_DEFAULT_CODE_ID: marketdefaultID,
-					        	SUPPLY_SYSTEM_FLAG_CODE_ID: supplySystemFlag,
-					        	TYPE: t._oSelectedGMIDType.toUpperCase(),
-					        	GMID_COUNTRY_STATUS_CODE_ID: gmidcountrystatusID,
-					        	CREATED_ON: oDate,
-					        	CREATED_BY:createdBy
-			    			};
-			    			
-			        		t._oDataModel.create(tablePath, newGMID,
-			        		{
-					        	success: function(){
-					        		successCount++;
-					    		},
-					    		error: function(){
-					    			errorCount++;
-								}
-			        		});
+		    		{
+						var GMID = t.lpadstring(GMIDShipToCountry[i].GMID);
+						var countryID = parseInt(GMIDShipToCountry[i].COUNTRY_CODE_ID,10);
+						var storedcurrencyID = parseInt(GMIDShipToCountry[i].CURRENCY_CODE_ID,10);
+						var ibprelevancyID = parseInt(GMIDShipToCountry[i].IBP_RELEVANCY_CODE_ID,10);
+						var nettingdefaultID = parseInt(GMIDShipToCountry[i].NETTING_DEFAULT_CODE_ID,10);
+						var quadrantID = parseInt(GMIDShipToCountry[i].QUADRANT_CODE_ID,10);
+						var channelID = parseInt(GMIDShipToCountry[i].CHANNEL_CODE_ID,10);
+						var marketdefaultID = parseInt(GMIDShipToCountry[i].MARKET_DEFAULT_CODE_ID,10);
+						var supplySystemFlag = parseInt(GMIDShipToCountry[i].SUPPLY_SYSTEM_FLAG_CODE_ID,10);
+						var createdBy = loggedInUserID;
+						// create new GMIDShipToCountry object
+						var newGMID = {
+				        	ID: 1 ,
+				        	GMID: GMID,
+				        	COUNTRY_CODE_ID: countryID,
+				        	CURRENCY_CODE_ID: storedcurrencyID,
+				        	IBP_RELEVANCY_CODE_ID: ibprelevancyID,
+				        	NETTING_DEFAULT_CODE_ID: nettingdefaultID,
+				        	QUADRANT_CODE_ID:quadrantID,
+				        	CHANNEL_CODE_ID: channelID,
+				        	MARKET_DEFAULT_CODE_ID: marketdefaultID,
+				        	SUPPLY_SYSTEM_FLAG_CODE_ID: supplySystemFlag,
+				        	TYPE: t._oSelectedGMIDType.toUpperCase(),
+				        	GMID_COUNTRY_STATUS_CODE_ID: gmidcountrystatusID,
+				        	CREATED_ON: oDate,
+				        	CREATED_BY:createdBy
+		    			};
+		    			
+		        		t._oDataModel.create(tablePath, newGMID,
+		        		{
+				        	success: function(){
+				        		successCount++;
+				    		},
+				    		error: function(){
+				    			errorCount++;
+							}
+		        		});
 		    		}
-		        }
 		    		//Show success or error message
 		    		if(errorCount === 0) 
 		    		{
