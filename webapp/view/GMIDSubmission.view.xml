@@ -32,7 +32,7 @@
 					           <UploadCollectionItem fileName="GMIDSubmissionTemplate.xlsx" id="uciDownloadTemplate" enableEdit="false" visibleDelete="false" enableDelete="false" visibleEdit="false" selected="true" url="templates/GMIDSubmissionTemplate.xlsx" mimeType="application/msexcel"/>
 					     </items>
 					 </UploadCollection>
-						<table:Table id="tblGMIDRequest" rows="{/GMIDShipToCountryVM}" visible="false" width="auto" visibleRowCount="6" selectionMode="None" enableColumnReordering="false">
+						<table:Table id="tblGMIDRequest" rows="{/GMIDShipToCountryVM}" visible="false" width="auto" visibleRowCount="12" selectionMode="None" enableColumnReordering="false">
 							 <table:columns>
 								 <table:Column id="clmHdrAction" width="110px" resizable="false">
 							                <Label text="{i18n>action}" id="lblAction"/>

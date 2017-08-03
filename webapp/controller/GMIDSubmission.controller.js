@@ -608,17 +608,18 @@ sap.ui.define([
     		  // current limit for saving is 200 records
 			  // check if GMID Submission Grid  has more than 200 records
 			  // if more than 200 than show a validation message to user
-			 var maxLimitSubmit = parseInt(this._oi18nModel.getProperty("MaxLimit"),10);
+			 var maxLimitSubmit = parseInt(this._oi18nModel.getProperty("MaxLimit"),10) ;
 			 var maxLimitSubmitText = this._oi18nModel.getProperty("MaxLimitSubmit.text");
-			 	if (GMIDShipToCountry.length > maxLimitSubmit)
-			        {
-			        	MessageBox.alert(maxLimitSubmitText,
-			        	{
-			        		icon : MessageBox.Icon.ERROR,
-							title : "Error"
-			        	});
-			        	return;
-			        }
+			 // adding one to account for the extra line at the bottom
+		 	if (GMIDShipToCountry.length > (maxLimitSubmit + 1))
+		        {
+		        	MessageBox.alert(maxLimitSubmitText,
+		        	{
+		        		icon : MessageBox.Icon.ERROR,
+						title : "Error"
+		        	});
+		        	return;
+		        }
 			
     		// if there are no GMIDs show a validation message
     		if (GMIDShipToCountry.length === 1)
