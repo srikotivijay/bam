@@ -12,6 +12,7 @@ sap.ui.define([
 	
 	var attributeList = [];
 	var loggedInUserID;
+	var firstTimePageLoad = true;
 	return Controller.extend("bam.controller.EditAttributesSingle", {
 			onInit : function () {
 				
@@ -30,170 +31,33 @@ sap.ui.define([
 						curr.setVMForControlVisibility();
 					});
 				});
+				
+				this._oi18nModel = new ResourceModel({
+                	bundleName: "bam.i18n.i18n"
+            	});
 
 				this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
 				
-				// Bind Stored Currency dropdown
-				// Create a filter & sorter array
-				var storedcurrencyFilterArray = [];
-				var storedcurrencyFilter = new Filter("CODE_TYPE",sap.ui.model.FilterOperator.EQ,"CURRENCY");
-				storedcurrencyFilterArray.push(storedcurrencyFilter);
-				var storedcurrencySortArray = [];
-				var storedcurrencySort = new sap.ui.model.Sorter("LABEL",false);
-				storedcurrencySortArray.push(storedcurrencySort);
-				// Get the Stored Currency dropdown list from the CODE_MASTER table
-				this._oDataModel.read("/CODE_MASTER",{
-						filters: storedcurrencyFilterArray,
-						sorters: storedcurrencySortArray,
-						async: false,
-		                success: function(oData, oResponse){
-			                // Bind the Stored Currency data list to view model
-			                oModel.setProperty("/STORED_CURRENCY_LIST",oData.results);
-		                },
-		    		    error: function(){
-		            		MessageToast.show("Unable to retrieve currencies.");
-		    			}
-		    	});
-		    		
-		    	// Bind IBP Relavancy dropdown
-				// Create a filter & sorter array
-				var ibprelevancyFilterArray = [];
-				var ibprelevancyFilter = new Filter("CODE_TYPE",sap.ui.model.FilterOperator.EQ,"IBP_RELEVANCY");
-				ibprelevancyFilterArray.push(ibprelevancyFilter);
-				var ibprelevancySortArray = [];
-				var ibprelevancySort = new sap.ui.model.Sorter("LABEL",false);
-				ibprelevancySortArray.push(ibprelevancySort);
-				// Get the IBP Relevancy dropdown list from the CODE_MASTER table
-				this._oDataModel.read("/CODE_MASTER",{
-						filters: ibprelevancyFilterArray,
-						sorters: ibprelevancySortArray,
-						async: false,
-		                success: function(oData, oResponse){
-		                	// Bind the IBP Relevancy data list to view model
-			                oModel.setProperty("/IBP_RELEVANCY_LIST",oData.results);
-		                },
-		    		    error: function(){
-		            		MessageToast.show("Unable to retrieve IBP Relevancy data.");
-		    			}
-		    	});
-		    		
-		    	// Bind Netting Default dropdown
-				// Create a filter & sorter array
-				var nettingdefaultFilterArray = [];
-				var nettingdefaultFilter = new Filter("CODE_TYPE",sap.ui.model.FilterOperator.EQ,"NETTING_DEFAULT");
-				nettingdefaultFilterArray.push(nettingdefaultFilter);
-				var nettingdefaultSortArray = [];
-				var nettingdefaultSort = new sap.ui.model.Sorter("LABEL",false);
-				nettingdefaultSortArray.push(nettingdefaultSort);
-				// Get the Netting Default dropdown list from the CODE_MASTER table
-				this._oDataModel.read("/CODE_MASTER",{
-						filters: nettingdefaultFilterArray,
-						sorters: nettingdefaultSortArray,
-						async: false,
-		                success: function(oData, oResponse){
-			                // Bind the Netting Default list to view model
-			                oModel.setProperty("/NETTING_DEFAULT_LIST",oData.results);
-		                },
-		    		    error: function(){
-		            		MessageToast.show("Unable to retrieve netting default data.");
-		    			}
-		    	});
-		    		
-		    	// Bind Quadrant dropdown
-				// Create a filter & sorter array
-				var quadrantFilterArray = [];
-				var quadrantFilter = new Filter("CODE_TYPE",sap.ui.model.FilterOperator.EQ,"QUADRANT");
-				quadrantFilterArray.push(quadrantFilter);
-				var quadrantSortArray = [];
-				var quadrantSort = new sap.ui.model.Sorter("LABEL",false);
-				quadrantSortArray.push(quadrantSort);
-				// Get the Quadrant dropdown list from the CODE_MASTER table
-				this._oDataModel.read("/CODE_MASTER",{
-						filters: quadrantFilterArray,
-						sorters: quadrantSortArray,
-						async: false,
-		                success: function(oData, oResponse){
-			                // Bind the Quadrant data list to view model
-			                oModel.setProperty("/QUADRANT_LIST",oData.results);
-		                },
-		    		    error: function(){
-		            		MessageToast.show("Unable to retrieve quadrant data.");
-		    			}
-		    	});
-		    		
-		    	// Bind Channel dropdown
-				// Create a filter & sorter array
-				var channelFilterArray = [];
-				var channelFilter = new Filter("CODE_TYPE",sap.ui.model.FilterOperator.EQ,"CHANNEL");
-				channelFilterArray.push(channelFilter);
-				var channelSortArray = [];
-				var channelSort = new sap.ui.model.Sorter("LABEL",false);
-				channelSortArray.push(channelSort);
-				// Get the Channel dropdown list from the CODE_MASTER table
-				this._oDataModel.read("/CODE_MASTER",{
-						filters: channelFilterArray,
-						sorters: channelSortArray,
-						async: false,
-		                success: function(oData, oResponse){
-			                // Bind the Channel data list to view model
-			                oModel.setProperty("/CHANNEL_LIST",oData.results);
-		                },
-		    		    error: function(){
-		            		MessageToast.show("Unable to retrieve channel data.");
-		    			}
-		    	});
-		    		
-		    	// Bind Market Default dropdown
-				// Create a filter & sorter array
-				var marketdefaultFilterArray = [];
-				var marketdefaultFilter = new Filter("CODE_TYPE",sap.ui.model.FilterOperator.EQ,"MARKET_DEFAULT");
-				marketdefaultFilterArray.push(marketdefaultFilter);
-				var marketdefaultSortArray = [];
-				var marketdefaultSort = new sap.ui.model.Sorter("LABEL",false);
-				marketdefaultSortArray.push(marketdefaultSort);
-				// Get the Market Default dropdown list from the CODE_MASTER table
-				this._oDataModel.read("/CODE_MASTER",{
-						filters: marketdefaultFilterArray,
-						sorters: marketdefaultSortArray,
-						async: false,
-		                success: function(oData, oResponse){
-			                // Bind the Market Default data list to view model
-			                oModel.setProperty("/MARKET_DEFAULT_LIST",oData.results);
-		                },
-		    		    error: function(){
-		            		MessageToast.show("Unable to retrieve market default data.");
-		    			}
-		    	});
-		    	
-		    	// Bind Supply System Flag dropdown
-				// Create a filter & sorter array
-				var supplySystemFilterArray = [];
-				var supplySystemFilter = new Filter("CODE_TYPE",sap.ui.model.FilterOperator.EQ,"SUPPLY_SYSTEM_FLAG");
-				supplySystemFilterArray.push(supplySystemFilter);
-				var supplySystemSortArray = [];
-				var supplySystemSort = new sap.ui.model.Sorter("LABEL",false);
-				supplySystemSortArray.push(supplySystemSort);
-				// Get the Supply System Flag dropdown list from the CODE_MASTER table
-				this._oDataModel.read("/CODE_MASTER",{
-						filters: supplySystemFilterArray,
-						sorters: supplySystemSortArray,
-						async: false,
-		                success: function(oData, oResponse){
-			                // Bind the Support System data list to view model
-			                oModel.setProperty("/SUPPORT_SYSTEM_FLAG_LIST",oData.results);
-		                },
-		    		    error: function(){
-		            		MessageToast.show("Unable to retrieve supply system flag data.");
-		    			}
-		    	});
-		    	
+				 // set all the dropdowns, get the data from the code master table
+		    	oModel.setProperty("/STORED_CURRENCY_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddStoredCurrency")));
+		    	oModel.setProperty("/IBP_RELEVANCY_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddIBPRelevancyFlag")));
+		    	oModel.setProperty("/NETTING_DEFAULT_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddNettingDefaultFlag")));
+		    	oModel.setProperty("/QUADRANT_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddQuadrant")));
+		    	oModel.setProperty("/CHANNEL_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddChannel")));
+		    	oModel.setProperty("/MARKET_DEFAULT_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddMarketDefault")));
+		    	oModel.setProperty("/SUPPORT_SYSTEM_FLAG_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddSupplySystemFlag")));
+			    	
 		    	// assign VM and VM data to a global variable for the page
 				this._oGMIDShipToCountryUpdViewModel = oModel;            
 				this._oViewModelData = this._oGMIDShipToCountryUpdViewModel.getData();
 				
-		    	//attach _onRouteMatched to be called everytime on navigation to Edit Attributes Single page
-				var oRouter = this.getRouter();
-				oRouter.getRoute("editAttributesSingle").attachMatched(this._onRouteMatched, this);
+				if(firstTimePageLoad)
+				{
+					//attach _onRouteMatched to be called everytime on navigation to Edit Attributes Single page
+					var oRouter = this.getRouter();
+					oRouter.getRoute("editAttributesSingle").attachMatched(this._onRouteMatched, this);
+					firstTimePageLoad = false;
+				}
 				
 			},
 			getRouter : function () {
@@ -382,6 +246,19 @@ sap.ui.define([
 			//click of submit button
 			onSubmit: function(){
 				var curr = this;
+				// Check if any Attributes have the comma or semicolon,
+				// need to show message to use if either of these ( , or ;) are entered
+			   //get the list of updated attributes where special characters are entered
+			   var invalidCharUpdatedAttributes = curr.getInvalidCharUpdatedAttributes();
+		  	   if (invalidCharUpdatedAttributes !== "")
+		        {
+		        	MessageBox.alert("Special characters comma and semi-colon are not allowed in " + invalidCharUpdatedAttributes + ".",
+			        	{
+			        		icon : MessageBox.Icon.ERROR,
+							title : "Error"
+			        	});
+			        	return;
+		        }
 				var gmid = this._oViewModelData.GMID;
 				var country = this._oViewModelData.COUNTRY;
 				// check if user wants to update the attributes for GMID and country
@@ -392,6 +269,37 @@ sap.ui.define([
             			curr.fnCallbackSubmitConfirm(oAction);
             		}
         		});
+			},
+			//get the list of  attributes in string format where invalid characters has been entered
+			getInvalidCharUpdatedAttributes: function(){
+				// get the crop protection and seeds value from i18n file
+		    	var oi18nModel = this.getView().getModel("i18n");
+				var invalidCharacterAttributesString = "";
+				if (this.getView().byId("txtDemandAtt1").getValue().indexOf(",") >= 0 || this.getView().byId("txtDemandAtt1").getValue().indexOf(";") >= 0){
+					invalidCharacterAttributesString += oi18nModel.getProperty("demandAtt1");
+					invalidCharacterAttributesString += ", ";
+				}
+				if (this.getView().byId("txtDemandAtt2").getValue().indexOf(",") >= 0 || this.getView().byId("txtDemandAtt2").getValue().indexOf(";") >= 0){
+					invalidCharacterAttributesString += oi18nModel.getProperty("demandAtt2");
+					invalidCharacterAttributesString += ", ";
+				}
+				if (this.getView().byId("txtMktAtt1").getValue().indexOf(",") >= 0 || this.getView().byId("txtMktAtt1").getValue().indexOf(";") >= 0){
+					invalidCharacterAttributesString += oi18nModel.getProperty("mktAtt1");
+					invalidCharacterAttributesString += ", ";
+				}
+				if (this.getView().byId("txtMktAtt2").getValue().indexOf(",") >= 0 || this.getView().byId("txtMktAtt2").getValue().indexOf(";") >= 0){
+					invalidCharacterAttributesString += oi18nModel.getProperty("mktAtt2");
+					invalidCharacterAttributesString += ", ";
+				}
+				if (this.getView().byId("txtSupplyAtt1").getValue().indexOf(",") >= 0 || this.getView().byId("txtSupplyAtt1").getValue().indexOf(";") >= 0){
+					invalidCharacterAttributesString += oi18nModel.getProperty("supplyAtt1");
+					invalidCharacterAttributesString += ", ";
+				}
+				if (this.getView().byId("txtSupplyAtt2").getValue().indexOf(",") >= 0 || this.getView().byId("txtSupplyAtt2").getValue().indexOf(";") >= 0){
+					invalidCharacterAttributesString += oi18nModel.getProperty("supplyAtt2");
+					invalidCharacterAttributesString += ", ";
+				}
+				return invalidCharacterAttributesString.substring(0, invalidCharacterAttributesString.length - 2);
 			},
 			// update the attributes based on user response
 			fnCallbackSubmitConfirm: function(oAction){

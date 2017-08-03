@@ -60,37 +60,37 @@
 				                </f:FormElement>
 				                <f:FormElement label="{i18n>demandAtt1}" id="felmDemandAtt1" visible="{path: '/SHOW_DEMAND_ATTRIBUTE1', formatter: '.showControl'}">
 				                    <f:fields>
-				                        <TextArea id="txtDemandAtt1" name="txtDemandAtt1" liveChange="onChange" valueLiveUpdate="true" width="97%" value="{/DEMAND_ATTRIBUTE1}"/>
-				                        <CheckBox id="chkDemandAtt1" name="chkDemandAtt1" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_DEMAND_ATTRIBUTE1}" tooltip="{i18n>updateNullTooltip}"/>
+				                        <Input id="txtDemandAtt1" name="txtDemandAtt1" maxLength = "50" liveChange="onChange" valueLiveUpdate="true" width="97%" value="{/DEMAND_ATTRIBUTE1}"/>
+				                        <CheckBox id="chkDemandAtt1" name="chkDemandAtt1" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_DEMAND_ATTRIBUTE1}" tooltip="{i18n>updateNullTooltip}" />
 				                    </f:fields>
 				                </f:FormElement>
 					            <f:FormElement label="{i18n>demandAtt2}" id="felmDemandAtt2" visible="{path: '/SHOW_DEMAND_ATTRIBUTE2', formatter: '.showControl'}">
 					                    <f:fields>
-					                        <TextArea id="txtDemandAtt2" name="txtDemandAtt2" liveChange="onChange" valueLiveUpdate="true" width="97%" value="{/DEMAND_ATTRIBUTE2}"/>
+					                        <Input id="txtDemandAtt2" name="txtDemandAtt2" maxLength = "50" liveChange="onChange" valueLiveUpdate="true" width="97%" value="{/DEMAND_ATTRIBUTE2}"/>
 					                        <CheckBox id="chkDemandAtt2" name="chkDemandAtt2" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_DEMAND_ATTRIBUTE2}" tooltip="{i18n>updateNullTooltip}"/>
 					                    </f:fields>
 					            </f:FormElement>
 					            <f:FormElement label="{i18n>mktAtt1}" id="felmMktAtt1" visible="{path: '/SHOW_MARKETING_ATTRIBUTE1', formatter: '.showControl'}">
 					                    <f:fields>
-					                        <TextArea id="txtMktAtt1" name="txtMktAtt1" liveChange="onChange" valueLiveUpdate="true" width="97%" value="{/MARKETING_ATTRIBUTE1}"/>
+					                        <Input id="txtMktAtt1" name="txtMktAtt1" maxLength = "50" liveChange="onChange" valueLiveUpdate="true" width="97%" value="{/MARKETING_ATTRIBUTE1}"/>
 					                        <CheckBox id="chkMktAtt1" name="chkMktAtt1" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_MARKETING_ATTRIBUTE1}" tooltip="{i18n>updateNullTooltip}"/>
 					                    </f:fields>
 					            </f:FormElement>
 					            <f:FormElement label="{i18n>mktAtt2}" id="felmMktAtt2" visible="{path: '/SHOW_MARKETING_ATTRIBUTE2', formatter: '.showControl'}">
 					                    <f:fields>
-					                        <TextArea id="txtMktAtt2" name="txtMktAtt2" liveChange="onChange" valueLiveUpdate="true" width="97%" value="{/MARKETING_ATTRIBUTE2}"/>
+					                        <Input id="txtMktAtt2" name="txtMktAtt2" maxLength = "50" liveChange="onChange" valueLiveUpdate="true" width="97%" value="{/MARKETING_ATTRIBUTE2}"/>
 					                         <CheckBox id="chkMktAtt2" name="chkMktAtt2" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_MARKETING_ATTRIBUTE2}" tooltip="{i18n>updateNullTooltip}"/>
 					                    </f:fields>
 					            </f:FormElement>
 					            <f:FormElement label="{i18n>supplyAtt1}" id="felmSupplyAtt1" visible="{path: '/SHOW_SUPPLY_ATTRIBUTE1', formatter: '.showControl'}">
 					                    <f:fields>
-					                        <TextArea id="txtSupplyAtt1" name="txtSupplyAtt1" liveChange="onChange" valueLiveUpdate="true" width="97%" value="{/SUPPLY_ATTRIBUTE1}"/>
+					                        <Input id="txtSupplyAtt1" name="txtSupplyAtt1" maxLength = "50" liveChange="onChange" valueLiveUpdate="true" width="97%" value="{/SUPPLY_ATTRIBUTE1}"/>
 					                        <CheckBox id="chkSupplyAtt1" name="chkSupplyAtt1" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_SUPPLY_ATTRIBUTE1}" tooltip="{i18n>updateNullTooltip}"/>
 					                    </f:fields>
 					            </f:FormElement>
 					            <f:FormElement label="{i18n>supplyAtt2}" id="felmSupplyAtt2" visible="{path: '/SHOW_SUPPLY_ATTRIBUTE2', formatter: '.showControl'}">
 					                    <f:fields>
-					                        <TextArea id="txtSupplyAtt2" name="txtSupplyAtt2" liveChange="onChange" valueLiveUpdate="true" width="97%" value="{/SUPPLY_ATTRIBUTE2}"/>
+					                        <Input id="txtSupplyAtt2" name="txtSupplyAtt2" maxLength = "50" liveChange="onChange" valueLiveUpdate="true" width="97%" value="{/SUPPLY_ATTRIBUTE2}"/>
 					                        <CheckBox id="chkSupplyAtt2" name="chkSupplyAtt2" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_SUPPLY_ATTRIBUTE2}" tooltip="{i18n>updateNullTooltip}"/>
 					                    </f:fields>
 					            </f:FormElement>

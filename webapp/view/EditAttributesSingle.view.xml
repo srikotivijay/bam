@@ -70,32 +70,32 @@
 				                </f:FormElement>
 				                <f:FormElement label="{i18n>demandAtt1}" id="felmDemandAtt1" visible="{path: '/SHOW_DEMAND_ATTRIBUTE1', formatter: '.showControl'}">
 				                    <f:fields>
-				                        <TextArea id="txtDemandAtt1" name="txtDemandAtt1" liveChange="onChange" valueLiveUpdate="true" width="97%" value="{/DEMAND_ATTRIBUTE1}"/>
-				                    </f:fields>
+				                    	<Input id="txtDemandAtt1" name="txtDemandAtt1" maxLength = "50" liveChange="onChange" valueLiveUpdate="true" width="48.5%" value="{/DEMAND_ATTRIBUTE1}"/>
+					                 </f:fields>
 				                </f:FormElement>
 					            <f:FormElement label="{i18n>demandAtt2}" id="felmDemandAtt2" visible="{path: '/SHOW_DEMAND_ATTRIBUTE2', formatter: '.showControl'}">
 					                    <f:fields>
-					                        <TextArea id="txtDemandAtt2" name="txtDemandAtt2" liveChange="onChange" valueLiveUpdate="true" width="97%" value="{/DEMAND_ATTRIBUTE2}"/>
+					                        <Input id="txtDemandAtt2" name="txtDemandAtt2" maxLength = "50" liveChange="onChange" valueLiveUpdate="true" width="48.5%" value="{/DEMAND_ATTRIBUTE2}"/>
 					                    </f:fields>
 					            </f:FormElement>
 					            <f:FormElement label="{i18n>mktAtt1}" id="felmMktAtt1" visible="{path: '/SHOW_MARKETING_ATTRIBUTE1', formatter: '.showControl'}">
 					                    <f:fields>
-					                        <TextArea id="txtMktAtt1" name="txtMktAtt1" liveChange="onChange" valueLiveUpdate="true" width="97%" value="{/MARKETING_ATTRIBUTE1}"/>
+					                        <Input id="txtMktAtt1" name="txtMktAtt1" maxLength = "50" liveChange="onChange" valueLiveUpdate="true" width="48.5%" value="{/MARKETING_ATTRIBUTE1}"/>
 					                    </f:fields>
 					            </f:FormElement>
 					            <f:FormElement label="{i18n>mktAtt2}" id="felmMktAtt2" visible="{path: '/SHOW_MARKETING_ATTRIBUTE2', formatter: '.showControl'}">
 					                    <f:fields>
-					                        <TextArea id="txtMktAtt2" name="txtMktAtt2" liveChange="onChange" valueLiveUpdate="true" width="97%" value="{/MARKETING_ATTRIBUTE2}"/>
+					                       <Input id="txtMktAtt2" name="txtMktAtt2" maxLength = "50" liveChange="onChange" valueLiveUpdate="true" width="48.5%" value="{/MARKETING_ATTRIBUTE2}"/>
 					                    </f:fields>
 					            </f:FormElement>
 					            <f:FormElement label="{i18n>supplyAtt1}" id="felmSupplyAtt1" visible="{path: '/SHOW_SUPPLY_ATTRIBUTE1', formatter: '.showControl'}">
 					                    <f:fields>
-					                        <TextArea id="txtSupplyAtt1" name="txtSupplyAtt1" liveChange="onChange" valueLiveUpdate="true" width="97%" value="{/SUPPLY_ATTRIBUTE1}"/>
+					                        <Input id="txtSupplyAtt1" name="txtSupplyAtt1" maxLength = "50" liveChange="onChange" valueLiveUpdate="true" width="48.5%" value="{/SUPPLY_ATTRIBUTE1}"/>
 					                    </f:fields>
 					            </f:FormElement>
 					            <f:FormElement label="{i18n>supplyAtt2}" id="felmSupplyAtt2" visible="{path: '/SHOW_SUPPLY_ATTRIBUTE2', formatter: '.showControl'}">
 					                    <f:fields>
-					                        <TextArea id="txtSupplyAtt2" name="txtSupplyAtt2" liveChange="onChange" valueLiveUpdate="true" width="97%" value="{/SUPPLY_ATTRIBUTE2}"/>
+					                        <Input id="txtSupplyAtt2" name="txtSupplyAtt2" maxLength = "50" liveChange="onChange" valueLiveUpdate="true" width="48.5%" value="{/SUPPLY_ATTRIBUTE2}"/>
 					                    </f:fields>
 					            </f:FormElement>
 				            </f:formElements>

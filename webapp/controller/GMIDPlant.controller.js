@@ -7,8 +7,7 @@ sap.ui.define([
 	], function (Controller,MessageToast,MessageBox,DataContext,ResourceModel) {
 		"use strict";
 
-	var firstTimePageLoad = true;
-	return Controller.extend("bam.controller.MaintainAttributes", {
+	return Controller.extend("bam.controller.GMIDPlant", {
 			onInit : function () {
 				 // define a global variable for the oData model		    
 		    	this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
@@ -16,36 +15,44 @@ sap.ui.define([
 		    	oView.setModel(this._oDataModel);
 		    	
 		    	this._oModel = new sap.ui.model.json.JSONModel();
-	    		this._oModel.setProperty("/showEditButton",false);
-	    		this.getView().setModel(this._oModel,"MaintainAttributesVM");
+	    		
+	    		this.getView().setModel(this._oModel,"GMIDPlantVM");
 	    		
 	    		var oi18nModel = new ResourceModel({
                 	bundleName: "bam.i18n.i18n"
             	});
+            	
 	    		// get the Module settings for i18n model
-        		var maintainAttributes = oi18nModel.getProperty("Module.maintainAttributes");
-        		var actionEdit = oi18nModel.getProperty("Module.actionEdit");
+        		var plantAssignment = oi18nModel.getProperty("Module.plantAssignment");
+        		var actionAdd = oi18nModel.getProperty("Module.actionAdd");
 		    	
 		    	// getting permissions for the current logged in user
 				var permissions = DataContext.getUserPermissions();
-				// check to see if the permission list includes "EDIT" action for the MAINTAIN ATTRIBUTES Module
+				// check to see if the permission list includes "Add" action for the PLANT ASSIGNMENT Module
 				// ATTRIBUTE in this case means MODULE
 				for(var i = 0; i < permissions.length; i++)
 				{
-					if(permissions[i].ATTRIBUTE === maintainAttributes && permissions[i].ACTION === actionEdit)
+					if(permissions[i].ATTRIBUTE === plantAssignment && permissions[i].ACTION === actionAdd)
 					{
-						this._oModel.setProperty("/showEditButton",true);
+						this._oModel.setProperty("/plantAssignmentText",oi18nModel.getProperty("addPlants"));
 						// break since the user may have more than one role, as long as one of the user roles has permission to edit we can show the button
 						break;
 					}
+					else
+					{
+						if(permissions[i].ATTRIBUTE === plantAssignment && permissions[i].ACTION === actionAdd)
+						{
+							this._oModel.setProperty("/plantAssignmentText",oi18nModel.getProperty("viewPlants"));
+							// break since the user may have more than one role, as long as one of the user roles has permission to view we can show the button
+							break;
+						}
+					}
+					// change button text to Add
 				}
 		    	
-		    	if(firstTimePageLoad)
-		    	{
-		    		//attach _onRouteMatched to be called everytime on navigation to Maintain Attributes page
-		    		var oRouter = this.getRouter();
-					oRouter.getRoute("maintainAttributes").attachMatched(this._onRouteMatched, this);
-		    	}
+		    	//attach _onRouteMatched to be called everytime on navigation to Maintain Attributes page
+		    	var oRouter = this.getRouter();
+				oRouter.getRoute("gmidPlant").attachMatched(this._onRouteMatched, this);
 			},
 			getRouter : function () {
 				return sap.ui.core.UIComponent.getRouterFor(this);
@@ -59,14 +66,7 @@ sap.ui.define([
 				}
 				else
 				{
-					if(firstTimePageLoad)
-					{
-						firstTimePageLoad = false;
-					}
-					else
-					{
-						this.onInit();
-					}
+					this.onInit();
 				}
 			},
 			// navigate back to the homepage
@@ -74,48 +74,32 @@ sap.ui.define([
 				this.getOwnerComponent().getRouter().navTo("home");
 			},
 			// navigate to edit attribute page on click of edit
-			onEdit: function(){
+			onViewPlantAssignment: function(){
 				// get the smart table control
 				this._oSmartTable = this.getView().byId("smartTblBAMAttributes").getTable();
 				// check if more than or less than 1 checkbox is checked
 				var index,context,path,indexOfParentheses1,indexOfParentheses2;
-				if(this._oSmartTable.getSelectedIndices().length === 1){
-					index = this._oSmartTable.getSelectedIndices();
-					context = this._oSmartTable.getContextByIndex(index[0]); 
-					path = context.getPath();
-					indexOfParentheses1 = path.indexOf("(");
-					indexOfParentheses2 = path.indexOf(")");
-					// navigate to single edit page
-					this.getOwnerComponent().getRouter().navTo("editAttributesSingle",{
-						 editAttributesID : path.substring(indexOfParentheses1 + 1,indexOfParentheses2)
-					});
-				}
-				else if(this._oSmartTable.getSelectedIndices().length > 1){
+				 if(this._oSmartTable.getSelectedIndices().length >= 1){
 					index = this._oSmartTable.getSelectedIndices();
 					var gmidids="";
 					for (var i=0;i < index.length;i++)
 					{
-				
-					context = this._oSmartTable.getContextByIndex(index[i]); 	
-					path = context.getPath();
-					indexOfParentheses1 = path.indexOf("(");
-					indexOfParentheses2 = path.indexOf(")");
-					gmidids+=path.substring(indexOfParentheses1 + 1,indexOfParentheses2);
-					gmidids+=",";
-					// navigate to multiple edit page
+						context = this._oSmartTable.getContextByIndex(index[i]); 	
+						path = context.getPath();
+						indexOfParentheses1 = path.indexOf("(");
+						indexOfParentheses2 = path.indexOf(")");
+						gmidids+=path.substring(indexOfParentheses1 + 1,indexOfParentheses2);
+						gmidids+=",";
 					}
 					gmidids = gmidids.substring(0, gmidids.length - 1);
-					//path = context.getPath();
-					//indexOfParentheses1 = path.indexOf("(");
-					//indexOfParentheses2 = path.indexOf(")");
-					// navigate to multiple edit page
-					this.getOwnerComponent().getRouter().navTo("editAttributesMultiple",{
-						 editAttributesIDs : gmidids
+					// navigate to gmid plant assignment page
+					this.getOwnerComponent().getRouter().navTo("gmidPlantAssignment",{
+						 gmidids : gmidids
 					});
 				}
 				else
 				{
-					MessageBox.alert("Please select one GMID - Country record for edit.",
+					MessageBox.alert("Please select one GMID - Country record for view.",
 						{
 							icon : MessageBox.Icon.ERROR,
 							title : "Error"

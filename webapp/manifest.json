@@ -121,7 +121,18 @@
 				"pattern": "editAttributesMultiple/{editAttributesIDs}",
 				"name": "editAttributesMultiple",
 				"target": "editAttributesMultiple"
-			}, {
+			},
+			{
+				"pattern": "gmidPlant",
+				"name": "gmidPlant",
+				"target": "gmidPlant"
+			}, 
+			{
+				"pattern": "gmidPlantAssignment/{gmidids}",
+				"name": "gmidPlantAssignment",
+				"target": "gmidPlantAssignment"
+			},
+			{
 				"pattern": "notFound",
 				"name": "notFound",
 				"target": "notFound"
@@ -155,6 +166,14 @@
 				"editAttributesMultiple": {
 					"viewName": "EditAttributesMultiple",
 					"viewId": "editAttributesMultiple"
+				},
+				"gmidPlant": {
+					"viewName": "GMIDPlant",
+					"viewId": "GMIDPlant"
+				},
+				"gmidPlantAssignment": {
+					"viewName": "GMIDPlantAssignment",
+					"viewId": "GMIDPlantAssignment"
 				},
 				"notFound": {
 					"viewName": "NotFound",

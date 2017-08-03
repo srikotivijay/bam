@@ -193,10 +193,9 @@ sap.ui.define([
     	
     		// Create current timestamp
     		var oDate = new Date();
-    		// Get the MaxID for the GMID Ship to Country
-    	    var maxGMIDShipToID = DataContext.getMaxID("/GMID_SHIP_TO_COUNTRY");
+    	
     	    // Get the code id for GMID Country Status
-    	    var gmidcountrystatusID = this.getGMIDCountryStatusID();
+    	    var gmidcountrystatusID = DataContext.getGMIDCountryStatusID();
     	    
     	    // reset the validation on the screen
     	    this.resetValidation();
@@ -242,7 +241,7 @@ sap.ui.define([
 					var selectedGMIDType = GMIDShipToCountry[i].TYPE;
 					// create new GMIDShipToCountry object
 					var newGMID = {
-			        	ID: maxGMIDShipToID + 1 + i,
+			        	ID: 1,
 			        	GMID: GMID,
 			        	COUNTRY_CODE_ID: countryID,
 			        	CURRENCY_CODE_ID: storedcurrencyID,
@@ -259,6 +258,7 @@ sap.ui.define([
 	    			};
 	    			
 	    			var maxGMIDShipFromPlantID = DataContext.getMaxID("/GMID_COUNTRY_SHIP_FROM_PLANT");
+	    				// Get the MaxID for the GMID Ship to Country
 	    			
 	        		this._oDataModel.create("/GMID_SHIP_TO_COUNTRY", newGMID,
 	        		{
@@ -266,7 +266,7 @@ sap.ui.define([
 			        		successGMIDShipToCount++;
 			        		// Get the MaxID for the GMID Ship from Plant
 
-	    	    			
+	    	    			 var maxGMIDShipToID = DataContext.getMaxID("/GMID_SHIP_TO_COUNTRY");
 			        		// once data is inserted into GMID Ship to Country, 
 			        		// insert the data into GMID_COUNTRY_SHIP_FROM_PLANT
 			        		// each GMID Country combination can have one or more plants
@@ -281,8 +281,8 @@ sap.ui.define([
 										var gmidshipfromplantcreatedBy =  GMIDShipToCountry[i].CREATED_BY;
 										// create new GMIDShipFromPlant object
 										var newGMIDShipFromPlant = {
-								        	ID: maxGMIDShipFromPlantID + 1 + j,
-								        	GMID_SHIP_TO_COUNTRY_ID: maxGMIDShipToID + 1 + i,
+								        	ID: 1 ,
+								        	GMID_SHIP_TO_COUNTRY_ID: maxGMIDShipToID,
 								        	GMID_SHIP_FROM_PLANT_ID: gmidshipfromplantID,
 								        	CREATED_ON: oDate,
 								        	CREATED_BY:gmidshipfromplantcreatedBy
@@ -344,35 +344,6 @@ sap.ui.define([
 	    		
 	    	} // end of else validation at least one plant selected
 	    },
-         // below function will return the GMID Country Status ID from CODE_Master TABLE
-        getGMIDCountryStatusID : function  () {
-        	 var oi18nModel = this.getView().getModel("i18n");
-        	 // by default while creating the new GMID, the GMID Country Status will be Submitted
-        	 var ogmidcountryStatus = oi18nModel.getProperty("submitted");
-    	    
-			// Create a filter to fetch the GMID Country Status Code ID
-			var gmidcountrycodeFilterArray = [];
-			var gmidcountrycodetypeFilter = new Filter("CODE_TYPE",sap.ui.model.FilterOperator.EQ,"GMID_COUNTRY_STATUS");
-			gmidcountrycodeFilterArray.push(gmidcountrycodetypeFilter);
-			var gmidcountrycodekeyFilter = new Filter("CODE_KEY",sap.ui.model.FilterOperator.EQ,ogmidcountryStatus);
-			gmidcountrycodeFilterArray.push(gmidcountrycodekeyFilter);
-			
-			var gmidcountrystatusID = null;
-
-			 // Get the GMID Country Status Code ID CODE_MASTER table
-			 this._oDataModel.read("/CODE_MASTER?$select=ID",{
-					filters: gmidcountrycodeFilterArray,
-					async: false,
-	                success: function(oData, oResponse){
-	                	//return the Code ID
-	                   gmidcountrystatusID = oData.results[0].ID; 
-	                },
-	    		    error: function(){
-	            		MessageToast.show("Unable to retrieve Code ID for GMID Country Status.");
-	    			}
-	    		});
-	    	return gmidcountrystatusID;
-        },
         validatePlantSelection :function()
         {
 	        var GMIDShipToCountry = this._oPlantSelectionViewModel.getProperty("/PlantSelectionVM");
@@ -403,19 +374,45 @@ sap.ui.define([
         },
         validateDuplicateRecords : function()
         {
-        	var GMIDShipToCountry = this._oPlantSelectionViewModel.getProperty("/PlantSelectionVM");
-        	var noDuplicates = true;
+        	// loop through the rows and for each row check for duplicate entry in DB
+            // each row contains GMID Ship To combination.
+            var data = this._oPlantSelectionViewModel.getProperty("/PlantSelectionVM");
+           // prepare an array of GMIDs from the UI
+            var gmidList = [];
+            var gmid; 
+            for(var j = 0; j < data.length; j++) 
+            {
+                // every time empty the GMID object
+                gmid= {"GMID": ""};
+                gmid.GMID = data[j].GMID;
+                gmidList.push(gmid);
+            }
+            var viewPath = "V_VALIDATE_GMID_COUNTRY";
+        	var gmidCountryRecords = DataContext.getGMIDListFromDB(gmidList,viewPath);                           
+            var noDuplicates = true;
+            for(var i = 0; i < data.length; i++) 
+            {
+                var GMID = data[i].GMID;
+                var countryID = parseInt(data[i].COUNTRY_CODE_ID,10);
+                // loop the GMID Country Records from DB to check Unique
+                for(var k = 0; k < gmidCountryRecords.length; k++) 
+                {
+                    // check if GMID and Country Combinations exists in DB
+		            if (GMID === gmidCountryRecords[k].GMID && countryID === gmidCountryRecords[k].COUNTRY_CODE_ID)
+		            {
+		                noDuplicates = false;
+	        			data[i].errorState = "Error";
+		            }
+		            else
+		            {
+		                continue;
+		            }
+                }
+            }
         	
-        	for(var i = 0; i < GMIDShipToCountry.length; i++)
-	        {
-	        	if(!DataContext.checkGMIDCountryUniqueInDB(GMIDShipToCountry[i].GMID,GMIDShipToCountry[i].COUNTRY_CODE_ID))
-	        	{
-	        		noDuplicates = false;
-	        		GMIDShipToCountry[i].errorState = "Error";
-	        	}
-	        }
-	         this._oPlantSelectionViewModel.refresh();
-	          return noDuplicates;
+        
+	        this._oPlantSelectionViewModel.refresh();
+        	return noDuplicates;
         },
         resetValidation: function()
         {

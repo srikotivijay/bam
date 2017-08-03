@@ -3,13 +3,19 @@ sap.ui.define([
 	"sap/ui/core/routing/History",
 	"sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator",
-	"sap/m/MessageToast"
-],function (Controller, History,Filter, FilterOperator,MessageToast) {
+	"sap/m/MessageToast",
+	"sap/ui/model/resource/ResourceModel",
+	"sap/m/MessageBox"
+],function (Controller, History,Filter, FilterOperator,MessageToast,ResourceModel,MessageBox) {
 	
 		var oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", {
 						json: true,
 						tokenHandling: true
 					});
+					
+		var oi18nModel = new ResourceModel({
+                bundleName: "bam.i18n.i18n"
+            });
 	
 		function callService(url) {
 			return new Promise(function(resolve, reject) {
@@ -43,7 +49,11 @@ sap.ui.define([
 			    	
 			    },
 			    error: function() {
-			    	MessageToast.show("Error getting user ID. Please contact System Admin.");                         
+			    	MessageBox.alert("Error getting user ID. Please contact System Admin.",
+							{
+								icon : MessageBox.Icon.ERROR,
+								title : "Error"
+					});
 					result = "";
 			    }
 			});
@@ -78,7 +88,11 @@ sap.ui.define([
 								}
 							},
 							error: function(oError) {
-								MessageToast.show("Error getting user information. Please contact System Admin.");                         
+								MessageBox.alert("Error getting user information. Please contact System Admin.",
+								{
+									icon : MessageBox.Icon.ERROR,
+									title : "Error"
+								});
 								result = false;
 							}
 						});	
@@ -89,7 +103,11 @@ sap.ui.define([
 			    	}
 			    },
 			    error: function() {
-			    	MessageToast.show("Error getting user information. Please contact System Admin.");                         
+			    	MessageBox.alert("Error getting user information. Please contact System Admin.",
+					{
+						icon : MessageBox.Icon.ERROR,
+						title : "Error"
+					});                       
 					result = false;
 			    }
 			});
@@ -153,15 +171,23 @@ sap.ui.define([
 			            	result = permissionList;
 						},
 						error: function(oError) {
-							MessageToast.show("Error getting user roles. Please contact System Admin.");                         
+							MessageBox.alert("Error getting user roles. Please contact System Admin.",
+							{
+								icon : MessageBox.Icon.ERROR,
+								title : "Error"
+							});
 							result = [];
 						}
 					});	
 			    
 			    },
 			    error: function() {
-			       MessageToast.show("Error getting user roles. Please contact System Admin.");                         
-							result = [];
+			       MessageBox.alert("Error getting user roles. Please contact System Admin.",
+					{
+						icon : MessageBox.Icon.ERROR,
+						title : "Error"
+					});                       
+					result = [];
 			    }
 			 });
 			 
@@ -191,34 +217,44 @@ sap.ui.define([
     		return gmid;
 		}
 		
-		function checkGMIDCountryUniqueInDB(gmid,countryid)
-		{
-			// Create a filter to fetch the GMID Country Status Code ID
-			var gmidcountrycodeuniqueFilterArray = [];
-			var gmidFilter = new Filter("GMID",sap.ui.model.FilterOperator.EQ,lpadstring(gmid));
-			gmidcountrycodeuniqueFilterArray.push(gmidFilter);
-			var countrycodeFilter = new Filter("COUNTRY_CODE_ID",sap.ui.model.FilterOperator.EQ,countryid);
-			gmidcountrycodeuniqueFilterArray.push(countrycodeFilter);
-			
-			var validInput = true;
-
-			 // Get the GMID Country Status Code ID CODE_MASTER table
-			 oDataModel.read("/GMID_SHIP_TO_COUNTRY?$select=ID",{
-					filters: gmidcountrycodeuniqueFilterArray,
-					async: false,
-	                success: function(oData, oResponse){
-	                //return the GMID Country ID
-	                	if(oData.results.length !== 0)
-	                	{
-	                		validInput = false;
-	                	}
-	                },
-	    		    error: function(){
-	            		MessageToast.show("Unable to retrieve Code ID for GMID Country Status.");
-	    			}
-	    		});
-	    	return validInput;
+		// function to get unique GMID/Country Combinations from DB
+    	function getGMIDListFromDB(gmidList,viewpath) {
+            var result;                            
+            var gmidFilterArray = [];
+            gmidList.forEach(function(item) {
+	            var gmidFilter = new Filter("GMID",sap.ui.model.FilterOperator.EQ,item.GMID);
+	            var gmidFilterList = new Filter ({
+                    filters : [
+                        gmidFilter
+                        ],
+                        and : true
+                    });
+	            gmidFilterArray.push(gmidFilterList);
+            });
+            // Get data for all GMIDS Entered in UI
+            oDataModel.read(viewpath, {
+                filters: gmidFilterArray,
+                async: false,
+				success: function(oData, oResponse) {
+                    var GMIDCountryList = [];
+		            // get all the GMID/Country List for each row returned
+		            oData.results.forEach(function(item) {
+		            GMIDCountryList.push(item);
+		            });
+            		result = GMIDCountryList;
+                },
+                error: function(oError) {
+                    MessageBox.alert("Error getting GMID/Country List. Please contact System Admin.",
+					{
+						icon : MessageBox.Icon.ERROR,
+						title : "Error"
+					});    
+                    result = [];
+                }
+            });
+			return result;
 		}
+
 		
 		function getMaxID(tablePath)
 		{
@@ -241,19 +277,187 @@ sap.ui.define([
 	                	else {maxID = oData.results[0].ID; }
 	                },
 	    		    error: function(){
-	            		MessageToast.show("Unable to retrieve max ID for GMID Ship from table.");
+	    		    	MessageBox.alert("Unable to retrieve max ID for GMID Ship from table. Please contact System Admin.",
+						{
+							icon : MessageBox.Icon.ERROR,
+							title : "Error"
+						}); 
 	    			}
 	    		});
 	    	return maxID;
 		}
 		
+		function deleteStagingData(loggedInUserID)
+		{
+			var result;
+			//making filter for user ID
+			var filterArray=[];
+	    	var userFilter = new Filter("CREATED_BY",sap.ui.model.FilterOperator.EQ,loggedInUserID);
+			filterArray.push(userFilter);
+			
+			oDataModel.read("/GMID_SHIP_TO_COUNTRY_STG",{
+				filters: filterArray,
+				async: false,
+                success: function(oData, oResponse){
+            		// delete any records for this user from the staging table
+	    	    	// get the count of records in staging table
+	    	    	var batchArray = [];
+	    			for(var k = 0; k < oData.results.length; k++) 
+	    			{
+	    				// delete the data from staging table i.e. GMID_SHIP_TO_COUNTYRY_STG
+	    				batchArray.push(oDataModel.createBatchOperation("GMID_SHIP_TO_COUNTRY_STG(" + oData.results[k].ID + ")", "DELETE"));
+	    			}
+					oDataModel.addBatchChangeOperations(batchArray);
+					
+				   // submit the batch update command
+					oDataModel.submitBatch(
+						function(oData,oResponse)
+						{
+							result = true;
+				    	},
+				    	function(oError)
+				    	{
+				    		result = false;
+				    		MessageBox.alert("Unable to delete staging records for user. Please contact System Admin.",
+							{
+								icon : MessageBox.Icon.ERROR,
+								title : "Error"
+							});
+				    	}
+				    );
+					
+                },
+    		    error: function(){
+    		    	result = false;
+            		MessageBox.alert("Unable to delete staging records for user. Please contact System Admin.",
+					{
+						icon : MessageBox.Icon.ERROR,
+						title : "Error"
+					});
+    			}
+			});
+			
+			return result;
+		}
+		
+		// 
+		function getDropdownValues(dropdownType)
+		{
+			var result;
+			// Create a filter & sorter array
+			var filterArray = [];
+			var countryFilter = new Filter("CODE_TYPE",sap.ui.model.FilterOperator.EQ,dropdownType);
+			filterArray.push(countryFilter);
+			var sortArray = [];
+			var sorter = new sap.ui.model.Sorter("LABEL",false);
+			sortArray.push(sorter);
+			// Get the Country dropdown list from the CODE_MASTER table
+			oDataModel.read("/CODE_MASTER",{
+					filters: filterArray,
+					sorters: sortArray,
+					async: false,
+	                success: function(oData, oResponse){
+	                	// add Please select item on top of the list
+		                oData.results.unshift({	"ID":-1,
+		              							"LABEL":"Select..."});
+		                // Bind the Country data to the GMIDShipToCountry model
+		                result =  oData.results;
+	                },
+	    		    error: function(){
+    		    		MessageBox.alert("Unable to retrieve dropdown values for " + dropdownType + " Please contact System Admin.",
+						{
+							icon : MessageBox.Icon.ERROR,
+							title : "Error"
+						});
+	            		result = [];
+	    			}
+	    	});
+	    	return result;
+		}
+		// below function will return the GMID Country Status ID from CODE_Master TABLE
+		function getGMIDCountryStatusID()
+		{
+			// by default while creating the new GMID, the GMID Country Status will be Submitted
+        	 var ogmidcountryStatus = oi18nModel.getProperty("submitted");
+    	    
+			// Create a filter to fetch the GMID Country Status Code ID
+			var gmidcountrycodeFilterArray = [];
+			var gmidcountrycodetypeFilter = new Filter("CODE_TYPE",sap.ui.model.FilterOperator.EQ,"GMID_COUNTRY_STATUS");
+			gmidcountrycodeFilterArray.push(gmidcountrycodetypeFilter);
+			var gmidcountrycodekeyFilter = new Filter("CODE_KEY",sap.ui.model.FilterOperator.EQ,ogmidcountryStatus);
+			gmidcountrycodeFilterArray.push(gmidcountrycodekeyFilter);
+			
+			var gmidcountrystatusID = null;
+
+			// Get the GMID Country Status Code ID CODE_MASTER table
+			oDataModel.read("/CODE_MASTER?$select=ID",{
+					filters: gmidcountrycodeFilterArray,
+					async: false,
+	                success: function(oData, oResponse){
+	                	//return the Code ID
+	                   gmidcountrystatusID = oData.results[0].ID; 
+	                },
+	    		    error: function(){
+    		    		MessageBox.alert("Unable to retrieve Code ID for GMID Country Status.",
+						{
+							icon : MessageBox.Icon.ERROR,
+							title : "Error"
+						});
+	    			}
+	    		});
+	    	return gmidcountrystatusID;
+		}
+        
+        // function to get GMID/Country Plant Combinations from DB
+    	function getGMIDCountryPlantListFromDB(gmididsList,viewpath) {
+           var result;                            
+            var gmididFilterArray = [];
+              gmididsList.forEach(function(item) {
+	            var gmidFilter = new Filter("ID",sap.ui.model.FilterOperator.EQ,item.ID);
+	            var gmidFilterList = new Filter ({
+                    filters : [
+                        gmidFilter
+                        ],
+                        and : false
+                    });
+	            gmididFilterArray.push(gmidFilterList);
+            });
+            // Get data for all GMIDS Entered in UI
+            oDataModel.read(viewpath, {
+                filters: gmididFilterArray,
+                async: false,
+				success: function(oData, oResponse) {
+                   // var GMIDCountryPlantList = [];
+		            // get all the GMID/Country List for each row returned
+		           // oData.results.forEach(function(item) {
+		            //GMIDCountryPlantList.push(item);
+		          //  });
+            	//	result = GMIDCountryPlantList;
+            		result = oData.results;
+                },
+                error: function(oError) {
+                    MessageBox.alert("Error getting GMID/Country Plant List. Please contact System Admin.",
+					{
+						icon : MessageBox.Icon.ERROR,
+						title : "Error"
+					});    
+                    result = [];
+                }
+            });
+			return result;
+		}
+		
 		var exports = {
 			getAttributeListBasedOnUserID: getAttributeListBasedOnUserID,
 			getUserID: getUserID,
-			checkGMIDCountryUniqueInDB: checkGMIDCountryUniqueInDB,
+			getGMIDListFromDB: getGMIDListFromDB,
 			getMaxID: getMaxID,
 			getUserPermissions: getUserPermissions,
-			isBAMUser : isBAMUser
+			isBAMUser : isBAMUser,
+			getDropdownValues: getDropdownValues,
+			deleteStagingData: deleteStagingData,
+			getGMIDCountryStatusID: getGMIDCountryStatusID,
+			getGMIDCountryPlantListFromDB : getGMIDCountryPlantListFromDB
 		};
 	
 		return exports;
