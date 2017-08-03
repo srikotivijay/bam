@@ -1,0 +1,114 @@
+{
+    "resources": [
+        {
+            "name": "view/EditAttributesMultiple.view.xml"
+        },
+        {
+            "name": "view/PlantSelection.view.xml"
+        },
+        {
+            "name": "view/SubmitConfirmDialog.fragment.xml"
+        },
+        {
+            "name": "view/EditAttributesSingle.view.xml"
+        },
+        {
+            "name": "view/GMIDPlantAssignment.view.xml"
+        },
+        {
+            "name": "view/NotFound.view.xml"
+        },
+        {
+            "name": "view/Home.view.xml"
+        },
+        {
+            "name": "view/BusyLoading.fragment.xml"
+        },
+        {
+            "name": "view/AccessDenied.view.xml"
+        },
+        {
+            "name": "view/MaintainAttributes.view.xml"
+        },
+        {
+            "name": "view/GMIDSubmission.view.xml"
+        },
+        {
+            "name": "view/GMIDPlant.view.xml"
+        },
+        {
+            "name": "localService/metadata.xml"
+        },
+        {
+            "name": "index.html"
+        },
+        {
+            "name": "i18n/i18n.properties",
+            "raw": "i18n/i18n.properties"
+        },
+        {
+            "name": "mock_preview_sapui5.html"
+        },
+        {
+            "name": "model/models.js"
+        },
+        {
+            "name": "script/polyfill.js"
+        },
+        {
+            "name": "manifest.json"
+        },
+        {
+            "name": "css/style.css"
+        },
+        {
+            "name": "templates/GMIDSubmissionTemplate.xlsx"
+        },
+        {
+            "name": "controller/GMIDPlantAssignment.controller.js"
+        },
+        {
+            "name": "controller/Home.controller.js"
+        },
+        {
+            "name": "controller/EditAttributesSingle.controller.js"
+        },
+        {
+            "name": "controller/NotFound.controller.js"
+        },
+        {
+            "name": "controller/GMIDPlant.controller.js"
+        },
+        {
+            "name": "controller/MaintainAttributes.controller.js"
+        },
+        {
+            "name": "controller/AccessDenied.controller.js"
+        },
+        {
+            "name": "controller/EditAttributesMultiple.controller.js"
+        },
+        {
+            "name": "controller/SubmitConfirmDialog.js"
+        },
+        {
+            "name": "controller/GMIDSubmission.controller.js"
+        },
+        {
+            "name": "controller/PlantSelection.controller.js"
+        },
+        {
+            "name": "services/DataContext.js"
+        },
+        {
+            "name": "Component.js"
+        },
+        {
+            "name": "Component-preload.js",
+            "merged": true
+        },
+        {
+            "name": "neo-app.json"
+        }
+    ]
+}

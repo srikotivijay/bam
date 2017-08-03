@@ -1,0 +1,11 @@
+<mvc:View
+   controllerName="bam.controller.AccessDenied"
+   xmlns="sap.m"
+   xmlns:mvc="sap.ui.core.mvc">
+	<App id="accessDenied">
+		<MessagePage
+		  title="{i18n>AccessDenied}"
+		  text="{i18n>AccessDenied.text}"
+		  description="{i18n>AccessDenied.description}"/>
+     </App>
+</mvc:View>

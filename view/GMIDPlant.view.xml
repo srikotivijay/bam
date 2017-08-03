@@ -1,0 +1,31 @@
+<core:View xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns:smartFilterBar="sap.ui.comp.smartfilterbar" xmlns:smartTable="sap.ui.comp.smarttable" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" controllerName="bam.controller.GMIDPlant" height="100%">
+	<App id="GMIDPlant">
+		<pages>
+			<Page title="{i18n>title}">
+				<headerContent>
+					<Button id="btnHome" icon="sap-icon://home" tooltip="{i18n>home}" press="onHome"/>
+				</headerContent>
+				<!-- use this to make the table occupy the available screen height -->
+				<VBox fitContainer="true">
+					
+					<smartTable:SmartTable id="smartTblBAMAttributes" entitySet="V_GMID_CROP_PROTECTION" tableType="Table" useExportToExcel="true" useVariantManagement="true" showFullScreenButton="true" 
+					useTablePersonalisation="true" header="GMID Country Attributes" showRowCount="true" enableAutoBinding="true" app:useSmartField="true" class="sapUiResponsiveContentPadding" ignoreFromPersonalisation="ID"
+					initiallyVisibleFields="GMID_COUNTRY_STATUS,GMID,GMID_SHORTTEXT,COUNTRY,STORED_CURRENCY,IBP_RELEVANCY,NETTING_DEFAULT,QUADRANT,CHANNEL,MARKET_DEFAULT,SUPPLY_SYSTEM_FLAG,DEMAND_ATTRIBUTE1,DEMAND_ATTRIBUTE2,MARKETING_ATTRIBUTE1,MARKETING_ATTRIBUTE2,SUPPLY_ATTRIBUTE1,SUPPLY_ATTRIBUTE2,TRADE_PRODUCT_CODE,TRADE_PRODUCT_DESC,PLAN_PRODUCT_DESC,PROFIT_CENTER_DESC,PERFORMANCE_CENTER_DESC,VALUE_CENTER_DESC,SPECIFIED_MATERIAL_DESC,MASTER_SALES_SPEC_DESC,BRAND_NAME,TREATMENT,PACKAGE_TYPE,BGT_DESC,LOCAL_UOM,MATERIAL_STATUS,TRADE_AREA_DESC,SUB_RCU_DESC,RCU_DESC,CONS_DEFAULT_FLAG,MARKETING_MANAGER,MARKETING_DIRECTOR,DEMAND_MANAGER,GLOBAL_BUSINESS_LEADER,
+					,SUPPLY_CHAIN_PLANNING_SPECIALIST,MARKETING_SPECIALIST,GLOBAL_SUPPLY_CHAIN_MANAGER,REG_SUPPLY_CHAIN_MANAGER,IBP_STATUS,IBP_RESPONSE_DESC,REQUESTED_BY,REQUESTED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE">
+						<!-- layout data used to make the table growing but the filter bar fixed -->
+						<smartTable:layoutData>
+								<FlexItemData growFactor="1" baseSize="0%"/>
+						</smartTable:layoutData>
+					<smartTable:customToolbar> 
+		                <OverflowToolbar design="Transparent"> 
+		                        <ToolbarSpacer/> 
+		                        <Button id="btnViewPlantAssignment" text="{i18n>viewPlants}" press="onViewPlantAssignment" class="sapUiMediumMarginBegin" icon="sap-icon://detail-view" activeIcon="sap-icon://detail-view"/> 
+		               </OverflowToolbar> 
+			       </smartTable:customToolbar>
+					</smartTable:SmartTable>
+				<items/>
+				</VBox>
+			</Page>
+		</pages>
+	</App>
+</core:View>

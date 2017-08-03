@@ -1,0 +1,60 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:layout="sap.ui.layout" xmlns:html="http://www.w3.org/1999/xhtml" controllerName="bam.controller.PlantSelection">
+	<App id="gmidPlantSelection">
+		<pages>
+			<Page title="{i18n>title}" class="sapUiResponsiveContentPadding">
+				<headerContent>
+					<Button id="btnHome" icon="sap-icon://home" tooltip="{i18n>home}" press="onHome"/>
+				</headerContent>
+				<content>
+				<ScrollContainer horizontal="true"> 
+					<Table noDataText="No records to display" id="tblPlantSelection" width="auto" items="{/PlantSelectionVM}">
+						<columns>
+					    	<Column id="clmHdrAction" width="50px">
+							    <header>
+							        <Label text="{i18n>action}" id="lblHdrAction"/>
+							    </header>
+						    </Column>
+					        <Column id="clmHdrGMID" width="100px">
+							    <header>
+							        <Label text="{i18n>gmid}" id="lblHdrGMID"/>
+							    </header>
+						    </Column>
+						    <Column id="clmHdrCountry" width="150px">
+							    <header>
+							        <Label text="{i18n>country}" id="lblHdrCountry"/>
+							    </header>
+						    </Column>
+					        <Column id="clmHdrPlant">
+					            <header>
+					                <Label text="{i18n>plant}" id="lblHdrPlant"/>
+					            </header>
+					        </Column>
+					      
+					    </columns>
+					    <items>
+					        <ColumnListItem id="cliPlantSelection" highlight="{errorState}">
+					            <cells>
+					            	<Button id="btnRemoveRow" icon="sap-icon://delete" press="onRemoveRow"/>
+					            	<Label id="lblGMID" text="{GMID}"/>
+					            	<Label id="lblCountry" text="{COUNTRY}"/>
+					            	<List items="{path: 'PLANTS', templateShareable : true}" mode="MultiSelect">
+					            		<items>
+											<ObjectListItem title="{PLANT_CODE}" type="Active" selected="{IS_SELECTED}"/>
+										</items>
+									</List>
+					            </cells>
+					        </ColumnListItem>
+					    </items>
+					</Table>
+				</ScrollContainer>
+				<Toolbar width="100%" id="tbrSubmit">
+				     <content>
+				         <ToolbarSpacer id="tbrSpSubmit"/>
+							 <Button text="{i18n>submit}" width="100px" id="btnSubmit" press="onSubmit" visible="true"/>
+				          </content>
+				 </Toolbar>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

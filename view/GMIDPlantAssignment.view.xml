@@ -1,0 +1,60 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:layout="sap.ui.layout" xmlns:html="http://www.w3.org/1999/xhtml" controllerName="bam.controller.GMIDPlantAssignment">
+	<App id="gmidPlantAssignment">
+		<pages>
+			<Page title="{i18n>title}" class="sapUiResponsiveContentPadding" showNavButton="true" navButtonPress="onNavBack">
+				<content>
+				<ScrollContainer horizontal="true"> 
+					<Table noDataText="No records to display" id="tblGMIDPlantAssignment" width="auto" items="{/GMIDPlantAssignmentVM}">
+						<columns>
+					        <Column id="clmHdrGMID" width="100px">
+							    <header>
+							        <Label text="{i18n>gmid}" id="lblHdrGMID"/>
+							    </header>
+						    </Column>
+						    <Column id="clmHdrCountry" width="250px">
+							    <header>
+							        <Label text="{i18n>country}" id="lblHdrCountry"/>
+							    </header>
+						    </Column>
+					        <Column id="clmHdrPlant">
+					            <header>
+					                <Label text="{i18n>plant} - {i18n>plantstatus} ({i18n>plantstatusdesc})" id="lblHdrPlant"/>
+					            </header>
+					        </Column>
+					        <!--<Column id="clmHdrPlantStatus">-->
+					        <!--    <header>-->
+					        <!--        <Label text="{i18n>plantstatus}" id="lblHdrPlantStatus"/>-->
+					        <!--    </header>-->
+					        <!--</Column>-->
+					        <!--<Column id="clmHdrPlantStatusDesc">-->
+					        <!--    <header>-->
+					        <!--        <Label text="{i18n>plantstatusdesc}" id="lblHdrPlantStatusDesc"/>-->
+					        <!--    </header>-->
+					        <!--</Column>-->
+					    </columns>
+					    <items>
+					        <ColumnListItem id="cliPlantSelection">
+					            <cells>
+					            	<Label id="lblGMID" text="{GMID}"/>
+					            	<Label id="lblCountry" text="{COUNTRY}"/>
+					            	<List items="{path: 'PLANTS', templateShareable : true}" mode="MultiSelect">
+					            		<items >
+											<ObjectListItem title="{PLANT_CODE} - {PLANT_STATUS} ({PLANT_STATUS_DESC})" type="Active" selected="{IS_SELECTED}" />
+										</items>
+									</List>
+					            </cells>
+					        </ColumnListItem>
+					    </items>
+					</Table>
+				</ScrollContainer>
+				<Toolbar width="100%" id="tbrSubmit">
+				     <content>
+				         <ToolbarSpacer id="tbrSpSubmit"/>
+							 <!--<Button text="{i18n>cancel}" width="100px" id="btnCancel" press="onCancel" class="sapUiLargeMarginEnd"/>-->
+				          </content>
+				 </Toolbar>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>
