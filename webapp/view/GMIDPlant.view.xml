@@ -19,7 +19,7 @@
 					<smartTable:customToolbar> 
 		                <OverflowToolbar design="Transparent"> 
 		                        <ToolbarSpacer/> 
-		                        <Button id="btnViewPlantAssignment" text="{i18n>viewPlants}" press="onViewPlantAssignment" class="sapUiMediumMarginBegin" icon="sap-icon://detail-view" activeIcon="sap-icon://detail-view"/> 
+		                        <Button id="btnViewPlantAssignment" text="{GMIDPlantVM>/plantAssignmentText}" press="onViewPlantAssignment" class="sapUiMediumMarginBegin" icon="sap-icon://detail-view" activeIcon="sap-icon://detail-view"/> 
 		               </OverflowToolbar> 
 			       </smartTable:customToolbar>
 					</smartTable:SmartTable>

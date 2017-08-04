@@ -26,6 +26,9 @@ sap.ui.define([
         		var plantAssignment = oi18nModel.getProperty("Module.plantAssignment");
         		var actionAdd = oi18nModel.getProperty("Module.actionAdd");
 		    	
+		    	// initiliaze button to say view plants
+		    	this._oModel.setProperty("/plantAssignmentText",oi18nModel.getProperty("viewPlants"));
+		    	
 		    	// getting permissions for the current logged in user
 				var permissions = DataContext.getUserPermissions();
 				// check to see if the permission list includes "Add" action for the PLANT ASSIGNMENT Module
@@ -38,16 +41,6 @@ sap.ui.define([
 						// break since the user may have more than one role, as long as one of the user roles has permission to edit we can show the button
 						break;
 					}
-					else
-					{
-						if(permissions[i].ATTRIBUTE === plantAssignment && permissions[i].ACTION === actionAdd)
-						{
-							this._oModel.setProperty("/plantAssignmentText",oi18nModel.getProperty("viewPlants"));
-							// break since the user may have more than one role, as long as one of the user roles has permission to view we can show the button
-							break;
-						}
-					}
-					// change button text to Add
 				}
 		    	
 		    	//attach _onRouteMatched to be called everytime on navigation to Maintain Attributes page
