@@ -183,6 +183,7 @@ sap.ui.define([
 		},
 		// Below function removes a row
 		onRemoveRow : function(oEvent) {
+			this._isChanged = true;
 			// Get the object to be deleted from the event handler
 			var entryToDelete = oEvent.getSource().getBindingContext().getObject();
 			// Get the # of rows in the VM, (this includes the dropdown objects such as Country, Currency, etc..)
@@ -600,7 +601,7 @@ sap.ui.define([
 			title : "Invalid Input"
 			       });
         },
-        // below function will check if anything is changed in or modified in submission page
+        // below function will check if anything is changed  or modified in submission page
         chkIsModified: function() {
         	var GMIDShipToCountry = this._oGMIDShipToCountryViewModel.getProperty("/GMIDShipToCountryVM");
         	var isModified = false;
@@ -641,7 +642,7 @@ sap.ui.define([
 			 var maxLimitSubmit = parseInt(this._oi18nModel.getProperty("MaxLimit"),10) ;
 			 var maxLimitSubmitText = this._oi18nModel.getProperty("MaxLimitSubmit.text");
 			 // adding one to account for the extra line at the bottom
-		 	if (GMIDShipToCountry.length > (maxLimitSubmit + 1))
+		 	if (GMIDShipToCountry.length > (maxLimitSubmit))
 		        {
 		        	MessageBox.alert(maxLimitSubmitText,
 		        	{
@@ -961,7 +962,7 @@ sap.ui.define([
 			        }
 			        
 			        // including the header column into the count for max excel
-			        if (allTextLines.length >= (maxLimitExcel + 1))
+			        if (allTextLines.length > (maxLimitExcel + 1))
 			        {
 			        	MessageBox.alert(maxLimitExcelText,
 			        	{
