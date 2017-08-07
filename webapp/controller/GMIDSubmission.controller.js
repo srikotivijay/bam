@@ -600,6 +600,36 @@ sap.ui.define([
 			title : "Invalid Input"
 			       });
         },
+        // below function will check if anything is changed in or modified in submission page
+        chkIsModified: function() {
+        	var GMIDShipToCountry = this._oGMIDShipToCountryViewModel.getProperty("/GMIDShipToCountryVM");
+        	var isModified = false;
+            	// loop through the rows and for each row check if is anything is modified or changed
+		    		for(var i = 0; i < GMIDShipToCountry.length - 1; i++) 
+		    		{   
+		    			// handle the scenario when nothing is changed on the submission page
+	        				if(this._oSelectedGMIDType === this._oSeed){
+			        			if ((GMIDShipToCountry[i].GMID !== "") || (parseInt(GMIDShipToCountry[i].COUNTRY_CODE_ID,10) !== -1) || (parseInt(GMIDShipToCountry[i].CURRENCY_CODE_ID,10) !== -1) || (parseInt(GMIDShipToCountry[i].IBP_RELEVANCY_CODE_ID,10) !== this._defaultIBPRelevancy)
+			        		    ||	(parseInt(GMIDShipToCountry[i].NETTING_DEFAULT_CODE_ID,10) !== -1)|| (parseInt(GMIDShipToCountry[i].QUADRANT_CODE_ID,10) !== this._defaultQuadrantForSeed) 
+			        		    || (parseInt(GMIDShipToCountry[i].CHANNEL_CODE_ID,10) !== this._defaultChannelForSeed) || (parseInt(GMIDShipToCountry[i].MARKET_DEFAULT_CODE_ID,10) !== -1))
+			        		    {
+			        		    	isModified = true;
+			        		    	break;
+			        		    }
+				        	}
+				        	else
+				        	{
+			        			if ((GMIDShipToCountry[i].GMID !== "") || (parseInt(GMIDShipToCountry[i].COUNTRY_CODE_ID,10) !== -1) || (parseInt(GMIDShipToCountry[i].CURRENCY_CODE_ID,10) !== -1) || (parseInt(GMIDShipToCountry[i].IBP_RELEVANCY_CODE_ID,10) !== this._defaultIBPRelevancy)
+			        		    ||	(parseInt(GMIDShipToCountry[i].NETTING_DEFAULT_CODE_ID,10) !== -1) || (parseInt(GMIDShipToCountry[i].QUADRANT_CODE_ID,10) !== -1)	|| (parseInt(GMIDShipToCountry[i].CHANNEL_CODE_ID,10) !== -1)
+			        		    || (parseInt(GMIDShipToCountry[i].MARKET_DEFAULT_CODE_ID,10) !== this._defaultMarketingFlagForCP))
+			        		     {
+			        		    	isModified = true;
+			        		    	break;
+			        		     }
+	        				}
+		    			}
+		    		return isModified;
+        },
     	// Function to save the data into the database
     	onSubmit : function () {
     		var errorCount = 0;
@@ -621,8 +651,12 @@ sap.ui.define([
 		        	return;
 		        }
 			
+			// reset the error message property to false before doing any validation
+			this.resetValidationForModel();
+			
     		// if there are no GMIDs show a validation message
-    		if (GMIDShipToCountry.length === 1)
+    		// also if nothing is changed in page
+    		if (GMIDShipToCountry.length === 1 || this.chkIsModified() === false)
     		{
 				MessageBox.alert("Please enter at least one GMID.", {
 	    			icon : MessageBox.Icon.ERROR,
@@ -631,8 +665,7 @@ sap.ui.define([
     			return;
     		}
     		
-    		// reset the error message property to false before doing any validation
-			this.resetValidationForModel();
+    		
 			// reset error on page to false
 			this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",false);
 			// remove the file from the uploader
