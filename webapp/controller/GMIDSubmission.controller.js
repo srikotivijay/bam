@@ -919,7 +919,16 @@ sap.ui.define([
 			        // if more than 200 than show a validation message to user
 			        var maxLimitExcel = parseInt(t._oi18nModel.getProperty("MaxLimit"),10);
 			        var maxLimitExcelText = t._oi18nModel.getProperty("MaxLimitExcel.text");
-			        if (allTextLines.length > maxLimitExcel)
+			        
+			        // last row of file is empty when splitting the CSV
+			        var lastRow = allTextLines[allTextLines.length - 1];
+			        if(lastRow === "")
+			        {
+			        	allTextLines.splice(allTextLines.length - 1,1);
+			        }
+			        
+			        // including the header column into the count for max excel
+			        if (allTextLines.length >= (maxLimitExcel + 1))
 			        {
 			        	MessageBox.alert(maxLimitExcelText,
 			        	{
