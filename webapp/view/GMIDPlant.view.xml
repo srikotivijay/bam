@@ -3,7 +3,7 @@
 		<pages>
 			<Page title="{i18n>title}">
 				<headerContent>
-					<Button id="btnHome" icon="sap-icon://home" tooltip="{i18n>home}" press="onHome"/>
+					<Button id="btnHome"  icon="sap-icon://home" tooltip="{i18n>home}" press="onHome"/>
 				</headerContent>
 				<!-- use this to make the table occupy the available screen height -->
 				<VBox fitContainer="true">

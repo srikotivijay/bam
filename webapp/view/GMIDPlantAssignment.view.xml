@@ -1,7 +1,6 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:layout="sap.ui.layout" xmlns:html="http://www.w3.org/1999/xhtml" controllerName="bam.controller.GMIDPlantAssignment">
 	<App id="gmidPlantAssignment">
-		<pages>
-			<Page title="{i18n>title}" class="sapUiResponsiveContentPadding" showNavButton="true" navButtonPress="onNavBack">
+		<pages><Page title="{i18n>title}" class="sapUiResponsiveContentPadding" showNavButton="true" navButtonPress="onNavBack">
 				<content>
 				<ScrollContainer horizontal="true"> 
 					<Table noDataText="No records to display" id="tblGMIDPlantAssignment" width="auto" items="{/GMIDPlantAssignmentVM}">
@@ -18,28 +17,38 @@
 						    </Column>
 					        <Column id="clmHdrPlant">
 					            <header>
-					                <Label text="{i18n>plant} - {i18n>plantstatus} ({i18n>plantstatusdesc})" id="lblHdrPlant"/>
+					                <Label text="{i18n>plant}" id="lblHdrPlant"/>
 					            </header>
 					        </Column>
-					        <!--<Column id="clmHdrPlantStatus">-->
-					        <!--    <header>-->
-					        <!--        <Label text="{i18n>plantstatus}" id="lblHdrPlantStatus"/>-->
-					        <!--    </header>-->
-					        <!--</Column>-->
-					        <!--<Column id="clmHdrPlantStatusDesc">-->
-					        <!--    <header>-->
-					        <!--        <Label text="{i18n>plantstatusdesc}" id="lblHdrPlantStatusDesc"/>-->
-					        <!--    </header>-->
-					        <!--</Column>-->
+					        <Column id="clmHdrPlantStatus">
+					            <header>
+					                <Label text="{i18n>plantstatus}" id="lblHdrPlantStatus"/>
+					            </header>
+					        </Column>
+					        <Column id="clmHdrPlantStatusDesc">
+					            <header>
+					                <Label text="{i18n>plantstatusdesc}" id="lblHdrPlantStatusDesc"/>
+					            </header>
+					        </Column>
 					    </columns>
 					    <items>
 					        <ColumnListItem id="cliPlantSelection">
 					            <cells>
 					            	<Label id="lblGMID" text="{GMID}"/>
 					            	<Label id="lblCountry" text="{COUNTRY}"/>
-					            	<List items="{path: 'PLANTS', templateShareable : true}" mode="MultiSelect">
-					            		<items >
-											<ObjectListItem title="{PLANT_CODE} - {PLANT_STATUS} ({PLANT_STATUS_DESC})" type="Active" selected="{IS_SELECTED}" />
+					            	<List items="{path: 'PLANTS', templateShareable : true}">
+					            		<CustomListItem>
+											<CheckBox text="{PLANT_CODE}" selected="{IS_SELECTED}" editable="{IS_EDITABLE}"/>
+										</CustomListItem>
+									</List>
+									<List items="{path: 'PLANTS', templateShareable : true}">
+					            		<items>
+											<StandardListItem title="{PLANT_STATUS}"/>
+										</items>
+									</List>
+									<List items="{path: 'PLANTS', templateShareable : true}">
+					            		<items>
+											<StandardListItem title="{PLANT_STATUS_DESC}"/>
 										</items>
 									</List>
 					            </cells>
