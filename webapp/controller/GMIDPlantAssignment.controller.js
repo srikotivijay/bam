@@ -202,6 +202,13 @@ sap.ui.define([
 					title : "Invalid Input"
        			});
 			}
+			else if(!this.isChangeOnPage())
+			{
+				MessageBox.alert("There is no change on the page.", {
+	    			icon : MessageBox.Icon.ERROR,
+					title : "No Changes Found"
+       			});
+			}
 			// validation to check if each GMID/Country has at least one plant selected
     	    else if (this.validatePlantSelection() === false)
 	    	{
@@ -226,7 +233,7 @@ sap.ui.define([
 			    		{
 	    	    					
 									// only selected plants are to be saved in database
-									if (GMIDShipToCountry[i].PLANTS[j].IS_SELECTED === true && GMIDShipToCountry[i].PLANTS[j].IS_EDITABLE === true && this.allGMIDPlantsSelected(GMIDShipToCountry[i]) === false)
+									if (GMIDShipToCountry[i].PLANTS[j].IS_SELECTED === true && GMIDShipToCountry[i].PLANTS[j].IS_EDITABLE === true)
 									{
 										var gmidshipfromplantID = parseInt(GMIDShipToCountry[i].PLANTS[j].PLANT_CODE_ID,10);
 										// create new GMIDShipFromPlant object
@@ -282,13 +289,13 @@ sap.ui.define([
 		        for(var i = 0; i < GMIDShipToCountry.length; i++)
 		        {
 		        	// dont validate if all plants are selected for a GMID country Combination
-		        	if (this.allGMIDPlantsSelected(GMIDShipToCountry[i]) === true)
+		        	if (this.isPlantSelectable(GMIDShipToCountry[i]) === true)
 		        	{
 			        	plantSelected = false;
 			        	for(var j = 0; j < GMIDShipToCountry[i].PLANTS.length; j++) 
 			            {
 			                // if there is at least one plant selected, then the GMID/Country combination is valid
-			                if (GMIDShipToCountry[i].PLANTS[j].IS_SELECTED === true && GMIDShipToCountry[i].PLANTS[j].IS_EDITABLE === true)
+			                if (GMIDShipToCountry[i].PLANTS[j].IS_SELECTED === true)
 			                {
 			                	plantSelected = true;
 			                }
@@ -306,19 +313,46 @@ sap.ui.define([
 		        return validPlants;
 	       },
 	       // function to check if for a GMID,Country combination whether all the plants are selected
-	       allGMIDPlantsSelected : function(row)
+	       isPlantSelectable : function(row)
 	       {
-	       	 var allplantsselected = false;
+	       	 var plantSelectable = false;
 	       	 for(var j = 0; j < row.PLANTS.length; j++) 
-			     {
-	                // check if atleaseone plant selected
-	                if (row.PLANTS[j].IS_SELECTED === true && row.PLANTS[j].IS_EDITABLE === true)
-	                {
-	                	allplantsselected = true;
-	                	break;
-	                }
-			     }
-	       	  return allplantsselected;
+		     {
+                // check if at least one plant is editable
+                if (row.PLANTS[j].IS_EDITABLE === true)
+                {
+                	plantSelectable = true;
+                	break;
+                }
+		     }
+	       	  return plantSelectable;
+	       },
+	    	isChangeOnPage :function()
+	        {
+		        var GMIDShipToCountry =  this._oPlantAssignmentSelectionViewModel.getProperty("/GMIDPlantAssignmentVM");
+		        var plantSelected;
+		        var changeOnPage = false;
+		        for(var i = 0; i < GMIDShipToCountry.length; i++)
+		        {
+		        	// dont validate if there are no plants selectable
+		        	if (this.isPlantSelectable(GMIDShipToCountry[i]) === true)
+		        	{
+			        	plantSelected = false;
+			        	for(var j = 0; j < GMIDShipToCountry[i].PLANTS.length; j++) 
+			            {
+			                // if there is at least one plant selected, then the GMID/Country combination is valid
+			                if (GMIDShipToCountry[i].PLANTS[j].IS_SELECTED === true  && GMIDShipToCountry[i].PLANTS[j].IS_EDITABLE === false)
+			                {
+			                	plantSelected = true;
+			                }
+			            }
+			            if (plantSelected)
+			            {
+			            	changeOnPage = true;
+			            }
+		        	}
+		        }
+		        return changeOnPage;
 	       },
 		   resetValidation: function()
 	        {
