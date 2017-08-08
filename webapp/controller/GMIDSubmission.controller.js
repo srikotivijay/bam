@@ -183,6 +183,7 @@ sap.ui.define([
 		},
 		// Below function removes a row
 		onRemoveRow : function(oEvent) {
+			this._isChanged = true;
 			// Get the object to be deleted from the event handler
 			var entryToDelete = oEvent.getSource().getBindingContext().getObject();
 			// Get the # of rows in the VM, (this includes the dropdown objects such as Country, Currency, etc..)
@@ -600,6 +601,36 @@ sap.ui.define([
 			title : "Invalid Input"
 			       });
         },
+        // below function will check if anything is changed  or modified in submission page
+        chkIsModified: function() {
+        	var GMIDShipToCountry = this._oGMIDShipToCountryViewModel.getProperty("/GMIDShipToCountryVM");
+        	var isModified = false;
+            	// loop through the rows and for each row check if is anything is modified or changed
+		    		for(var i = 0; i < GMIDShipToCountry.length - 1; i++) 
+		    		{   
+		    			// handle the scenario when nothing is changed on the submission page
+	        				if(this._oSelectedGMIDType === this._oSeed){
+			        			if ((GMIDShipToCountry[i].GMID !== "") || (parseInt(GMIDShipToCountry[i].COUNTRY_CODE_ID,10) !== -1) || (parseInt(GMIDShipToCountry[i].CURRENCY_CODE_ID,10) !== -1) || (parseInt(GMIDShipToCountry[i].IBP_RELEVANCY_CODE_ID,10) !== this._defaultIBPRelevancy)
+			        		    ||	(parseInt(GMIDShipToCountry[i].NETTING_DEFAULT_CODE_ID,10) !== -1)|| (parseInt(GMIDShipToCountry[i].QUADRANT_CODE_ID,10) !== this._defaultQuadrantForSeed) 
+			        		    || (parseInt(GMIDShipToCountry[i].CHANNEL_CODE_ID,10) !== this._defaultChannelForSeed) || (parseInt(GMIDShipToCountry[i].MARKET_DEFAULT_CODE_ID,10) !== -1))
+			        		    {
+			        		    	isModified = true;
+			        		    	break;
+			        		    }
+				        	}
+				        	else
+				        	{
+			        			if ((GMIDShipToCountry[i].GMID !== "") || (parseInt(GMIDShipToCountry[i].COUNTRY_CODE_ID,10) !== -1) || (parseInt(GMIDShipToCountry[i].CURRENCY_CODE_ID,10) !== -1) || (parseInt(GMIDShipToCountry[i].IBP_RELEVANCY_CODE_ID,10) !== this._defaultIBPRelevancy)
+			        		    ||	(parseInt(GMIDShipToCountry[i].NETTING_DEFAULT_CODE_ID,10) !== -1) || (parseInt(GMIDShipToCountry[i].QUADRANT_CODE_ID,10) !== -1)	|| (parseInt(GMIDShipToCountry[i].CHANNEL_CODE_ID,10) !== -1)
+			        		    || (parseInt(GMIDShipToCountry[i].MARKET_DEFAULT_CODE_ID,10) !== this._defaultMarketingFlagForCP))
+			        		     {
+			        		    	isModified = true;
+			        		    	break;
+			        		     }
+	        				}
+		    			}
+		    		return isModified;
+        },
     	// Function to save the data into the database
     	onSubmit : function () {
     		var errorCount = 0;
@@ -611,7 +642,7 @@ sap.ui.define([
 			 var maxLimitSubmit = parseInt(this._oi18nModel.getProperty("MaxLimit"),10) ;
 			 var maxLimitSubmitText = this._oi18nModel.getProperty("MaxLimitSubmit.text");
 			 // adding one to account for the extra line at the bottom
-		 	if (GMIDShipToCountry.length > (maxLimitSubmit + 1))
+		 	if (GMIDShipToCountry.length > (maxLimitSubmit))
 		        {
 		        	MessageBox.alert(maxLimitSubmitText,
 		        	{
@@ -621,8 +652,12 @@ sap.ui.define([
 		        	return;
 		        }
 			
+			// reset the error message property to false before doing any validation
+			this.resetValidationForModel();
+			
     		// if there are no GMIDs show a validation message
-    		if (GMIDShipToCountry.length === 1)
+    		// also if nothing is changed in page
+    		if (GMIDShipToCountry.length === 1 || this.chkIsModified() === false)
     		{
 				MessageBox.alert("Please enter at least one GMID.", {
 	    			icon : MessageBox.Icon.ERROR,
@@ -631,8 +666,7 @@ sap.ui.define([
     			return;
     		}
     		
-    		// reset the error message property to false before doing any validation
-			this.resetValidationForModel();
+    		
 			// reset error on page to false
 			this._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",false);
 			// remove the file from the uploader
@@ -919,7 +953,16 @@ sap.ui.define([
 			        // if more than 200 than show a validation message to user
 			        var maxLimitExcel = parseInt(t._oi18nModel.getProperty("MaxLimit"),10);
 			        var maxLimitExcelText = t._oi18nModel.getProperty("MaxLimitExcel.text");
-			        if (allTextLines.length > maxLimitExcel)
+			        
+			        // last row of file is empty when splitting the CSV
+			        var lastRow = allTextLines[allTextLines.length - 1];
+			        if(lastRow === "")
+			        {
+			        	allTextLines.splice(allTextLines.length - 1,1);
+			        }
+			        
+			        // including the header column into the count for max excel
+			        if (allTextLines.length > (maxLimitExcel + 1))
 			        {
 			        	MessageBox.alert(maxLimitExcelText,
 			        	{
