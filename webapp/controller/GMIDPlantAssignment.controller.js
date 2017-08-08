@@ -17,7 +17,8 @@ sap.ui.define([
 			
 		    // Create view model for the page
 		    var oModel = new sap.ui.model.json.JSONModel();
-
+			// define a global variable for the oData model		    
+		    this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
             var groupedGMIDPlantCountry = [];
                 
 		        //common code to check duplicates
@@ -132,13 +133,16 @@ sap.ui.define([
 						}
 						
 					    //find the object for the gmid and country combination and push the plant code to the nested plant object
-					    groupedGMIDPlantCountry.find(function(data){return data.GMID === item.GMID && data.COUNTRY === item.COUNTRY;}).PLANTS.push({PLANT_CODE: item.PLANT_CODE,IS_SELECTED : item.IS_SELECTED,PLANT_STATUS: item.PLANT_STATUS, IS_EDITABLE : item.IS_EDITABLE, PLANT_STATUS_DESC: item.PLANT_STATUS_DESC});
-					}
+					    groupedGMIDPlantCountry.find(function(data){return data.GMID === item.GMID && data.COUNTRY === item.COUNTRY;}).PLANTS.push({PLANT_CODE: item.PLANT_CODE,PLANT_CODE_ID : item.PLANT_CODE_ID,IS_SELECTED : item.IS_SELECTED,PLANT_STATUS: item.PLANT_STATUS, IS_EDITABLE : item.IS_EDITABLE, PLANT_STATUS_DESC: item.PLANT_STATUS_DESC});
+					} 					
 			}
 				
             // Bind the Country data to the GMIDShipToCountry model
             oModel.setProperty("/GMIDPlantAssignmentVM",groupedGMIDPlantCountry);
             this.getView().setModel(oModel);
+             // define a global variable for the view model and the view model data
+		    this._oPlantAssignmentSelectionViewModel = oModel;
+		    this._oViewModelData = this._oPlantAssignmentSelectionViewModel.getData();
     	},
     	getRouter : function () {
 				return sap.ui.core.UIComponent.getRouterFor(this);
@@ -177,6 +181,152 @@ sap.ui.define([
 				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 				oRouter.navTo("gmidPlant", true);
 			}
-		}
+		},
+		// Function to save the data into the database
+		// this will save data in only one table GMID_COUNTRY_SHIP_FROM_PLANT
+    	onSubmit : function () {
+    		var errorCount = 0;
+    		var successGMIDPlantShipToCount = 0;
+   			// Get logged in user id
+			var loggedInUserID = DataContext.getUserID();
+    		var GMIDShipToCountry = this._oPlantAssignmentSelectionViewModel.getProperty("/GMIDPlantAssignmentVM");
+    	
+    		// Create current timestamp
+    		var oDate = new Date();
+    	    // reset the validation on the screen
+    	    this.resetValidation();
+			if(GMIDShipToCountry.length === 0)
+			{
+				MessageBox.alert("There are no GMID/Country combinations to submit. Please return to the homepage.", {
+	    			icon : MessageBox.Icon.ERROR,
+					title : "Invalid Input"
+       			});
+			}
+			// validation to check if each GMID/Country has at least one plant selected
+    	    else if (this.validatePlantSelection() === false)
+	    	{
+	    		MessageBox.alert("Please select at least one plant for each GMID/Country combination.", {
+	    			icon : MessageBox.Icon.ERROR,
+					title : "Invalid Input"
+       			});
+	    	}
+	    	else
+	    	{
+	    		 var oModel = this._oDataModel;
+	    		 // data is already there in GMID SHIP TO Country table, needs to be saved in only one table
+	    		 // i.e GMID_COUNTRY_SHIP_FROM_PLANT
+	    		// loop through the rows and for each row insert data into database
+	    		// each row contains GMID Ship To combination.
+	    		for(var i = 0; i < GMIDShipToCountry.length; i++) 
+	    		{
+					var GMIDCountryID = GMIDShipToCountry[i].ID;
+	        		// insert the data into GMID_COUNTRY_SHIP_FROM_PLANT
+	        		// each GMID Country combination can have one or more plants
+					  for(var j = 0; j < GMIDShipToCountry[i].PLANTS.length; j++) 
+			    		{
+	    	    					
+									// only selected plants are to be saved in database
+									if (GMIDShipToCountry[i].PLANTS[j].IS_SELECTED === true && GMIDShipToCountry[i].PLANTS[j].IS_EDITABLE === true && this.allGMIDPlantsSelected(GMIDShipToCountry[i]) === false)
+									{
+										var gmidshipfromplantID = parseInt(GMIDShipToCountry[i].PLANTS[j].PLANT_CODE_ID,10);
+										// create new GMIDShipFromPlant object
+										var newGMIDShipFromPlant = {
+								        	ID: 1 ,
+								        	GMID_SHIP_TO_COUNTRY_ID: GMIDCountryID,
+								        	GMID_SHIP_FROM_PLANT_ID: gmidshipfromplantID,
+								        	// always IBP_FLAG will be set to T if plants are being saved from plant assignment
+								        	SEND_IBP_FLAG:"T",
+								        	CREATED_ON: oDate,
+								        	CREATED_BY:loggedInUserID
+						    			};
+						    			
+						        		oModel.create("/GMID_COUNTRY_SHIP_FROM_PLANT", newGMIDShipFromPlant,
+						        		{
+								        	success: function(){
+								        		successGMIDPlantShipToCount++;
+								    		},
+								    		error: function(){
+								    			errorCount++;
+											}
+						        		});
+									}
+					    		}
+			    		}
+
+	    		//Show success or error message
+	    		if(errorCount === 0) 
+	    		{
+	        			var oRouter = this.getRouter();
+        				// once insertion is success, navigate to homepage
+        				MessageBox.alert("You have successfully submitted " + successGMIDPlantShipToCount + " GMID(s)",
+							{
+								icon : MessageBox.Icon.SUCCESS,
+								title : "Success",
+								onClose: function() {
+				        			oRouter.navTo("home");
+				        	}
+						});
+	        		//once insertion is success, navigate to homepage
+	    		} 
+	    		else 
+	    		{
+	        			MessageToast.show("Error: GMID Plants were not submitted");
+	    		}
+	    	 } // end of else validation at least one plant selected
+	    	},
+	    	validatePlantSelection :function()
+	        {
+		        var GMIDShipToCountry =  this._oPlantAssignmentSelectionViewModel.getProperty("/GMIDPlantAssignmentVM");
+		        var plantSelected;
+		        var validPlants = true;
+		        for(var i = 0; i < GMIDShipToCountry.length; i++)
+		        {
+		        	// dont validate if all plants are selected for a GMID country Combination
+		        	if (this.allGMIDPlantsSelected(GMIDShipToCountry[i]) === true)
+		        	{
+			        	plantSelected = false;
+			        	for(var j = 0; j < GMIDShipToCountry[i].PLANTS.length; j++) 
+			            {
+			                // if there is at least one plant selected, then the GMID/Country combination is valid
+			                if (GMIDShipToCountry[i].PLANTS[j].IS_SELECTED === true && GMIDShipToCountry[i].PLANTS[j].IS_EDITABLE === true)
+			                {
+			                	plantSelected = true;
+			                }
+			            }
+			            if (plantSelected === false)
+			            {
+			               // add error state for this GMID 
+			               GMIDShipToCountry[i].errorState = "Error";
+			               // invalid GMID/Country combo found
+			               validPlants = false;
+			            }
+		        	}
+		        }
+		        this._oPlantAssignmentSelectionViewModel.refresh();
+		        return validPlants;
+	       },
+	       // function to check if for a GMID,Country combination whether all the plants are selected
+	       allGMIDPlantsSelected : function(row)
+	       {
+	       	 var allplantsselected = false;
+	       	 for(var j = 0; j < row.PLANTS.length; j++) 
+			     {
+	                // check if atleaseone plant selected
+	                if (row.PLANTS[j].IS_SELECTED === true && row.PLANTS[j].IS_EDITABLE === true)
+	                {
+	                	allplantsselected = true;
+	                	break;
+	                }
+			     }
+	       	  return allplantsselected;
+	       },
+		   resetValidation: function()
+	        {
+	        	var GMIDShipToCountry = this._oPlantAssignmentSelectionViewModel.getProperty("/GMIDPlantAssignmentVM");
+	        	for(var i = 0; i < GMIDShipToCountry.length; i++)
+		        {
+		        	GMIDShipToCountry[i].errorState = "None";
+		        }
+	        }
   	});
 });

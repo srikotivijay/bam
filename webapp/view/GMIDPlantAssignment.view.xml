@@ -32,7 +32,7 @@
 					        </Column>
 					    </columns>
 					    <items>
-					        <ColumnListItem id="cliPlantSelection">
+					        <ColumnListItem id="cliPlantSelection" highlight="{errorState}">
 					            <cells>
 					            	<Label id="lblGMID" text="{GMID}"/>
 					            	<Label id="lblCountry" text="{COUNTRY}"/>
@@ -56,10 +56,10 @@
 					    </items>
 					</Table>
 				</ScrollContainer>
-				<Toolbar width="100%" id="tbrSubmit">
+					<Toolbar width="100%" id="tbrSubmit">
 				     <content>
 				         <ToolbarSpacer id="tbrSpSubmit"/>
-							 <!--<Button text="{i18n>cancel}" width="100px" id="btnCancel" press="onCancel" class="sapUiLargeMarginEnd"/>-->
+							 <Button text="{i18n>submit}" width="100px" id="btnSubmit" press="onSubmit" visible="true"/>
 				          </content>
 				 </Toolbar>
 				</content>
