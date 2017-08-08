@@ -85,7 +85,17 @@ sap.ui.define([
 					break;
 				}
 			}
-					
+				// Show submit and cancel button only for Admin/Demand Manager
+				var btnCancel = this.getView().byId("btnCancel");
+				var btnSubmit = this.getView().byId("btnSubmit");
+				if(permissionToAdd === true){
+	     			btnCancel.setVisible(true);
+	     			btnSubmit.setVisible(true);
+				}
+				else
+				{
+					btnCancel.setVisible(true);
+				}
 			if (gmidPlantAssignmentRecords.length !==0){
 					//loop through the rows of the retruened data
 					for (var i = 0; i < gmidPlantAssignmentRecords.length; i++) 
@@ -205,14 +215,14 @@ sap.ui.define([
 			// validation to check if each GMID/Country has at least one plant selected
     	    else if (this.validatePlantSelection() === false)
 	    	{
-	    		MessageBox.alert("Please select at least one plant for each GMID/Country combination.", {
+	    		MessageBox.alert("Please assign at least one plant for any GMID/Country combination.", {
 	    			icon : MessageBox.Icon.ERROR,
 					title : "Invalid Input"
        			});
 	    	}
 			else if(!this.isChangeOnPage())
 			{
-				MessageBox.alert("There is no change on the page.", {
+				MessageBox.alert("There are no changes to save.", {
 	    			icon : MessageBox.Icon.ERROR,
 					title : "No Changes Found"
        			});
@@ -265,12 +275,12 @@ sap.ui.define([
 	    		{
 	        			var oRouter = this.getRouter();
         				// once insertion is success, navigate to homepage
-        				MessageBox.alert("You have successfully submitted " + successGMIDPlantShipToCount + " GMID(s)",
+        				MessageBox.alert("The selected plants have been assigned to the respective GMID Country combination.",
 							{
 								icon : MessageBox.Icon.SUCCESS,
 								title : "Success",
 								onClose: function() {
-				        			oRouter.navTo("home");
+				        			oRouter.navTo("gmidPlant");
 				        	}
 						});
 	        		//once insertion is success, navigate to homepage
@@ -281,6 +291,25 @@ sap.ui.define([
 	    		}
 	    	 } // end of else validation at least one plant selected
 	    	},
+	    	onCancel: function(){
+			var curr = this;
+			// check if there are any changes to be updated
+			if (this.isChangeOnPage()){
+				// check if user wants to update the attributes for GMID and country
+				MessageBox.confirm("Are you sure you want to cancel your changes and navigate back to the previous page?", {
+	            	icon: sap.m.MessageBox.Icon.WARNING,
+	            	actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+	            	onClose: function(oAction) {
+	            		if(oAction === "YES"){
+	            			curr.getOwnerComponent().getRouter().navTo("gmidPlant");
+	            		}
+	            	}
+	        	});
+			}
+			else{
+				curr.getOwnerComponent().getRouter().navTo("gmidPlant");
+			}
+		},
 	    	validatePlantSelection :function()
 	        {
 		        var GMIDShipToCountry =  this._oPlantAssignmentSelectionViewModel.getProperty("/GMIDPlantAssignmentVM");
@@ -288,16 +317,17 @@ sap.ui.define([
 		        var validPlants = true;
 		        for(var i = 0; i < GMIDShipToCountry.length; i++)
 		        {
+		        	plantSelected = false;
 		        	// dont validate if all plants are selected for a GMID country Combination
 		        	if (this.isPlantSelectable(GMIDShipToCountry[i]) === true)
 		        	{
-			        	plantSelected = false;
 			        	for(var j = 0; j < GMIDShipToCountry[i].PLANTS.length; j++) 
 			            {
 			                // if there is at least one plant selected, then the GMID/Country combination is valid
 			                if (GMIDShipToCountry[i].PLANTS[j].IS_SELECTED === true && GMIDShipToCountry[i].PLANTS[j].IS_EDITABLE === true)
 			                {
 			                	plantSelected = true;
+			                	return plantSelected;
 			                }
 			            }
 			            if (plantSelected === false)
@@ -327,6 +357,7 @@ sap.ui.define([
 		     }
 	       	  return plantSelectable;
 	       },
+	       // function to check if there is any change on page
 	    	isChangeOnPage :function()
 	        {
 		        var GMIDShipToCountry =  this._oPlantAssignmentSelectionViewModel.getProperty("/GMIDPlantAssignmentVM");
@@ -341,7 +372,6 @@ sap.ui.define([
 			        	for(var j = 0; j < GMIDShipToCountry[i].PLANTS.length; j++) 
 			            {
 			                // if there is at least one plant selected, then the GMID/Country combination is valid
-			                // Pawan - Maybe make this check is_editable true
 			                if (GMIDShipToCountry[i].PLANTS[j].IS_SELECTED === true  && GMIDShipToCountry[i].PLANTS[j].IS_EDITABLE === true)
 			                {
 			                	plantSelected = true;

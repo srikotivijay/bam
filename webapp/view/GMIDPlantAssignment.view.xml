@@ -59,7 +59,8 @@
 					<Toolbar width="100%" id="tbrSubmit">
 				     <content>
 				         <ToolbarSpacer id="tbrSpSubmit"/>
-							 <Button text="{i18n>submit}" width="100px" id="btnSubmit" press="onSubmit" visible="true"/>
+							 <Button text="{i18n>submit}" width="100px" id="btnSubmit" visible="false" press="onSubmit"/>
+				        	 <Button text="{i18n>cancel}" width="100px" id="btnCancel" press="onCancel" visible="false" class="sapUiLargeMarginEnd"/>
 				          </content>
 				 </Toolbar>
 				</content>

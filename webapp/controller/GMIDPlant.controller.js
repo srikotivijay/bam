@@ -92,7 +92,7 @@ sap.ui.define([
 				}
 				else
 				{
-					MessageBox.alert("Please select one GMID - Country record for view.",
+					MessageBox.alert("Please select one GMID - Country combination to proceed.",
 						{
 							icon : MessageBox.Icon.ERROR,
 							title : "Error"
