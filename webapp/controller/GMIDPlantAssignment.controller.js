@@ -215,7 +215,7 @@ sap.ui.define([
 			// validation to check if each GMID/Country has at least one plant selected
     	    else if (this.validatePlantSelection() === false)
 	    	{
-	    		MessageBox.alert("Please assign at least one plant for any GMID/Country combination.", {
+	    		MessageBox.alert("Please assign at least one plant to any GMID/Country combination.", {
 	    			icon : MessageBox.Icon.ERROR,
 					title : "Invalid Input"
        			});
