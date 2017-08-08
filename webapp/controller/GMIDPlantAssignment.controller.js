@@ -202,13 +202,6 @@ sap.ui.define([
 					title : "Invalid Input"
        			});
 			}
-			else if(!this.isChangeOnPage())
-			{
-				MessageBox.alert("There is no change on the page.", {
-	    			icon : MessageBox.Icon.ERROR,
-					title : "No Changes Found"
-       			});
-			}
 			// validation to check if each GMID/Country has at least one plant selected
     	    else if (this.validatePlantSelection() === false)
 	    	{
@@ -217,6 +210,13 @@ sap.ui.define([
 					title : "Invalid Input"
        			});
 	    	}
+			else if(!this.isChangeOnPage())
+			{
+				MessageBox.alert("There is no change on the page.", {
+	    			icon : MessageBox.Icon.ERROR,
+					title : "No Changes Found"
+       			});
+			}
 	    	else
 	    	{
 	    		 var oModel = this._oDataModel;
@@ -295,7 +295,7 @@ sap.ui.define([
 			        	for(var j = 0; j < GMIDShipToCountry[i].PLANTS.length; j++) 
 			            {
 			                // if there is at least one plant selected, then the GMID/Country combination is valid
-			                if (GMIDShipToCountry[i].PLANTS[j].IS_SELECTED === true)
+			                if (GMIDShipToCountry[i].PLANTS[j].IS_SELECTED === true && GMIDShipToCountry[i].PLANTS[j].IS_EDITABLE === true)
 			                {
 			                	plantSelected = true;
 			                }
@@ -341,7 +341,8 @@ sap.ui.define([
 			        	for(var j = 0; j < GMIDShipToCountry[i].PLANTS.length; j++) 
 			            {
 			                // if there is at least one plant selected, then the GMID/Country combination is valid
-			                if (GMIDShipToCountry[i].PLANTS[j].IS_SELECTED === true  && GMIDShipToCountry[i].PLANTS[j].IS_EDITABLE === false)
+			                // Pawan - Maybe make this check is_editable true
+			                if (GMIDShipToCountry[i].PLANTS[j].IS_SELECTED === true  && GMIDShipToCountry[i].PLANTS[j].IS_EDITABLE === true)
 			                {
 			                	plantSelected = true;
 			                }
