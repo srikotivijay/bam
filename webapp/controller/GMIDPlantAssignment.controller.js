@@ -382,9 +382,11 @@ sap.ui.define([
 			                	plantSelected = true;
 			                }
 			            }
+			            // as soon as we find a change on the page, break from the loop and return change detected
 			            if (plantSelected)
 			            {
 			            	returnValue = this._oi18nModel.getProperty("changeDetected");
+			            	break;
 			            }
 		        	}
 		        }
