@@ -6,6 +6,8 @@ sap.ui.define([
 		"sap/ui/model/resource/ResourceModel"
 	], function (Controller,MessageToast,MessageBox,DataContext,ResourceModel) {
 		"use strict";
+		
+		var firstTimePageLoad = true;
 
 	return Controller.extend("bam.controller.GMIDPlant", {
 			onInit : function () {
@@ -43,9 +45,12 @@ sap.ui.define([
 					}
 				}
 		    	
-		    	//attach _onRouteMatched to be called everytime on navigation to Maintain Attributes page
-		    	var oRouter = this.getRouter();
-				oRouter.getRoute("gmidPlant").attachMatched(this._onRouteMatched, this);
+		    	if (firstTimePageLoad)
+		    	{
+			    	//attach _onRouteMatched to be called everytime on navigation to this page
+			    	var oRouter = this.getRouter();
+					oRouter.getRoute("gmidPlant").attachMatched(this._onRouteMatched, this);
+		    	}
 			},
 			getRouter : function () {
 				return sap.ui.core.UIComponent.getRouterFor(this);
