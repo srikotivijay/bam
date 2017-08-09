@@ -285,7 +285,8 @@ sap.ui.define([
 								        	GMID_SHIP_TO_COUNTRY_ID: maxGMIDShipToID,
 								        	GMID_SHIP_FROM_PLANT_ID: gmidshipfromplantID,
 								        	CREATED_ON: oDate,
-								        	CREATED_BY:gmidshipfromplantcreatedBy
+								        	CREATED_BY:gmidshipfromplantcreatedBy,
+								        	SEND_IBP_FLAG: 'F'
 						    			};
 						    			
 						        		oModel.create("/GMID_COUNTRY_SHIP_FROM_PLANT", newGMIDShipFromPlant,
