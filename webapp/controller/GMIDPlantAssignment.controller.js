@@ -55,19 +55,19 @@ sap.ui.define([
 			}
 			
 			//resource model
-			var oi18nModel = new ResourceModel({
+			this._oi18nModel = new ResourceModel({
                 	bundleName: "bam.i18n.i18n"
             	});
             	
         	// get the GMID plant status for i18n model
-	    	var z1gmid = oi18nModel.getProperty("z1gmidstatus");
-	    	var zcgmid = oi18nModel.getProperty("zcgmidstatus");
-	    	var z9gmid = oi18nModel.getProperty("z9gmidstatus");
-            var activePlantStatus = oi18nModel.getProperty("activePlantStatus");
+	    	var z1gmid = this._oi18nModel.getProperty("z1gmidstatus");
+	    	var zcgmid = this._oi18nModel.getProperty("zcgmidstatus");
+	    	var z9gmid = this._oi18nModel.getProperty("z9gmidstatus");
+            var activePlantStatus = this._oi18nModel.getProperty("activePlantStatus");
              
 			// get the Module settings for i18n model
-    		var plantAssignment = oi18nModel.getProperty("Module.plantAssignment");
-    		var actionAdd = oi18nModel.getProperty("Module.actionAdd");
+    		var plantAssignment = this._oi18nModel.getProperty("Module.plantAssignment");
+    		var actionAdd = this._oi18nModel.getProperty("Module.actionAdd");
     		
     		// defining add permision for plant assignment, default to false
     		var permissionToAdd = false;
@@ -85,17 +85,17 @@ sap.ui.define([
 					break;
 				}
 			}
-				// Show submit and cancel button only for Admin/Demand Manager
-				var btnCancel = this.getView().byId("btnCancel");
-				var btnSubmit = this.getView().byId("btnSubmit");
-				if(permissionToAdd === true){
-	     			btnCancel.setVisible(true);
-	     			btnSubmit.setVisible(true);
-				}
-				else
-				{
-					btnCancel.setVisible(true);
-				}
+			// Show submit and cancel button only for Admin/Demand Manager
+			var btnCancel = this.getView().byId("btnCancel");
+			var btnSubmit = this.getView().byId("btnSubmit");
+			if(permissionToAdd === true){
+     			btnCancel.setVisible(true);
+     			btnSubmit.setVisible(true);
+			}
+			else
+			{
+				btnCancel.setVisible(true);
+			}
 			if (gmidPlantAssignmentRecords.length !==0){
 					//loop through the rows of the retruened data
 					for (var i = 0; i < gmidPlantAssignmentRecords.length; i++) 
@@ -200,6 +200,8 @@ sap.ui.define([
    			// Get logged in user id
 			var loggedInUserID = DataContext.getUserID();
     		var GMIDShipToCountry = this._oPlantAssignmentSelectionViewModel.getProperty("/GMIDPlantAssignmentVM");
+    		
+    		var changeValidationMessage = this.isChangeOnPage();
     	
     		// Create current timestamp
     		var oDate = new Date();
@@ -212,6 +214,13 @@ sap.ui.define([
 					title : "Invalid Input"
        			});
 			}
+			else if(changeValidationMessage !== this._oi18nModel.getProperty("changeDetected"))
+			{
+				MessageBox.alert(changeValidationMessage, {
+	    			icon : MessageBox.Icon.ERROR,
+					title : "No Changes Found"
+       			});
+			}
 			// validation to check if each GMID/Country has at least one plant selected
     	    else if (this.validatePlantSelection() === false)
 	    	{
@@ -220,13 +229,7 @@ sap.ui.define([
 					title : "Invalid Input"
        			});
 	    	}
-			else if(!this.isChangeOnPage())
-			{
-				MessageBox.alert("There are no changes to save.", {
-	    			icon : MessageBox.Icon.ERROR,
-					title : "No Changes Found"
-       			});
-			}
+		
 	    	else
 	    	{
 	    		 var oModel = this._oDataModel;
@@ -252,7 +255,7 @@ sap.ui.define([
 								        	GMID_SHIP_TO_COUNTRY_ID: GMIDCountryID,
 								        	GMID_SHIP_FROM_PLANT_ID: gmidshipfromplantID,
 								        	// always IBP_FLAG will be set to T if plants are being saved from plant assignment
-								        	SEND_IBP_FLAG:"T",
+								        	SEND_IBP_FLAG:'T',
 								        	CREATED_ON: oDate,
 								        	CREATED_BY:loggedInUserID
 						    			};
@@ -294,7 +297,7 @@ sap.ui.define([
 	    	onCancel: function(){
 			var curr = this;
 			// check if there are any changes to be updated
-			if (this.isChangeOnPage()){
+			if (this.isChangeOnPage() === this._oi18nModel.getProperty("changeDetected")){
 				// check if user wants to update the attributes for GMID and country
 				MessageBox.confirm("Are you sure you want to cancel your changes and navigate back to the previous page?", {
 	            	icon: sap.m.MessageBox.Icon.WARNING,
@@ -358,17 +361,19 @@ sap.ui.define([
 	       	  return plantSelectable;
 	       },
 	       // function to check if there is any change on page
+	       // if all the gmid country combinations are disabled
 	    	isChangeOnPage :function()
 	        {
 		        var GMIDShipToCountry =  this._oPlantAssignmentSelectionViewModel.getProperty("/GMIDPlantAssignmentVM");
 		        var plantSelected;
-		        var changeOnPage = false;
+		        var returnValue = this._oi18nModel.getProperty("noNewPlantsToBeAssigned");
 		        for(var i = 0; i < GMIDShipToCountry.length; i++)
 		        {
 		        	// dont validate if there are no plants selectable
 		        	if (this.isPlantSelectable(GMIDShipToCountry[i]) === true)
 		        	{
 			        	plantSelected = false;
+			        	returnValue = this._oi18nModel.getProperty("noChangesToBeSaved");
 			        	for(var j = 0; j < GMIDShipToCountry[i].PLANTS.length; j++) 
 			            {
 			                // if there is at least one plant selected, then the GMID/Country combination is valid
@@ -379,11 +384,11 @@ sap.ui.define([
 			            }
 			            if (plantSelected)
 			            {
-			            	changeOnPage = true;
+			            	returnValue = this._oi18nModel.getProperty("changeDetected");
 			            }
 		        	}
 		        }
-		        return changeOnPage;
+		        return returnValue;
 	       },
 		   resetValidation: function()
 	        {
