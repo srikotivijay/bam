@@ -193,6 +193,10 @@
 <Property Name="REQUESTED_DATE" Type="Edm.DateTime" Nullable="false"/>
 <Property Name="LAST_UPDATED_BY" Type="Edm.String" MaxLength="50"/>
 <Property Name="LAST_UPDATED_DATE" Type="Edm.DateTime"/>
+<Property Name="GLOBAL_BUSINESS_LEADER_ID" Type="Edm.String" MaxLength="10"/>
+<Property Name="SUPPLY_CHAIN_PLANNING_SPECIALIST_ID" Type="Edm.String" MaxLength="10"/>
+<Property Name="GLOBAL_SUPPLY_CHAIN_MANAGER_ID" Type="Edm.String" MaxLength="10"/>
+<Property Name="REG_SUPPLY_CHAIN_MANAGER_ID" Type="Edm.String" MaxLength="10"/>
 </EntityType>
 <EntityType Name="V_USER_ROLE_ATTRIBUTE_MAPPINGType">
 <Key>
@@ -364,6 +368,7 @@
 <Property Name="COUNTRY_CODE" Type="Edm.String" Nullable="false" MaxLength="50"/>
 <Property Name="COUNTRY" Type="Edm.String" Nullable="false" MaxLength="500"/>
 <Property Name="PLANT_CODE" Type="Edm.String" Nullable="false" MaxLength="10"/>
+<Property Name="PLANT_CODE_ID" Type="Edm.Int32" Nullable="false"/>
 <Property Name="PLANT_STATUS" Type="Edm.String" MaxLength="10"/>
 <Property Name="PLANT_STATUS_DESC" Type="Edm.String" MaxLength="500"/>
 <Property Name="IS_SELECTED" Type="Edm.String" Nullable="false" MaxLength="5"/>
