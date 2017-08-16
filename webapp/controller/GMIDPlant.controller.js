@@ -80,16 +80,22 @@ sap.ui.define([
 				 if(this._oSmartTable.getSelectedIndices().length >= 1){
 					index = this._oSmartTable.getSelectedIndices();
 					var gmidids="";
+					var idArr = [];
 					for (var i=0;i < index.length;i++)
 					{
 						context = this._oSmartTable.getContextByIndex(index[i]); 	
 						path = context.getPath();
 						indexOfParentheses1 = path.indexOf("(");
 						indexOfParentheses2 = path.indexOf(")");
-						gmidids+=path.substring(indexOfParentheses1 + 1,indexOfParentheses2);
-						gmidids+=",";
+						gmidids=path.substring(indexOfParentheses1 + 1,indexOfParentheses2);
+						idArr.push(gmidids);
 					}
 					gmidids = gmidids.substring(0, gmidids.length - 1);
+					
+					var oData = idArr;
+					//add to model
+					var oModel = new sap.ui.model.json.JSONModel(oData);
+					sap.ui.getCore().setModel(oModel);
 					// navigate to gmid plant assignment page
 					this.getOwnerComponent().getRouter().navTo("gmidPlantAssignment",{
 						 gmidids : gmidids

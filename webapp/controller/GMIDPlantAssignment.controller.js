@@ -11,6 +11,7 @@ sap.ui.define([
 		"use strict";
 
 	var firstTimePageLoad = true;
+	var globalIds;
 	return Controller.extend("bam.controller.GMIDPlantAssignment", {
 		//
 		onInit : function () {
@@ -165,7 +166,14 @@ sap.ui.define([
 			}
 			else
 			{
-				this._gmidIDs = oEvent.getParameter("arguments").gmidids.split(",");
+				//this._gmidIDs = oEvent.getParameter("arguments").gmidids.split(",");
+				
+				//get current list of ids from model
+		    	var core = sap.ui.getCore();
+		    	//debugger; // eslint-disable-line
+		    	var globalModel = core.getModel();
+		    	this._gmidIDs = globalModel.getData(); 
+		    	
 				var gmid; 
 	        	 // prepare an array of GMIDs from the UI
 	            var gmidList = [];

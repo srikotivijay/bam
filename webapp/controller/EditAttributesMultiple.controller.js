@@ -80,10 +80,10 @@ sap.ui.define([
 				
 				//get current list of ids from model
 		    	var core = sap.ui.getCore();
-		    	debugger; // eslint-disable-line
+		    	//debugger; // eslint-disable-line
 		    	var globalModel = core.getModel();
 		    	globalIds = globalModel.getData();  
-				debugger; // eslint-disable-line
+				//debugger; // eslint-disable-line
 				this.setGMIDCountryDefaultVM(globalIds);
 		    	
 			}
