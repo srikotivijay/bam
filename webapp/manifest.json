@@ -19,7 +19,17 @@
 				"type": "OData",
 				"settings": {
 					"odataVersion": "2.0",
-					"localUri": "localService/metadata.xml"
+					"localUri": "localService/metadata.xml",
+					"annotations": [
+						"annotation"
+					]
+				}
+			},
+			"annotation": {
+				"type": "ODataAnnotation",
+				"uri": "annotations/annotation.xml",
+				"settings": {
+					"localUri": "annotations/annotation.xml"
 				}
 			}
 		}
@@ -39,7 +49,10 @@
 			"tablet": true,
 			"phone": true
 		},
-		"supportedThemes": ["sap_hcb", "sap_belize"]
+		"supportedThemes": [
+			"sap_hcb",
+			"sap_belize"
+		]
 	},
 	"sap.ui5": {
 		"rootView": {
@@ -78,12 +91,18 @@
 				},
 				"dataSource": "BAMDataService.xsodata",
 				"preload": true
+			},
+			"@i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"uri": "i18n/i18n.properties"
 			}
 		},
 		"resources": {
-			"css": [{
-				"uri": "css/style.css"
-			}]
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
 		},
 		"routing": {
 			"config": {
@@ -97,50 +116,58 @@
 					"target": "notFound"
 				}
 			},
-			"routes": [{
-				"pattern": "",
-				"name": "home",
-				"target": "home"
-			}, {
-				"pattern": "gmidSubmission",
-				"name": "gmidSubmission",
-				"target": "gmidSubmission"
-			}, {
-				"pattern": "gmidPlantSelection",
-				"name": "gmidPlantSelection",
-				"target": "gmidPlantSelection"
-			}, {
-				"pattern": "maintainAttributes",
-				"name": "maintainAttributes",
-				"target": "maintainAttributes"
-			}, {
-				"pattern": "editAttributesSingle/{editAttributesID}",
-				"name": "editAttributesSingle",
-				"target": "editAttributesSingle"
-			}, {
-				"pattern": "editAttributesMultiple/{editAttributesIDs}",
-				"name": "editAttributesMultiple",
-				"target": "editAttributesMultiple"
-			},
-			{
-				"pattern": "gmidPlant",
-				"name": "gmidPlant",
-				"target": "gmidPlant"
-			}, 
-			{
-				"pattern": "gmidPlantAssignment/{gmidids}",
-				"name": "gmidPlantAssignment",
-				"target": "gmidPlantAssignment"
-			},
-			{
-				"pattern": "notFound",
-				"name": "notFound",
-				"target": "notFound"
-			}, {
-				"pattern": "accessDenied",
-				"name": "accessDenied",
-				"target": "accessDenied"
-			}],
+			"routes": [
+				{
+					"pattern": "",
+					"name": "home",
+					"target": "home"
+				},
+				{
+					"pattern": "gmidSubmission",
+					"name": "gmidSubmission",
+					"target": "gmidSubmission"
+				},
+				{
+					"pattern": "gmidPlantSelection",
+					"name": "gmidPlantSelection",
+					"target": "gmidPlantSelection"
+				},
+				{
+					"pattern": "maintainAttributes",
+					"name": "maintainAttributes",
+					"target": "maintainAttributes"
+				},
+				{
+					"pattern": "editAttributesSingle/{editAttributesID}",
+					"name": "editAttributesSingle",
+					"target": "editAttributesSingle"
+				},
+				{
+					"pattern": "editAttributesMultiple/{editAttributesIDs}",
+					"name": "editAttributesMultiple",
+					"target": "editAttributesMultiple"
+				},
+				{
+					"pattern": "gmidPlant",
+					"name": "gmidPlant",
+					"target": "gmidPlant"
+				},
+				{
+					"pattern": "gmidPlantAssignment/{gmidids}",
+					"name": "gmidPlantAssignment",
+					"target": "gmidPlantAssignment"
+				},
+				{
+					"pattern": "notFound",
+					"name": "notFound",
+					"target": "notFound"
+				},
+				{
+					"pattern": "accessDenied",
+					"name": "accessDenied",
+					"target": "accessDenied"
+				}
+			],
 			"targets": {
 				"home": {
 					"viewName": "Home",

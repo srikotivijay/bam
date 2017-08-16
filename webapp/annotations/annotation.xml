@@ -1,0 +1,256 @@
+<edmx:Edmx xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Version="4.0">
+	<edmx:Reference xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx"
+		Uri="https://webide-bea630bda.dispatcher.us1.hana.ondemand.com/destinations/BAMDataService/$metadata">
+		<edmx:Include xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Namespace="ODataService.BAMDataService"/>
+	</edmx:Reference>
+	<edmx:Reference Uri="http://docs.oasis-open.org/odata/odata-data-aggregation-ext/v4.0/cs02/vocabularies/Org.OData.Aggregation.V1.xml">
+		<edmx:Include Alias="Aggregation" Namespace="Org.OData.Aggregation.V1"/>
+	</edmx:Reference>
+	<edmx:Reference Uri="http://docs.oasis-open.org/odata/odata/v4.0/errata03/os/complete/vocabularies/Org.OData.Capabilities.V1.xml">
+		<edmx:Include Alias="Capabilities" Namespace="Org.OData.Capabilities.V1"/>
+	</edmx:Reference>
+	<edmx:Reference Uri="https://wiki.scn.sap.com/wiki/download/attachments/448470974/Common.xml?api=v2">
+		<edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+	</edmx:Reference>
+	<edmx:Reference Uri="https://wiki.scn.sap.com/wiki/download/attachments/448470971/Communication.xml?api=v2">
+		<edmx:Include Alias="vCard" Namespace="com.sap.vocabularies.Communication.v1"/>
+	</edmx:Reference>
+	<edmx:Reference Uri="http://docs.oasis-open.org/odata/odata/v4.0/errata03/os/complete/vocabularies/Org.OData.Core.V1.xml">
+		<edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+	</edmx:Reference>
+	<edmx:Reference Uri="http://docs.oasis-open.org/odata/odata/v4.0/errata03/os/complete/vocabularies/Org.OData.Measures.V1.xml">
+		<edmx:Include Alias="CQP" Namespace="Org.OData.Measures.V1"/>
+	</edmx:Reference>
+	<edmx:Reference Uri="https://wiki.scn.sap.com/wiki/download/attachments/448470968/UI.xml?api=v2">
+		<edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+	</edmx:Reference>
+	<edmx:DataServices>
+		<Schema xmlns="http://docs.oasis-open.org/odata/ns/edm">
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType">
+				<Annotation Term="UI.PresentationVariant">
+					<Record Type="UI.PresentationVariantType">
+						<PropertyValue Property="SortOrder">
+							<Collection>
+								<Record Type="Common.SortOrderType">
+									<PropertyValue Property="Property" PropertyPath="GMID"/>
+								</Record>
+								<Record Type="Common.SortOrderType">
+									<PropertyValue Property="Property" PropertyPath="COUNTRY"/>
+								</Record>
+							</Collection>
+						</PropertyValue>
+						<PropertyValue Property="GroupBy"/>
+						<PropertyValue Property="TotalBy"/>
+						<PropertyValue Property="Total"/>
+						<PropertyValue Property="Visualizations"/>
+						<PropertyValue Property="RequestAtLeast"/>
+					</Record>
+				</Annotation>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/GMID">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.GMID}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/GMID_SHORTTEXT">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.GMID_SHORTTEXT}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/COUNTRY">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.COUNTRY}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/TRADE_PRODUCT_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.TRADE_PRODUCT_CODE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/TRADE_PRODUCT_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.TRADE_PRODUCT_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/PROFIT_CENTER_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PROFIT_CENTER_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/PERFORMANCE_CENTER_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PERFORMANCE_CENTER_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/BRAND_NAME">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.BRAND_NAME}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/IBP_RELEVANCY">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.IBP_RELEVANCY}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/NETTING_DEFAULT">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.NETTING_DEFAULT}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/MARKET_DEFAULT">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MARKET_DEFAULT}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/MARKETING_ATTRIBUTE1">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MARKETING_ATTRIBUTE1}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/MARKETING_ATTRIBUTE2">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MARKETING_ATTRIBUTE2}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/RCU_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.RCU_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/SUB_RCU_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SUB_RCU_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/DEMAND_MANAGER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.DEMAND_MANAGER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/MARKETING_SPECIALIST">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MARKETING_SPECIALIST}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/GMID_COUNTRY_STATUS">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.GMID_COUNTRY_STATUS}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/IBP_STATUS">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.IBP_STATUS}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/REQUESTED_BY">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.REQUESTED_BY}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/REQUESTED_DATE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.REQUESTED_DATE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/LAST_UPDATED_BY">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.LAST_UPDATED_BY}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/LAST_UPDATED_DATE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.LAST_UPDATED_DATE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/BGT_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.BGT_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/CHANNEL">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.CHANNEL}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/CHANNEL_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.CHANNEL_CODE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/CONS_DEFAULT_FLAG">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.CONS_DEFAULT_FLAG}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/COUNTRY_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.COUNTRY_CODE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/CURRENCY_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.CURRENCY_CODE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/CURRENCY_DESCRIPTION">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.CURRENCY_DESCRIPTION}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/DEMAND_ATTRIBUTE1">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.DEMAND_ATTRIBUTE1}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/DEMAND_ATTRIBUTE2">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.DEMAND_ATTRIBUTE2}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/DEMAND_MANAGER_ID">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.DEMAND_MANAGER_ID}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/FINANCE_SYSTEM_FLAG">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.FINANCE_SYSTEM_FLAG}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/GLOBAL_BUSINESS_LEADER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.GLOBAL_BUSINESS_LEADER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/GLOBAL_BUSINESS_LEADER_ID">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.GLOBAL_BUSINESS_LEADER_ID}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/GLOBAL_SUPPLY_CHAIN_MANAGER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.GLOBAL_SUPPLY_CHAIN_MANAGER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/GLOBAL_SUPPLY_CHAIN_MANAGER_ID">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.GLOBAL_SUPPLY_CHAIN_MANAGER_ID}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/GMID_COUNTRY_STATUS_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.GMID_COUNTRY_STATUS_CODE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/IBP_RELEVANCY_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.IBP_RELEVANCY_CODE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/LOCAL_UOM">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.LOCAL_UOM}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/MARKET_DEFAULT_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MARKET_DEFAULT_CODE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/MARKETING_DIRECTOR">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MARKETING_DIRECTOR}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/MARKETING_MANAGER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MARKETING_MANAGER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/MARKETING_SPECIALIST_ID">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MARKETING_SPECIALIST_ID}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/MASTER_SALES_SPEC_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MASTER_SALES_SPEC_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/MATERIAL_STATUS">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MATERIAL_STATUS}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/NETTING_DEFAULT_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.NETTING_DEFAULT_CODE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/PACKAGE_TYPE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PACKAGE_TYPE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/PLAN_PRODUCT_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PLAN_PRODUCT_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/QUADRANT">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.QUADRANT}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/QUADRANT_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.QUADRANT_CODE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/RCU_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.RCU_CODE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/REG_SUPPLY_CHAIN_MANAGER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.REG_SUPPLY_CHAIN_MANAGER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/REG_SUPPLY_CHAIN_MANAGER_ID">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.REG_SUPPLY_CHAIN_MANAGER_ID}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/SPECIFIED_MATERIAL_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SPECIFIED_MATERIAL_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/STORED_CURRENCY">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.STORED_CURRENCY}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/SUB_RCU_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SUB_RCU_CODE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/SUPPLY_ATTRIBUTE1">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SUPPLY_ATTRIBUTE1}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/SUPPLY_ATTRIBUTE2">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SUPPLY_ATTRIBUTE2}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/SUPPLY_CHAIN_PLANNING_SPECIALIST">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SUPPLY_CHAIN_PLANNING_SPECIALIST}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/SUPPLY_CHAIN_PLANNING_SPECIALIST_ID">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SUPPLY_CHAIN_PLANNING_SPECIALIST_ID}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/SUPPLY_SYSTEM_FLAG">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SUPPLY_SYSTEM_FLAG}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/SUPPLY_SYSTEM_FLAG_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SUPPLY_SYSTEM_FLAG_CODE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/TRADE_AREA_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.TRADE_AREA_CODE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/TRADE_AREA_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.TRADE_AREA_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/TREATMENT">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.TREATMENT}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/VALUE_CENTER_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.VALUE_CENTER_DESC}"/>
+			</Annotations>
+		</Schema>
+	</edmx:DataServices>
+</edmx:Edmx>
