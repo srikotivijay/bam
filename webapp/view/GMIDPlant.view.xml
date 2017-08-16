@@ -8,7 +8,7 @@
 				<!-- use this to make the table occupy the available screen height -->
 				<VBox fitContainer="true">
 					
-					<smartTable:SmartTable id="smartTblBAMAttributes" entitySet="V_GMID_CROP_PROTECTION" tableType="Table" useExportToExcel="true" useVariantManagement="true" showFullScreenButton="true" 
+					<smartTable:SmartTable id="smartTblBAMAttributes" beforeRebindTable="onBeforeRebindTable" entitySet="V_GMID_CROP_PROTECTION" tableType="Table" useExportToExcel="true" useVariantManagement="true" showFullScreenButton="true" 
 					useTablePersonalisation="true" header="GMID Country Attributes" showRowCount="true" enableAutoBinding="true" app:useSmartField="true" class="sapUiResponsiveContentPadding" ignoreFromPersonalisation="ID"
 					initiallyVisibleFields="GMID,GMID_SHORTTEXT,TRADE_PRODUCT_CODE,TRADE_PRODUCT_DESC,PROFIT_CENTER_DESC,PERFORMANCE_CENTER_DESC,BRAND_NAME,IBP_RELEVANCY,NETTING_DEFAULT,MARKET_DEFAULT,MARKETING_ATTRIBUTE1,MARKETING_ATTRIBUTE2,RCU_DESC,SUB_RCU_DESC,DEMAND_MANAGER,MARKETING_SPECIALIST,GMID_COUNTRY_STATUS,IBP_STATUS,REQUESTED_BY,REQUESTED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE">
 						<!-- layout data used to make the table growing but the filter bar fixed -->
@@ -17,7 +17,8 @@
 						</smartTable:layoutData>
 					<smartTable:customToolbar> 
 		                <OverflowToolbar design="Transparent"> 
-		                        <ToolbarSpacer/> 
+		                        <ToolbarSpacer/>
+		                        <Button id="btnClearFilter" text="Clear" width="100px"  press="onClearFilter" icon="sap-icon://clear-filter" activeIcon="sap-icon://clear-filter" enabled="false" />
 		                        <Button id="btnViewPlantAssignment" text="{GMIDPlantVM>/plantAssignmentText}" press="onViewPlantAssignment" class="sapUiMediumMarginBegin" icon="sap-icon://detail-view" activeIcon="sap-icon://detail-view"/> 
 		               </OverflowToolbar> 
 			       </smartTable:customToolbar>
