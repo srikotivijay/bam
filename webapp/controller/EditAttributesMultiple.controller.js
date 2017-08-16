@@ -13,6 +13,7 @@ sap.ui.define([
 	var attributeList = [];
 	var loggedInUserID;
 	var firstTimePageLoad = true;
+	var globalIds;
 	return Controller.extend("bam.controller.EditAttributesMultiple", {
 		onInit : function () {
 			
@@ -37,6 +38,7 @@ sap.ui.define([
                 bundleName: "bam.i18n.i18n"
             });
             
+        	//this._oDataModel = globalModel;
 			this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
 				
 		   // set all the dropdowns, get the data from the code master table
@@ -73,8 +75,16 @@ sap.ui.define([
 			else
 			{
 	    		this.setPageToInitialState();
-				var editAttributesIDs = oEvent.getParameter("arguments").editAttributesIDs.split(",");
-				this.setGMIDCountryDefaultVM(editAttributesIDs);
+				//var editAttributesIDs = oEvent.getParameter("arguments").editAttributesIDs.split(",");
+				//this.setGMIDCountryDefaultVM(editAttributesIDs);
+				
+				//get current list of ids from model
+		    	var core = sap.ui.getCore();
+		    	debugger; // eslint-disable-line
+		    	var globalModel = core.getModel();
+		    	globalIds = globalModel.getData();  
+				debugger; // eslint-disable-line
+				this.setGMIDCountryDefaultVM(globalIds);
 		    	
 			}
 		},

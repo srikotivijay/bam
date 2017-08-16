@@ -19,6 +19,8 @@ sap.ui.define([
 	    		this._oModel.setProperty("/showEditButton",false);
 	    		this.getView().setModel(this._oModel,"MaintainAttributesVM");
 	    		
+	    		
+	    		
 	    		var oi18nModel = new ResourceModel({
                 	bundleName: "bam.i18n.i18n"
             	});
@@ -73,6 +75,11 @@ sap.ui.define([
 			onHome: function(){
 				this.getOwnerComponent().getRouter().navTo("home");
 			},
+			onFieldChange: function(source){
+				var a = source;
+				//this._oSmartTable = this.getView().byId("smartTblBAMAttributes").getTable();
+				//this._oSmartTable.getSelectedIndices().
+			},
 			// navigate to edit attribute page on click of edit
 			onEdit: function(){
 				// get the smart table control
@@ -93,25 +100,35 @@ sap.ui.define([
 				else if(this._oSmartTable.getSelectedIndices().length > 1){
 					index = this._oSmartTable.getSelectedIndices();
 					var gmidids="";
+					var idArr = [];
 					for (var i=0;i < index.length;i++)
 					{
 				
-					context = this._oSmartTable.getContextByIndex(index[i]); 	
-					path = context.getPath();
-					indexOfParentheses1 = path.indexOf("(");
-					indexOfParentheses2 = path.indexOf(")");
-					gmidids+=path.substring(indexOfParentheses1 + 1,indexOfParentheses2);
-					gmidids+=",";
-					// navigate to multiple edit page
+					context = this._oSmartTable.getContextByIndex(index[i]); 
+					if(context != undefined){
+						path = context.getPath();
+						indexOfParentheses1 = path.indexOf("(");
+						indexOfParentheses2 = path.indexOf(")");
+						gmidids=path.substring(indexOfParentheses1 + 1,indexOfParentheses2);
+						idArr.push(gmidids);
+						//gmidids+=",";
+						// navigate to multiple edit page
+						}
+					//else{
+					//	MessageToast.show(context);
+					//}
 					}
 					gmidids = gmidids.substring(0, gmidids.length - 1);
 					//path = context.getPath();
+					
+					var oData = idArr;
+					//add to model
+					var oModel = new sap.ui.model.json.JSONModel(oData);
+					sap.ui.getCore().setModel(oModel);
 					//indexOfParentheses1 = path.indexOf("(");
 					//indexOfParentheses2 = path.indexOf(")");
 					// navigate to multiple edit page
-					this.getOwnerComponent().getRouter().navTo("editAttributesMultiple",{
-						 editAttributesIDs : gmidids
-					});
+					this.getOwnerComponent().getRouter().navTo("editAttributesMultiple");
 				}
 				else
 				{

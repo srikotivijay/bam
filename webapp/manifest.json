@@ -118,7 +118,8 @@
 				"name": "editAttributesSingle",
 				"target": "editAttributesSingle"
 			}, {
-				"pattern": "editAttributesMultiple/{editAttributesIDs}",
+				
+				"pattern": "editAttributesMultiple/",
 				"name": "editAttributesMultiple",
 				"target": "editAttributesMultiple"
 			},
