@@ -4,8 +4,9 @@ sap.ui.define([
 		"sap/m/MessageBox",
 		"bam/services/DataContext",
 		"sap/ui/model/resource/ResourceModel",
-		"sap/ui/model/Filter"
-	], function (Controller,MessageToast,MessageBox,DataContext,ResourceModel,Filter) {
+		"sap/ui/model/Filter",
+		"sap/ui/model/Sorter"
+	], function (Controller,MessageToast,MessageBox,DataContext,ResourceModel,Filter,Sorter) {
 		"use strict";
 		
 	var loggedInUserID;
@@ -20,7 +21,7 @@ sap.ui.define([
 				// Get logged in user id
 			    loggedInUserID = DataContext.getUserID();
 				 // define a global variable for the oData model		    
-		    	this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
+		    	this._oDataModel = this.getOwnerComponent().getModel();
 		    	var oView = this.getView();
 		    	oView.setModel(this._oDataModel);
 		    	
@@ -28,9 +29,7 @@ sap.ui.define([
 	    		
 	    		this.getView().setModel(this._oModel,"GMIDPlantVM");
 
-	    		this._oi18nModel = new ResourceModel({
-                	bundleName: "bam.i18n.i18n"
-            	});
+	    		this._oi18nModel = this.getOwnerComponent().getModel("i18n");
             	
 	    		// get the Module settings for i18n model
         		var plantAssignment = this._oi18nModel.getProperty("Module.plantAssignment");
@@ -96,6 +95,13 @@ sap.ui.define([
                     });
 	           aFilters.push(gmidFilterList);
 				}
+				
+					// setting up sorters
+				var aSorters = this._oBindingParams.sorter;
+				var GMIDSorter = new Sorter("GMID",false);
+				var CountrySorter = new Sorter("COUNTRY",false);
+				aSorters.push(GMIDSorter);
+				aSorters.push(CountrySorter);
 			},
 			// clearing the default userid filters
 			onClearFilter: function(oEvent){

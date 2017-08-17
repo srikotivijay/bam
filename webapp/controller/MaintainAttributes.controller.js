@@ -93,14 +93,16 @@ sap.ui.define([
                         and : false
                     });
 	           aFilters.push(gmidFilterList);
+				
 				}
 				
-				// setting up sorters
+	        	// setting up sorters
 				var aSorters = this._oBindingParams.sorter;
 				var GMIDSorter = new Sorter("GMID",false);
 				var CountrySorter = new Sorter("COUNTRY",false);
 				aSorters.push(GMIDSorter);
 				aSorters.push(CountrySorter);
+				
 			},
 			// clearing the default userid filters
 			onClearFilter: function(oEvent){
