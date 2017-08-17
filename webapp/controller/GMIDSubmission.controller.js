@@ -53,7 +53,7 @@ sap.ui.define([
 		    // define a global variable for the view model, the view model data and oData model
 		    this._oGMIDShipToCountryViewModel = oModel;
 		    this._oViewModelData = this._oGMIDShipToCountryViewModel.getData();
-		    this._oDataModel = this.getOwnerComponent().getModel();
+		    this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
 
 		    this.getView().setModel(oModel);
 		    this.addEmptyObject();
