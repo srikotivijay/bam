@@ -58,6 +58,11 @@ sap.ui.define([
 			    	var oRouter = this.getRouter();
 					oRouter.getRoute("gmidPlant").attachMatched(this._onRouteMatched, this);
 		    	}
+		    	else
+		    	{
+		    		var oSmartTable = this.byId("smartTblBAMAttributes");
+		    		oSmartTable.rebindTable();
+		    	}
 			},
 			// applying default userid filters before binding
 			onBeforeRebindTable : function(oEvent) {
@@ -136,7 +141,14 @@ sap.ui.define([
 				}
 				else
 				{
-					this.onInit();
+					if(firstTimePageLoad)
+					{
+						firstTimePageLoad = false;
+					}
+					else
+					{
+						this.onInit();
+					}
 				}
 			},
 			// navigate back to the homepage
