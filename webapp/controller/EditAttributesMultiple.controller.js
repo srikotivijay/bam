@@ -39,7 +39,7 @@ sap.ui.define([
             });
             
         	//this._oDataModel = globalModel;
-			this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
+			this._oDataModel = this.getOwnerComponent().getModel();
 				
 		   // set all the dropdowns, get the data from the code master table
 	    	oModel.setProperty("/STORED_CURRENCY_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddStoredCurrency")));

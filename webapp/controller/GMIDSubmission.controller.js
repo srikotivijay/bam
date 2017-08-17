@@ -53,7 +53,8 @@ sap.ui.define([
 		    // define a global variable for the view model, the view model data and oData model
 		    this._oGMIDShipToCountryViewModel = oModel;
 		    this._oViewModelData = this._oGMIDShipToCountryViewModel.getData();
-		    this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
+		    this._oDataModel = this.getOwnerComponent().getModel();
+
 		    this.getView().setModel(oModel);
 		    this.addEmptyObject();
 	    	
@@ -68,9 +69,8 @@ sap.ui.define([
 				this.getView().addDependent(this._dialog);
 			}
 			
-			this._oi18nModel = new ResourceModel({
-                bundleName: "bam.i18n.i18n"
-            });
+			// get resource model
+			this._oi18nModel = this.getOwnerComponent().getModel("i18n");
 
 			// set all the dropdowns, get the data from the code master table
 	    	oModel.setProperty("/GMIDShipToCountryVM/Country",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddCountry")));
@@ -125,12 +125,9 @@ sap.ui.define([
 				this.getOwnerComponent().getRouter().navTo("home");
 		},
 		checkIfAdmin :function(){
-			var oi18nModel = new ResourceModel({
-        		bundleName: "bam.i18n.i18n"
-        	});
         	
-    		var gmidSubmission = oi18nModel.getProperty("Module.gmidSubmission");
-    		var actionAdd = oi18nModel.getProperty("Module.actionAdd");
+    		var gmidSubmission = this._oi18nModel.getProperty("Module.gmidSubmission");
+    		var actionAdd = this._oi18nModel.getProperty("Module.actionAdd");
 	    	
 	    	// getting permissions for the current logged in user
 			var permissions = DataContext.getUserPermissions();
