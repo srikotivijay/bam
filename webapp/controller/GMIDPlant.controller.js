@@ -99,7 +99,6 @@ sap.ui.define([
 			},
 			// clearing the default userid filters
 			onClearFilter: function(oEvent){
-				filterBoolean =  false;
 				var oSmartTable = this.byId("smartTblBAMAttributes");
 				var btnclearfilter = this.getView().byId("btnClearFilter");
 				// get the confirmation message for i18n model
@@ -108,10 +107,14 @@ sap.ui.define([
             		icon: sap.m.MessageBox.Icon.WARNING,
             		actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
             		onClose: function(oAction) {
+            			if (oAction === "YES") {
+            				// resetting the filterboolean
+            				filterBoolean =  false;
             				// disable the button after rebind
 							btnclearfilter.setEnabled(false);
             		      	// clear the filters, rebind the smart table
 	            			oSmartTable.rebindTable();
+            			}
             		}
         		});
 			},
