@@ -915,6 +915,12 @@ sap.ui.define([
 						});
 		    		}
 	    		
+	        	}else{
+	        		MessageBox.alert("Error: There is an entry error on the page. Please correct.",
+							{
+								icon : MessageBox.Icon.ERROR,
+								title : "Error"
+						});
 	        	}
 	        	
 	        	// close busy dialog
