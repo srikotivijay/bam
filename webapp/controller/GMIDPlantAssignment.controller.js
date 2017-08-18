@@ -109,7 +109,8 @@ sap.ui.define([
 					        hash.add(key);
 					        groupedGMIDPlantCountry.push({ID: item.ID,
 					        						 GMID:item.GMID, 
-					        						 COUNTRY:item.COUNTRY,
+					        						 COUNTRY_CODE:item.COUNTRY_CODE,
+					        						 GMID_DESC:item.GMID_DESC,
 					        						 PLANTS:[]});
 						}
 						
@@ -121,12 +122,6 @@ sap.ui.define([
 						else 
 						{
 							item.IS_EDITABLE = false;
-						}
-						
-						// setting plant status to Active if the plant status is null or blank
-						if(item.PLANT_STATUS === null)
-						{
-							item.PLANT_STATUS = activePlantStatus;
 						}
 						
 						// check if the plant code is already associated with GMID Country combination
@@ -143,7 +138,7 @@ sap.ui.define([
 						}
 						
 					    //find the object for the gmid and country combination and push the plant code to the nested plant object
-					    groupedGMIDPlantCountry.find(function(data){return data.GMID === item.GMID && data.COUNTRY === item.COUNTRY;}).PLANTS.push({PLANT_CODE: item.PLANT_CODE,PLANT_CODE_ID : item.PLANT_CODE_ID,IS_SELECTED : item.IS_SELECTED,PLANT_STATUS: item.PLANT_STATUS, IS_EDITABLE : item.IS_EDITABLE, PLANT_STATUS_DESC: item.PLANT_STATUS_DESC});
+					    groupedGMIDPlantCountry.find(function(data){return data.GMID === item.GMID && data.COUNTRY_CODE === item.COUNTRY_CODE;}).PLANTS.push({PLANT_CODE: item.PLANT_CODE,PLANT_DESC: item.PLANT_DESC,PLANT_CODE_ID : item.PLANT_CODE_ID,IS_SELECTED : item.IS_SELECTED,PLANT_MATERIAL_STATUS: item.PLANT_MATERIAL_STATUS, IS_EDITABLE : item.IS_EDITABLE, PLANT_MATERIAL_STATUS_DESC: item.PLANT_MATERIAL_STATUS_DESC});
 					} 					
 			}
 				

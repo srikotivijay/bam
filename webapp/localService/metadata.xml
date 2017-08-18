@@ -107,6 +107,7 @@
 </Key>
 <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
 <Property Name="GMID" Type="Edm.String" Nullable="false" MaxLength="10"/>
+<Property Name="GMID_DESC" Type="Edm.String" MaxLength="250"/>
 <Property Name="COUNTRY_CODE_ID" Type="Edm.Int32" Nullable="false"/>
 <Property Name="CURRENCY_CODE_ID" Type="Edm.Int32" Nullable="false"/>
 <Property Name="IBP_RELEVANCY_CODE_ID" Type="Edm.Int32" Nullable="false"/>
@@ -119,10 +120,13 @@
 <Property Name="GMID_COUNTRY_STATUS_CODE_ID" Type="Edm.Int32" Nullable="false"/>
 <Property Name="CREATED_BY" Type="Edm.String" Nullable="false" MaxLength="50"/>
 <Property Name="COUNTRY" Type="Edm.String" Nullable="false" MaxLength="500"/>
+<Property Name="COUNTRY_CODE" Type="Edm.String" Nullable="false" MaxLength="50"/>
 <Property Name="PLANT_CODE" Type="Edm.String" Nullable="false" MaxLength="10"/>
 <Property Name="GMID_SHIP_FROM_PLANT_ID" Type="Edm.Int32" Nullable="false"/>
-<Property Name="MATERIAL_STATUS" Type="Edm.String" MaxLength="10"/>
+<Property Name="PLANT_MATERIAL_STATUS" Type="Edm.String" MaxLength="10"/>
 <Property Name="FILTER_MATERIAL_STATUS" Type="Edm.String" Nullable="false" MaxLength="10"/>
+<Property Name="PLANT_MATERIAL_STATUS_DESC" Type="Edm.String" Nullable="false" MaxLength="500"/>
+<Property Name="PLANT_DESC" Type="Edm.String" Nullable="false" MaxLength="50"/>
 </EntityType>
 <EntityType Name="V_MAINTAIN_ATTRIBUTESType">
 <Key>
@@ -369,12 +373,14 @@
 </Key>
 <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
 <Property Name="GMID" Type="Edm.String" Nullable="false" MaxLength="10"/>
+<Property Name="GMID_DESC" Type="Edm.String" MaxLength="250"/>
 <Property Name="COUNTRY_CODE" Type="Edm.String" Nullable="false" MaxLength="50"/>
 <Property Name="COUNTRY" Type="Edm.String" Nullable="false" MaxLength="500"/>
 <Property Name="PLANT_CODE" Type="Edm.String" Nullable="false" MaxLength="10"/>
+<Property Name="PLANT_DESC" Type="Edm.String" Nullable="false" MaxLength="50"/>
 <Property Name="PLANT_CODE_ID" Type="Edm.Int32" Nullable="false"/>
-<Property Name="PLANT_STATUS" Type="Edm.String" MaxLength="10"/>
-<Property Name="PLANT_STATUS_DESC" Type="Edm.String" MaxLength="500"/>
+<Property Name="PLANT_MATERIAL_STATUS" Type="Edm.String" MaxLength="10"/>
+<Property Name="PLANT_MATERIAL_STATUS_DESC" Type="Edm.String" Nullable="false" MaxLength="500"/>
 <Property Name="IS_SELECTED" Type="Edm.String" Nullable="false" MaxLength="5"/>
 </EntityType>
 <EntityContainer Name="BAMDataService" m:IsDefaultEntityContainer="true">
