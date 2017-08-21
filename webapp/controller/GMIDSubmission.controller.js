@@ -11,6 +11,8 @@ sap.ui.define([
 		"use strict";
      var loggedInUserID;
      var firstTimePageLoad = true;
+     var checkedNoPlant = false;
+     var isAdmin = false;
 	return Controller.extend("bam.controller.GMIDSubmission", {
 		onInit : function () {
 			
@@ -52,6 +54,7 @@ sap.ui.define([
 		    this._oGMIDShipToCountryViewModel = oModel;
 		    this._oViewModelData = this._oGMIDShipToCountryViewModel.getData();
 		    this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
+
 		    this.getView().setModel(oModel);
 		    this.addEmptyObject();
 	    	
@@ -66,9 +69,8 @@ sap.ui.define([
 				this.getView().addDependent(this._dialog);
 			}
 			
-			this._oi18nModel = new ResourceModel({
-                bundleName: "bam.i18n.i18n"
-            });
+			// get resource model
+			this._oi18nModel = this.getOwnerComponent().getModel("i18n");
 
 			// set all the dropdowns, get the data from the code master table
 	    	oModel.setProperty("/GMIDShipToCountryVM/Country",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddCountry")));
@@ -84,6 +86,7 @@ sap.ui.define([
 	    	// do not attach again if this is not the first time loading the page, if we attach it again performance is affected
 	    	if(firstTimePageLoad)
 	    	{
+	    		this.checkIfAdmin();
 	    		var oRouter = this.getRouter();
 				oRouter.getRoute("gmidSubmission").attachMatched(this._onRouteMatched, this);
 				// get default values for various fields and set them in global variables
@@ -121,6 +124,25 @@ sap.ui.define([
 		onHome: function(){
 				this.getOwnerComponent().getRouter().navTo("home");
 		},
+		checkIfAdmin :function(){
+        	
+    		var gmidSubmission = this._oi18nModel.getProperty("Module.gmidSubmission");
+    		var adminRole = this._oi18nModel.getProperty("Module.adminRole");
+	    	
+	    	// getting permissions for the current logged in user
+			var permissions = DataContext.getUserPermissions();
+			// check to see if the permission list includes "ADMIN" role for the GMID SUBMISSION Module
+			// ATTRIBUTE in this case means MODULE
+			for(var i = 0; i < permissions.length; i++)
+			{
+				if(permissions[i].ATTRIBUTE === gmidSubmission && permissions[i].ROLE === adminRole)
+				{
+					isAdmin = true;
+					// break since the user may have more than one role, as long as one of the user roles has permission we can show the checkbox
+					break;
+				}
+			}
+		},
 		resetPage: function ()
         {
         	// hide the table & excel button and set the radio button to not selected
@@ -134,6 +156,12 @@ sap.ui.define([
 			btnSubmit.setVisible(false);
 			var btnContinue = this.getView().byId("btnContinueToPlantSelection");
 			btnContinue.setVisible(false);
+			
+			//admin checkbox reset
+			var chkNoPlant = this.getView().byId("chkNoPlant");
+    		chkNoPlant.setVisible(false);
+    		chkNoPlant.setSelected(false);
+    		checkedNoPlant = false;
 			
         },
     	// Below function is used to prepare an empty object
@@ -212,13 +240,22 @@ sap.ui.define([
 		    var tblGmid = this.getView().byId("tblGMIDRequest");
 			var btnSubmit = this.getView().byId("btnSubmit");
 			var btnContinue = this.getView().byId("btnContinueToPlantSelection");
+			var chkNoPlant = this.getView().byId("chkNoPlant");
+			
 			if(this._oSelectedGMIDType === this._oSeed){
      			tblGmid.setVisible(true);
      			btnSubmit.setVisible(true);
      			btnContinue.setVisible(false);
+     			
+     			chkNoPlant.setVisible(false);
+     			chkNoPlant.setSelected(false);
+     			checkedNoPlant = false;
 			}
     		else
     		{
+    			if(isAdmin){
+    				chkNoPlant.setVisible(true);
+    			}
     			tblGmid.setVisible(true);
     			btnSubmit.setVisible(false);
     			btnContinue.setVisible(true);
@@ -236,6 +273,24 @@ sap.ui.define([
 			}
     		// refresh the GMID VM, this will automatically update the UI
     		this._oGMIDShipToCountryViewModel.refresh();
+		},
+		onCheck :function(){
+			var btnSubmit = this.getView().byId("btnSubmit");
+			var btnContinue = this.getView().byId("btnContinueToPlantSelection");
+			var chkNoPlant = this.getView().byId("chkNoPlant");
+			
+			if(chkNoPlant.getSelected()){
+				checkedNoPlant = true;
+				btnSubmit.setVisible(true);
+ 				btnContinue.setVisible(false);
+			}
+			else
+			{
+				checkedNoPlant = false;
+				btnSubmit.setVisible(false);
+ 				btnContinue.setVisible(true);
+			}
+			
 		},
 		// This function loops through all the rows on the form and checks each input to see if it is filled in
         validateTextFieldValues :function () {
@@ -396,6 +451,8 @@ sap.ui.define([
              // get all the GMID/Plants data for the GMIDS entered in UI
              var gmidPlantRecords = DataContext.getGMIDListFromDB(this._gmidList,viewpath); 
         	 var IsAllgmidHasPlant = true;
+        	 var existPlant = false;
+        	 var returnArr = [];
         	  // get the GMID status for i18n model
         	 var z1gmid = this._oi18nModel.getProperty("z1gmidstatus");
         	 var zcgmid = this._oi18nModel.getProperty("zcgmidstatus");
@@ -429,11 +486,18 @@ sap.ui.define([
 	                	data[i].errorSummary += "\n";  
 	                }
 	                data[i].errorSummary += "No Valid Ship from Plants are available for the GMID.";
+	        	  } 
+	        	  else
+	        	  {
+	        			existPlant = true;
 	        	  } // end for validgmidinput if
 		        } // end for if(data[i].GMID !== "")
 	        } // end for outer for loop
 	        // if for each GMID a plant exists, return true, else return false
-	        return IsAllgmidHasPlant;
+	        returnArr.push(IsAllgmidHasPlant);
+	        returnArr.push(existPlant);
+	        //return IsAllgmidHasPlant;
+	        return returnArr;
         },
         // validating whether entered GMID have valid status
         validateGMIDbyStatus : function  () {
@@ -681,6 +745,13 @@ sap.ui.define([
             this._gmidList = this.gmidList();
 			var t = this;
 			
+			//permission to submit gmid without plants
+			//var hasPermission = false;
+			
+			//CP plant validation
+			//var plantValidationArr = t.validateGmidShipFromPlant();
+			//var allHasPlants = plantValidationArr[0];
+			//var existPlant = plantValidationArr[1];
 			// setting timeout function in order to show the busy dialog before doing all the validation
 			setTimeout(function()
 			{
@@ -695,11 +766,15 @@ sap.ui.define([
 	        	{
 	        		t._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
 	        	}
+		        
 		        // if crop protection is selected and the GMID/plant combination does not exist, return error
-		        if(t._oSelectedGMIDType === t._oCropProtection && t.validateGmidShipFromPlant() === false)
-	        	{
-	        		t._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
-	        	}
+		        //if admin and not checked or not admin
+		        if(checkedNoPlant === false){
+			        if(t._oSelectedGMIDType === t._oCropProtection && t.validateGmidShipFromPlant()[0] === false)
+		        	{
+		        		t._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
+		        	}
+		        }
 		        // check for duplicate GMID/Country Combination
 		        if(t.validateUniqueGmidCountry() === true)
 	        	{
@@ -719,16 +794,24 @@ sap.ui.define([
 		        {
 		        	// based on which template is selected, store the GMID in the appropriate table
 		        	var tablePath = "";
+		        	var submitType = "";
 		    	    if(t._oSelectedGMIDType === t._oCropProtection)
 		    	    {
-		    	    	tablePath = "/GMID_SHIP_TO_COUNTRY_STG";
-		    	    	DataContext.deleteStagingData(loggedInUserID);
-		    	    	
+		    	    	if(checkedNoPlant){
+		    	    		submitType = "NON APO CROP PROTECTION";
+		    	    		tablePath = "/GMID_SHIP_TO_COUNTRY";
+		    	    	}
+		    	    	else{
+		    	    		submitType = t._oSelectedGMIDType.toUpperCase();
+			    	    	tablePath = "/GMID_SHIP_TO_COUNTRY_STG";
+			    	    	DataContext.deleteStagingData(loggedInUserID);
+		    	    	}
 		    	    	// delete the records from staging table
 
 		    	    }
 		    	    else
 		    	    {
+		    	    	submitType = t._oSelectedGMIDType.toUpperCase();
 		    	    	tablePath = "/GMID_SHIP_TO_COUNTRY";
 		    	    }
 		    	    
@@ -770,7 +853,7 @@ sap.ui.define([
 					        	CHANNEL_CODE_ID: channelID,
 					        	MARKET_DEFAULT_CODE_ID: marketdefaultID,
 					        	SUPPLY_SYSTEM_FLAG_CODE_ID: supplySystemFlag,
-					        	TYPE: t._oSelectedGMIDType.toUpperCase(),
+					        	TYPE: submitType,
 					        	GMID_COUNTRY_STATUS_CODE_ID: gmidcountrystatusID,
 					        	CREATED_ON: oDate,
 					        	CREATED_BY:createdBy
@@ -800,11 +883,25 @@ sap.ui.define([
 									title : "Success",
 									onClose: function() {
 					        			oRouter.navTo("home");
-					        	}
-							});
+					        		}
+								});
 	        			}
-	        			else
+	        			else if(checkedNoPlant)
 	        			{
+	        				var oRouter = t.getRouter();
+	        				// once insertion is success, navigate to homepage
+	        				MessageBox.alert("You have successfully submitted " + successCount + " GMID(s)",
+								{
+									icon : MessageBox.Icon.SUCCESS,
+									title : "Success",
+									onClose: function() {
+					        			oRouter.navTo("home");
+					        		}
+								});
+	        				
+	    				}
+	    				else
+	    				{
 	        				// navigate to plant selection
 	                    	t.getOwnerComponent().getRouter().navTo("gmidPlantSelection");
 	    				}
@@ -818,6 +915,12 @@ sap.ui.define([
 						});
 		    		}
 	    		
+	        	}else{
+	        		MessageBox.alert("Error: There is an entry error on the page. Please correct.",
+							{
+								icon : MessageBox.Icon.ERROR,
+								title : "Error"
+						});
 	        	}
 	        	
 	        	// close busy dialog

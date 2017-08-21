@@ -27,6 +27,9 @@
 							<Button text="{i18n>downloadTemplate}" id="btnDownloadTemplate" press="onDownloadTemplate"/>
 						</HBox>
 					</HBox>
+					<VBox>
+						<CheckBox id="chkNoPlant" text="{i18n>checkBoxNonApoCropProtection}" select="onCheck" visible="false"></CheckBox>
+					</VBox>
 					<UploadCollection id="ucDownloadTemplate" visible="false">
 					     <items>
 					           <UploadCollectionItem fileName="GMIDSubmissionTemplate.xlsx" id="uciDownloadTemplate" enableEdit="false" visibleDelete="false" enableDelete="false" visibleEdit="false" selected="true" url="templates/GMIDSubmissionTemplate.xlsx" mimeType="application/msexcel"/>
