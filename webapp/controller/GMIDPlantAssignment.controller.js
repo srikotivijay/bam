@@ -128,7 +128,7 @@ sap.ui.define([
 						}
 						
 						// setting permission to edit plant based on user role & plant status
-						if(permissionToAdd && (item.PLANT_STATUS !== z1gmid) && (item.PLANT_STATUS !== zcgmid) && (item.PLANT_STATUS !== z9gmid))
+						if(permissionToAdd && (item.PLANT_MATERIAL_STATUS !== z1gmid) && (item.PLANT_MATERIAL_STATUS !== zcgmid) && (item.PLANT_MATERIAL_STATUS !== z9gmid))
 						{
 							item.IS_EDITABLE = true;
 						}
