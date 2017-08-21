@@ -109,7 +109,8 @@ sap.ui.define([
 					    	//if its a new combination add the key to existing list of combinations
 					        hash.add(key);
 					        groupedGMIDPlantCountry.push({ID: item.ID,
-					        						 GMID:item.GMID, 
+					        						 GMID:item.GMID,
+					        						 GMID_DESC:item.GMID_DESC,
 					        						 COUNTRY_CODE:item.COUNTRY_CODE,
 				        						 	 COUNTRY_CODE_ID: item.COUNTRY_CODE_ID,
 										        	 CURRENCY_CODE_ID: item.CURRENCY_CODE_ID,
