@@ -39,19 +39,19 @@ sap.ui.define([
 			var filterArray=[];
 			var userFilter = new Filter("CREATED_BY",sap.ui.model.FilterOperator.EQ,loggedInUserID);
 			filterArray.push(userFilter);
-			var z1gmidFilter = new Filter("FILTER_MATERIAL_STATUS",sap.ui.model.FilterOperator.NE,z1gmid);
-			var zcgmidFilter = new Filter("FILTER_MATERIAL_STATUS",sap.ui.model.FilterOperator.NE,zcgmid);
-			var z9gmidFilter = new Filter("FILTER_MATERIAL_STATUS",sap.ui.model.FilterOperator.NE,z9gmid);
+			// var z1gmidFilter = new Filter("FILTER_MATERIAL_STATUS",sap.ui.model.FilterOperator.NE,z1gmid);
+			// var zcgmidFilter = new Filter("FILTER_MATERIAL_STATUS",sap.ui.model.FilterOperator.NE,zcgmid);
+			// var z9gmidFilter = new Filter("FILTER_MATERIAL_STATUS",sap.ui.model.FilterOperator.NE,z9gmid);
 		
-			var statusFilter = new Filter ({
-				filters : [
-					z1gmidFilter,
-					zcgmidFilter,
-					z9gmidFilter
-					],
-					and : true
-			});
-			filterArray.push(statusFilter);
+			// var statusFilter = new Filter ({
+			// 	filters : [
+			// 		z1gmidFilter,
+			// 		zcgmidFilter,
+			// 		z9gmidFilter
+			// 		],
+			// 		and : true
+			// });
+			// filterArray.push(statusFilter);
 	    	
 		    // Get the GMID Plant combinations for the GMID-Country combination selected by the user
 			// Create a filter & sorter array (pending depending on user id logic)
@@ -61,7 +61,7 @@ sap.ui.define([
 			
 			this._oDataModel.read("/V_GMID_COUNTRY_SHIP_FROM_PLANT",{
 			// filters are not needed as these statuses will be in not editable
-			//	filters: filterArray,
+				filters: filterArray,
 				sorters: userSortArray,
 				async: false,
                 success: function(oData, oResponse){
