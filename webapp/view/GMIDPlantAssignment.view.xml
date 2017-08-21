@@ -5,27 +5,37 @@
 				<ScrollContainer horizontal="true"> 
 					<Table noDataText="No records to display" id="tblGMIDPlantAssignment" width="auto" items="{/GMIDPlantAssignmentVM}">
 						<columns>
-					        <Column id="clmHdrGMID" width="100px">
+					        <Column id="clmHdrGMID" width="75px">
 							    <header>
 							        <Label text="{i18n>gmid}" id="lblHdrGMID"/>
 							    </header>
 						    </Column>
-						    <Column id="clmHdrCountry" width="250px">
+						    <Column id="clmHdrGMIDShortText" width="250px">
+							    <header>
+							        <Label text="{i18n>Annotation.GMID_SHORTTEXT}" id="lblHdrGMIDShortText"/>
+							    </header>
+						    </Column>
+						    <Column id="clmHdrCountry" width="50px">
 							    <header>
 							        <Label text="{i18n>country}" id="lblHdrCountry"/>
 							    </header>
 						    </Column>
-					        <Column id="clmHdrPlant">
+					        <Column id="clmHdrPlant" width="100px">
 					            <header>
 					                <Label text="{i18n>plant}" id="lblHdrPlant"/>
 					            </header>
 					        </Column>
-					        <Column id="clmHdrPlantStatus">
+					        <Column id="clmHdrPlantDesc"  width="250px">
+					            <header>
+					                <Label text="{i18n>plantdesc}" id="lblHdrPlantDesc"/>
+					            </header>
+					        </Column>
+					        <Column id="clmHdrPlantStatus"  width="100px">
 					            <header>
 					                <Label text="{i18n>plantstatus}" id="lblHdrPlantStatus"/>
 					            </header>
 					        </Column>
-					        <Column id="clmHdrPlantStatusDesc">
+					        <Column id="clmHdrPlantStatusDesc"  width="250px">
 					            <header>
 					                <Label text="{i18n>plantstatusdesc}" id="lblHdrPlantStatusDesc"/>
 					            </header>
@@ -35,20 +45,26 @@
 					        <ColumnListItem id="cliPlantSelection" highlight="{errorState}">
 					            <cells>
 					            	<Label id="lblGMID" text="{GMID}"/>
-					            	<Label id="lblCountry" text="{COUNTRY}"/>
+					            	<Label id="lblGMIDShortText" text="{GMID_DESC}"/>
+					            	<Label id="lblCountry" text="{COUNTRY_CODE}"/>
 					            	<List items="{path: 'PLANTS', templateShareable : true}">
 					            		<CustomListItem>
 											<CheckBox text="{PLANT_CODE}" selected="{IS_SELECTED}" editable="{IS_EDITABLE}"/>
 										</CustomListItem>
 									</List>
-									<List items="{path: 'PLANTS', templateShareable : true}">
+										<List items="{path: 'PLANTS', templateShareable : true}">
 					            		<items>
-											<StandardListItem title="{PLANT_STATUS}"/>
+											<StandardListItem title="{PLANT_DESC}"/>
 										</items>
 									</List>
 									<List items="{path: 'PLANTS', templateShareable : true}">
 					            		<items>
-											<StandardListItem title="{PLANT_STATUS_DESC}"/>
+											<StandardListItem title="{PLANT_MATERIAL_STATUS}"/>
+										</items>
+									</List>
+									<List items="{path: 'PLANTS', templateShareable : true}">
+					            		<items>
+											<StandardListItem title="{PLANT_MATERIAL_STATUS_DESC}"/>
 										</items>
 									</List>
 					            </cells>

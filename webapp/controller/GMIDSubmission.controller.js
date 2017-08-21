@@ -127,18 +127,19 @@ sap.ui.define([
 		checkIfAdmin :function(){
         	
     		var gmidSubmission = this._oi18nModel.getProperty("Module.gmidSubmission");
-    		var actionAdd = this._oi18nModel.getProperty("Module.actionAdd");
+			// break since the user may have more than one role, as long as one of the user roles has permission to edit we can show the button
+    		var adminRole = this._oi18nModel.getProperty("Module.adminRole");
 	    	
 	    	// getting permissions for the current logged in user
 			var permissions = DataContext.getUserPermissions();
-			// check to see if the permission list includes "Add" action for the PLANT ASSIGNMENT Module
+			// check to see if the permission list includes "ADMIN" role for the GMID SUBMISSION Module
 			// ATTRIBUTE in this case means MODULE
 			for(var i = 0; i < permissions.length; i++)
 			{
-				if(permissions[i].ATTRIBUTE === gmidSubmission && permissions[i].ACTION === actionAdd)
+				if(permissions[i].ATTRIBUTE === gmidSubmission && permissions[i].ROLE === adminRole)
 				{
 					isAdmin = true;
-					// break since the user may have more than one role, as long as one of the user roles has permission to edit we can show the button
+					// break since the user may have more than one role, as long as one of the user roles has permission we can show the checkbox
 					break;
 				}
 			}

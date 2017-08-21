@@ -109,8 +109,21 @@ sap.ui.define([
 					    	//if its a new combination add the key to existing list of combinations
 					        hash.add(key);
 					        groupedGMIDPlantCountry.push({ID: item.ID,
-					        						 GMID:item.GMID, 
-					        						 COUNTRY:item.COUNTRY,
+					        						 GMID:item.GMID,
+					        						 GMID_DESC:item.GMID_DESC,
+					        						 COUNTRY_CODE:item.COUNTRY_CODE,
+				        						 	 COUNTRY_CODE_ID: item.COUNTRY_CODE_ID,
+										        	 CURRENCY_CODE_ID: item.CURRENCY_CODE_ID,
+										        	 IBP_RELEVANCY_CODE_ID: item.IBP_RELEVANCY_CODE_ID,
+										        	 NETTING_DEFAULT_CODE_ID: item.NETTING_DEFAULT_CODE_ID,
+										        	 QUADRANT_CODE_ID: item.QUADRANT_CODE_ID,
+										         	 CHANNEL_CODE_ID: item.CHANNEL_CODE_ID,
+										        	 MARKET_DEFAULT_CODE_ID: item.MARKET_DEFAULT_CODE_ID,
+										        	 SUPPLY_SYSTEM_FLAG_CODE_ID: item.SUPPLY_SYSTEM_FLAG_CODE_ID,
+										        	 CREATED_ON: item.CREATED_ON,
+										        	 CREATED_BY: item.CREATED_BY,
+										        	 TYPE: item.TYPE,
+										        	 GMID_COUNTRY_STATUS_CODE_ID: item.GMID_COUNTRY_STATUS_CODE_ID,
 					        						 PLANTS:[]});
 						}
 						
@@ -122,12 +135,6 @@ sap.ui.define([
 						else 
 						{
 							item.IS_EDITABLE = false;
-						}
-						
-						// setting plant status to Active if the plant status is null or blank
-						if(item.PLANT_STATUS === null)
-						{
-							item.PLANT_STATUS = activePlantStatus;
 						}
 						
 						// check if the plant code is already associated with GMID Country combination
@@ -144,7 +151,7 @@ sap.ui.define([
 						}
 						
 					    //find the object for the gmid and country combination and push the plant code to the nested plant object
-					    groupedGMIDPlantCountry.find(function(data){return data.GMID === item.GMID && data.COUNTRY === item.COUNTRY;}).PLANTS.push({PLANT_CODE: item.PLANT_CODE,PLANT_CODE_ID : item.PLANT_CODE_ID,IS_SELECTED : item.IS_SELECTED,PLANT_STATUS: item.PLANT_STATUS, IS_EDITABLE : item.IS_EDITABLE, PLANT_STATUS_DESC: item.PLANT_STATUS_DESC});
+					    groupedGMIDPlantCountry.find(function(data){return data.GMID === item.GMID && data.COUNTRY_CODE === item.COUNTRY_CODE;}).PLANTS.push({PLANT_CODE: item.PLANT_CODE,PLANT_DESC: item.PLANT_DESC,PLANT_CODE_ID : item.PLANT_CODE_ID,IS_SELECTED : item.IS_SELECTED,PLANT_MATERIAL_STATUS: item.PLANT_MATERIAL_STATUS, IS_EDITABLE : item.IS_EDITABLE, PLANT_MATERIAL_STATUS_DESC: item.PLANT_MATERIAL_STATUS_DESC});
 					} 					
 			}
 				
@@ -241,6 +248,7 @@ sap.ui.define([
 	    	else
 	    	{
 	    		 var oModel = this._oDataModel;
+	    		 var oDate = new Date();
 	    		 // data is already there in GMID SHIP TO Country table, needs to be saved in only one table
 	    		 // i.e GMID_COUNTRY_SHIP_FROM_PLANT
 	    		// loop through the rows and for each row insert data into database
@@ -252,35 +260,66 @@ sap.ui.define([
 	        		// each GMID Country combination can have one or more plants
 					  for(var j = 0; j < GMIDShipToCountry[i].PLANTS.length; j++) 
 			    		{
-	    	    					
-									// only selected plants are to be saved in database
-									if (GMIDShipToCountry[i].PLANTS[j].IS_SELECTED === true && GMIDShipToCountry[i].PLANTS[j].IS_EDITABLE === true)
-									{
-										var gmidshipfromplantID = parseInt(GMIDShipToCountry[i].PLANTS[j].PLANT_CODE_ID,10);
-										// create new GMIDShipFromPlant object
-										var newGMIDShipFromPlant = {
-								        	ID: 1 ,
-								        	GMID_SHIP_TO_COUNTRY_ID: GMIDCountryID,
-								        	GMID_SHIP_FROM_PLANT_ID: gmidshipfromplantID,
-								        	// always IBP_FLAG will be set to T if plants are being saved from plant assignment
-								        	SEND_IBP_FLAG:'T',
-								        	CREATED_ON: oDate,
-								        	CREATED_BY:loggedInUserID
-						    			};
-						    			
-						        		oModel.create("/GMID_COUNTRY_SHIP_FROM_PLANT", newGMIDShipFromPlant,
-						        		{
-								        	success: function(){
-								        		successGMIDPlantShipToCount++;
-								    		},
-								    		error: function(){
-								    			errorCount++;
-											}
-						        		});
+							// only selected plants are to be saved in database
+							if (GMIDShipToCountry[i].PLANTS[j].IS_SELECTED === true && GMIDShipToCountry[i].PLANTS[j].IS_EDITABLE === true)
+							{
+								var updatedGMIDShipToCountry = {
+									ID: GMIDCountryID,
+						        	GMID: GMIDShipToCountry[i].GMID,
+						        	COUNTRY_CODE_ID: GMIDShipToCountry[i].COUNTRY_CODE_ID,
+						        	CURRENCY_CODE_ID: GMIDShipToCountry[i].CURRENCY_CODE_ID,
+						        	IBP_RELEVANCY_CODE_ID: GMIDShipToCountry[i].IBP_RELEVANCY_CODE_ID,
+						        	NETTING_DEFAULT_CODE_ID: GMIDShipToCountry[i].NETTING_DEFAULT_CODE_ID,
+						        	QUADRANT_CODE_ID:GMIDShipToCountry[i].QUADRANT_CODE_ID,
+						        	CHANNEL_CODE_ID: GMIDShipToCountry[i].CHANNEL_CODE_ID,
+						        	MARKET_DEFAULT_CODE_ID: GMIDShipToCountry[i].MARKET_DEFAULT_CODE_ID,
+						        	SUPPLY_SYSTEM_FLAG_CODE_ID: GMIDShipToCountry[i].SUPPLY_SYSTEM_FLAG_CODE_ID,
+						        	TYPE: GMIDShipToCountry[i].TYPE,
+						        	GMID_COUNTRY_STATUS_CODE_ID: GMIDShipToCountry[i].GMID_COUNTRY_STATUS_CODE_ID,
+						        	LAST_UPDATED_ON: oDate,
+						        	LAST_UPDATED_BY:loggedInUserID,
+						        	CREATED_ON: GMIDShipToCountry[i].CREATED_ON,
+									CREATED_BY: GMIDShipToCountry[i].CREATED_BY
+								};
+								
+				    			// update the last updated by for the gmid_ship_to_country
+				    			// adding true, since we want a merge request, not an update
+		    	    			oModel.update("GMID_SHIP_TO_COUNTRY(" + GMIDCountryID + ")",updatedGMIDShipToCountry,
+		    	    			{
+	    	    					method: "MERGE",
+						        	success: function(){
+						        		successGMIDPlantShipToCount++;
+						    		},
+						    		error: function(){
+						    			errorCount++;
 									}
-					    		}
-			    		}
+				        		});
+								
 
+								var gmidshipfromplantID = parseInt(GMIDShipToCountry[i].PLANTS[j].PLANT_CODE_ID,10);
+								// create new GMIDShipFromPlant object
+								var newGMIDShipFromPlant = {
+						        	ID: 1 ,
+						        	GMID_SHIP_TO_COUNTRY_ID: GMIDCountryID,
+						        	GMID_SHIP_FROM_PLANT_ID: gmidshipfromplantID,
+						        	// always IBP_FLAG will be set to T if plants are being saved from plant assignment
+						        	SEND_IBP_FLAG:'T',
+						        	CREATED_ON: oDate,
+						        	CREATED_BY:loggedInUserID
+				    			};
+				    			
+				        		oModel.create("/GMID_COUNTRY_SHIP_FROM_PLANT", newGMIDShipFromPlant,
+				        		{
+						        	success: function(){
+						        		successGMIDPlantShipToCount++;
+						    		},
+						    		error: function(){
+						    			errorCount++;
+									}
+				        		});
+							}
+					    }
+			    }
 	    		//Show success or error message
 	    		if(errorCount === 0) 
 	    		{

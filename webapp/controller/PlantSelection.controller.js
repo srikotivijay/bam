@@ -60,7 +60,8 @@ sap.ui.define([
 			userSortArray.push(userSort);
 			
 			this._oDataModel.read("/V_GMID_COUNTRY_SHIP_FROM_PLANT",{
-				filters: filterArray,
+			// filters are not needed as these statuses will be in not editable
+			//	filters: filterArray,
 				sorters: userSortArray,
 				async: false,
                 success: function(oData, oResponse){
@@ -94,8 +95,10 @@ sap.ui.define([
 				    	//if its a new combination add the key to existing list of combinations
 				        hash.add(key);
 				        groupedGMIDCountry.push({ID: item.ID,
-				        						 GMID:item.GMID, 
+				        						 GMID:item.GMID,
+				        						 GMID_DESC:item.GMID_DESC,
 				        						 COUNTRY:item.COUNTRY, 
+				        						 COUNTRY_CODE:item.COUNTRY_CODE, 
 				        						 COUNTRY_CODE_ID: item.COUNTRY_CODE_ID,
 	        									 CURRENCY_CODE_ID: item.CURRENCY_CODE_ID,
 	        									 IBP_RELEVANCY_CODE_ID: item.IBP_RELEVANCY_CODE_ID,
@@ -110,8 +113,19 @@ sap.ui.define([
 				        						 PLANTS:[],
 				        						 errorState: "None"});
 					}
+					
+						// setting permission to edit plant based on user role & plant status
+						if((item.PLANT_MATERIAL_STATUS !== z1gmid) && (item.PLANT_MATERIAL_STATUS !== zcgmid) && (item.PLANT_MATERIAL_STATUS !== z9gmid))
+						{
+							item.IS_EDITABLE = true;
+						}
+						else 
+						{
+							item.IS_EDITABLE = false;
+						}
+						
 				    //find the object for the gmid and country combination and push the plant code to the nested plant object
-				    groupedGMIDCountry.find(function(data){return data.GMID === item.GMID && data.COUNTRY === item.COUNTRY;}).PLANTS.push({PLANT_CODE: item.PLANT_CODE,PLANT_CODE_ID : item.GMID_SHIP_FROM_PLANT_ID,IS_SELECTED:false});
+				    groupedGMIDCountry.find(function(data){return data.GMID === item.GMID && data.COUNTRY_CODE === item.COUNTRY_CODE;}).PLANTS.push({PLANT_CODE: item.PLANT_CODE,PLANT_DESC: item.PLANT_DESC,PLANT_CODE_ID : item.GMID_SHIP_FROM_PLANT_ID,IS_SELECTED:false,PLANT_MATERIAL_STATUS: item.PLANT_MATERIAL_STATUS, IS_EDITABLE : item.IS_EDITABLE, PLANT_MATERIAL_STATUS_DESC: item.PLANT_MATERIAL_STATUS_DESC});
 				}
 				
                 // Bind the Country data to the GMIDShipToCountry model
