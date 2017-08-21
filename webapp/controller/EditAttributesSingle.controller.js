@@ -183,7 +183,7 @@ sap.ui.define([
 			                oModel.setProperty("/COMMENTS",selDataVal.COMMENTS);
 		                },
 		    		    error: function(){
-		            		MessageToast.show("Unable to retrieve selected GMID Country record.");
+		            		MessageToast.show("Unable to retrieve selected GMID/Country record.");
 		    			}
 		    		});
 		    		
