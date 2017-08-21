@@ -362,7 +362,7 @@ sap.ui.define([
 			// check if there are any changes to be updated
 			if (updatedAttributesList !== ""){
 				// check if user wants to update the attributes for GMID and country
-				MessageBox.confirm((updatedAttributesList + " attributes will be updated for " + curr._oViewModelData.GMID_COUNTRY_COUNT + " GMID Country combinations. Continue?"), {
+				MessageBox.confirm((updatedAttributesList + " attributes will be updated for " + curr._oViewModelData.GMID_COUNTRY_COUNT + " GMID/Country combinations. Continue?"), {
 	    			icon: sap.m.MessageBox.Icon.WARNING,
 	    			actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
 	          		onClose: function(oAction) {
@@ -520,7 +520,7 @@ sap.ui.define([
 					function(oData,oResponse)
 					{
 						busyDialog.close();
-						MessageBox.alert("Attributes for " + successCount + " GMID Country combinations updated successfully.",
+						MessageBox.alert("Attributes for " + successCount + " GMID/Country combinations updated successfully.",
 							{
 								icon : MessageBox.Icon.SUCCESS,
 								title : "Success",
@@ -532,7 +532,7 @@ sap.ui.define([
 			    	function(oError)
 			    	{
 			    		busyDialog.close();
-		    			MessageBox.alert("Error updating attributes for GMID and Country combinations.",
+		    			MessageBox.alert("Error updating attributes for GMID/Country combinations.",
 						{
 							icon : MessageBox.Icon.ERROR,
 							title : "Error"

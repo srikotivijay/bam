@@ -325,7 +325,7 @@ sap.ui.define([
 	    		{
 	        			var oRouter = this.getRouter();
         				// once insertion is success, navigate to homepage
-        				MessageBox.alert("The selected plants have been assigned to the respective GMID Country combination.",
+        				MessageBox.alert("The selected plants have been assigned to the respective GMID/Country combination.",
 							{
 								icon : MessageBox.Icon.SUCCESS,
 								title : "Success",
