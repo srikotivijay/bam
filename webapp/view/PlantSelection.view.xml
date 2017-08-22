@@ -34,19 +34,19 @@
 					                <Label text="{i18n>plant}" id="lblHdrPlant"/>
 					            </header>
 					        </Column>
-					        <Column id="clmHdrPlantDesc" width="250px">
+					        <Column id="clmHdrPlantDesc" width="300px">
 					            <header>
 					                <Label text="{i18n>plantdesc}" id="lblHdrPlantDesc"/>
 					            </header>
 					        </Column>
-					        <Column id="clmHdrPlantStatus" width="100px">
+					        <Column id="clmHdrPlantStatus" width="50px">
 					            <header>
-					                <Label text="{i18n>plantstatus}" id="lblHdrPlantStatus"/>
+					                <Label text="{i18n>plantstatus}" id="lblHdrPlantStatus" class="wrapText"/>
 					            </header>
 					        </Column>
 					        <Column id="clmHdrPlantStatusDesc">
 					            <header>
-					                <Label text="{i18n>plantstatusdesc}" id="lblHdrPlantStatusDesc"/>
+					                <Label text="{i18n>plantstatusdesc}" id="lblHdrPlantStatusDesc" class="wrapText"/>
 					            </header>
 					        </Column>
 					    </columns>
@@ -55,11 +55,11 @@
 					            <cells>
 					            	<Button id="btnRemoveRow" icon="sap-icon://delete" press="onRemoveRow"/>
 					            	<Label id="lblGMID" text="{GMID}"/>
-					            	<Label id="lblGMIDShortText" text="{GMID_DESC}"/>
+					            	<Label id="lblGMIDShortText" text="{GMID_DESC}" class="wrapText"/>
 					            	<Label id="lblCountry" text="{COUNTRY_CODE}"/>
 								    <List items="{path: 'PLANTS', templateShareable : true}">
 					            		<CustomListItem>
-											<CheckBox text="{PLANT_CODE}" selected="{IS_SELECTED}" editable="{IS_EDITABLE}"/>
+											<CheckBox text="{PLANT_CODE}" selected="{IS_SELECTED}" enabled="{IS_EDITABLE}"/>
 										</CustomListItem>
 									</List>
 										<List items="{path: 'PLANTS', templateShareable : true}">
@@ -69,12 +69,12 @@
 									</List>
 									<List items="{path: 'PLANTS', templateShareable : true}">
 					            		<items>
-											<StandardListItem title="{PLANT_MATERIAL_STATUS}" />
+											<StandardListItem title="{PLANT_MATERIAL_STATUS}" class="wrapText"/>
 										</items>
 									</List>
 									<List items="{path: 'PLANTS', templateShareable : true}">
 					            		<items>
-											<StandardListItem title="{PLANT_MATERIAL_STATUS_DESC}"/>
+											<StandardListItem title="{PLANT_MATERIAL_STATUS_DESC}" class="wrapText"/>
 										</items>
 									</List>
 					            </cells>
