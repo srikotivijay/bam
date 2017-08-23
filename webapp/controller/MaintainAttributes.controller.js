@@ -61,6 +61,10 @@ sap.ui.define([
 			},
 			// applying default userid filters before binding
 			onBeforeRebindTable : function(oEvent) {
+				
+				// refresh the odata model, this will force a refresh of the smart table UI
+				this.getOwnerComponent().getModel().refresh(true);
+				
 				if(filterBoolean){
 					// Need to chcek the logged in user id in the following attributes
 					// DEMAND_MANAGER_ID,GLOBAL_BUSINESS_LEADER_ID,SUPPLY_CHAIN_PLANNING_SPECIALIST_ID,
