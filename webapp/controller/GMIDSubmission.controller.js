@@ -541,7 +541,7 @@ sap.ui.define([
 		                {
 		                	gmiddata[i].errorSummary += "\n";  
 		                }
-		                gmiddata[i].errorSummary += "GMID has an invalid status or does not exists in PRM system.";  
+		                gmiddata[i].errorSummary += "GMID has an invalid status or does not exist in PRM system.";  
 	        	  } // end for validgmidinput if
 	        	} // end for if(data[i].GMID !== "")
 	        } // end for outer for loop
