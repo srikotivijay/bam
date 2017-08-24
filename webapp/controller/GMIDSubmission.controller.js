@@ -1178,7 +1178,7 @@ sap.ui.define([
 		            	// clear out the current data on the page
 				        t._oViewModelData.GMIDShipToCountryVM.splice(0,t._oViewModelData.GMIDShipToCountryVM.length);
 				        // loop through all the rows, the last row is empty so do not include it
-			            for (var k = 1; k < allTextLines.length - 1; k++) 
+			            for (var k = 1; k < allTextLines.length; k++) 
 			            {
 			            	// get a single row
 			            	var row = allTextLines[k].split(",");
@@ -1230,6 +1230,8 @@ sap.ui.define([
 			            t.addEmptyObject();
 			            // close busy dialog
 						t._busyDialog.close();
+						// set page changed global variable to true
+						t._isChanged = true;
 			            // refresh the view model
 			            t._oGMIDShipToCountryViewModel.refresh();
 				            
