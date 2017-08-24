@@ -28,6 +28,9 @@ sap.ui.define([
                 bundleName: "bam.i18n.i18n"
             });
             
+            // set max number of gmid's to show on ui to 200
+		    oModel.setSizeLimit(200);
+            
 			// get the GMID status for i18n model
 			var z1gmid = oi18nModel.getProperty("z1gmidstatus");
 			var zcgmid = oi18nModel.getProperty("zcgmidstatus");
