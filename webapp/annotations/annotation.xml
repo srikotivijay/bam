@@ -251,6 +251,9 @@
 			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/VALUE_CENTER_DESC">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.VALUE_CENTER_DESC}"/>
 			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/VALUE_CENTER_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.VALUE_CENTER_CODE}"/>
+			</Annotations>
 			<Annotations Target="ODataService.BAMDataService.V_GMID_CROP_PROTECTIONType">
 				<Annotation Term="UI.PresentationVariant">
 					<Record Type="UI.PresentationVariantType">
@@ -475,6 +478,9 @@
 			</Annotations>
 			<Annotations Target="ODataService.BAMDataService.V_GMID_CROP_PROTECTIONType/VALUE_CENTER_DESC">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.VALUE_CENTER_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_GMID_CROP_PROTECTIONType/VALUE_CENTER_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.VALUE_CENTER_CODE}"/>
 			</Annotations>
 		</Schema>
 	</edmx:DataServices>

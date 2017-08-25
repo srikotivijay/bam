@@ -235,9 +235,22 @@ sap.ui.define([
 	    	var oSelectedIndex = evt.getParameter("selectedIndex");  
 	    	var oRadioButtonSrc = evt.getSource().getAggregation("buttons");  
 	    	this._oSelectedGMIDType = oRadioButtonSrc[oSelectedIndex].getText();
-	    	// get the crop protection and seeds value from i18n file
-		    this._oSeed = this._oi18nModel.getProperty("seeds");
+	    	this._oSeed = this._oi18nModel.getProperty("seeds");
 		    this._oCropProtection = this._oi18nModel.getProperty("cropProtection");
+		    this._oSeedValueCenterCode = this._oi18nModel.getProperty("seedsValueCenterCode");
+		    this._oCropProtectionValueCenterCode = this._oi18nModel.getProperty("cropProtectionValueCenterCode");
+		    
+	    	// set the value center code for the selected type
+	    	if(this._oSelectedGMIDType === this._oSeed)
+	    	{
+	    		this._oSelectedValueCenterCode = this._oSeedValueCenterCode;
+	    	}
+	    	else if (this._oSelectedGMIDType === this._oCropProtection)
+	    	{
+	    		this._oSelectedValueCenterCode = this._oCropProtectionValueCenterCode;
+	    	}
+	    	// get the crop protection and seeds value from i18n file
+
 		    var tblGmid = this.getView().byId("tblGMIDRequest");
 			var btnSubmit = this.getView().byId("btnSubmit");
 			var btnContinue = this.getView().byId("btnContinueToPlantSelection");
@@ -563,7 +576,7 @@ sap.ui.define([
 	        		for(var k = 0; k < gmidRecords.length; k++) 
                      {
 	                    // loop the GMID  Records to check whether GMID is valid
-	                     if ((this.lpadstring(gmiddata[i].GMID) === gmidRecords[k].GMID) && (this._oSelectedGMIDType.toUpperCase() === gmidRecords[k].VALUE_CENTER_DESC))
+	                     if ((this.lpadstring(gmiddata[i].GMID) === gmidRecords[k].GMID) && (this.lpadstring(this._oSelectedValueCenterCode) === this.lpadstring(gmidRecords[k].VALUE_CENTER_CODE)))
 	                    	{
 	                    		validgmid =  true;
 			               }
