@@ -3,7 +3,7 @@
 		<pages>
 			<Page title="{i18n>title}">
 				<content>
-					<TileContainer allowAdd="true" id="tlCntHome" height="400px" width="80%">
+					<TileContainer allowAdd="true" id="tlCntHome" height="400px" width="100%">
 				        <tiles>
 				        	<StandardTile visible="{/showGMIDSubmission}" title="{i18n>gmidSubmission}" info="{i18n>gmidSubmissionHelptext}" icon="sap-icon://add-product" activeIcon="sap-icon://add-product" infoState="Success" id="tlGMIDSubmission" class="sapUiLargeMarginEnd" press="onGoToGMIDSubmission"/>
 				        </tiles>
@@ -12,6 +12,9 @@
 				        </tiles>
 				         <tiles>
 				        	<StandardTile title="{i18n>plantAssignment}" info="{i18n>plantAssignmentHelptext}" icon="sap-icon://add-activity" activeIcon="sap-icon://add-activity" infoState="Success" id="tlPlantAssignment" class="sapUiLargeMarginEnd" press="onGoToPlantAssignment"/>
+				        </tiles>
+				        <tiles>
+				        	<StandardTile title="{i18n>auditReport}" info="{i18n>auditReportHelpText}" icon="sap-icon://history" activeIcon="sap-icon://history" infoState="Success" id="tlAuditReport" class="sapUiLargeMarginEnd" press="onGoToAuditReport"/>
 				        </tiles>
 				    </TileContainer>
 				</content>

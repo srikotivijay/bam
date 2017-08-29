@@ -166,6 +166,11 @@
 					"pattern": "accessDenied",
 					"name": "accessDenied",
 					"target": "accessDenied"
+				},
+				{
+					"pattern": "auditReport",
+					"name": "auditReport",
+					"target": "auditReport"
 				}
 			],
 			"targets": {
@@ -209,6 +214,10 @@
 				"accessDenied": {
 					"viewName": "AccessDenied",
 					"viewId": "accessDenied"
+				},
+				"auditReport": {
+					"viewName": "AuditReport",
+					"viewId": "auditReport"
 				}
 			}
 		}
