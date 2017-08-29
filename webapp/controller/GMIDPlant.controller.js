@@ -26,10 +26,13 @@ sap.ui.define([
 		    	oView.setModel(this._oDataModel);
 		    	
 		    	this._oModel = new sap.ui.model.json.JSONModel();
-	    		
 	    		this.getView().setModel(this._oModel,"GMIDPlantVM");
-
 	    		this._oi18nModel = this.getOwnerComponent().getModel("i18n");
+	    		
+	    		// add column freeze to table
+	    		var oSmartTable = this.getView().byId("smartTblBAMAttributes");   
+				var oTable = oSmartTable.getTable();  
+				oTable.setEnableColumnFreeze(true);
             	
 	    		// get the Module settings for i18n model
         		var plantAssignment = this._oi18nModel.getProperty("Module.plantAssignment");

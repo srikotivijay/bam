@@ -27,6 +27,11 @@ sap.ui.define([
 	    		this._oModel.setProperty("/showEditButton",false);
 	    		this.getView().setModel(this._oModel,"MaintainAttributesVM");
 	    		
+	    		// add column freeze to table
+	    		var oSmartTable = this.getView().byId("smartTblBAMAttributes");   
+				var oTable = oSmartTable.getTable();  
+				oTable.setEnableColumnFreeze(true);
+	    		
 
 	    		this._oi18nModel = this.getOwnerComponent().getModel("i18n");
 	    		// get the Module settings for i18n model
