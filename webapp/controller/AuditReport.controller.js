@@ -31,10 +31,6 @@ sap.ui.define([
 		    		var oRouter = this.getRouter();
 					oRouter.getRoute("auditReport").attachMatched(this._onRouteMatched, this);
 		    	}
-		    	else
-		    	{
-		    		oSmartTable.rebindTable();
-		    	}
 			},
 			getRouter : function () {
 				return sap.ui.core.UIComponent.getRouterFor(this);
@@ -60,9 +56,10 @@ sap.ui.define([
 			},
 			// navigate back to the homepage
 			onHome: function(){
-			//	var oSmartTable = this.byId("smartTblBAMAttributes");
-				//oSmartTable.exit();
 				this.getOwnerComponent().getRouter().navTo("home");
+			},
+			onBeforeRebindTable: function(){
+				this.getOwnerComponent().getModel().refresh(true);
 			}
   	});
 });
