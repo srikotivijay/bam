@@ -5,21 +5,20 @@
 				<content>
 					<TileContainer allowAdd="true" id="tlCntHome" height="400px" width="100%">
 				        <tiles>
-				        	<StandardTile visible="{/showGMIDSubmission}" title="{i18n>gmidSubmission}" info="{i18n>gmidSubmissionHelptext}" icon="sap-icon://add-product" activeIcon="sap-icon://add-product" infoState="Success" id="tlGMIDSubmission" class="sapUiLargeMarginEnd" press="onGoToGMIDSubmission"/>
+				        	<StandardTile tooltip="{i18n>gmidSubmissionTooltipText}" visible="{/showGMIDSubmission}" title="{i18n>gmidSubmission}" icon="sap-icon://add-product" activeIcon="sap-icon://add-product" infoState="Success" id="tlGMIDSubmission" class="sapUiLargeMarginEnd" press="onGoToGMIDSubmission"/>
 				        </tiles>
 				        <tiles>
-				        	<StandardTile title="{i18n>maintainAttributes}" info="{i18n>maintainAttributesHelptext}" icon="sap-icon://user-edit" activeIcon="sap-icon://user-edit" infoState="Success" id="tlMaintainAttributes" class="sapUiLargeMarginEnd" press="onGoToMaintainAttributes"/>
+				        	<StandardTile title="{i18n>maintainAttributes}" tooltip="{i18n>maintainAttributesTooltipText}" icon="sap-icon://user-edit" activeIcon="sap-icon://user-edit" infoState="Success" id="tlMaintainAttributes" class="sapUiLargeMarginEnd" press="onGoToMaintainAttributes"/>
 				        </tiles>
 				         <tiles>
-				        	<StandardTile title="{i18n>plantAssignment}" info="{i18n>plantAssignmentHelptext}" icon="sap-icon://add-activity" activeIcon="sap-icon://add-activity" infoState="Success" id="tlPlantAssignment" class="sapUiLargeMarginEnd" press="onGoToPlantAssignment"/>
+				        	<StandardTile title="{i18n>plantAssignment}" tooltip="{i18n>plantAssignmentTooltipText}" icon="sap-icon://add-activity" activeIcon="sap-icon://add-activity" infoState="Success" id="tlPlantAssignment" class="sapUiLargeMarginEnd" press="onGoToPlantAssignment"/>
 				        </tiles>
 				        <tiles>
-				        	<StandardTile title="{i18n>auditReport}" info="{i18n>auditReportHelpText}" icon="sap-icon://history" activeIcon="sap-icon://history" infoState="Success" id="tlAuditReport" class="sapUiLargeMarginEnd" press="onGoToAuditReport"/>
+				        	<StandardTile title="{i18n>auditReport}" tooltip="{i18n>auditReportTooltipText}" icon="sap-icon://history" activeIcon="sap-icon://history" infoState="Success" id="tlAuditReport" class="sapUiLargeMarginEnd" press="onGoToAuditReport"/>
 				        </tiles>
 				    </TileContainer>
 				</content>
 			</Page>
-
 		</pages>
 	</App>
 </mvc:View>
