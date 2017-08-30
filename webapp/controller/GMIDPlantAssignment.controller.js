@@ -286,7 +286,7 @@ sap.ui.define([
 				    			// adding true, since we want a merge request, not an update
 		    	    			oModel.update("GMID_SHIP_TO_COUNTRY(" + GMIDCountryID + ")",updatedGMIDShipToCountry,
 		    	    			{
-	    	    					method: "MERGE",
+	    	    					merge: true,
 						        	success: function(){
 						        		successGMIDPlantShipToCount++;
 						    		},

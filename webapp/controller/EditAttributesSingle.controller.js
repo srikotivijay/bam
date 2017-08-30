@@ -340,6 +340,7 @@ sap.ui.define([
 			    
 					this._oDataModel.update("/GMID_SHIP_TO_COUNTRY("+this._oEditAttributesID+")", updGMIDCountry,
 			        {
+						merge: true,
 			        	// show success alert to the user
 					    success: function(){
 							MessageBox.alert("Attributes for GMID " + updGMIDCountry.GMID + " and country " + country + " updated successfully.",
