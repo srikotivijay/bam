@@ -205,7 +205,7 @@ sap.ui.define([
     	onSubmit : function () {
     		var errorCount = 0;
     		var successGMIDShipToCount = 0;
-    	 	var successGMIDShipFromPlantCount = 0;
+    	 //	var successGMIDShipFromPlantCount = 0;
     		var GMIDShipToCountry = this._oPlantSelectionViewModel.getProperty("/PlantSelectionVM");
     	
     		// Create current timestamp
@@ -274,7 +274,7 @@ sap.ui.define([
 			        	CREATED_BY:createdBy
 	    			};
 	    			
-	    			var maxGMIDShipFromPlantID = DataContext.getMaxID("/GMID_COUNTRY_SHIP_FROM_PLANT");
+	    			//var maxGMIDShipFromPlantID = DataContext.getMaxID("/GMID_COUNTRY_SHIP_FROM_PLANT");
 	    				// Get the MaxID for the GMID Ship to Country
 	    			
 	        		this._oDataModel.create("/GMID_SHIP_TO_COUNTRY", newGMID,
@@ -283,14 +283,38 @@ sap.ui.define([
 			        		successGMIDShipToCount++;
 			        		// Get the MaxID for the GMID Ship from Plant
 
-	    	    			 var maxGMIDShipToID = DataContext.getMaxID("/GMID_SHIP_TO_COUNTRY");
+	    	    			var maxGMIDShipToID = 0; 
+	    	    			var latestShipToCountry;
+                            //get the ID of submitted GMID Country
+                            var filterArray=[];
+                            // Creating and adding the filter
+                            var gmidFilter = new Filter("GMID",sap.ui.model.FilterOperator.EQ,GMID);
+                            filterArray.push(gmidFilter);
+                            var countryIDFilter = new Filter("COUNTRY_CODE_ID",sap.ui.model.FilterOperator.EQ,countryID);
+                            filterArray.push(countryIDFilter);
+                            var createdByFilter = new Filter("CREATED_BY", sap.ui.model.FilterOperator.EQ, GMIDShipToCountry[i].CREATED_BY);
+                            filterArray.push(createdByFilter);
+                            
+                            oModel.read("/GMID_SHIP_TO_COUNTRY",{
+                            	filters: filterArray,
+                            	async: false,
+                            	success: function(oData, oResponse){
+                            		latestShipToCountry  = oData.results.pop();
+                            		maxGMIDShipToID  = latestShipToCountry.ID;
+                            	},
+                            	error: function(){
+                            		MessageToast.show("Unable to retrieve GMID Country record's Id that was inserted.");
+                            	}
+
+                            }); 
+                            if(maxGMIDShipToID !== 0){
 			        		// once data is inserted into GMID Ship to Country, 
 			        		// insert the data into GMID_COUNTRY_SHIP_FROM_PLANT
 			        		// each GMID Country combination can have one or more plants
 							  for(var j = 0; j < GMIDShipToCountry[i].PLANTS.length; j++) 
 					    		{
 	    	    					
-									var gmidshipfromcountryID = parseInt(GMIDShipToCountry[i].COUNTRY_CODE_ID,10);
+								//	var gmidshipfromcountryID = parseInt(GMIDShipToCountry[i].COUNTRY_CODE_ID,10);
 									// only selected plants are to be saved in database
 									if (GMIDShipToCountry[i].PLANTS[j].IS_SELECTED === true)
 									{
@@ -316,6 +340,7 @@ sap.ui.define([
 						        		});
 									}
 					    		}
+                            }
 			    		},
 			    		error: function(){
 			    			errorCount++;
