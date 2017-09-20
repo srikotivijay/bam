@@ -281,7 +281,7 @@ sap.ui.define([
 	        		{
 			        	success: function(){
 			        		successGMIDShipToCount++;
-			        		// Get the MaxID for the GMID Ship from Plant
+			        		// Get the MaxID for the GMID Ship from Plant.
 
 	    	    			var maxGMIDShipToID = 0; 
 	    	    			var latestShipToCountry;
