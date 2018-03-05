@@ -13,6 +13,7 @@
 						<RadioButtonGroup id="rbgGMIDType" width="100%" columns="2" select="fnGridShow" selectedIndex="-1">
 					    	<buttons>
 					        	<RadioButton id="rBtnCropProtection" text="{i18n>cropProtection}" groupName="rbgGMIDType"/>
+					        	<RadioButton id="rBtnCropProtectionDuPont" text="{i18n>cropProtectionDuPont}"/>
 					        	<RadioButton id="rBtnSeeds" text="{i18n>seeds}" groupName="rbgGMIDType" class="sapUiLargeMarginEnd"/>
 					        </buttons>
 						</RadioButtonGroup>
