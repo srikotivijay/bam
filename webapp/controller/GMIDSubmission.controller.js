@@ -237,6 +237,7 @@ sap.ui.define([
 	    	this._oSelectedGMIDType = oRadioButtonSrc[oSelectedIndex].getText();
 	    	this._oSeed = this._oi18nModel.getProperty("seeds");
 		    this._oCropProtection = this._oi18nModel.getProperty("cropProtection");
+		    this._oCropProtectionDuPont = this._oi18nModel.getProperty("cropProtectionDuPont");
 		    this._oSeedValueCenterCode = this._oi18nModel.getProperty("seedsValueCenterCode");
 		    this._oCropProtectionValueCenterCode = this._oi18nModel.getProperty("cropProtectionValueCenterCode");
 		    
@@ -249,6 +250,7 @@ sap.ui.define([
 	    	{
 	    		this._oSelectedValueCenterCode = this._oCropProtectionValueCenterCode;
 	    	}
+
 	    	// get the crop protection and seeds value from i18n file
 
 		    var tblGmid = this.getView().byId("tblGMIDRequest");
@@ -266,7 +268,7 @@ sap.ui.define([
      			checkedNoPlant = false;
 			}
 			//if(this._oSelectedGMIDType === this._o)
-    		else
+    		else if (this._oSelectedGMIDType === this._oCropProtection)
     		{
     			if(isAdmin){
     				chkNoPlant.setVisible(true);
@@ -274,6 +276,13 @@ sap.ui.define([
     			tblGmid.setVisible(true);
     			btnSubmit.setVisible(false);
     			btnContinue.setVisible(true);
+    		}
+    		else if (this._oSelectedGMIDType === this._oCropProtectionDuPont)
+    		{
+    			chkNoPlant.setVisible(false);
+    			tblGmid.setVisible(true);
+    			btnSubmit.setVisible(true);
+    			btnContinue.setVisible(false);
     		}
     		
     		// show the import to Excel button
