@@ -630,14 +630,14 @@ sap.ui.define([
         	var sNumber = "";
 			var value = oEvent.getSource().getValue();
             var bNotnumber = isNaN(value);
-            if(bNotnumber === false) 
-            {
-            	sNumber = value;
-            }   
-            else 
-            {
-            	oEvent.getSource().setValue(sNumber);
-            } 
+            //if(bNotnumber === false) 
+            //{
+            //	sNumber = value;
+            //}   
+            //else 
+            //{
+            //	oEvent.getSource().setValue(sNumber);
+            //} 
         },
         resetValidationForModel : function () {
         	var data = this._oViewModelData.GMIDShipToCountryVM;
