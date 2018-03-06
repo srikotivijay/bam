@@ -812,7 +812,6 @@ sap.ui.define([
 	        	{
 	        		t._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
 	        	}
-		        
 		        // if crop protection is selected and the GMID/plant combination does not exist, return error
 		        //if admin and not checked or not admin
 		        if(checkedNoPlant === false){
@@ -920,6 +919,19 @@ sap.ui.define([
 		    		if(errorCount === 0) 
 		    		{
 	        			if(t._oSelectedGMIDType === t._oSeed)
+	        			{
+	        				var oRouter = t.getRouter();
+	        				// once insertion is success, navigate to homepage
+	        				MessageBox.alert("You have successfully submitted " + successCount + " GMID(s)",
+								{
+									icon : MessageBox.Icon.SUCCESS,
+									title : "Success",
+									onClose: function() {
+					        			oRouter.navTo("home");
+					        		}
+								});
+	        			}
+	        			else if(t._oSelectedGMIDType === t._oCropProtectionDuPont)
 	        			{
 	        				var oRouter = t.getRouter();
 	        				// once insertion is success, navigate to homepage
