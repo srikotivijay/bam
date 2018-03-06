@@ -635,14 +635,15 @@ sap.ui.define([
 			oEvent.getSource().setValueState(sap.ui.core.ValueState.None);
         	var sNumber = "";
 			var value = oEvent.getSource().getValue();
-            var bNotnumber = isNaN(value);
-            if(bNotnumber === false) 
+            //var bNotnumber = isNaN(value);
+            var bNotSpecial = new RegExp(/[~`!@#$%\^&*+=()_\-\[\]\\';.,/{}|\\":<>\?]/);
+            if(bNotSpecial.test(value))
             {
-            	sNumber = value;
+            	oEvent.getSource().setValue(sNumber);
             }   
             else 
             {
-            	oEvent.getSource().setValue(sNumber);
+            	sNumber = value;
             } 
         },
         resetValidationForModel : function () {
