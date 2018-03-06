@@ -497,6 +497,21 @@
 			<Annotations Target="ODataService.BAMDataService.V_GMID_CROP_PROTECTIONType/VALUE_CENTER_CODE">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.VALUE_CENTER_CODE}"/>
 			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_GMID_CROP_PROTECTIONType/PLATFORM_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PLATFORM_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_GMID_CROP_PROTECTIONType/FAMILY_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.FAMILY_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_GMID_CROP_PROTECTIONType/PORTFOLIO_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PORTFOLIO_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_GMID_CROP_PROTECTIONType/CROP_MOLECULE_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.CROP_MOLECULE_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_GMID_CROP_PROTECTIONType/SUBCROP_MOLECULE_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SUBCROP_MOLECULE_DESC}"/>
+			</Annotations>
 			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType">
 				<Annotation Term="UI.PresentationVariant">
 					<Record Type="UI.PresentationVariantType">
