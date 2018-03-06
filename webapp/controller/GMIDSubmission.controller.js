@@ -583,6 +583,7 @@ sap.ui.define([
 	                    		for(var g = 0; g < this._oSelectedValueCenterCode.length; g++){
 	                    			if(this.lpadstring(this._oSelectedValueCenterCode[g]) === this.lpadstring(gmidRecords[k].VALUE_CENTER_CODE)){
 	                    				validgmid =  true;
+	                    				break;
 	                    			}
 	                    		}
 			               }
