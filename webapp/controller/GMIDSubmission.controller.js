@@ -631,7 +631,7 @@ sap.ui.define([
 			var value = oEvent.getSource().getValue();
             //var bNotnumber = isNaN(value);
             var bNotSpecial = new RegExp(/[~`!@#$%\^&*+=()_\-\[\]\\';.,/{}|\\":<>\?]/);
-            if(bNotSpecial.test(value)) 
+            if(bNotSpecial.test(value))
             {
             	oEvent.getSource().setValue(sNumber);
             }   
