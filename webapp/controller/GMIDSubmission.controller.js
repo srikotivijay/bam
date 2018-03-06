@@ -250,6 +250,10 @@ sap.ui.define([
 	    	{
 	    		this._oSelectedValueCenterCode = this._oCropProtectionValueCenterCode;
 	    	}
+	    	else if (this._oSelectedGMIDType === this._oCropProtectionDuPont)
+	    	{
+         		this._oSelectedSource = this._oi18nModel.getProperty("dcpSource");
+	    	}
 
 	    	// get the crop protection and seeds value from i18n file
 
@@ -578,6 +582,8 @@ sap.ui.define([
              // get all the GMID's with the Status for the GMID's entered in UI
              var gmidRecords = DataContext.getGMIDListFromDB(this._gmidList,viewpath); 
          	 var IsAllvalidgmids = true;
+         	 var dasSource = this._oi18nModel.getProperty("dasSource");
+         	 var dcpSource = this._oi18nModel.getProperty("dcpSource");
         	for(var i = 0; i < gmiddata.length - 1; i++) 
 	        { 
 	        	if(gmiddata[i].GMID !== "")
@@ -586,9 +592,25 @@ sap.ui.define([
 	        		for(var k = 0; k < gmidRecords.length; k++) 
                      {
 	                    // loop the GMID  Records to check whether GMID is valid
-	                     if ((this.lpadstring(gmiddata[i].GMID) === gmidRecords[k].GMID) && (this.lpadstring(this._oSelectedValueCenterCode) === this.lpadstring(gmidRecords[k].VALUE_CENTER_CODE)))
+	                     if (this.lpadstring(gmiddata[i].GMID) === gmidRecords[k].GMID)
 	                    	{
-	                    		validgmid =  true;
+	                    		//if SOURCE COMPANY is DAS
+	                    		if(dasSource === gmidRecords[k].SOURCE_COMPANY || gmidRecords[k].SOURCE_COMPANY === null)
+	                    		{
+	                    			//if Value Center Code Matches the value center code associated with the selection
+	                    			if(this.lpadstring(this._oSelectedValueCenterCode) === this.lpadstring(gmidRecords[k].VALUE_CENTER_CODE))
+		                    		{
+		                    			validgmid =  true;
+		                    		}
+	                    		}
+	                    		else if (this._oSelectedSource  === gmidRecords[k].SOURCE_COMPANY ){
+	                    			validgmid =  true;
+	                    			//if crop protection 
+	                    		}
+	                    		//if Source company is not das
+	                    		
+	                    		//secondary if statement here
+	                    		
 			               }
 			                else
 	                	   {
