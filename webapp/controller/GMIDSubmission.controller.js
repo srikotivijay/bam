@@ -239,16 +239,18 @@ sap.ui.define([
 		    this._oCropProtection = this._oi18nModel.getProperty("cropProtection");
 		    this._oCropProtectionDuPont = this._oi18nModel.getProperty("cropProtectionDuPont");
 		    this._oSeedValueCenterCode = this._oi18nModel.getProperty("seedsValueCenterCode");
+		    this._oSeedValueCenterCodePioneer = this._oi18nModel.getProperty("seedsValueCenterCodePioneer");
 		    this._oCropProtectionValueCenterCode = this._oi18nModel.getProperty("cropProtectionValueCenterCode");
-		    
+		    this._oSelectedValueCenterCode = [];
 	    	// set the value center code for the selected type
 	    	if(this._oSelectedGMIDType === this._oSeed)
 	    	{
-	    		this._oSelectedValueCenterCode = this._oSeedValueCenterCode;
+	    		this._oSelectedValueCenterCode.push(this._oSeedValueCenterCode);
+	    		this._oSelectedValueCenterCode.push(this._oSeedValueCenterCodePioneer);
 	    	}
 	    	else if (this._oSelectedGMIDType === this._oCropProtection)
 	    	{
-	    		this._oSelectedValueCenterCode = this._oCropProtectionValueCenterCode;
+	    		this._oSelectedValueCenterCode.push(this._oCropProtectionValueCenterCode);
 	    	}
 	    	else if (this._oSelectedGMIDType === this._oCropProtectionDuPont)
 	    	{
@@ -591,31 +593,20 @@ sap.ui.define([
 	        		var validgmid = false;
 	        		for(var k = 0; k < gmidRecords.length; k++) 
                      {
-	                    // loop the GMID  Records to check whether GMID is valid
-	                     if (this.lpadstring(gmiddata[i].GMID) === gmidRecords[k].GMID)
-	                    	{
-	                    		//if SOURCE COMPANY is DAS
-	                    		if(dasSource === gmidRecords[k].SOURCE_COMPANY || gmidRecords[k].SOURCE_COMPANY === null)
-	                    		{
-	                    			//if Value Center Code Matches the value center code associated with the selection
-	                    			if(this.lpadstring(this._oSelectedValueCenterCode) === this.lpadstring(gmidRecords[k].VALUE_CENTER_CODE))
-		                    		{
-		                    			validgmid =  true;
-		                    		}
-	                    		}
-	                    		else if (this._oSelectedSource  === gmidRecords[k].SOURCE_COMPANY ){
+	                     // loop the GMID  Records to check whether GMID is valid
+	                     if ((this.lpadstring(gmiddata[i].GMID) === gmidRecords[k].GMID))
+	                     {
+	                    	for(var g = 0; g < this._oSelectedValueCenterCode.length; g++){
+	                    		if(this.lpadstring(this._oSelectedValueCenterCode[g]) === this.lpadstring(gmidRecords[k].VALUE_CENTER_CODE)){
 	                    			validgmid =  true;
-	                    			//if crop protection 
+	                    			break;
 	                    		}
-	                    		//if Source company is not das
-	                    		
-	                    		//secondary if statement here
-	                    		
-			               }
-			                else
-	                	   {
+	                    	}
+			              }
+			              else
+	                	  {
 	                	   		continue;
-	                	   }
+	                	 }
 	        		}
 	        	  if (validgmid === false)
 		        	  {
