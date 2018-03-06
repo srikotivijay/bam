@@ -661,15 +661,16 @@ sap.ui.define([
 			oEvent.getSource().setValueState(sap.ui.core.ValueState.None);
         	var sNumber = "";
 			var value = oEvent.getSource().getValue();
-            var bNotnumber = isNaN(value);
-            //if(bNotnumber === false) 
-            //{
-            //	sNumber = value;
-            //}   
-            //else 
-            //{
-            //	oEvent.getSource().setValue(sNumber);
-            //} 
+            //var bNotnumber = isNaN(value);
+            var bNotSpecial = new RegExp(/[~`!@#$%\^&*+=()_\-\[\]\\';.,/{}|\\":<>\?]/);
+            if(bNotSpecial.test(value))
+            {
+            	oEvent.getSource().setValue(sNumber);
+            }   
+            else 
+            {
+            	sNumber = value;
+            } 
         },
         resetValidationForModel : function () {
         	var data = this._oViewModelData.GMIDShipToCountryVM;
