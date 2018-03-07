@@ -241,6 +241,7 @@ sap.ui.define([
 		    this._oSeedValueCenterCode = this._oi18nModel.getProperty("seedsValueCenterCode");
 		    this._oSeedValueCenterCodePioneer = this._oi18nModel.getProperty("seedsValueCenterCodePioneer");
 		    this._oCropProtectionValueCenterCode = this._oi18nModel.getProperty("cropProtectionValueCenterCode");
+		    this._oCropProtectionDuPontValueCenterCode = this._oi18nModel.getProperty("cropProtectionDuPontValueCenterCode");
 		    this._oSelectedValueCenterCode = [];
 	    	// set the value center code for the selected type
 	    	if(this._oSelectedGMIDType === this._oSeed)
@@ -254,7 +255,7 @@ sap.ui.define([
 	    	}
 	    	else if (this._oSelectedGMIDType === this._oCropProtectionDuPont)
 	    	{
-         		this._oSelectedSource = this._oi18nModel.getProperty("dcpSource");
+         		this._oSelectedValueCenterCode.push(this._oCropProtectionDuPontValueCenterCode);
 	    	}
 
 	    	// get the crop protection and seeds value from i18n file
@@ -584,8 +585,8 @@ sap.ui.define([
              // get all the GMID's with the Status for the GMID's entered in UI
              var gmidRecords = DataContext.getGMIDListFromDB(this._gmidList,viewpath); 
          	 var IsAllvalidgmids = true;
-         	 var dasSource = this._oi18nModel.getProperty("dasSource");
-         	 var dcpSource = this._oi18nModel.getProperty("dcpSource");
+         	 //var dasSource = this._oi18nModel.getProperty("dasSource");
+         	 //var dcpSource = this._oi18nModel.getProperty("dcpSource");
         	for(var i = 0; i < gmiddata.length - 1; i++) 
 	        { 
 	        	if(gmiddata[i].GMID !== "")
