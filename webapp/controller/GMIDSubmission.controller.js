@@ -506,7 +506,7 @@ sap.ui.define([
                 	   		continue;
                 		}
 	        	  } // end for  for loop gmidPlantRecords
-	        	  if (gmidHasPlant === false)
+	        	  if (gmidHasPlant === false && this._oSelectedGMIDType !== this._oCropProtectionDuPont)
 	        	  {
   	            	IsAllgmidHasPlant = false;
 	        		data[i].isError = true;
