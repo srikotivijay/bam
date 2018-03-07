@@ -1285,7 +1285,8 @@ sap.ui.define([
         	var channelList = this._oGMIDShipToCountryViewModel.getProperty("/GMIDShipToCountryVM/Channel");
         	var marketDefaultList = this._oGMIDShipToCountryViewModel.getProperty("/GMIDShipToCountryVM/MarketDefaultFlag");
         	// row[0] is the GMID, check if more than 8 chars or not a number
-        	if(row[0].length > 8 || isNaN(row[0]) || row[0].indexOf(".") !== -1)
+        	//new RegExp(/[~`!@#$%\^&*+=()_\-\[\]\\';.,/{}|\\":<>\?]/).test(row[0]);
+        	if(row[0].length > 8 || new RegExp(/[~`!@#$%\^&*+=()_\-\[\]\\';.,/{}|\\":<>\?]/).test(row[0]) || row[0].indexOf(".") !== -1)
         	{
         		row[0] = "";
         		this._validDataFlag = true;
