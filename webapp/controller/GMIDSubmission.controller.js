@@ -97,6 +97,17 @@ sap.ui.define([
 	    		// reset the UI to all be invisible
 	    		this.resetPage();
 	    	}
+	    	
+	    		// load country dropdown
+	    	// For Admin show all Countries
+	    	// for Non Admin show only valid countries
+	    	if(isAdmin){
+	    		oModel.setProperty("/GMIDShipToCountryVM/Country",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddCountry")));
+	    	}
+	    	else
+	    	{
+	    		oModel.setProperty("/GMIDShipToCountryVM/Country",DataContext.getNonAdminDropdownValues(this._oi18nModel.getProperty("ddCountry")));
+	    	}
     	},
     	getRouter : function () {
 				return sap.ui.core.UIComponent.getRouterFor(this);
