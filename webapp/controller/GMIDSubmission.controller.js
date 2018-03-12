@@ -236,6 +236,8 @@ sap.ui.define([
 	    	var oRadioButtonSrc = evt.getSource().getAggregation("buttons");  
 	    	this._oSelectedGMIDType = oRadioButtonSrc[oSelectedIndex].getText();
 	    	this._oSeed = this._oi18nModel.getProperty("seeds");
+	    	this._oCropProtectionDASType  = this._oi18nModel.getProperty("cropProtectionDASType");
+	    	this._oCropProtectionDCPType  = this._oi18nModel.getProperty("cropProtectionDCPType");
 		    this._oCropProtection = this._oi18nModel.getProperty("cropProtection");
 		    this._oCropProtectionDuPont = this._oi18nModel.getProperty("cropProtectionDuPont");
 		    this._oSeedValueCenterCode = this._oi18nModel.getProperty("seedsValueCenterCode");
@@ -834,21 +836,26 @@ sap.ui.define([
 		        	var tablePath = "";
 		        	var submitType = "";
 		    	    if(t._oSelectedGMIDType === t._oCropProtection)
-		    	    {
+		    	    { // For DAS Crop Protection GMIDS
 		    	    	if(checkedNoPlant){
 		    	    		submitType = "NON APO CROP PROTECTION";
 		    	    		tablePath = "/GMID_SHIP_TO_COUNTRY";
 		    	    	}
 		    	    	else{
-		    	    		submitType = t._oSelectedGMIDType.toUpperCase();
+		    	    		submitType = t._oCropProtectionDASType; 
 			    	    	tablePath = "/GMID_SHIP_TO_COUNTRY_STG";
 			    	    	DataContext.deleteStagingData(loggedInUserID);
 		    	    	}
 		    	    	// delete the records from staging table
 
-		    	    }
+		    	    } // for Dupont Crop Protection GMIDS
+	    	    	else if(t._oSelectedGMIDType === t._oCropProtectionDuPont)
+	    	    	{
+	    	    		submitType = t._oCropProtectionDCPType;
+	    	    		tablePath = "/GMID_SHIP_TO_COUNTRY";
+	    	    	}
 		    	    else
-		    	    {
+		    	    { // For Seeds GMIDs
 		    	    	submitType = t._oSelectedGMIDType.toUpperCase();
 		    	    	tablePath = "/GMID_SHIP_TO_COUNTRY";
 		    	    }

@@ -374,6 +374,49 @@ sap.ui.define([
 	    	});
 	    	return result;
 		}
+		
+		// get the Country List for Non Admin
+		function getNonAdminDropdownValues(dropdownType)
+		{
+			var result;
+			// get the Custom1 values to be filtered for Admins and Non Admins to fetch the country list
+        	 var ocustom1N = oi18nModel.getProperty("custom1N");
+  			// Create a filter & sorter array
+			var filterArray = [];
+			var countryFilter = new Filter("CODE_TYPE",sap.ui.model.FilterOperator.EQ,dropdownType);
+			filterArray.push(countryFilter);
+			// Below filter is only applicable for COUNTRY Code Type and for Non Admins
+			var countrycustom1NFilter = new Filter("CUSTOM1",sap.ui.model.FilterOperator.EQ,ocustom1N);
+			filterArray.push(countrycustom1NFilter);
+
+			var sortArray = [];
+			var sorter = new sap.ui.model.Sorter("LABEL",false);
+			sortArray.push(sorter);
+			// Get the Country dropdown list from the CODE_MASTER table
+			oDataModel.read("/CODE_MASTER",{
+					filters: filterArray,
+					sorters: sortArray,
+					async: false,
+	                success: function(oData, oResponse){
+	                	// add Please select item on top of the list
+		                oData.results.unshift({	"ID":-1,
+		              							"LABEL":"Select..."});
+		                // Bind the Country data to the GMIDShipToCountry model
+		                result =  oData.results;
+	                },
+	    		    error: function(){
+    		    		MessageBox.alert("Unable to retrieve dropdown values for " + dropdownType + " Please contact System Admin.",
+						{
+							icon : MessageBox.Icon.ERROR,
+							title : "Error"
+						});
+	            		result = [];
+	    			}
+	    	});
+	    	return result;
+		}
+		
+		
 		// below function will return the GMID Country Status ID from CODE_Master TABLE
 		function getGMIDCountryStatusID()
 		{
@@ -455,6 +498,7 @@ sap.ui.define([
 			getUserPermissions: getUserPermissions,
 			isBAMUser : isBAMUser,
 			getDropdownValues: getDropdownValues,
+			getNonAdminDropdownValues : getNonAdminDropdownValues,
 			deleteStagingData: deleteStagingData,
 			getGMIDCountryStatusID: getGMIDCountryStatusID,
 			getGMIDCountryPlantListFromDB : getGMIDCountryPlantListFromDB

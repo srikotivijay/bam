@@ -46,10 +46,10 @@
 					            	</HBox>
 							            </table:template>
 						        </table:Column>
-					        	<table:Column id="clmHdrGMID" width="110px" resizable="false">
+					        	<table:Column id="clmHdrGMID" width="120px" resizable="false">
 						                <Label text="{i18n>gmid}" id="lblGMID"/>
 						            <table:template>
-							            	<Input id="inputGMID" value="{GMID}" visible="{path: 'createNew', formatter: '.disableControl'}" width="100%" maxLength="8" liveChange="numValidationCheck" valueState="{GMIDErrorState}"/>
+							            	<Input id="inputGMID" value="{GMID}" visible="{path: 'createNew', formatter: '.disableControl'}" width="100%" maxLength="10" liveChange="numValidationCheck" valueState="{GMIDErrorState}"/>
 							            </table:template>
 					        	</table:Column>
 					        	<table:Column id="clmHdrCountry" width="145px" resizable="false">
