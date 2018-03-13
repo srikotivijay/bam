@@ -61,6 +61,10 @@ sap.ui.define([
 		// Navigate to Maintain Attributes page
 		onGoToAuditReport: function(){
 			this.getOwnerComponent().getRouter().navTo("auditReport");
+		},
+		// Navigate to Maintain Rules Home page
+		onGoTomaintainRules: function(){
+			this.getOwnerComponent().getRouter().navTo("maintainRules");
 		}
   	});
 });

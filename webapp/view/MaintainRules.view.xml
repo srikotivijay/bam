@@ -1,0 +1,18 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:html="http://www.w3.org/1999/xhtml" controllerName="bam.controller.MaintainRules">
+	<App id="maintainRules">
+		<pages>
+			<Page title="{i18n>title}">
+				<headerContent>
+					<Button id="btnHome" icon="sap-icon://home" tooltip="{i18n>home}" press="onHome"/>
+				</headerContent>
+				<content>
+					<TileContainer id="tlCntRuleHome">
+				        <tiles>
+				        	<StandardTile title="{i18n>cuSubcuAssignment}" tooltip="{i18n>cuSubcuTooltipText}" icon="sap-icon://user-edit" activeIcon="sap-icon://user-edit" infoState="Success" id="tlCuSubcuAssignment"  press="onGoToCuSubCuAssignment"/>
+				        </tiles>
+				    </TileContainer>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

@@ -3,7 +3,7 @@
 		<pages>
 			<Page title="{i18n>title}">
 				<content>
-					<TileContainer allowAdd="true" id="tlCntHome" height="400px" width="100%">
+					<TileContainer allowAdd="true" id="tlCntHome" height="300px" width="100%">
 				        <tiles>
 				        	<StandardTile tooltip="{i18n>gmidSubmissionTooltipText}" visible="{/showGMIDSubmission}" title="{i18n>gmidSubmission}" icon="sap-icon://add-product" activeIcon="sap-icon://add-product" infoState="Success" id="tlGMIDSubmission" class="sapUiLargeMarginEnd" press="onGoToGMIDSubmission"/>
 				        </tiles>
@@ -15,6 +15,11 @@
 				        </tiles>
 				        <tiles>
 				        	<StandardTile title="{i18n>auditReport}" tooltip="{i18n>auditReportTooltipText}" icon="sap-icon://history" activeIcon="sap-icon://history" infoState="Success" id="tlAuditReport" class="sapUiLargeMarginEnd" press="onGoToAuditReport"/>
+				        </tiles>
+				    </TileContainer>
+				      <TileContainer allowAdd="true" id="tlCntHome1" height="300px" width="100%">
+				    	<tiles>
+				        	<StandardTile title="{i18n>maintainRules}" tooltip="{i18n>maintainRulesTooltipText}" icon="sap-icon://user-edit" activeIcon="sap-icon://user-edit" infoState="Success" id="tlMaintainRules" class="sapUiLargeMarginEnd" press="onGoTomaintainRules"/>
 				        </tiles>
 				    </TileContainer>
 				</content>
