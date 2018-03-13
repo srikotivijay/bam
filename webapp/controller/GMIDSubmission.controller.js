@@ -73,7 +73,6 @@ sap.ui.define([
 			this._oi18nModel = this.getOwnerComponent().getModel("i18n");
 
 			// set all the dropdowns, get the data from the code master table
-	    	oModel.setProperty("/GMIDShipToCountryVM/Country",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddCountry")));
 	    	oModel.setProperty("/GMIDShipToCountryVM/StoredCurrency",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddStoredCurrency")));
 	    	oModel.setProperty("/GMIDShipToCountryVM/IBPRelevancyFlag",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddIBPRelevancyFlag")));
 	    	oModel.setProperty("/GMIDShipToCountryVM/NettingDefaultFlag",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddNettingDefaultFlag")));
