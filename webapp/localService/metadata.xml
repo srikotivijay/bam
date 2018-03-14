@@ -259,6 +259,7 @@
 <Property Name="LOCAL_UOM" Type="Edm.String" MaxLength="50"/>
 <Property Name="MATERIAL_STATUS" Type="Edm.String" MaxLength="50"/>
 <Property Name="SOURCE" Type="Edm.String" MaxLength="50"/>
+<Property Name="SOURCE_COMPANY" Type="Edm.String" MaxLength="50"/>
 </EntityType>
 <EntityType Name="USERType">
 <Key>
@@ -299,6 +300,7 @@
 <Property Name="VALUE_CENTER_CODE" Type="Edm.String" Nullable="false" MaxLength="10"/>
 <Property Name="MATERIAL_STATUS" Type="Edm.String" MaxLength="50"/>
 <Property Name="SOURCE" Type="Edm.String" MaxLength="50"/>
+<Property Name="SOURCE_COMPANY" Type="Edm.String" MaxLength="50"/>
 </EntityType>
 <EntityType Name="V_GMID_CROP_PROTECTIONType">
 <Key>
@@ -374,6 +376,11 @@
 <Property Name="SUPPLY_CHAIN_PLANNING_SPECIALIST_ID" Type="Edm.String" MaxLength="10"/>
 <Property Name="GLOBAL_SUPPLY_CHAIN_MANAGER_ID" Type="Edm.String" MaxLength="10"/>
 <Property Name="REG_SUPPLY_CHAIN_MANAGER_ID" Type="Edm.String" MaxLength="10"/>
+<Property Name="PLATFORM_DESC" Type="Edm.String" MaxLength="250"/>
+<Property Name="FAMILY_DESC" Type="Edm.String" MaxLength="250"/>
+<Property Name="PORTFOLIO_DESC" Type="Edm.String" MaxLength="250"/>
+<Property Name="CROP_MOLECULE_DESC" Type="Edm.String" MaxLength="250"/>
+<Property Name="SUBCROP_MOLECULE_DESC" Type="Edm.String" MaxLength="250"/>
 </EntityType>
 <EntityType Name="V_GMID_COUNTRY_PLANT_STATUSType">
 <Key>
@@ -481,6 +488,34 @@
 <Property Name="OPERATION" Type="Edm.String" MaxLength="10"/>
 <Property Name="OPERATION_BY" Type="Edm.String" MaxLength="20"/>
 </EntityType>
+<EntityType Name="V_CU_RULESType">
+<Key>
+<PropertyRef Name="ID"/>
+</Key>
+<Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="CU_RULESET_SEQ" Type="Edm.Int32" Nullable="false"/>
+<Property Name="NAME" Type="Edm.String" MaxLength="250"/>
+<Property Name="DESCRIPTION" Type="Edm.String" MaxLength="250"/>
+<Property Name="GEO_LEVEL" Type="Edm.String" MaxLength="50"/>
+<Property Name="PRODUCT_LEVEL" Type="Edm.String" MaxLength="50"/>
+<Property Name="PRODUCT_CODE" Type="Edm.String" MaxLength="50"/>
+<Property Name="GEO_LEVEL_ID" Type="Edm.Int32"/>
+<Property Name="GEO_LEVEL_NAME" Type="Edm.String" MaxLength="500"/>
+<Property Name="PRODUCT_LEVEL_NAME" Type="Edm.String" MaxLength="250"/>
+<Property Name="CU" Type="Edm.String" MaxLength="10"/>
+<Property Name="SUB_CU" Type="Edm.String" MaxLength="10"/>
+</EntityType>
+<EntityType Name="V_WEB_CU_RULESType">
+<Key>
+<PropertyRef Name="ID"/>
+</Key>
+<Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="CU_RULESET_DESCRIPTION" Type="Edm.String" MaxLength="264"/>
+<Property Name="GEOGRAPHY" Type="Edm.String" MaxLength="500"/>
+<Property Name="PRODUCT_DESCRIPTION" Type="Edm.String" MaxLength="303"/>
+<Property Name="CU_DESCRIPTION" Type="Edm.String" MaxLength="263"/>
+<Property Name="SCU_DESCRIPTION" Type="Edm.String" MaxLength="263"/>
+</EntityType>
 <EntityContainer Name="BAMDataService" m:IsDefaultEntityContainer="true">
 <EntitySet Name="CODE_MASTER" EntityType="ODataService.BAMDataService.CODE_MASTERType"/>
 <EntitySet Name="GMID_SHIP_TO_COUNTRY" EntityType="ODataService.BAMDataService.GMID_SHIP_TO_COUNTRYType"/>
@@ -498,6 +533,8 @@
 <EntitySet Name="V_GMID_CROP_PROTECTION" EntityType="ODataService.BAMDataService.V_GMID_CROP_PROTECTIONType"/>
 <EntitySet Name="V_GMID_COUNTRY_PLANT_STATUS" EntityType="ODataService.BAMDataService.V_GMID_COUNTRY_PLANT_STATUSType"/>
 <EntitySet Name="V_AUDIT_REPORT" EntityType="ODataService.BAMDataService.V_AUDIT_REPORTType"/>
+<EntitySet Name="V_CU_RULES" EntityType="ODataService.BAMDataService.V_CU_RULESType"/>
+<EntitySet Name="V_WEB_CU_RULES" EntityType="ODataService.BAMDataService.V_WEB_CU_RULESType"/>
 </EntityContainer>
 </Schema>
 </edmx:DataServices>

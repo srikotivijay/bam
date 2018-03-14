@@ -171,6 +171,16 @@
 					"pattern": "auditReport",
 					"name": "auditReport",
 					"target": "auditReport"
+				},
+				{
+					"pattern": "maintainRules",
+					"name": "maintainRules",
+					"target": "maintainRules"
+				},
+				{
+					"pattern": "cuAssignment",
+					"name": "cuAssignment",
+					"target": "cuAssignment"
 				}
 			],
 			"targets": {
@@ -218,6 +228,14 @@
 				"auditReport": {
 					"viewName": "AuditReport",
 					"viewId": "auditReport"
+				},
+				"maintainRules": {
+					"viewName": "MaintainRules",
+					"viewId": "maintainRules"
+				},
+				"cuAssignment": {
+					"viewName": "CUAssignment",
+					"viewId": "cuAssignment"
 				}
 			}
 		}
