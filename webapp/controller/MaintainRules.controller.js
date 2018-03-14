@@ -6,6 +6,26 @@ sap.ui.define([
 		"use strict";
 		
 	return Controller.extend("bam.controller.MaintainRules", {
+		onInit : function(){
+			this._oi18nModel = this.getOwnerComponent().getModel("i18n");
+			var maintainRule = this._oi18nModel.getProperty("Module.maintainRules");
+			var permissions = DataContext.getUserPermissions();
+			var hasAccess = false;
+			for(var i = 0; i < permissions.length; i++)
+			{
+				if(permissions[i].ATTRIBUTE === maintainRule)
+				{
+						hasAccess = true;
+						// break since the user may have more than one role, as long as one of the user roles has permission to edit we can show the button
+						break;
+				}
+			}
+			//
+			// if the user does not have access then redirect to accessdenied page
+			if(hasAccess === false){
+				this.getOwnerComponent().getRouter().navTo("accessDenied");
+			}
+		},
 		// Navigate to CU SUB CU Assignment page
 		onGoToCuSubCuAssignment : function(){
 			this.getOwnerComponent().getRouter().navTo("cuAssignment");

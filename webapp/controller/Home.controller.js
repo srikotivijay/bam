@@ -21,7 +21,8 @@ sap.ui.define([
 		    	this.getView().setModel(oModel);
 				
 				// hide the GMID Submission tile by default, if the user has no roles then we hide the tile
-				oModel.setProperty("/showGMIDSubmission",false);    
+				oModel.setProperty("/showGMIDSubmission",false);   
+				oModel.setProperty("/showMaintainRule",false);
 				
 				var oi18nModel = new ResourceModel({
 	                bundleName: "bam.i18n.i18n"
@@ -29,6 +30,7 @@ sap.ui.define([
 				 
 	        	 // get the Module settings for i18n model
 	        	 var gmidSubmission = oi18nModel.getProperty("Module.gmidSubmission");
+	        	 var maintainRule = oi18nModel.getProperty("Module.maintainRules");
 	        	 var actionAdd = oi18nModel.getProperty("Module.actionAdd");
 				
 				// getting permissions for the current logged in user
@@ -40,6 +42,15 @@ sap.ui.define([
 					if(permissions[i].ATTRIBUTE === gmidSubmission && permissions[i].ACTION === actionAdd)
 					{
 						oModel.setProperty("/showGMIDSubmission",true);
+						// break since the user may have more than one role, as long as one of the user roles has permission we can show the tile
+						break;
+					}
+				}
+				for(var j = 0; j  < permissions.length; j++)
+				{
+					if(permissions[j].ATTRIBUTE === maintainRule)
+					{
+						oModel.setProperty("/showMaintainRule",true);
 						// break since the user may have more than one role, as long as one of the user roles has permission we can show the tile
 						break;
 					}

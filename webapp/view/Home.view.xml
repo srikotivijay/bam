@@ -14,12 +14,10 @@
 				        	<StandardTile title="{i18n>plantAssignment}" tooltip="{i18n>plantAssignmentTooltipText}" icon="sap-icon://add-activity" activeIcon="sap-icon://add-activity" infoState="Success" id="tlPlantAssignment" class="sapUiLargeMarginEnd" press="onGoToPlantAssignment"/>
 				        </tiles>
 				        <tiles>
-				        	<StandardTile title="{i18n>auditReport}" tooltip="{i18n>auditReportTooltipText}" icon="sap-icon://history" activeIcon="sap-icon://history" infoState="Success" id="tlAuditReport" class="sapUiLargeMarginEnd" press="onGoToAuditReport"/>
+				        	<StandardTile title="{i18n>maintainRules}" visible="{/showMaintainRule}" tooltip="{i18n>maintainRulesTooltipText}" icon="sap-icon://user-edit" activeIcon="sap-icon://user-edit" infoState="Success" id="tlMaintainRules" class="sapUiLargeMarginEnd" press="onGoTomaintainRules"/>
 				        </tiles>
-				    </TileContainer>
-				      <TileContainer allowAdd="true" id="tlCntHome1" height="300px" width="100%">
-				    	<tiles>
-				        	<StandardTile title="{i18n>maintainRules}" tooltip="{i18n>maintainRulesTooltipText}" icon="sap-icon://user-edit" activeIcon="sap-icon://user-edit" infoState="Success" id="tlMaintainRules" class="sapUiLargeMarginEnd" press="onGoTomaintainRules"/>
+				        <tiles>
+				        	<StandardTile title="{i18n>auditReport}" tooltip="{i18n>auditReportTooltipText}" icon="sap-icon://history" activeIcon="sap-icon://history" infoState="Success" id="tlAuditReport" class="sapUiLargeMarginEnd" press="onGoToAuditReport"/>
 				        </tiles>
 				    </TileContainer>
 				</content>
