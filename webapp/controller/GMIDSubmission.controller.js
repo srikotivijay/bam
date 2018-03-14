@@ -923,8 +923,25 @@ sap.ui.define([
 					    			errorCount++;
 								}
 			        		});
-		    		}
-		        }
+		    			}
+		        	}
+		        	//if there is something inserted into the table trigger the CU Rule SP
+		        	if(successCount > 0){
+		        		var userObj = {
+		        				CALC_STG_ID: 1,
+		        				GMID: "1",
+		        				COUNTRY_CODE_ID: 1,
+		        				CREATED_ON: oDate,
+					        	CREATED_BY: loggedInUserID
+		        		};
+		        		t._oDataModel.create("/GMID_COUNTRY_RULE_CALC_STG", userObj,
+			        		{
+					        	success: function(){
+					    		},
+					    		error: function(){
+								}
+			        		});
+		        	}
 		    		//Show success or error message
 		    		if(errorCount === 0) 
 		    		{
