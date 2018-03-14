@@ -181,6 +181,11 @@
 					"pattern": "cuAssignment",
 					"name": "cuAssignment",
 					"target": "cuAssignment"
+				},
+				{
+					"pattern": "addCURules",
+					"name": "addCURules",
+					"target": "addCURules"
 				}
 			],
 			"targets": {
@@ -236,6 +241,10 @@
 				"cuAssignment": {
 					"viewName": "CUAssignment",
 					"viewId": "cuAssignment"
+				},
+				"addCURules": {
+					"viewName": "AddCURules",
+					"viewId": "addCURules"
 				}
 			}
 		}

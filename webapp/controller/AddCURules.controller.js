@@ -8,7 +8,7 @@ sap.ui.define([
 
   	var loggedInUserID;
 	var firstTimePageLoad = true;
-	return Controller.extend("bam.controller.CUAssignment", {
+	return Controller.extend("bam.controller.AddCURules", {
 		onInit : function () {
 			// Get logged in user id
 		    loggedInUserID = DataContext.getUserID();
@@ -35,22 +35,6 @@ sap.ui.define([
 			if(hasAccess === false){
 				this.getOwnerComponent().getRouter().navTo("accessDenied");
 			}
-			else{
-	    		//remove the selection column
-	    		var oSmartTable = this.getView().byId("smartTblCUAssignment");     //Get Hold of smart table
-				var oTable = oSmartTable.getTable();          //Analytical Table embedded into SmartTable
-				oTable.setSelectionMode("None");
-				oTable.setEnableColumnFreeze(true);
-				//oTable.getColumns();
-		    	
-		    	if(firstTimePageLoad)
-		    	{
-		    		//attach _onRouteMatched to be called everytime on navigation to Maintain Attributes page
-		    		var oRouter = this.getRouter();
-					oRouter.getRoute("cuAssignment").attachMatched(this._onRouteMatched, this);
-		    	}				
-			}
-
 		},
 		getRouter : function () {
 			return sap.ui.core.UIComponent.getRouterFor(this);
@@ -73,29 +57,7 @@ sap.ui.define([
 					this.onInit();
 				}
 			}
-		},
-		// navigate back to the homepage
-		onHome: function(){
-			this.getOwnerComponent().getRouter().navTo("home");
-		},
-		onBeforeRebindTable: function(){
-			this.getOwnerComponent().getModel().refresh(true);
-		},
-		//navigate back from rules page
-		onNavBack: function () {
-			var oHistory = History.getInstance();
-			var sPreviousHash = oHistory.getPreviousHash();
-	
-			if (sPreviousHash !== undefined) {
-				window.history.go(-1);
-			} else {
-				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-				oRouter.navTo("maintainRules", true);
-			}
-		},
-		// open the new page to add rule/ruleset
-		onAdd: function(){
-			this.getOwnerComponent().getRouter().navTo("addCURules");
-	}
+		}
+
   	});
 });
