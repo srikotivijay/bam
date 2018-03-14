@@ -757,7 +757,7 @@ sap.ui.define([
 			 var maxLimitSubmit = parseInt(this._oi18nModel.getProperty("MaxLimit"),10) ;
 			 var maxLimitSubmitText = this._oi18nModel.getProperty("MaxLimitSubmit.text");
 			 // adding one to account for the extra line at the bottom
-		 	if (GMIDShipToCountry.length > (maxLimitSubmit))
+		 	if (GMIDShipToCountry.length - 1 > (maxLimitSubmit))
 		        {
 		        	MessageBox.alert(maxLimitSubmitText,
 		        	{
