@@ -1,8 +1,9 @@
 sap.ui.define([
 		"sap/ui/core/mvc/Controller",
 		"bam/services/DataContext",
-		"sap/ui/model/resource/ResourceModel"
-	], function (Controller,DataContext,ResourceModel) {
+		"sap/ui/model/resource/ResourceModel",
+		"sap/ui/core/routing/History"
+	], function (Controller,DataContext,ResourceModel,History) {
 		"use strict";
 
   	var loggedInUserID;
@@ -79,6 +80,18 @@ sap.ui.define([
 		},
 		onBeforeRebindTable: function(){
 			this.getOwnerComponent().getModel().refresh(true);
+		},
+		//navigate back from rules page
+		onNavBack: function () {
+			var oHistory = History.getInstance();
+			var sPreviousHash = oHistory.getPreviousHash();
+	
+			if (sPreviousHash !== undefined) {
+				window.history.go(-1);
+			} else {
+				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+				oRouter.navTo("maintainRules", true);
+			}
 		}
   	});
 });

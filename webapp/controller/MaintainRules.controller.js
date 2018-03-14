@@ -4,8 +4,9 @@ sap.ui.define([
 		"sap/m/MessageToast",
 		"sap/m/MessageBox",
 		"bam/services/DataContext",
+		"sap/ui/core/routing/History",
 		"sap/ui/model/resource/ResourceModel"
-	], function (Controller,JSONModel, MessageToast, MessageBox, DataContext,ResourceModel) {
+	], function (Controller,JSONModel, MessageToast, MessageBox, DataContext,History,ResourceModel) {
 		"use strict";
 		
 	return Controller.extend("bam.controller.MaintainRules", {
@@ -39,12 +40,17 @@ sap.ui.define([
 			MessageBox.alert('Functionality coming soon');
 			return;
 		},
-		
-		// navigate back to the homepage
-		onHome: function(){
-		//	var oSmartTable = this.byId("smartTblBAMAttributes");
-			//oSmartTable.exit();
-			this.getOwnerComponent().getRouter().navTo("home");
+			//navigate back from rules page
+		onNavBack: function () {
+			var oHistory = History.getInstance();
+			var sPreviousHash = oHistory.getPreviousHash();
+	
+			if (sPreviousHash !== undefined) {
+				window.history.go(-1);
+			} else {
+				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+				oRouter.navTo("home", true);
+			}
 		}
   	});
 });
