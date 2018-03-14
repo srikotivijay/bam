@@ -3,7 +3,7 @@
 		<pages>
 			<Page title="{i18n>title}">
 				<content>
-					<TileContainer allowAdd="true" id="tlCntHome" height="300px" width="100%">
+					<TileContainer allowAdd="true" id="tlCntHome" height="100%" width="100%">
 				        <tiles>
 				        	<StandardTile tooltip="{i18n>gmidSubmissionTooltipText}" visible="{/showGMIDSubmission}" title="{i18n>gmidSubmission}" icon="sap-icon://add-product" activeIcon="sap-icon://add-product" infoState="Success" id="tlGMIDSubmission" class="sapUiLargeMarginEnd" press="onGoToGMIDSubmission"/>
 				        </tiles>

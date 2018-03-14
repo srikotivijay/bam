@@ -8,7 +8,15 @@
 				 
 				<!-- use this to make the table occupy the available screen height -->
 				<VBox fitContainer="true">
-					<smartTable:SmartTable id="smartTblCUAssignment" beforeRebindTable="onBeforeRebindTable" entitySet="V_WEB_CU_RULES" tableType="Table" useExportToExcel="true" useVariantManagement="true" showFullScreenButton="true" 
+					<smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="V_WEB_CU_RULES">
+					<smartFilterBar:controlConfiguration>
+						<smartFilterBar:ControlConfiguration key="CU_RULESET_DESCRIPTION" visibleInAdvancedArea="true">
+						</smartFilterBar:ControlConfiguration>
+							<smartFilterBar:ControlConfiguration key="GEOGRAPHY" visibleInAdvancedArea="true">
+						</smartFilterBar:ControlConfiguration>
+					</smartFilterBar:controlConfiguration>
+				</smartFilterBar:SmartFilterBar>
+					<smartTable:SmartTable smartFilterId = "smartFilterBar" id="smartTblCUAssignment" beforeRebindTable="onBeforeRebindTable" entitySet="V_WEB_CU_RULES" tableType="Table" useExportToExcel="true" useVariantManagement="true" showFullScreenButton="true" 
 					useTablePersonalisation="true" header="CU and Sub CU Rules" showRowCount="true" enableAutoBinding="true" app:useSmartField="true" class="sapUiResponsiveContentPadding" ignoreFromPersonalisation="ID"
 					initiallyVisibleFields="CU_RULESET_DESCRIPTION,GEOGRAPHY,PRODUCT_DESCRIPTION,CU_DESCRIPTION,SCU_DESCRIPTION">
 						<!-- layout data used to make the table growing but the filter bar fixed -->

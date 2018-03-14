@@ -14,6 +14,8 @@ sap.ui.define([
 			 // define a global variable for the oData model		    
 		   	var oView = this.getView();
 		   	oView.setModel(this.getOwnerComponent().getModel());
+		   		// get resource model
+			this._oi18nModel = this.getOwnerComponent().getModel("i18n");
 	    	//
 	    	// checking the permission
 	    	var maintainRule = this._oi18nModel.getProperty("Module.maintainRules");
