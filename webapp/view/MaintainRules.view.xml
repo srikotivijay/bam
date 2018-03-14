@@ -10,6 +10,9 @@
 				        <tiles>
 				        	<StandardTile title="{i18n>cuSubcuAssignment}" tooltip="{i18n>cuSubcuTooltipText}" icon="sap-icon://user-edit" activeIcon="sap-icon://user-edit" infoState="Success" id="tlCuSubcuAssignment"  press="onGoToCuSubCuAssignment"/>
 				        </tiles>
+				        <tiles>
+				        	<StandardTile title="{i18n>peopleAssignment}" tooltip="{i18n>peopleTooltipText}" icon="sap-icon://user-edit" activeIcon="sap-icon://user-edit" infoState="Success" id="tlpeopleAssignment"  press="onGoToPeopleAssignment"/>
+				        </tiles>
 				    </TileContainer>
 				</content>
 			</Page>

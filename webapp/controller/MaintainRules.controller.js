@@ -1,8 +1,11 @@
 sap.ui.define([
 		"sap/ui/core/mvc/Controller",
+		"sap/ui/model/json/JSONModel",
+		"sap/m/MessageToast",
+		"sap/m/MessageBox",
 		"bam/services/DataContext",
 		"sap/ui/model/resource/ResourceModel"
-	], function (Controller,DataContext,ResourceModel) {
+	], function (Controller,JSONModel, MessageToast, MessageBox, DataContext,ResourceModel) {
 		"use strict";
 		
 	return Controller.extend("bam.controller.MaintainRules", {
@@ -30,6 +33,13 @@ sap.ui.define([
 		onGoToCuSubCuAssignment : function(){
 			this.getOwnerComponent().getRouter().navTo("cuAssignment");
 		},
+		// Navigate to People Assignment page In Future
+		onGoToPeopleAssignment : function(){
+			//this.getOwnerComponent().getRouter().navTo("cuAssignment");
+			MessageBox.alert('Functionality coming soon');
+			return;
+		},
+		
 		// navigate back to the homepage
 		onHome: function(){
 		//	var oSmartTable = this.byId("smartTblBAMAttributes");
