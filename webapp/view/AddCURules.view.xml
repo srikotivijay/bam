@@ -36,9 +36,6 @@
 						<table:Column id="clmHdrGeography" width="280px" resizable="false">
 							<Label text="{i18n>geography}" id="lblGeography"/>
 							<table:template>
-								<!--<Select xmlns:sap.ui.core="sap.ui.core" width="100%" id="ddlGeography" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/AssignRuleVM/Geography', templateShareable : true}" change="onChange" valueState="{geographyErrorState}" selectedKey="{GEOGRAPHY_ID}">-->
-								<!--	<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>-->
-								<!--</Select>-->
 								<ComboBox
 									showSecondaryValues= "true"
 									filterSecondaryValues= "true"

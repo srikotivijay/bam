@@ -23,6 +23,7 @@ sap.ui.define([
 			var gmidSubmission = this._oi18nModel.getProperty("Module.gmidSubmission");
 			var permissions = DataContext.getUserPermissions();
 			var hasAccess = false;
+			
 			for(var j = 0; j < permissions.length; j++)
 			{
 				if(permissions[j].ATTRIBUTE === gmidSubmission)

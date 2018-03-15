@@ -617,8 +617,8 @@
 <EntitySet Name="V_CU_RULES" EntityType="ODataService.BAMDataService.V_CU_RULESType"/>
 <EntitySet Name="V_WEB_CU_RULES" EntityType="ODataService.BAMDataService.V_WEB_CU_RULESType"/>
 <EntitySet Name="MST_CU_RULESET" EntityType="ODataService.BAMDataService.MST_CU_RULESETType"/>
-<EntitySet Name="MST_CU_RULE" EntityType="ODataService.BAMDataService.MST_CU_RULEType"/>
 <EntitySet Name="MST_RCU" EntityType="ODataService.BAMDataService.MST_RCUType"/>
+<EntitySet Name="MST_CU_RULE" EntityType="ODataService.BAMDataService.MST_CU_RULEType"/>
 <EntitySet Name="MST_SUB_RCU" EntityType="ODataService.BAMDataService.MST_SUB_RCUType"/>
 <EntitySet Name="V_GEO_ALL_LEVEL" EntityType="ODataService.BAMDataService.V_GEO_ALL_LEVELType"/>
 <EntitySet Name="V_PRODUCT_ALL_LEVEL" EntityType="ODataService.BAMDataService.V_PRODUCT_ALL_LEVELType"/>

@@ -71,6 +71,7 @@ sap.ui.define([
 				this._oi18nModel = this.getOwnerComponent().getModel("i18n");
 
 			// set all the dropdowns, get the data from the code master table
+			// default load
 	    		this._oModel.setProperty("/AssignRuleVM/RuleSet",this.getRulesDropDown());
 	    		this._oModel.setProperty("/AssignRuleVM/RCU",this.getRCUDropDown());
 	    		this._oModel.setProperty("/AssignRuleVM/SubRCU",this.getSubRCUDropDown());
