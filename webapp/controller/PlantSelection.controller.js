@@ -347,6 +347,23 @@ sap.ui.define([
 						}
 	        		});
 	    		}
+	    		//if there is something inserted into the table trigger the CU Rule SP
+	        	if(successGMIDShipToCount > 0){
+		        		var userObj = {
+		        				CALC_STG_ID: 1,
+		        				GMID: "1",
+		        				COUNTRY_CODE_ID: 1,
+		        				CREATED_ON: oDate,
+					        	CREATED_BY: loggedInUserID
+		        		};
+		        		this._oDataModel.create("/GMID_COUNTRY_RULE_CALC_STG", userObj,
+			        		{
+					        	success: function(){
+					    		},
+					    		error: function(){
+								}
+			        		});
+	        	}
 	    		// TODO needs to be refactored to be batch delete
 	    		// get the count of records in staging table
     			for(var k = 0; k < originalGMIDCountry.length; k++) 

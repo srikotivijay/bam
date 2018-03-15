@@ -926,7 +926,7 @@ sap.ui.define([
 		    			}
 		        	}
 		        	//if there is something inserted into the table trigger the CU Rule SP
-		        	if(successCount > 0){
+		        	if( tablePath === "/GMID_SHIP_TO_COUNTRY"  && successCount > 0){
 		        		var userObj = {
 		        				CALC_STG_ID: 1,
 		        				GMID: "1",
