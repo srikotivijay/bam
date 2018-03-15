@@ -1,9 +1,10 @@
 sap.ui.define([
 		"sap/ui/core/mvc/Controller",
 		"bam/services/DataContext",
+		"sap/m/MessageBox",
 		"sap/ui/model/resource/ResourceModel",
 		"sap/ui/core/routing/History"
-	], function (Controller,DataContext,ResourceModel,History) {
+	], function (Controller,DataContext,MessageBox,ResourceModel,History) {
 		"use strict";
 
   	var loggedInUserID;
@@ -161,6 +162,21 @@ sap.ui.define([
 		
 		onSubmit : function(){
 			
-		}
+		},
+		
+		//cancel click on Add CU Rules page
+			onCancel: function(){
+				var curr = this;
+				// check if user wants to update the attributes for GMID and country
+				MessageBox.confirm("Are you sure you want to cancel your changes and navigate back to the previous page?", {
+            		icon: sap.m.MessageBox.Icon.WARNING,
+            		actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+            		onClose: function(oAction) {
+            			if(oAction === "YES"){
+            				curr.getOwnerComponent().getRouter().navTo("cuAssignment");
+            			}
+            		}
+        		});
+			}
   	});
 });
