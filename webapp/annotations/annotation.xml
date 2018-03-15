@@ -749,6 +749,18 @@
 			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/VALUE_CENTER_CODE">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.VALUE_CENTER_CODE}"/>
 			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_RULESType/CU_RULESET_DESCRIPTION">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.CU_RULESET_DESCRIPTION}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_RULESType/PRODUCT_DESCRIPTION">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRODUCT_DESCRIPTION}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_RULESType/CU_DESCRIPTION">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.CU_DESCRIPTION}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_RULESType/SCU_DESCRIPTION">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SCU_DESCRIPTION}"/>
+			</Annotations>
 		</Schema>
 	</edmx:DataServices>
 </edmx:Edmx>
