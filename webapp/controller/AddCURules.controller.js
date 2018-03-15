@@ -35,6 +35,35 @@ sap.ui.define([
 			if(hasAccess === false){
 				this.getOwnerComponent().getRouter().navTo("accessDenied");
 			}
+			else{
+				this._isChanged = false;
+			    var initData = [];
+			    for(var j = 0; j < 5; j++){
+			    	initData.push({
+			    		"GEOGRAPHY_ID" : -1,
+			    		"geographyErrorState" : "None",
+			    		"PRODUCT_ID" : -1,
+			    		"productErrorStae" : "None",
+			    		"CU_ID" : -1,
+			    		"cuErrorState" : "None",
+			    		"SUBCU_ID" : -1,
+			    		"subcuErrorState" : "None",
+			    		"createNew" : false,
+			    		"isError" :false
+			    	});
+			    }
+				// Assigning view model for the page
+			    var oModel = new sap.ui.model.json.JSONModel({AssignRuleVM : initData});
+			    // Create table model, set size limit to 300, add an empty row
+			    oModel.setSizeLimit(2000);
+			    // define a global variable for the view model, the view model data and oData model
+			    this._oAssignRuleViewModel = oModel;
+			    this._oViewModelData = this._oAssignRuleViewModel.getData();
+			    this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
+	
+			    this.getView().setModel(oModel);	
+			    this.addEmptyObject();
+			}
 		},
 		getRouter : function () {
 			return sap.ui.core.UIComponent.getRouterFor(this);
@@ -71,6 +100,23 @@ sap.ui.define([
 		},
 		onHome: function(){
 			this.getOwnerComponent().getRouter().navTo("home");
-		}		
+		},
+		addEmptyObject : function() {
+	    	var aData  = this._oAssignRuleViewModel.getProperty("/AssignRuleVM");
+	    	var emptyObject = {createNew: true, isError: false};
+	    	aData.push(emptyObject);
+	    	this._oAssignRuleViewModel.setProperty("/AssignRuleVM", aData);
+		},
+		disableControl:function(value){
+			return !value;
+		},
+		enableControl : function(value){
+			return !!value;
+		},
+		onChange : function(){},
+		
+		onRemoveRow:function(){},
+		
+		onAddRow:function(){}		
   	});
 });
