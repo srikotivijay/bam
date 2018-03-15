@@ -615,8 +615,8 @@
 <EntitySet Name="V_GMID_COUNTRY_PLANT_STATUS" EntityType="ODataService.BAMDataService.V_GMID_COUNTRY_PLANT_STATUSType"/>
 <EntitySet Name="V_AUDIT_REPORT" EntityType="ODataService.BAMDataService.V_AUDIT_REPORTType"/>
 <EntitySet Name="V_CU_RULES" EntityType="ODataService.BAMDataService.V_CU_RULESType"/>
-<EntitySet Name="V_WEB_CU_RULES" EntityType="ODataService.BAMDataService.V_WEB_CU_RULESType"/>
 <EntitySet Name="MST_CU_RULESET" EntityType="ODataService.BAMDataService.MST_CU_RULESETType"/>
+<EntitySet Name="V_WEB_CU_RULES" EntityType="ODataService.BAMDataService.V_WEB_CU_RULESType"/>
 <EntitySet Name="MST_RCU" EntityType="ODataService.BAMDataService.MST_RCUType"/>
 <EntitySet Name="MST_CU_RULE" EntityType="ODataService.BAMDataService.MST_CU_RULEType"/>
 <EntitySet Name="MST_SUB_RCU" EntityType="ODataService.BAMDataService.MST_SUB_RCUType"/>

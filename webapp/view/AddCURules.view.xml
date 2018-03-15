@@ -54,9 +54,6 @@
 						<table:Column id="clmHdrProduct" width="280px" resizable="false">
 							<Label text="{i18n>product}" id="lblProduct"/>
 							<table:template>
-								<!--<Select xmlns:sap.ui.core="sap.ui.core" width="100%" id="ddlProduct" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/AssignRuleVM/Product', templateShareable : true}" change="onChange" valueState="{productErrorState}" selectedKey="{PRODUCT_ID}">-->
-								<!--	<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>-->
-								<!--</Select>-->
 								<ComboBox
 										showSecondaryValues= "true"
 										filterSecondaryValues= "true"

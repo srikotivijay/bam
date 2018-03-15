@@ -198,6 +198,7 @@ sap.ui.define([
 		},
 		getRCUDropDown : function () {
 			var result;
+			
 			// Create a filter & sorter array
 
 			var sortArray = [];
