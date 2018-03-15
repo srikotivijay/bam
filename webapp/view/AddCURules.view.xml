@@ -7,9 +7,19 @@
 				</headerContent>
 				<content>
 				<HBox height="100px" justifyContent="Center" alignItems="Center">
-					<Select xmlns:sap.ui.core="sap.ui.core" width="400px" id="ddlRuleSet" items="{path: '/AssignRuleVM/RuleSet', templateShareable : true}" change="onChange" selectedKey="{RULE_SET_ID}">
-						<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
-					</Select>
+				<ComboBox
+						showSecondaryValues= "true"
+						filterSecondaryValues= "true"
+						change="onChangeRuleSet"
+						value="{/AssignRuleVM/RuleSet/NAME}"
+						selectedKey="{/AssignRuleVM/RuleSet/CU_RULESET_SEQ}"
+						width="500px"
+						items="{
+							path: '/AssignRuleVM/RuleSet',
+							sorter: { path: 'text' }
+						}">
+					<core:ListItem key="{CU_RULESET_SEQ}" text="{NAME}" additionalText="{CU_RULESET_SEQ}"/>
+				</ComboBox>
 				</HBox>	
 				<table:Table id="rulesTable" rows="{/AssignRuleVM}" visible="true" width="auto" visibleRowCount="10" selectionMode="None" enableColumnReordering="false">
 					<table:columns>
@@ -26,33 +36,82 @@
 						<table:Column id="clmHdrGeography" width="280px" resizable="false">
 							<Label text="{i18n>geography}" id="lblGeography"/>
 							<table:template>
-								<Select xmlns:sap.ui.core="sap.ui.core" width="100%" id="ddlGeography" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/AssignRuleVM/Geography', templateShareable : true}" change="onChange" valueState="{geographyErrorState}" selectedKey="{GEOGRAPHY_ID}">
-									<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
-								</Select>
-							</table:template>
+								<!--<Select xmlns:sap.ui.core="sap.ui.core" width="100%" id="ddlGeography" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/AssignRuleVM/Geography', templateShareable : true}" change="onChange" valueState="{geographyErrorState}" selectedKey="{GEOGRAPHY_ID}">-->
+								<!--	<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>-->
+								<!--</Select>-->
+								<ComboBox
+									showSecondaryValues= "true"
+									filterSecondaryValues= "true"
+									value="{/AssignRuleVM/Geography/NAME}"
+									selectedKey="{/AssignRuleVM/Geography/LEVEL_ID}"
+									width="500px"
+									items="{
+										path: '/AssignRuleVM/Geography',
+										sorter: { path: 'text' }
+									}">
+								<core:ListItem key="{LEVEL_ID}" text="{NAME}"/>
+							</ComboBox>
+					</table:template>
+							
 						</table:Column>
 						<table:Column id="clmHdrProduct" width="280px" resizable="false">
 							<Label text="{i18n>product}" id="lblProduct"/>
 							<table:template>
-								<Select xmlns:sap.ui.core="sap.ui.core" width="100%" id="ddlProduct" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/AssignRuleVM/Product', templateShareable : true}" change="onChange" valueState="{productErrorState}" selectedKey="{PRODUCT_ID}">
-									<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
-								</Select>
+								<!--<Select xmlns:sap.ui.core="sap.ui.core" width="100%" id="ddlProduct" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/AssignRuleVM/Product', templateShareable : true}" change="onChange" valueState="{productErrorState}" selectedKey="{PRODUCT_ID}">-->
+								<!--	<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>-->
+								<!--</Select>-->
+								<ComboBox
+										showSecondaryValues= "true"
+										filterSecondaryValues= "true"
+										value="{/AssignRuleVM/Product/PRODUCT_DESC}"
+										selectedKey="{/AssignRuleVM/Product/PRODUCT_CODE}"
+										width="500px"
+										items="{
+											path: '/AssignRuleVM/Product',
+											sorter: { path: 'text' }
+										}">
+									<core:ListItem key="{PRODUCT_CODE}" text="{PRODUCT_DESC}" additionalText="{PRODUCT_CODE}"/>
+								</ComboBox>
 							</table:template>
 						</table:Column>		
 						<table:Column id="clmHdrCU" width="270px" resizable="false">
 							<Label text="{i18n>cu}" id="lblCu"/>
 							<table:template>
-								<Select xmlns:sap.ui.core="sap.ui.core" width="100%" id="ddlCu" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/AssignRuleVM/Cu', templateShareable : true}" change="onChange" valueState="{cuErrorState}" selectedKey="{CU_ID}">
-									<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
-								</Select>
+								<!--<Select xmlns:sap.ui.core="sap.ui.core" width="100%" id="ddlCu" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/AssignRuleVM/Cu', templateShareable : true}" change="onChange" valueState="{cuErrorState}" selectedKey="{CU_ID}">-->
+								<!--	<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>-->
+								<!--</Select>-->
+								<ComboBox
+										showSecondaryValues= "true"
+										filterSecondaryValues= "true"
+										value="{/AssignRuleVM/RCU/RCU_DESC}"
+										selectedKey="{/AssignRuleVM/RCU/RCU_CODE}"
+										width="500px"
+										items="{
+											path: '/AssignRuleVM/RCU',
+											sorter: { path: 'text' }
+										}">
+									<core:ListItem key="{RCU_CODE}" text="{RCU_DESC}" additionalText="{RCU_CODE}"/>
+								</ComboBox>
 							</table:template>
 						</table:Column>	
 						<table:Column id="clmHdrSubCu" width="270px" resizable="false">
 							<Label text="{i18n>subCU}" id="lblSubCu"/>
 							<table:template>
-								<Select xmlns:sap.ui.core="sap.ui.core" width="100%" id="ddlSubCu" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/AssignRuleVM/SubCu', templateShareable : true}" change="onChange" valueState="{subcuErrorState}" selectedKey="{SUB_CU_ID}">
-									<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
-								</Select>
+								<!--<Select xmlns:sap.ui.core="sap.ui.core" width="100%" id="ddlSubCu" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/AssignRuleVM/SubCu', templateShareable : true}" change="onChange" valueState="{subcuErrorState}" selectedKey="{SUB_CU_ID}">-->
+								<!--	<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>-->
+								<!--</Select>-->
+								<ComboBox
+										showSecondaryValues= "true"
+										filterSecondaryValues= "true"
+										value="{/AssignRuleVM/SubRCU/SUB_RCU_DESC}"
+										selectedKey="{/AssignRuleVM/SubRCU/SUB_RCU_CODE}"
+										width="500px"
+										items="{
+											path: '/AssignRuleVM/SubRCU',
+											sorter: { path: 'text' }
+										}">
+									<core:ListItem key="{SUB_RCU_CODE}" text="{SUB_RCU_DESC}" additionalText="{SUB_RCU_CODE}"/>
+								</ComboBox>
 							</table:template>
 						</table:Column>							
 					</table:columns>	

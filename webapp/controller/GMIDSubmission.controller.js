@@ -18,6 +18,26 @@ sap.ui.define([
 			
 			// Get logged in user id
 			loggedInUserID = DataContext.getUserID();
+			// get resource model
+			this._oi18nModel = this.getOwnerComponent().getModel("i18n");
+			var gmidSubmission = this._oi18nModel.getProperty("Module.gmidSubmission");
+			var permissions = DataContext.getUserPermissions();
+			var hasAccess = false;
+			for(var j = 0; j < permissions.length; j++)
+			{
+				if(permissions[j].ATTRIBUTE === gmidSubmission)
+				{
+					hasAccess = true;
+					break;
+				}
+			}
+			
+			if(hasAccess === false){
+				this.getOwnerComponent().getRouter().navTo("accessDenied");
+			}
+			else
+			{
+	
 			// defualt set change varaible to false
             this._isChanged =  false;
 			// Create view model for 5 rows to show by default on page load
@@ -69,8 +89,6 @@ sap.ui.define([
 				this.getView().addDependent(this._dialog);
 			}
 			
-			// get resource model
-			this._oi18nModel = this.getOwnerComponent().getModel("i18n");
 
 			// set all the dropdowns, get the data from the code master table
 	    	oModel.setProperty("/GMIDShipToCountryVM/StoredCurrency",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddStoredCurrency")));
@@ -107,6 +125,7 @@ sap.ui.define([
 	    	{
 	    		oModel.setProperty("/GMIDShipToCountryVM/Country",DataContext.getNonAdminDropdownValues(this._oi18nModel.getProperty("ddCountry")));
 	    	}
+    	}
     	},
     	getRouter : function () {
 				return sap.ui.core.UIComponent.getRouterFor(this);

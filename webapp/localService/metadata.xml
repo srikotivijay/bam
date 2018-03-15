@@ -66,6 +66,16 @@
 <Property Name="RCU_CODE" Type="Edm.String" MaxLength="10"/>
 <Property Name="FINANCE_SYSTEM_FLAG" Type="Edm.String" MaxLength="10"/>
 </EntityType>
+<EntityType Name="GMID_COUNTRY_RULE_CALC_STGType">
+<Key>
+<PropertyRef Name="CALC_STG_ID"/>
+</Key>
+<Property Name="CALC_STG_ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="GMID" Type="Edm.String" Nullable="false" MaxLength="10"/>
+<Property Name="COUNTRY_CODE_ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="CREATED_ON" Type="Edm.DateTime" Nullable="false"/>
+<Property Name="CREATED_BY" Type="Edm.String" Nullable="false" MaxLength="50"/>
+</EntityType>
 <EntityType Name="GMID_SHIP_TO_COUNTRY_STGType">
 <Key>
 <PropertyRef Name="ID"/>
@@ -516,9 +526,80 @@
 <Property Name="CU_DESCRIPTION" Type="Edm.String" MaxLength="263"/>
 <Property Name="SCU_DESCRIPTION" Type="Edm.String" MaxLength="263"/>
 </EntityType>
+<EntityType Name="MST_CU_RULESETType">
+<Key>
+<PropertyRef Name="CU_RULESET_SEQ"/>
+</Key>
+<Property Name="CU_RULESET_SEQ" Type="Edm.Int32" Nullable="false"/>
+<Property Name="NAME" Type="Edm.String" MaxLength="250"/>
+<Property Name="DESCRIPTION" Type="Edm.String" MaxLength="250"/>
+<Property Name="GEO_LEVEL" Type="Edm.String" MaxLength="50"/>
+<Property Name="PRODUCT_LEVEL" Type="Edm.String" MaxLength="50"/>
+<Property Name="VALID_FLAG" Type="Edm.String" Nullable="false" DefaultValue="0" MaxLength="1"/>
+<Property Name="CREATED_ON" Type="Edm.DateTime" Nullable="false"/>
+<Property Name="CREATED_BY" Type="Edm.String" Nullable="false" MaxLength="50"/>
+<Property Name="LAST_UPDATED_ON" Type="Edm.DateTime"/>
+<Property Name="LAST_UPDATED_BY" Type="Edm.String" MaxLength="50"/>
+</EntityType>
+<EntityType Name="MST_CU_RULEType">
+<Key>
+<PropertyRef Name="CU_RULE_ID"/>
+</Key>
+<Property Name="CU_RULE_ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="CU_RULESET_SEQ" Type="Edm.Int32"/>
+<Property Name="GEO_LEVEL_VAL_ID" Type="Edm.Int32"/>
+<Property Name="PRODUCT_LEVEL_VAL_CODE" Type="Edm.String" MaxLength="50"/>
+<Property Name="RCU_CODE" Type="Edm.String" MaxLength="10"/>
+<Property Name="SUB_RCU_CODE" Type="Edm.String" MaxLength="10"/>
+<Property Name="VALID_FLAG" Type="Edm.String" Nullable="false" DefaultValue="0" MaxLength="1"/>
+<Property Name="CREATED_ON" Type="Edm.DateTime" Nullable="false"/>
+<Property Name="CREATED_BY" Type="Edm.String" Nullable="false" MaxLength="50"/>
+<Property Name="LAST_UPDATED_ON" Type="Edm.DateTime"/>
+<Property Name="LAST_UPDATED_BY" Type="Edm.String" MaxLength="50"/>
+</EntityType>
+<EntityType Name="MST_RCUType">
+<Key>
+<PropertyRef Name="RCU_CODE"/>
+</Key>
+<Property Name="RCU_CODE" Type="Edm.String" Nullable="false" MaxLength="10"/>
+<Property Name="RCU_DESC" Type="Edm.String" MaxLength="250"/>
+<Property Name="CREATED_ON" Type="Edm.DateTime" Nullable="false"/>
+<Property Name="CREATED_BY" Type="Edm.String" Nullable="false" MaxLength="50"/>
+<Property Name="LAST_UPDATED_ON" Type="Edm.DateTime"/>
+<Property Name="LAST_UPDATED_BY" Type="Edm.String" MaxLength="50"/>
+</EntityType>
+<EntityType Name="MST_SUB_RCUType">
+<Key>
+<PropertyRef Name="SUB_RCU_CODE"/>
+</Key>
+<Property Name="SUB_RCU_CODE" Type="Edm.String" Nullable="false" MaxLength="10"/>
+<Property Name="SUB_RCU_DESC" Type="Edm.String" MaxLength="250"/>
+<Property Name="RCU_CODE" Type="Edm.String" MaxLength="10"/>
+<Property Name="CREATED_ON" Type="Edm.DateTime" Nullable="false"/>
+<Property Name="CREATED_BY" Type="Edm.String" Nullable="false" MaxLength="50"/>
+<Property Name="LAST_UPDATED_ON" Type="Edm.DateTime"/>
+<Property Name="LAST_UPDATED_BY" Type="Edm.String" MaxLength="50"/>
+</EntityType>
+<EntityType Name="V_GEO_ALL_LEVELType">
+<Key>
+<PropertyRef Name="LEVEL_ID"/>
+</Key>
+<Property Name="LEVEL_ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="NAME" Type="Edm.String" Nullable="false" MaxLength="500"/>
+<Property Name="GEO_LEVEL" Type="Edm.String" Nullable="false" MaxLength="11"/>
+</EntityType>
+<EntityType Name="V_PRODUCT_ALL_LEVELType">
+<Key>
+<PropertyRef Name="PRODUCT_CODE"/>
+</Key>
+<Property Name="PRODUCT_CODE" Type="Edm.String" Nullable="false" MaxLength="250"/>
+<Property Name="PRODUCT_DESC" Type="Edm.String" MaxLength="250"/>
+<Property Name="PRODUCT_LEVEL" Type="Edm.String" Nullable="false" MaxLength="11"/>
+</EntityType>
 <EntityContainer Name="BAMDataService" m:IsDefaultEntityContainer="true">
 <EntitySet Name="CODE_MASTER" EntityType="ODataService.BAMDataService.CODE_MASTERType"/>
 <EntitySet Name="GMID_SHIP_TO_COUNTRY" EntityType="ODataService.BAMDataService.GMID_SHIP_TO_COUNTRYType"/>
+<EntitySet Name="GMID_COUNTRY_RULE_CALC_STG" EntityType="ODataService.BAMDataService.GMID_COUNTRY_RULE_CALC_STGType"/>
 <EntitySet Name="GMID_SHIP_TO_COUNTRY_STG" EntityType="ODataService.BAMDataService.GMID_SHIP_TO_COUNTRY_STGType"/>
 <EntitySet Name="GMID_COUNTRY_SHIP_FROM_PLANT" EntityType="ODataService.BAMDataService.GMID_COUNTRY_SHIP_FROM_PLANTType"/>
 <EntitySet Name="V_GMID_COUNTRY_SHIP_FROM_PLANT" EntityType="ODataService.BAMDataService.V_GMID_COUNTRY_SHIP_FROM_PLANTType"/>
@@ -535,6 +616,12 @@
 <EntitySet Name="V_AUDIT_REPORT" EntityType="ODataService.BAMDataService.V_AUDIT_REPORTType"/>
 <EntitySet Name="V_CU_RULES" EntityType="ODataService.BAMDataService.V_CU_RULESType"/>
 <EntitySet Name="V_WEB_CU_RULES" EntityType="ODataService.BAMDataService.V_WEB_CU_RULESType"/>
+<EntitySet Name="MST_CU_RULESET" EntityType="ODataService.BAMDataService.MST_CU_RULESETType"/>
+<EntitySet Name="MST_CU_RULE" EntityType="ODataService.BAMDataService.MST_CU_RULEType"/>
+<EntitySet Name="MST_RCU" EntityType="ODataService.BAMDataService.MST_RCUType"/>
+<EntitySet Name="MST_SUB_RCU" EntityType="ODataService.BAMDataService.MST_SUB_RCUType"/>
+<EntitySet Name="V_GEO_ALL_LEVEL" EntityType="ODataService.BAMDataService.V_GEO_ALL_LEVELType"/>
+<EntitySet Name="V_PRODUCT_ALL_LEVEL" EntityType="ODataService.BAMDataService.V_PRODUCT_ALL_LEVELType"/>
 </EntityContainer>
 </Schema>
 </edmx:DataServices>
