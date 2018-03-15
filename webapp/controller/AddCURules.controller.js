@@ -164,7 +164,20 @@ sap.ui.define([
 			
 		},
 		
-		//cancel click on Add CU Rules page
+		onChangeRule: function(){
+				var oSmartTable = this.byId("rulesTable");
+				// check if user wants to update the attributes for GMID and country
+				MessageBox.confirm("Changing the Rule Set will cause you to lose any changes you made below. Do you wish to proceed?", {
+            		icon: sap.m.MessageBox.Icon.WARNING,
+            		actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+            		onClose: function(oAction) {
+            			if(oAction === "YES"){
+            				oSmartTable.rebindTable();
+            			}
+            		}
+        		});
+			},
+				//cancel click on Add CU Rules page
 			onCancel: function(){
 				var curr = this;
 				// check if user wants to update the attributes for GMID and country

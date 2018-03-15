@@ -7,7 +7,7 @@
 				</headerContent>
 				<content>
 				<HBox height="100px" justifyContent="Center" alignItems="Center">
-					<Select xmlns:sap.ui.core="sap.ui.core" width="400px" id="ddlRuleSet" items="{path: '/AssignRuleVM/RuleSet', templateShareable : true}" change="onChange" selectedKey="{RULE_SET_ID}">
+					<Select xmlns:sap.ui.core="sap.ui.core" width="400px" id="ddlRuleSet" items="{path: '/AssignRuleVM/RuleSet', templateShareable : true}" change="onChangeRule" selectedKey="{RULE_SET_ID}">
 						<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
 					</Select>
 				</HBox>	

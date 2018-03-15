@@ -27,7 +27,7 @@
 		                <OverflowToolbar design="Transparent"> 
 		                        <ToolbarSpacer/> 
 		                        <!-- <Button id="btnClearFilter" text="Clear" width="100px"  press="onClearFilter" icon="sap-icon://clear-filter" activeIcon="sap-icon://clear-filter"  /> -->
-		                        <Button id="btnAdd"  text="{i18n>add}" press="onAdd" icon="sap-icon://add" activeIcon="sap-icon://add"/>
+		                        <Button id="btnAdd"  text="{i18n>Add}" press="onAdd" icon="sap-icon://add" activeIcon="sap-icon://add"/>
 		               </OverflowToolbar> 
 			       </smartTable:customToolbar>
 					</smartTable:SmartTable>
