@@ -24,7 +24,7 @@ sap.ui.define([
 			var hasAccess = false;
 			for(var i = 0; i < permissions.length; i++)
 			{
-				if(permissions[i].ATTRIBUTE === maintainRule)
+				if(permissions[i].ATTRIBUTE === maintainRule && (permissions[i].ACTION === "EDIT" || permissions[i].ACTION === "ADD"))
 				{
 						hasAccess = true;
 						break;
@@ -57,7 +57,20 @@ sap.ui.define([
 					this.onInit();
 				}
 			}
-		}
-
+		},
+		NavBack: function () {
+			var oHistory = History.getInstance();
+			var sPreviousHash = oHistory.getPreviousHash();
+	
+			if (sPreviousHash !== undefined) {
+				window.history.go(-1);
+			} else {
+				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+				oRouter.navTo("cuAssignment", true);
+			}
+		},
+		onHome: function(){
+			this.getOwnerComponent().getRouter().navTo("home");
+		}		
   	});
 });
