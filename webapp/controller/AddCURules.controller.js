@@ -115,9 +115,49 @@ sap.ui.define([
 		},
 		onChange : function(){},
 		
-		onRemoveRow:function(){},
+		onRemoveRow:function(oEvent){
+			this._isChanged = true;
+			// Get the object to be deleted from the event handler
+			var entryToDelete = oEvent.getSource().getBindingContext().getObject();
+			// Get the # of rows in the VM, (this includes the dropdown objects such as Country, Currency, etc..)
+			var rows = this._oViewModelData.AssignRuleVM;
+			
+			// loop through each row and check whether the passed object = the row object
+			for(var i = 0; i < rows.length; i++){
+				if(rows[i] === entryToDelete )
+				{
+					// found a match, remove this row from the data
+					rows.splice(i,1);
+					// refresh the GMID VM, this will automatically update the UI
+					this._oAssignRuleViewModel.refresh();
+					break;
+				}
+			}
+		},
 		
-		onAddRow:function(){},
+		onAddRow:function(oEvent){
+			var path = oEvent.getSource().getBindingContext().getPath();
+		    // create new empty rule object
+		    var obj = {
+			    		GEOGRAPHY_ID : -1,
+			    		geographyErrorState : "None",
+			    		PRODUCT_ID : -1,
+			    		productErrorStae : "None",
+			    		CU_ID : -1,
+			    		cuErrorState : "None",
+			    		SUBCU_ID : -1,
+			    		ubcuErrorState : "None",
+			    		createNew : false,
+			    		isError :false
+		    		};
+		    // set default property values on the basis of selected gmid type
+	    	obj = this.setDefaultPropertyValues(obj);
+	    	this._oAssignRuleViewModel.setProperty(path, obj);
+	    	this.addEmptyObject();			
+		},
+		setDefaultPropertyValues : function(obj){
+        	return obj;
+        },
 		
 		onSubmit : function(){
 			
