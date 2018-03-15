@@ -117,6 +117,10 @@ sap.ui.define([
 		
 		onRemoveRow:function(){},
 		
-		onAddRow:function(){}		
+		onAddRow:function(){},
+		
+		onSubmit : function(){
+			
+		}
   	});
 });

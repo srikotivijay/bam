@@ -1,13 +1,15 @@
 <mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:table="sap.ui.table" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:u="sap.ui.unified" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" controllerName="bam.controller.AddCURules" displayBlock="true">
 	<App id="addCURules">
 		<pages>
-			<Page title="{i18n>title}" showNavButton="true" navButtonPress="onNavBack">
+			<Page title="{i18n>title}" showNavButton="true" navButtonPress="onNavBack" class="sapUiResponsiveContentPadding">
 				<headerContent>
 					<Button id="btnHome" icon="sap-icon://home" tooltip="{i18n>home}" press="onHome"/>
 				</headerContent>
 				<content>
-				<HBox>
-					<Label text="Drop down here"></Label>
+				<HBox height="100px" justifyContent="Center" alignItems="Center">
+					<Select xmlns:sap.ui.core="sap.ui.core" width="400px" id="ddlRuleSet" items="{path: '/AssignRuleVM/RuleSet', templateShareable : true}" change="onChange" selectedKey="{RULE_SET_ID}">
+						<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
+					</Select>
 				</HBox>	
 				<table:Table id="rulesTable" rows="{/AssignRuleVM}" visible="true" width="auto" visibleRowCount="10" selectionMode="None" enableColumnReordering="false">
 					<table:columns>
@@ -29,7 +31,7 @@
 								</Select>
 							</table:template>
 						</table:Column>
-						<table:Column id="clmHdrProduct" width="300px" resizable="false">
+						<table:Column id="clmHdrProduct" width="280px" resizable="false">
 							<Label text="{i18n>product}" id="lblProduct"/>
 							<table:template>
 								<Select xmlns:sap.ui.core="sap.ui.core" width="100%" id="ddlProduct" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/AssignRuleVM/Product', templateShareable : true}" change="onChange" valueState="{productErrorState}" selectedKey="{PRODUCT_ID}">
@@ -37,7 +39,7 @@
 								</Select>
 							</table:template>
 						</table:Column>		
-						<table:Column id="clmHdrCU" width="280px" resizable="false">
+						<table:Column id="clmHdrCU" width="270px" resizable="false">
 							<Label text="{i18n>cu}" id="lblCu"/>
 							<table:template>
 								<Select xmlns:sap.ui.core="sap.ui.core" width="100%" id="ddlCu" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/AssignRuleVM/Cu', templateShareable : true}" change="onChange" valueState="{cuErrorState}" selectedKey="{CU_ID}">
@@ -45,7 +47,7 @@
 								</Select>
 							</table:template>
 						</table:Column>	
-						<table:Column id="clmHdrSubCu" width="280px" resizable="false">
+						<table:Column id="clmHdrSubCu" width="270px" resizable="false">
 							<Label text="{i18n>subCU}" id="lblSubCu"/>
 							<table:template>
 								<Select xmlns:sap.ui.core="sap.ui.core" width="100%" id="ddlSubCu" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/AssignRuleVM/SubCu', templateShareable : true}" change="onChange" valueState="{subcuErrorState}" selectedKey="{SUB_CU_ID}">
@@ -55,6 +57,13 @@
 						</table:Column>							
 					</table:columns>	
 				</table:Table>				
+				<Toolbar width="100%" id="tbrSubmit">
+					<content>
+						<ToolbarSpacer id="tbrSpSubmit"/>
+						<Button text="{i18n>submit}" width="100px" id="btnSubmit" press="onSubmit" ></Button>
+						<Button text="{i18n>cancel}" width="100px" id="btnCancel" press="onCancel" ></Button>
+					</content>
+				</Toolbar>
 			</content>
 			</Page>
 		</pages>
