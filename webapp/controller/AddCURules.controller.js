@@ -370,7 +370,7 @@ sap.ui.define([
 				obj.RCU_CODE  = this._rcuList .RCU_CODE;
 				obj.RCU_DESC = this._rcuList.RCU_DESC;
 			}
-			if(this._subRcuListId !== undefined){
+			if(this._subRcuList !== undefined){
 				obj.SUB_RCU_CODE  = this._subRcuList.SUB_RCU_CODE;
 				obj.SUB_RCU_DESC = this._subRcuList.SUB_RCU_DESC;
 			}
