@@ -776,7 +776,7 @@ sap.ui.define([
 			 var maxLimitSubmit = parseInt(this._oi18nModel.getProperty("MaxLimit"),10) ;
 			 var maxLimitSubmitText = this._oi18nModel.getProperty("MaxLimitSubmit.text");
 			 // adding one to account for the extra line at the bottom
-		 	if (GMIDShipToCountry.length > (maxLimitSubmit))
+		 	if (GMIDShipToCountry.length - 1 > (maxLimitSubmit))
 		        {
 		        	MessageBox.alert(maxLimitSubmitText,
 		        	{
@@ -942,8 +942,25 @@ sap.ui.define([
 					    			errorCount++;
 								}
 			        		});
-		    		}
-		        }
+		    			}
+		        	}
+		        	//if there is something inserted into the table trigger the CU Rule SP
+		        	if( tablePath === "/GMID_SHIP_TO_COUNTRY"  && successCount > 0){
+		        		var userObj = {
+		        				CALC_STG_ID: 1,
+		        				GMID: "1",
+		        				COUNTRY_CODE_ID: 1,
+		        				CREATED_ON: oDate,
+					        	CREATED_BY: loggedInUserID
+		        		};
+		        		t._oDataModel.create("/GMID_COUNTRY_RULE_CALC_STG", userObj,
+			        		{
+					        	success: function(){
+					    		},
+					    		error: function(){
+								}
+			        		});
+		        	}
 		    		//Show success or error message
 		    		if(errorCount === 0) 
 		    		{
