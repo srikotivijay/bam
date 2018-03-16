@@ -362,10 +362,13 @@ sap.ui.define([
 			    		createNew : false,
 			    		isError :false
 		    		};
-		    // set default property values on the basis of selected gmid type
-	    	obj = this.setDefaultPropertyValues(obj);
+		    var selectedRulekey = this.getView().byId("cmbRuleSetList").getSelectedItem().getKey();
+	    	if (selectedRulekey !== "-1") // added this cond to show default values only if valid rule set is selected
+	    	{
+	    		obj = this.setDefaultPropertyValues(obj);
+	    	}
 	    	this._oAssignRuleViewModel.setProperty(path, obj);
-	    	this.addEmptyObject();			
+	    	this.addEmptyObject();	
 		},
 		
 		setDefaultPropertyValues : function(obj){
