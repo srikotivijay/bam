@@ -197,8 +197,6 @@ sap.ui.define([
 			result = [];
 			result.unshift({"PRODUCT_CODE":0,
 			              		"PRODUCT_DESC":"ALL"});
-			result.unshift({	"PRODUCT_CODE":-1,
-			              		"PRODUCT_DESC":"Select.."});              		
 			}
 	    	return result;
 		},
@@ -468,6 +466,9 @@ sap.ui.define([
         	var productList = this._oAssignRuleViewModel.getProperty("/AssignRuleVM/Product");
         	if(productList !== undefined){
         		this._productList = productList.find(function(data){return data.PRODUCT_CODE === -1; });
+        		if(this._productList === undefined){
+        			this._productList = productList.find(function(data){return data.PRODUCT_CODE === 0; });
+        		}
         	}
         	var rcuList = this._oAssignRuleViewModel.getProperty("/AssignRuleVM/RCU");
         	if(rcuList !== undefined){
