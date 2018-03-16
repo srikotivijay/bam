@@ -609,9 +609,10 @@ sap.ui.define([
 	        return IsAllvalidgmidswithstatus;
         },
         // below function will validate whether entered GMID is valid or not
-        validateGMID : function()
+        validateGMID : function(gmiddataobject)
         {
-        	 var gmiddata = this._oViewModelData.GMIDShipToCountryVM;
+        	 //var gmiddata = this._oViewModelData.GMIDShipToCountryVM;
+        	 var gmiddata = gmiddataobject;
              var viewpath = "V_VALIDATE_GMID";
              // get all the GMID's with the Status for the GMID's entered in UI
              var gmidRecords = DataContext.getGMIDListFromDB(this._gmidList,viewpath); 
@@ -626,11 +627,13 @@ sap.ui.define([
 	        		for(var k = 0; k < gmidRecords.length; k++) 
                      {
 	                     // loop the GMID  Records to check whether GMID is valid
-	                     if ((this.lpadstring(gmiddata[i].GMID) === gmidRecords[k].GMID))
+	                     if ((this.lpadstring(gmiddata[i].GMID) === this.lpadstring(gmidRecords[k].GMID)))
 	                     {
 	                    	for(var g = 0; g < this._oSelectedValueCenterCode.length; g++){
 	                    		if(this.lpadstring(this._oSelectedValueCenterCode[g]) === this.lpadstring(gmidRecords[k].VALUE_CENTER_CODE)){
 	                    			validgmid =  true;
+	                    			//set the used value to the database value
+	                    			gmiddata[i].GMID = gmidRecords[k].GMID;
 	                    			break;
 	                    		}
 	                    	}
@@ -855,7 +858,7 @@ sap.ui.define([
 	        		t._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
 	        	}
 	        	// check if GMID entered is valid
-	        	if (t.validateGMID() === false)
+	        	if (t.validateGMID(GMIDShipToCountry) === false)
 	        	{
 	        		t._oGMIDShipToCountryViewModel.setProperty("/ErrorOnPage",true);
 	        	}
@@ -905,7 +908,7 @@ sap.ui.define([
 		    			// save only those records which are entered or updated
 		    			if(t.checkEmptyRows(GMIDShipToCountry[i],strSubmission) === true)
 		    			{
-							var GMID = t.lpadstring(GMIDShipToCountry[i].GMID);
+							var GMID = GMIDShipToCountry[i].GMID;
 							var countryID = parseInt(GMIDShipToCountry[i].COUNTRY_CODE_ID,10);
 							var storedcurrencyID = parseInt(GMIDShipToCountry[i].CURRENCY_CODE_ID,10);
 							var ibprelevancyID = parseInt(GMIDShipToCountry[i].IBP_RELEVANCY_CODE_ID,10);
