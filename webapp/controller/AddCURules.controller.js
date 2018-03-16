@@ -65,17 +65,19 @@ sap.ui.define([
 			    this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
 	
 			    this.getView().setModel(this._oModel);	
-			    this.addEmptyObject();
-			    
-			    // get resource model
-				this._oi18nModel = this.getOwnerComponent().getModel("i18n");
+		    	this.addEmptyObject();
 
 			// set all the dropdowns, get the data from the code master table
 			// default load
 	    		this._oModel.setProperty("/AssignRuleVM/RuleSet",this.getRulesDropDown());
 	    		this._oModel.setProperty("/AssignRuleVM/RCU",this.getRCUDropDown());
 	    		this._oModel.setProperty("/AssignRuleVM/SubRCU",this.getSubRCUDropDown());
-	    		this.setDefaultPropertyValues(initData);
+	    		
+	    		this._oModel.setProperty("/AssignRuleVM/RuleSet/CU_RULESET_SEQ",-1);
+	    		this._oModel.setProperty("/AssignRuleVM/RuleSet/NAME","Please Select a Rule Set");
+	    		//this.getDefaultPropertyValues();
+	    		
+		    	//this.setDefaultValuesToGrid();
 			}
 		},
 		// This functions sets the value state of each control to None. This is to clear red input boxes when errors were found durin submission.
@@ -95,6 +97,8 @@ sap.ui.define([
 			this._oModel.setProperty("/AssignRuleVM/Geography",this.getGeoLevelDropDown(geoLevel));
 			this._oModel.setProperty("/AssignRuleVM/Product",this.getProductLevelDropDown(productLevel));
 			}
+			this.getDefaultPropertyValues();
+			this.setDefaultValuesToGrid();
 		},
 		getRulesDropDown : function () {
 			var result;
@@ -193,6 +197,8 @@ sap.ui.define([
 			result = [];
 			result.unshift({"PRODUCT_CODE":0,
 			              		"PRODUCT_DESC":"ALL"});
+			result.unshift({	"PRODUCT_CODE":-1,
+			              		"PRODUCT_DESC":"Select.."});              		
 			}
 	    	return result;
 		},
@@ -301,7 +307,12 @@ sap.ui.define([
 		enableControl : function(value){
 			return !!value;
 		},
-		onChange : function(){},
+		onChange : function(oEvent){
+			this._isChanged = true;
+			var sourceControl = oEvent.getSource();
+			sourceControl.setValueStateText("");
+			sourceControl.setValueState(sap.ui.core.ValueState.None);			
+		},
 		
 		onRemoveRow:function(oEvent){
 			this._isChanged = true;
@@ -343,11 +354,24 @@ sap.ui.define([
 	    	this._oAssignRuleViewModel.setProperty(path, obj);
 	    	this.addEmptyObject();			
 		},
+		
 		setDefaultPropertyValues : function(obj){
-			obj.LEVEL_ID = -1;
-			obj.PRODUCT_CODE = -1;
-			obj.RCU_CODE  = -1;
-			obj.SUB_RCU_CODE  = -1;
+			if(this._geographyList !== undefined){
+				obj.LEVEL_ID = this._geographyList.LEVEL_ID;
+				obj.NAME =  this._geographyList.NAME;
+			}
+			if(this._productList !== undefined){
+				obj.PRODUCT_CODE = this._productList.PRODUCT_CODE;
+				obj.PRODUCT_DESC = this._productList.PRODUCT_DESC;			
+			}
+			if(this._rcuList !== undefined){
+				obj.RCU_CODE  = this._rcuList .RCU_CODE;
+				obj.RCU_DESC = this._rcuList.RCU_DESC;
+			}
+			if(this._subRcuListId !== undefined){
+				obj.SUB_RCU_CODE  = this._subRcuList.SUB_RCU_CODE;
+				obj.SUB_RCU_DESC = this._subRcuList.SUB_RCU_DESC;
+			}
         	return obj;
         },
 		
@@ -433,6 +457,34 @@ sap.ui.define([
 			// 	t._busyDialog.close();
 			// },500); // end of timeout function
        // },
-		}
+		},
+		
+		getDefaultPropertyValues : function(){
+        	// get default value's (0 - Active) code id for IBP Relevancy Flag  and set to global variable
+        	var geographyList = this._oAssignRuleViewModel.getProperty("/AssignRuleVM/Geography");
+        	if(geographyList !== undefined){
+        		this._geographyList = geographyList.find(function(data){return data.LEVEL_ID === -1; });
+        	}
+        	var productList = this._oAssignRuleViewModel.getProperty("/AssignRuleVM/Product");
+        	if(productList !== undefined){
+        		this._productList = productList.find(function(data){return data.PRODUCT_CODE === -1; });
+        	}
+        	var rcuList = this._oAssignRuleViewModel.getProperty("/AssignRuleVM/RCU");
+        	if(rcuList !== undefined){
+        		this._rcuList = rcuList.find(function(data){return data.RCU_CODE === -1; });
+        	}
+        	var subRcuList = this._oAssignRuleViewModel.getProperty("/AssignRuleVM/SubRCU");
+        	if(subRcuList !== undefined){
+        		this._subRcuList = subRcuList.find(function(data){return data.SUB_RCU_CODE === -1; });
+        	}
+        },
+        setDefaultValuesToGrid: function(){
+        	var rows = this._oViewModelData.AssignRuleVM;
+			// loop through each row and update the Quadrant, Channel and Marketing Flag property to default value for seeds
+			for(var i = 0; i < rows.length; i++){
+				rows[i] = this.setDefaultPropertyValues(rows[i]);
+			}
+			this._oAssignRuleViewModel.refresh();
+        }
   	});
 });
