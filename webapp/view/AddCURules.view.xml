@@ -6,20 +6,21 @@
 					<Button id="btnHome" icon="sap-icon://home" tooltip="{i18n>home}" press="onHome"/>
 				</headerContent>
 				<content>
-				<HBox height="100px" justifyContent="Center" alignItems="Center">
+				<HBox height="100px" justifyContent="Start" alignItems="Center">
+				<Text id="lblCuRuleSet" text="Please Select Rule:"  wrapping="false"/>
 				<ComboBox
 						id="cmbRuleSetList"
 						showSecondaryValues= "true"
 						filterSecondaryValues= "true"
 						change="onChangeRuleSet"
-						value="{/AssignRuleVM/RuleSet/NAME}"
-						selectedKey="{/AssignRuleVM/RuleSet/CU_RULESET_SEQ}"
-						width="500px"
+						value="{/NAME}"
+						selectedKey="{/CU_RULESET_SEQ}"
+						width="800px"
 						items="{
 							path: '/AssignRuleVM/RuleSet',
 							sorter: { path: 'text' }
 						}">
-					<core:ListItem key="{CU_RULESET_SEQ}" text="{NAME}" additionalText="{CU_RULESET_SEQ}"/>
+					<core:ListItem key="{CU_RULESET_SEQ}" text="{NAME} ({DESCRIPTION})" additionalText="{CU_RULESET_SEQ}"/>
 				</ComboBox>
 				</HBox>	
 				<table:Table id="rulesTable" rows="{/AssignRuleVM}" visible="true" width="auto" visibleRowCount="10" selectionMode="None" enableColumnReordering="false">
@@ -38,8 +39,8 @@
 							<Label text="{i18n>geography}" id="lblGeography"/>
 							<table:template>
 								<ComboBox
-								    change ="onChange"
 									id="cmbGeography"
+								    change ="onChange"
 									showSecondaryValues= "true"
 									filterSecondaryValues= "true"
 									value="{NAME}"
@@ -56,6 +57,7 @@
 							<Label text="{i18n>product}" id="lblProduct"/>
 							<table:template>
 								<ComboBox
+										id="cmbProduct"
 										change ="onChange"
 										showSecondaryValues= "true"
 										filterSecondaryValues= "true"
@@ -74,10 +76,8 @@
 						<table:Column id="clmHdrCU" width="270px" resizable="false">
 							<Label text="{i18n>cu}" id="lblCu"/>
 							<table:template>
-								<!--<Select xmlns:sap.ui.core="sap.ui.core" width="100%" id="ddlCu" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/AssignRuleVM/Cu', templateShareable : true}" change="onChange" valueState="{cuErrorState}" selectedKey="{CU_ID}">-->
-								<!--	<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>-->
-								<!--</Select>-->
 								<ComboBox
+										id="cmbCU"
 										showSecondaryValues= "true"
 										filterSecondaryValues= "true"
 										value="{RCU_DESC}"
@@ -96,6 +96,7 @@
 							<Label text="{i18n>subCU}" id="lblSubCu"/>
 							<table:template>
 								<ComboBox
+										id="cmbSubCU"
 										showSecondaryValues= "true"
 										filterSecondaryValues= "true"
 										value="{SUB_RCU_DESC}"

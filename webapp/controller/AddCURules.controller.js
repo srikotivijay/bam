@@ -70,14 +70,14 @@ sap.ui.define([
 			// set all the dropdowns, get the data from the code master table
 			// default load
 	    		this._oModel.setProperty("/AssignRuleVM/RuleSet",this.getRulesDropDown());
-	    		this._oModel.setProperty("/AssignRuleVM/RCU",this.getRCUDropDown());
-	    		this._oModel.setProperty("/AssignRuleVM/SubRCU",this.getSubRCUDropDown());
-	    		
-	    		this._oModel.setProperty("/AssignRuleVM/RuleSet/CU_RULESET_SEQ",-1);
-	    		this._oModel.setProperty("/AssignRuleVM/RuleSet/NAME","Please Select a Rule Set");
-	    		//this.getDefaultPropertyValues();
-	    		
-		    	//this.setDefaultValuesToGrid();
+	    		this._oModel.setProperty("/CU_RULESET_SEQ",-1);
+	    		this._oModel.setProperty("/NAME","Please Select a Rule Set");
+	    		this.getView().byId("cmbGeography").setValueStateText("Select..");
+	    		this.getView().byId("cmbProduct").setValueStateText("Select..");
+	    		this.getView().byId("cmbCU").setValueStateText("Select..");
+	    	    this.getView().byId("cmbSubCU").setValueStateText("Select..");
+	    	//	this.getDefaultPropertyValues();
+		    //	this.setDefaultValuesToGrid();
 			}
 		},
 		// This functions sets the value state of each control to None. This is to clear red input boxes when errors were found durin submission.
@@ -96,6 +96,8 @@ sap.ui.define([
 			{
 			this._oModel.setProperty("/AssignRuleVM/Geography",this.getGeoLevelDropDown(geoLevel));
 			this._oModel.setProperty("/AssignRuleVM/Product",this.getProductLevelDropDown(productLevel));
+		    this._oModel.setProperty("/AssignRuleVM/RCU",this.getRCUDropDown());
+	    	this._oModel.setProperty("/AssignRuleVM/SubRCU",this.getSubRCUDropDown());
 			}
 			this.getDefaultPropertyValues();
 			this.setDefaultValuesToGrid();
@@ -279,7 +281,8 @@ sap.ui.define([
 				}
 			}
 		},
-		NavBack: function () {
+		// on navigate back button
+		onNavBack: function () {
 			var oHistory = History.getInstance();
 			var sPreviousHash = oHistory.getPreviousHash();
 	
@@ -291,6 +294,7 @@ sap.ui.define([
 			}
 		},
 		onHome: function(){
+			// this._oAssignRuleViewModel.refresh();
 			this.getOwnerComponent().getRouter().navTo("home");
 		},
 		addEmptyObject : function() {
@@ -374,91 +378,100 @@ sap.ui.define([
         },
 		
 		onSubmit : function(){
+                                                var errorCount = 0;
+                                var successCount = 0;
+                                var AssignRule = this._oAssignRuleViewModel.getProperty("/AssignRuleVM");
+                                  // current limit for saving is 200 records
+                                                  // check if GMID Submission Grid  has more than 200 records
+                                                  // if more than 200 than show a validation message to user
+                                                var maxLimitSubmit = parseInt(this._oi18nModel.getProperty("MaxLimit"),10) ;
+                                                var RulesMaxLimitSubmit = this._oi18nModel.getProperty("MaxLimitSubmit.text");
 
-   // 		var errorCount = 0;
-   // 		var successCount = 0;
-   // 		var AssignRule = this._oAssignRuleViewModel.getProperty("/AssignRuleVM");
+                                                // adding one to account for the extra line at the bottom
+                                               if (AssignRule.length > (maxLimitSubmit)) {
+                                                               MessageBox.alert(RulesMaxLimitSubmit,{
+                                                                                icon : MessageBox.Icon.ERROR,
+                                                                                title : "Error"});
+                                                                return;
+                                     }
+                                if (AssignRule.length === 1 || this.chkIsModified() === false)
+                                {
+                                                                MessageBox.alert("Please enter at least one rule.", {
+                                                                icon : MessageBox.Icon.ERROR,
+                                                                                title : "Invalid Input"
+                                               });
+                                                return;
+                                }
+                                // reset error on page to false
+                                                this._oAssignRuleViewModel.setProperty("/ErrorOnPage",false);
 
-			// //open busy dialog
-			// this._busyDialog.open();
-			// // need to declare local this variable to call global functions in the timeout function
-			
-			// var t = this;
-			
-			// //permission to submit gmid without plants
-			// //var hasPermission = false;
-			
-			// //CP plant validation
-			// //var plantValidationArr = t.validateGmidShipFromPlant();
-			// //var allHasPlants = plantValidationArr[0];
-			// //var existPlant = plantValidationArr[1];
-			// // setting timeout function in order to show the busy dialog before doing all the validation
-			// setTimeout(function()
-			// {
-		 //       	var tablePath = "/MST_CU_RULE";
-		 //       	var submitType = "";
-		    	   
-		 //   		// Create current timestamp
-		 //   		var oDate = new Date();
-		 //   	    // Get the code id for GMID Country Status
-		 //   		// loop through the rows and for each row insert data into database
-		 //   		// each row contains GMID Ship To combination.
-		 //   		for(var i = 0; i < AssignRule.length - 1; i++) 
-		 //   		{   
-		 //   			// while saving we need to ignore the records which are not modified or altered
-		 //   			// save only those records which are entered or updated
-		 //   			if(t.checkEmptyRows(GMIDShipToCountry[i],strSubmission) === true)
-		 //   			{
-			// 				var GMID = t.lpadstring(GMIDShipToCountry[i].GMID);
-			// 				var countryID = parseInt(GMIDShipToCountry[i].COUNTRY_CODE_ID,10);
-			// 				var storedcurrencyID = parseInt(GMIDShipToCountry[i].CURRENCY_CODE_ID,10);
-			// 				var ibprelevancyID = parseInt(GMIDShipToCountry[i].IBP_RELEVANCY_CODE_ID,10);
-			// 				var nettingdefaultID = parseInt(GMIDShipToCountry[i].NETTING_DEFAULT_CODE_ID,10);
-			// 				var quadrantID = parseInt(GMIDShipToCountry[i].QUADRANT_CODE_ID,10);
-			// 				var channelID = parseInt(GMIDShipToCountry[i].CHANNEL_CODE_ID,10);
-			// 				var marketdefaultID = parseInt(GMIDShipToCountry[i].MARKET_DEFAULT_CODE_ID,10);
-			// 				var supplySystemFlag = parseInt(GMIDShipToCountry[i].SUPPLY_SYSTEM_FLAG_CODE_ID,10);
-			// 				var createdBy = loggedInUserID;
-			// 				// create new GMIDShipToCountry object
-			// 				var newAssignRule = {
-			// 		        	ID: 1 ,
-			// 		        	GMID: GMID,
-			// 		        	COUNTRY_CODE_ID: countryID,
-			// 		        	CURRENCY_CODE_ID: storedcurrencyID,
-			// 		        	IBP_RELEVANCY_CODE_ID: ibprelevancyID,
-			// 		        	NETTING_DEFAULT_CODE_ID: nettingdefaultID,
-			// 		        	QUADRANT_CODE_ID:quadrantID,
-			// 		        	CHANNEL_CODE_ID: channelID,
-			// 		        	MARKET_DEFAULT_CODE_ID: marketdefaultID,
-			// 		        	SUPPLY_SYSTEM_FLAG_CODE_ID: supplySystemFlag,
-			// 		        	TYPE: submitType,
-			// 		        	GMID_COUNTRY_STATUS_CODE_ID: gmidcountrystatusID,
-			// 		        	CREATED_ON: oDate,
-			// 		        	CREATED_BY:createdBy
-			//     			};
-			    			
-			//         		t._oDataModel.create(tablePath, newGMID,
-			//         		{
-			// 		        	success: function(){
-			// 		        		successCount++;
-			// 		    		},
-			// 		    		error: function(){
-			// 		    			errorCount++;
-			// 					}
-			//         		});
-		 //   		}
-		 //       }
-		    		
-	        		
-	        	
-	  //      	// close busy dialog
-			// 	t._busyDialog.close();
-			// },500); // end of timeout function
-       // },
+                                                //open busy dialog
+                                                this._busyDialog.open();
+                                                // // need to declare local this variable to call global functions in the timeout function
+                                                var t = this;
+                                                //this._ruleList = this.ruleList();
+                                                
+                                                // //permission to submit gmid without plants
+                                                // //var hasPermission = false;
+                                                
+                                                // // setting timeout function in order to show the busy dialog before doing all the validation
+                                                setTimeout(function()
+                {
+                                // 
+                                // Check validations here 
+                                var tablePath = "/MST_CU_RULE";
+                                // Create current timestamp
+                                var oDate = new Date();                
+                                var ruleSetSeq = this._oViewModelData.CU_RULESET_SEQ;
+                                for(var i = 0; i < AssignRule.length - 1; i++) {
+                                                if(t.checkEmptyRows(AssignRule[i]) === true){
+                                                                var geoLevelValId = t.lpadstring(AssignRule[i].GEO_LEVEL_VAL_ID);
+                                                                var productLevelCode = AssignRule[i].PRODUCT_LEVEL_VAL_CODE;
+                                                                var rcuCode                        = AssignRule[i].RCU_CODE;
+                                                                var subRcuCode =  AssignRule[i].SUB_RCU_CODE;
+                                                                //
+                                                                var newAssignRule = {
+                                                                                CU_RULESET_SEQ : ruleSetSeq,
+                                                                                GEO_LEVEL_VAL_ID : geoLevelValId,
+                                                                                PRODUCT_LEVEL_VAL_CODE : productLevelCode,
+                                                                                RCU_CODE : rcuCode,
+                                                                                SUB_RCU_CODE : subRcuCode,
+                                                                                VALID_FLAG : "T",
+                                                                                CREATED_ON : loggedInUserID,
+                                                                                CREATED_BY : oDate
+                                                                };
+                                                //            t._oDataModel.create(tablePath, newAssignRule,
+                                                //            {
+                                                //                            success: function(){
+                                                //                                            successCount++;
+                                                //                            },
+                                                //                            error: function(){
+                                                //                                            errorCount++;
+                                                //                            }
+                                                //            });                                                                                           
+                                                }
+                               }
+                                            // close busy dialog
+                                            t._busyDialog.close();
+                            },500); // end of timeout function
+                                },
+
+		//cancel click on Add CU Rules page
+			onCancel: function(){
+				var curr = this;
+				// check if user wants to update the attributes for GMID and country
+				MessageBox.confirm("Are you sure you want to cancel your changes and navigate back to the previous page?", {
+           		icon: sap.m.MessageBox.Icon.WARNING,
+           		actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+           		onClose: function(oAction) {
+           			if(oAction === "YES"){
+           				curr.getOwnerComponent().getRouter().navTo("cuAssignment");
+           			}
+           		}
+      		});			
 		},
-		
+
 		getDefaultPropertyValues : function(){
-        	// get default value's (0 - Active) code id for IBP Relevancy Flag  and set to global variable
         	var geographyList = this._oAssignRuleViewModel.getProperty("/AssignRuleVM/Geography");
         	if(geographyList !== undefined){
         		this._geographyList = geographyList.find(function(data){return data.LEVEL_ID === -1; });
