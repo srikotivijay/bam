@@ -77,10 +77,10 @@ sap.ui.define([
 	    		this._oModel.setProperty("/AssignRuleVM/RuleSet",this.getRulesDropDown());
 	    		this._oModel.setProperty("/CU_RULESET_SEQ",-1);
 	    		this._oModel.setProperty("/NAME","Please Select a Rule Set");
-	    		this.getView().byId("cmbGeography").setValueStateText("Select..");
-	    		this.getView().byId("cmbProduct").setValueStateText("Select..");
-	    		this.getView().byId("cmbCU").setValueStateText("Select..");
-	    	    this.getView().byId("cmbSubCU").setValueStateText("Select..");
+	    		// this.getView().byId("cmbGeography").setValueStateText("");
+	    		// this.getView().byId("cmbProduct").setValueStateText("");
+	    		// this.getView().byId("cmbCU").setValueStateText("");
+	    	 //   this.getView().byId("cmbSubCU").setValueStateText("");
 	    	//	this.getDefaultPropertyValues();
 		    //	this.setDefaultValuesToGrid();
 			}
@@ -119,13 +119,18 @@ sap.ui.define([
 			// bind the geo level dropdown based on rule
 			if (selectedRulekey !== "-1")
 			{
-			this._oModel.setProperty("/AssignRuleVM/Geography",this.getGeoLevelDropDown(geoLevel));
-			this._oModel.setProperty("/AssignRuleVM/Product",this.getProductLevelDropDown(productLevel));
-		    this._oModel.setProperty("/AssignRuleVM/RCU",this.getRCUDropDown());
-	    	this._oModel.setProperty("/AssignRuleVM/SubRCU",this.getSubRCUDropDown());
+				this._oModel.setProperty("/AssignRuleVM/Geography",this.getGeoLevelDropDown(geoLevel));
+				this._oModel.setProperty("/AssignRuleVM/Product",this.getProductLevelDropDown(productLevel));
+			    this._oModel.setProperty("/AssignRuleVM/RCU",this.getRCUDropDown());
+		    	this._oModel.setProperty("/AssignRuleVM/SubRCU",this.getSubRCUDropDown());
+		    	this.getDefaultPropertyValues();
+				this.setDefaultValuesToGrid();
 			}
-			this.getDefaultPropertyValues();
-			this.setDefaultValuesToGrid();
+			else
+			{
+				this.onInit();
+			}
+
 		},
 		getRulesDropDown : function () {
 			var result;
