@@ -20,7 +20,8 @@
 							path: '/AssignRuleVM/RuleSet',
 							sorter: { path: 'text' }
 						}">
-					<core:ListItem key="{CU_RULESET_SEQ}" text="{NAME} ({DESCRIPTION})" additionalText="{CU_RULESET_SEQ}"/>
+					
+					<core:ListItem key="{CU_RULESET_SEQ}" text="{parts: ['NAME','DESCRIPTION'], formatter: '.formatText'}" additionalText="{CU_RULESET_SEQ}"/>
 				</ComboBox>
 				</HBox>	
 				<table:Table id="rulesTable" rows="{/AssignRuleVM}" visible="true" width="auto" visibleRowCount="10" selectionMode="None" enableColumnReordering="false">

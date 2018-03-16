@@ -499,6 +499,14 @@ sap.ui.define([
 				rows[i] = this.setDefaultPropertyValues(rows[i]);
 			}
 			this._oAssignRuleViewModel.refresh();
+        },
+        formatText : function(name, description){
+        	if(description !== undefined){
+        		return name + " (" + description + ")";
+        	}
+        	else{
+        		return name;
+        	}
         }
   	});
 });
