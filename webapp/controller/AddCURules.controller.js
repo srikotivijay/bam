@@ -67,6 +67,11 @@ sap.ui.define([
 			    this.getView().setModel(this._oModel);	
 		    	this.addEmptyObject();
 
+				if (!this._busyDialog) 
+				{
+					this._busyDialog = sap.ui.xmlfragment("bam.view.BusyLoading", this);
+					this.getView().addDependent(this._dialog);
+				}
 			// set all the dropdowns, get the data from the code master table
 			// default load
 	    		this._oModel.setProperty("/AssignRuleVM/RuleSet",this.getRulesDropDown());
@@ -78,6 +83,26 @@ sap.ui.define([
 	    	    this.getView().byId("cmbSubCU").setValueStateText("Select..");
 	    	//	this.getDefaultPropertyValues();
 		    //	this.setDefaultValuesToGrid();
+			}
+			if(firstTimePageLoad)
+	    	{
+	    		var oRouter = this.getRouter();
+				oRouter.getRoute("addCURules").attachMatched(this._onRouteMatched, this);
+				firstTimePageLoad = false;
+	    	}
+		},
+		 	getRouter : function () {
+				return sap.ui.core.UIComponent.getRouterFor(this);
+			},
+		// force init method to be called everytime we naviagte to Maintain Attribuets page 
+		_onRouteMatched : function (oEvent) {
+			if(DataContext.isBAMUser() === false)
+			{
+				this.getOwnerComponent().getRouter().navTo("accessDenied");
+			}
+			else
+			{
+				this.onInit();
 			}
 		},
 		// This functions sets the value state of each control to None. This is to clear red input boxes when errors were found durin submission.
@@ -171,11 +196,12 @@ sap.ui.define([
 				var geoLevelFilter = new Filter("PRODUCT_LEVEL",sap.ui.model.FilterOperator.EQ,productLevel);
 				filterArray.push(geoLevelFilter);
 				var sortArray = [];
-				var sorter = new sap.ui.model.Sorter("LABEL",false);
+				var sorter = new sap.ui.model.Sorter("PRODUCT_DESC",false);
 				sortArray.push(sorter);
 				// Get the Country dropdown list from the CODE_MASTER table
 				this._oDataModel.read("/V_PRODUCT_ALL_LEVEL",{
 						filters: filterArray,
+						sorters: sortArray,
 						async: false,
 		                success: function(oData, oResponse){
 		                	// add Please select item on top of the list
@@ -208,10 +234,11 @@ sap.ui.define([
 			// Create a filter & sorter array
 
 			var sortArray = [];
-			var sorter = new sap.ui.model.Sorter("LABEL",false);
+			var sorter = new sap.ui.model.Sorter("RCU_DESC",false);
 			sortArray.push(sorter);
 			// Get the Country dropdown list from the CODE_MASTER table
 			this._oDataModel.read("/MST_RCU",{
+					sorters: sortArray,
 					async: false,
 	                success: function(oData, oResponse){
 	                	// add Please select item on top of the list
@@ -236,10 +263,11 @@ sap.ui.define([
 			// Create a filter & sorter array
 
 			var sortArray = [];
-			var sorter = new sap.ui.model.Sorter("LABEL",false);
+			var sorter = new sap.ui.model.Sorter("SUB_RCU_DESC",false);
 			sortArray.push(sorter);
 			// Get the Country dropdown list from the CODE_MASTER table
 			this._oDataModel.read("/MST_SUB_RCU",{
+					sorters: sortArray,
 					async: false,
 	                success: function(oData, oResponse){
 	                	// add Please select item on top of the list
@@ -258,28 +286,6 @@ sap.ui.define([
 	    			}
 	    	});
 	    	return result;
-		},
-		getRouter : function () {
-			return sap.ui.core.UIComponent.getRouterFor(this);
-		},
-		// force init method to be called everytime we naviagte to Maintain Attribuets page 
-		_onRouteMatched : function (oEvent) {
-			// If the user does not exist in the BAM database, redirect them to the denied access page
-			if(DataContext.isBAMUser() === false)
-			{
-				this.getOwnerComponent().getRouter().navTo("accessDenied");
-			}
-			else
-			{
-				if(firstTimePageLoad)
-				{
-					firstTimePageLoad = false;
-				}
-				else
-				{
-					this.onInit();
-				}
-			}
 		},
 		// on navigate back button
 		onNavBack: function () {
@@ -378,83 +384,152 @@ sap.ui.define([
         },
 		
 		onSubmit : function(){
-                                                var errorCount = 0;
-                                var successCount = 0;
-                                var AssignRule = this._oAssignRuleViewModel.getProperty("/AssignRuleVM");
-                                  // current limit for saving is 200 records
-                                                  // check if GMID Submission Grid  has more than 200 records
-                                                  // if more than 200 than show a validation message to user
-                                                var maxLimitSubmit = parseInt(this._oi18nModel.getProperty("MaxLimit"),10) ;
-                                                var RulesMaxLimitSubmit = this._oi18nModel.getProperty("MaxLimitSubmit.text");
-
-                                                // adding one to account for the extra line at the bottom
-                                               if (AssignRule.length > (maxLimitSubmit)) {
-                                                               MessageBox.alert(RulesMaxLimitSubmit,{
-                                                                                icon : MessageBox.Icon.ERROR,
-                                                                                title : "Error"});
-                                                                return;
-                                     }
-                                if (AssignRule.length === 1 || this.chkIsModified() === false)
-                                {
-                                                                MessageBox.alert("Please enter at least one rule.", {
-                                                                icon : MessageBox.Icon.ERROR,
-                                                                                title : "Invalid Input"
-                                               });
-                                                return;
-                                }
+                    var errorCount = 0;
+                    var successCount = 0;
+                    var AssignRule = this._oAssignRuleViewModel.getProperty("/AssignRuleVM");
+                      // current limit for saving is 200 records
+                      // check if GMID Submission Grid  has more than 200 records
+                      // if more than 200 than show a validation message to user
+                    var maxLimitSubmit = parseInt(this._oi18nModel.getProperty("MaxLimit"),10) ;
+                    var RulesMaxLimitSubmit = this._oi18nModel.getProperty("MaxLimitSubmit.text");
+                    // adding one to account for the extra line at the bottom
+	                   if (AssignRule.length > (maxLimitSubmit)) {
+                               MessageBox.alert(RulesMaxLimitSubmit,{
+                                                icon : MessageBox.Icon.ERROR,
+                                                title : "Error"});
+                            return;
+                         }
+                        if (AssignRule.length === 1)
+                        {
+                                    MessageBox.alert("Please enter at least one rule.", {
+                                    icon : MessageBox.Icon.ERROR,
+                                    title : "Invalid Input"
+                               });
+                            return;
+                        }
                                 // reset error on page to false
-                                                this._oAssignRuleViewModel.setProperty("/ErrorOnPage",false);
+                        this._oAssignRuleViewModel.setProperty("/ErrorOnPage",false);
 
-                                                //open busy dialog
-                                                this._busyDialog.open();
-                                                // // need to declare local this variable to call global functions in the timeout function
-                                                var t = this;
-                                                //this._ruleList = this.ruleList();
-                                                
-                                                // //permission to submit gmid without plants
-                                                // //var hasPermission = false;
-                                                
-                                                // // setting timeout function in order to show the busy dialog before doing all the validation
-                                                setTimeout(function()
+                        //open busy dialog
+                        this._busyDialog.open();
+                        // // need to declare local this variable to call global functions in the timeout function
+                        var t = this;
+                        //this._ruleList = this.ruleList();
+                        
+                        // //permission to submit gmid without plants
+                        // //var hasPermission = false;
+                        
+                        // // setting timeout function in order to show the busy dialog before doing all the validation
+                        setTimeout(function()
                 {
-                                // 
-                                // Check validations here 
-                                var tablePath = "/MST_CU_RULE";
-                                // Create current timestamp
-                                var oDate = new Date();                
-                                var ruleSetSeq = this._oViewModelData.CU_RULESET_SEQ;
-                                for(var i = 0; i < AssignRule.length - 1; i++) {
-                                                if(t.checkEmptyRows(AssignRule[i]) === true){
-                                                                var geoLevelValId = t.lpadstring(AssignRule[i].GEO_LEVEL_VAL_ID);
-                                                                var productLevelCode = AssignRule[i].PRODUCT_LEVEL_VAL_CODE;
-                                                                var rcuCode                        = AssignRule[i].RCU_CODE;
-                                                                var subRcuCode =  AssignRule[i].SUB_RCU_CODE;
-                                                                //
-                                                                var newAssignRule = {
-                                                                                CU_RULESET_SEQ : ruleSetSeq,
-                                                                                GEO_LEVEL_VAL_ID : geoLevelValId,
-                                                                                PRODUCT_LEVEL_VAL_CODE : productLevelCode,
-                                                                                RCU_CODE : rcuCode,
-                                                                                SUB_RCU_CODE : subRcuCode,
-                                                                                VALID_FLAG : "T",
-                                                                                CREATED_ON : loggedInUserID,
-                                                                                CREATED_BY : oDate
-                                                                };
-                                                //            t._oDataModel.create(tablePath, newAssignRule,
-                                                //            {
-                                                //                            success: function(){
-                                                //                                            successCount++;
-                                                //                            },
-                                                //                            error: function(){
-                                                //                                            errorCount++;
-                                                //                            }
-                                                //            });                                                                                           
-                                                }
-                               }
-                                            // close busy dialog
-                                            t._busyDialog.close();
-                            },500); // end of timeout function
-                                },
+                        // 
+                        // Check validations here 
+                        var tablePath = "/MST_CU_RULE";
+                        // Create current timestamp
+                        var oDate = new Date();                
+                       var ruleSetSeq = t._oViewModelData.CU_RULESET_SEQ;
+                       var strSubmission = t._oi18nModel.getProperty("submission");
+                        for(var i = 0; i < AssignRule.length - 1; i++) {
+                                if(t.checkEmptyRows(AssignRule[i],strSubmission) === true)
+                                {
+                                		var productLevelCode;
+                                		var rcuCode;
+                                		var subRcuCode;
+                                        var geoLevelValId    = parseInt(AssignRule[i].LEVEL_ID,10);
+                                        if (AssignRule[i].PRODUCT_CODE === 0 )
+                                        {
+                                        	productLevelCode = '';
+                                        }
+                                        else
+                                        {
+                                        	productLevelCode = AssignRule[i].PRODUCT_CODE;
+                                        }
+                                        if (AssignRule[i].RCU_CODE === -1 )
+                                        {
+                                        	rcuCode = '';
+                                        }
+                                        else
+                                        {
+                                        	 rcuCode          = AssignRule[i].RCU_CODE;
+                                        }
+                                        if (AssignRule[i].SUB_RCU_CODE === -1 )
+                                        {
+                                        	subRcuCode = '';
+                                        }
+                                        else
+                                        {
+                                        	 subRcuCode		 =  AssignRule[i].SUB_RCU_CODE;
+                                        }
+                                        //
+                                        var newAssignRule = {
+                                        				CU_RULE_ID: 1,
+                                                        CU_RULESET_SEQ : ruleSetSeq,
+                                                        GEO_LEVEL_VAL_ID : geoLevelValId,
+                                                        PRODUCT_LEVEL_VAL_CODE : productLevelCode,
+                                                        RCU_CODE : rcuCode,
+                                                        SUB_RCU_CODE : subRcuCode,
+                                                        VALID_FLAG : "T",
+                                                        CREATED_ON : oDate,
+                                                        CREATED_BY : loggedInUserID
+                                        };
+                                            t._oDataModel.create(tablePath, newAssignRule,
+                                            {
+                                                    success: function(){
+                                                                    successCount++;
+                                                    },
+                                                    error: function(){
+                                                                    errorCount++;
+                                                    }
+                                            });                                                                                           
+                                }
+                       }
+                       
+                       //Show success or error message
+		    		if(errorCount === 0) 
+		    		{
+	        				var oRouter = t.getRouter();
+	        				// once insertion is success, navigate to homepage
+	        				MessageBox.alert("You have successfully submitted " + successCount + " Rule(s)",
+								{
+									icon : MessageBox.Icon.SUCCESS,
+									title : "Success",
+									onClose: function() {
+					        			oRouter.navTo("cuAssignment");
+					        		}
+								});
+		    		}
+					else
+					{
+						MessageBox.alert("Error: There is an entry error on the page. Please correct.",
+							{
+								icon : MessageBox.Icon.ERROR,
+								title : "Error"
+							});
+					}
+
+                    // close busy dialog
+                    t._busyDialog.close();
+                    },500); // end of timeout function
+                },
+	checkEmptyRows : function(row,strtype){
+        var errorsFound = false;
+        var data = this._oViewModelData.AssignRuleVM;
+        //below check needs to be performed if we have more than one row, if only one row in grid no need to check
+        //	dont validate the fields if nothing is changed for the row, i.e. user does not wnat to enter any data
+        	if ((data.length >= 2) && (this._isChanged === true)){
+	        			if ((parseInt(row.LEVEL_ID,10) === -1) && (parseInt(row.PRODUCT_CODE,10) === -1 || parseInt(row.PRODUCT_CODE,10) === 0) && (parseInt(row.RCU_CODE,10) === -1)
+	        		    &&	(parseInt(row.SUB_RCU_CODE,10) === -1))
+	        		     {
+	        		    	errorsFound = false;
+	        		    	return errorsFound;
+	        		     }
+	        		    else
+	        		    {
+	        		    	if (strtype === "Submission")
+	        		    	return true;
+	        		    }
+        	}
+        },
 
 		//cancel click on Add CU Rules page
 			onCancel: function(){

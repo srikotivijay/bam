@@ -6,8 +6,8 @@
 					<Button id="btnHome" icon="sap-icon://home" tooltip="{i18n>home}" press="onHome"/>
 				</headerContent>
 				<content>
-				<HBox height="100px" justifyContent="SpaceBetween" alignItems="Center">
-				<Text id="lblCuRuleSet" text="Please Select Rule:"  wrapping="false"/>
+				<HBox height="100px" alignItems="Center">
+				<Text id="lblCuRuleSet" text="Rule Set:"  wrapping="false" width = "120px"/>
 				<ComboBox
 						id="cmbRuleSetList"
 						showSecondaryValues= "true"
@@ -24,9 +24,9 @@
 					<core:ListItem key="{CU_RULESET_SEQ}" text="{parts: ['NAME','DESCRIPTION'], formatter: '.formatText'}" additionalText="{CU_RULESET_SEQ}"/>
 				</ComboBox>
 				</HBox>	
-				<table:Table id="rulesTable" rows="{/AssignRuleVM}" visible="true" width="auto" visibleRowCount="10" selectionMode="None" enableColumnReordering="false">
+				<table:Table id="rulesTable" rows="{/AssignRuleVM}" visible="true" width="auto" visibleRowCount="8" selectionMode="None" enableColumnReordering="false">
 					<table:columns>
-						<table:Column id="clmHdrAction" width="110px" resizable="false">
+						<table:Column id="clmHdrAction" width="90px" resizable="false">
 							<Label text="{i18n>action}" id="lblAction"/>
 							<table:template>
 								<HBox alignContent="Start" direction="Inherit" alignItems="Baseline">
