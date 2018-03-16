@@ -6,7 +6,7 @@
 					<Button id="btnHome" icon="sap-icon://home" tooltip="{i18n>home}" press="onHome"/>
 				</headerContent>
 				<content>
-				<HBox height="100px" justifyContent="Start" alignItems="Center">
+				<HBox height="100px" justifyContent="SpaceBetween" alignItems="Center">
 				<Text id="lblCuRuleSet" text="Please Select Rule:"  wrapping="false"/>
 				<ComboBox
 						id="cmbRuleSetList"
