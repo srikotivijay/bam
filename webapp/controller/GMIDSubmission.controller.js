@@ -908,7 +908,7 @@ sap.ui.define([
 		    			// save only those records which are entered or updated
 		    			if(t.checkEmptyRows(GMIDShipToCountry[i],strSubmission) === true)
 		    			{
-							var GMID = GMIDShipToCountry[i].GMID;
+							var GMID = t.getGMID(GMIDShipToCountry[i].GMID);
 							var countryID = parseInt(GMIDShipToCountry[i].COUNTRY_CODE_ID,10);
 							var storedcurrencyID = parseInt(GMIDShipToCountry[i].CURRENCY_CODE_ID,10);
 							var ibprelevancyID = parseInt(GMIDShipToCountry[i].IBP_RELEVANCY_CODE_ID,10);
@@ -1475,6 +1475,23 @@ sap.ui.define([
          	var oUploadCollection = this.getView().byId("ucDownloadTemplate");
 			var oUploadCollectionItem = this.getView().byId("uciDownloadTemplate");
 			oUploadCollection.downloadItem(oUploadCollectionItem, true);
+		},
+		
+		getGMID : function(gmid){
+			var result = gmid;
+			var gmidList = [];
+			var gmidId = {"GMID": "" };
+			gmidId.GMID = this.lpadstring(gmid);
+			gmidList.push(gmidId);
+
+			var viewpath = "V_VALIDATE_GMID";
+             // below function will get all the GMID Country Records for the GMID's entered in UI
+             var gmidRecords = DataContext.getGMIDListFromDB(gmidList,viewpath);   
+             for(var k = 0; k < gmidRecords.length; k++) {
+				result = gmidRecords[k].GMID;
+				break;
+             }
+             return result;
 		}
   	});
 
