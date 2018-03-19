@@ -511,7 +511,7 @@ sap.ui.define([
         	var data = this._oViewModelData.GMIDShipToCountryVM;
              var viewpath = "V_GMID_SHIP_FROM_PLANT";
              // get all the GMID/Plants data for the GMIDS entered in UI
-             var gmidPlantRecords = DataContext.getGMIDListFromDB(this._gmidList,viewpath); 
+             var gmidPlantRecords = DataContext.getGMIDListFromDBByGMIDPad(this._gmidList,viewpath); 
         	 var IsAllgmidHasPlant = true;
         	 var existPlant = false;
         	 var returnArr = [];
@@ -566,7 +566,7 @@ sap.ui.define([
             var gmiddata = this._oViewModelData.GMIDShipToCountryVM;
              var viewpath = "V_VALIDATE_GMID";
              // below function will get all the GMID Country Records for the GMID's entered in UI
-             var gmidCountryRecords = DataContext.getGMIDListFromDB(this._gmidList,viewpath);                           
+             var gmidCountryRecords = DataContext.getGMIDListFromDBByGMIDPad(this._gmidList,viewpath);                           
         	 var oi18nModel = this.getView().getModel("i18n");
         	  // get the GMID status for i18n model
         	 var z1gmid = oi18nModel.getProperty("z1gmidstatus");
@@ -615,7 +615,7 @@ sap.ui.define([
         	 var gmiddata = gmiddataobject;
              var viewpath = "V_VALIDATE_GMID";
              // get all the GMID's with the Status for the GMID's entered in UI
-             var gmidRecords = DataContext.getGMIDListFromDB(this._gmidList,viewpath); 
+             var gmidRecords = DataContext.getGMIDListFromDBByGMIDPad(this._gmidList,viewpath); 
          	 var IsAllvalidgmids = true;
          	 //var dasSource = this._oi18nModel.getProperty("dasSource");
          	 //var dcpSource = this._oi18nModel.getProperty("dcpSource");
@@ -908,7 +908,7 @@ sap.ui.define([
 		    			// save only those records which are entered or updated
 		    			if(t.checkEmptyRows(GMIDShipToCountry[i],strSubmission) === true)
 		    			{
-							var GMID = t.getGMID(GMIDShipToCountry[i].GMID);
+							var GMID = GMIDShipToCountry[i].GMID;
 							var countryID = parseInt(GMIDShipToCountry[i].COUNTRY_CODE_ID,10);
 							var storedcurrencyID = parseInt(GMIDShipToCountry[i].CURRENCY_CODE_ID,10);
 							var ibprelevancyID = parseInt(GMIDShipToCountry[i].IBP_RELEVANCY_CODE_ID,10);
@@ -1041,7 +1041,7 @@ sap.ui.define([
             var data = this._oViewModelData.GMIDShipToCountryVM;
 	        // need to pass the above array to the DB to get the duplicate records
 	        var viewpath = "V_VALIDATE_GMID_COUNTRY";
-            var gmidCountryRecords = DataContext.getGMIDListFromDB(this._gmidList,viewpath);                           
+            var gmidCountryRecords = DataContext.getGMIDListFromDBByGMIDPad(this._gmidList,viewpath);                           
             var isDuplicate = false;
             for(var i = 0; i < data.length - 1; i++) 
             {
@@ -1486,7 +1486,7 @@ sap.ui.define([
 
 			var viewpath = "V_VALIDATE_GMID";
              // below function will get all the GMID Country Records for the GMID's entered in UI
-             var gmidRecords = DataContext.getGMIDListFromDB(gmidList,viewpath);   
+             var gmidRecords = DataContext.getGMIDListFromDBByGMIDPad(gmidList,viewpath);   
              for(var k = 0; k < gmidRecords.length; k++) {
 				result = gmidRecords[k].GMID;
 				break;

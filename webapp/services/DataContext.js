@@ -222,7 +222,7 @@ sap.ui.define([
             var result;                            
             var gmidFilterArray = [];
             gmidList.forEach(function(item) {
-	            var gmidFilter = new Filter("GMID_PAD",sap.ui.model.FilterOperator.EQ,item.GMID);
+	            var gmidFilter = new Filter("GMID",sap.ui.model.FilterOperator.EQ,item.GMID);
 	            var gmidFilterList = new Filter ({
                     filters : [
                         gmidFilter
@@ -255,6 +255,43 @@ sap.ui.define([
 			return result;
 		}
 
+		// function to get unique GMID/Country Combinations from DB
+    	function getGMIDListFromDBByGMIDPad(gmidList,viewpath) {
+            var result;                            
+            var gmidFilterArray = [];
+            gmidList.forEach(function(item) {
+	            var gmidFilter = new Filter("GMID_PAD",sap.ui.model.FilterOperator.EQ,item.GMID);
+	            var gmidFilterList = new Filter ({
+                    filters : [
+                        gmidFilter
+                        ],
+                        and : true
+                    });
+	            gmidFilterArray.push(gmidFilterList);
+            });
+            // Get data for all GMIDS Entered in UI
+            oDataModel.read(viewpath, {
+                filters: gmidFilterArray,
+                async: false,
+				success: function(oData, oResponse) {
+                    var GMIDCountryList = [];
+		            // get all the GMID/Country List for each row returned
+		            oData.results.forEach(function(item) {
+		            GMIDCountryList.push(item);
+		            });
+            		result = GMIDCountryList;
+                },
+                error: function(oError) {
+                    MessageBox.alert("Error getting GMID/Country List. Please contact System Admin.",
+					{
+						icon : MessageBox.Icon.ERROR,
+						title : "Error"
+					});    
+                    result = [];
+                }
+            });
+			return result;
+		}		
 		
 		function getMaxID(tablePath)
 		{
@@ -494,6 +531,7 @@ sap.ui.define([
 			getAttributeListBasedOnUserID: getAttributeListBasedOnUserID,
 			getUserID: getUserID,
 			getGMIDListFromDB: getGMIDListFromDB,
+			getGMIDListFromDBByGMIDPad:getGMIDListFromDBByGMIDPad,
 			getMaxID: getMaxID,
 			getUserPermissions: getUserPermissions,
 			isBAMUser : isBAMUser,
