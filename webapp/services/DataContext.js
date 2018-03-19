@@ -222,7 +222,7 @@ sap.ui.define([
             var result;                            
             var gmidFilterArray = [];
             gmidList.forEach(function(item) {
-	            var gmidFilter = new Filter("GMID",sap.ui.model.FilterOperator.EQ,item.GMID);
+	            var gmidFilter = new Filter("GMID_PAD",sap.ui.model.FilterOperator.EQ,item.GMID);
 	            var gmidFilterList = new Filter ({
                     filters : [
                         gmidFilter
