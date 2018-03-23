@@ -186,6 +186,11 @@
 					"pattern": "addCURules",
 					"name": "addCURules",
 					"target": "addCURules"
+				},
+				{
+					"pattern": "editCURules",
+					"name": "editCURules",
+					"target": "editCURules"
 				}
 			],
 			"targets": {
@@ -245,6 +250,10 @@
 				"addCURules": {
 					"viewName": "AddCURules",
 					"viewId": "addCURules"
+				},
+				"editCURules": {
+					"viewName": "EditCURules",
+					"viewId": "editCURules"
 				}
 			}
 		}

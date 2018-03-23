@@ -1,0 +1,40 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:html="http://www.w3.org/1999/xhtml" controllerName="bam.controller.EditAttributesSingle">
+	<App id="editCURules">
+		<pages>
+			<Page title="{i18n>title}" 
+				showNavButton="true"
+				navButtonPress="onNavBack">
+				<content>
+				<f:Form editable="true" id="formEditAttributeSingle">
+				    <f:formContainers>
+				        <f:FormContainer title="{i18n>editCURules}" id="fConEditCURules">
+				            <f:formElements>
+				                <f:FormElement label="{i18n>cu}{i18n>mandatory}" id="felmCU">
+				                    <Select xmlns:sap.ui.core="sap.ui.core" width="40%" id="ddlCU" name="ddlCU" change="onChange" items="{path: '/MST_CU_RULE'}" selectedKey="{RCU_CODE}">
+		                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
+										</Select>
+				                </f:FormElement>
+				                <f:FormElement label="{i18n>subCU}{i18n>mandatory}" id="felmSubCU">
+				                    <Select xmlns:sap.ui.core="sap.ui.core" width="40%" id="ddlSubCU" name="ddlSubCU" change="onChange" items="{path: '/AssignRuleVM/SubRCU'}" selectedKey="{SUB_RCU_CODE}">
+		                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
+										</Select>
+				                </f:FormElement>
+				            </f:formElements>
+				        </f:FormContainer>
+				    </f:formContainers>
+				    <f:layout>
+				        <f:ResponsiveGridLayout id="fResGridEditAttributes"/>
+				    </f:layout>
+				</f:Form>
+				<Toolbar width="100%" id="tbrSubmit">
+				     <content>
+				        <ToolbarSpacer id="tbrSpSubmit"/>
+						<Button text="{i18n>submit}" width="100px" id="btnSubmit" press="onSubmit"/>
+				        <Button text="{i18n>cancel}" width="100px" id="btnCancel" press="onCancel" class="sapUiLargeMarginEnd"/>
+				     </content>
+					</Toolbar>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

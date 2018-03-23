@@ -3,7 +3,7 @@ sap.ui.define([
 		"bam/services/DataContext",
 		"sap/ui/model/resource/ResourceModel",
 		"sap/ui/core/routing/History"
-	], function (Controller,DataContext,ResourceModel,History) {
+	], function (Controller,DataContext,MessageBox,ResourceModel,History) {
 		"use strict";
 
   	var loggedInUserID;
@@ -96,6 +96,11 @@ sap.ui.define([
 		// open the new page to add rule/ruleset
 		onAdd: function(){
 			this.getOwnerComponent().getRouter().navTo("addCURules");
-	}
+	},
+	
+	// navigate to edit attribute page on click of edit
+			onEdit: function(){
+			this.getOwnerComponent().getRouter().navTo("editCURules");	
+			}
   	});
 });
