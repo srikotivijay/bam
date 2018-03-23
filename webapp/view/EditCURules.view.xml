@@ -10,13 +10,13 @@
 				        <f:FormContainer title="{i18n>editCURules}" id="fConEditCURules">
 				            <f:formElements>
 				                <f:FormElement label="{i18n>cu}{i18n>mandatory}" id="felmCU">
-				                    <Select xmlns:sap.ui.core="sap.ui.core" width="40%" id="ddlCU" name="ddlCU" change="onChange" items="{path: '/MST_CU_RULE'}" selectedKey="{RCU_CODE}">
-		                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
+				                    <Select xmlns:sap.ui.core="sap.ui.core" width="40%" id="ddlCU" name="ddlCU" change="onChange" items="{path: '/AssignRuleVM/RCU', templateShareable : true}" selectedKey="{RCU_CODE}">
+		                            		<sap.ui.core:ListItem key="{RCU_CODE}" text="{RCU_DESC}"/>
 										</Select>
 				                </f:FormElement>
 				                <f:FormElement label="{i18n>subCU}{i18n>mandatory}" id="felmSubCU">
-				                    <Select xmlns:sap.ui.core="sap.ui.core" width="40%" id="ddlSubCU" name="ddlSubCU" change="onChange" items="{path: '/AssignRuleVM/SubRCU'}" selectedKey="{SUB_RCU_CODE}">
-		                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
+				                    <Select xmlns:sap.ui.core="sap.ui.core" width="40%" id="ddlSubCU" name="ddlSubCU" change="onChange" items="{path: '/AssignRuleVM/SubRCU', templateShareable : true}" selectedKey="{SUB_RCU_CODE}">
+		                            		<sap.ui.core:ListItem key="{SUB_RCU_CODE}" text="{SUB_RCU_DESC}"/>
 										</Select>
 				                </f:FormElement>
 				            </f:formElements>

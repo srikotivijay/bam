@@ -2,8 +2,10 @@ sap.ui.define([
 		"sap/ui/core/mvc/Controller",
 		"bam/services/DataContext",
 		"sap/ui/model/resource/ResourceModel",
-		"sap/ui/core/routing/History"
-	], function (Controller,DataContext,MessageBox,ResourceModel,History) {
+		"sap/ui/core/routing/History",
+		"sap/ui/model/Filter",
+		"sap/ui/model/Sorter"
+	], function (Controller,DataContext,MessageBox,ResourceModel,History,Filter,Sorter) {
 		"use strict";
 
   	var loggedInUserID;
