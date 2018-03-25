@@ -83,6 +83,7 @@
 										id="cmbCU"
 										showSecondaryValues= "true"
 										filterSecondaryValues= "true"
+									    change="onChangeCU"
 										value="{RCU_DESC}"
 										selectedKey="{RCU_CODE}"
 										width="500px"

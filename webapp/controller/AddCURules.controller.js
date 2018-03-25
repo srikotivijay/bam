@@ -122,7 +122,7 @@ sap.ui.define([
 				this._oModel.setProperty("/AssignRuleVM/Geography",this.getGeoLevelDropDown(geoLevel));
 				this._oModel.setProperty("/AssignRuleVM/Product",this.getProductLevelDropDown(productLevel));
 			    this._oModel.setProperty("/AssignRuleVM/RCU",this.getRCUDropDown());
-		    	this._oModel.setProperty("/AssignRuleVM/SubRCU",this.getSubRCUDropDown());
+		    	this._oModel.setProperty("/AssignRuleVM/SubRCU",this.getSubRCUDropDown(null));
 		    	this.getDefaultPropertyValues();
 				this.setDefaultValuesToGrid();
 			}
@@ -131,6 +131,22 @@ sap.ui.define([
 				this.onInit();
 			}
 
+		},
+		// Populate Sub CU on bases of CU, if CU is selected
+		onChangeCU : function (oEvent)
+		{
+			this._isChanged = true;
+			var sourceControl = oEvent.getSource();
+			// get the selected value
+			var selectedCU = sourceControl.getSelectedItem().getKey();
+			if (selectedCU !== "-1")
+			{
+					this._oModel.setProperty("/AssignRuleVM/SubRCU",this.getSubRCUDropDown(selectedCU));
+			}
+			else
+			{
+				this._oModel.setProperty("/AssignRuleVM/SubRCU",this.getSubRCUDropDown(null));
+			}
 		},
 		getRulesDropDown : function () {
 			var result;
@@ -235,9 +251,7 @@ sap.ui.define([
 		},
 		getRCUDropDown : function () {
 			var result;
-			
 			// Create a filter & sorter array
-
 			var sortArray = [];
 			var sorter = new sap.ui.model.Sorter("RCU_DESC",false);
 			sortArray.push(sorter);
@@ -263,15 +277,23 @@ sap.ui.define([
 	    	});
 	    	return result;
 		},
-		getSubRCUDropDown : function () {
+		getSubRCUDropDown : function (selectedCU) {
 			var result;
-			// Create a filter & sorter array
-
+		// Create a filter & sorter array
+		// filter RCU based on CU, if CU is selected
+		// show all RCU if CU is not selected
+			var filterArray = [];
+			if (selectedCU !== null)
+			{
+				var subCUFilter = new Filter("RCU_CODE",sap.ui.model.FilterOperator.EQ,selectedCU);
+				filterArray.push(subCUFilter);
+			}
 			var sortArray = [];
 			var sorter = new sap.ui.model.Sorter("SUB_RCU_DESC",false);
 			sortArray.push(sorter);
 			// Get the Country dropdown list from the CODE_MASTER table
 			this._oDataModel.read("/MST_SUB_RCU",{
+					filters: filterArray,
 					sorters: sortArray,
 					async: false,
 	                success: function(oData, oResponse){
