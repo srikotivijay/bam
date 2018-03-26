@@ -106,6 +106,8 @@ sap.ui.define([
     	onChangeRuleSet: function(oEvent){
     		// update ischanged to true for any attribute changed
     		this._isChanged = true;
+    		// reset the error message property to false before doing any validation
+			this.resetValidationForModel();
 			var sourceControl = oEvent.getSource();
 			// get the selected value
 			var selectedRulekey = sourceControl.getSelectedItem().getKey();
@@ -124,7 +126,6 @@ sap.ui.define([
 			    for(var i = 0; i < ruleVM.length - 1; i++) {
 			    	ruleVM[i].SUB_RCU =    subRcuDropDown;                      
 			    }
-		    	//this._oModel.setProperty("/AssignRuleVM/SubRCU",this.getSubRCUDropDown(null));
 		    	this.getDefaultPropertyValues();
 				this.setDefaultValuesToGrid();
 			}
@@ -147,12 +148,27 @@ sap.ui.define([
 			{	
 				var subRcuDropDown = this.getSubRCUDropDown(selectedCU);
 				ruleVM[rowId].SUB_RCU =    subRcuDropDown; 
+				ruleVM[rowId].SUB_RCU_CODE = -1;
 				ruleVM[rowId].subcuErrorState = "None";
 			}
 			else
 			{
 				ruleVM[rowId].SUB_RCU =    this.getSubRCUDropDown(null); 
 				ruleVM[rowId].SUB_RCU_CODE = -1;
+			}
+		},
+		// clear the error message from CU, if SUB CU is selected
+		onChangeSUBCU : function (oEvent)
+		{
+			this._isChanged = true;
+			var sourceControl = oEvent.getSource();
+			// get the selected value
+			var selectedSUBCU = sourceControl.getSelectedItem().getKey();
+			var ruleVM = this._oViewModelData.AssignRuleVM;
+			var rowId = this.getView().byId(oEvent.getParameters().id).getParent().getIndex();
+			if (selectedSUBCU !== "-1")
+			{	
+				ruleVM[rowId].cuErrorState = "None";
 			}
 		},
 		getRulesDropDown : function () {
@@ -570,6 +586,8 @@ sap.ui.define([
             	data[i].errorSummary = "";
             	data[i].geographyErrorState = "None";
             	data[i].productErrorState = "None";
+            	data[i].cuErrorState = "None";
+            	data[i].subcuErrorState = "None";
             }
             this._oAssignRuleViewModel.refresh();
         },
@@ -627,6 +645,8 @@ sap.ui.define([
 		onSubmit : function(){
                     var errorCount = 0;
                     var successCount = 0;
+                    // reset the error message property to false before doing any validation
+					this.resetValidationForModel();
                     var AssignRule = this._oAssignRuleViewModel.getProperty("/AssignRuleVM");
                       // current limit for saving is 200 records
                       // check if Rule Submission Grid  has more than 200 records
@@ -658,8 +678,6 @@ sap.ui.define([
                                });
                             return;
                         }
-                        // reset the error message property to false before doing any validation
-						this.resetValidationForModel();
                         // reset error on page to false
                         this._oAssignRuleViewModel.setProperty("/ErrorOnPage",false);
 

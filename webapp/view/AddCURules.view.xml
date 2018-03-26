@@ -104,6 +104,7 @@
 										id="cmbSubCU"
 										showSecondaryValues= "true"
 										filterSecondaryValues= "true"
+										change="onChangeSUBCU"
 										value="{SUB_RCU_DESC}"
 										selectedKey="{SUB_RCU_CODE}"
 										width="500px"
