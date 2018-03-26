@@ -141,18 +141,17 @@ sap.ui.define([
 			var sourceControl = oEvent.getSource();
 			// get the selected value
 			var selectedCU = sourceControl.getSelectedItem().getKey();
+			var ruleVM = this._oViewModelData.AssignRuleVM;
+			var rowId = this.getView().byId(oEvent.getParameters().id).getParent().getIndex();
 			if (selectedCU !== "-1")
 			{	
 				var subRcuDropDown = this.getSubRCUDropDown(selectedCU);
-				var ruleVM = this._oViewModelData.AssignRuleVM;
-			//	var rowId = this.getView().byId(oEvent.getParameters().id).oParent.getId();
-				ruleVM[0].SUB_RCU =    subRcuDropDown; 
-					//this._oModel.setProperty("/AssignRuleVM/SubRCU",this.getSubRCUDropDown(selectedCU));
+				ruleVM[rowId].SUB_RCU =    subRcuDropDown; 
 			}
 			else
 			{
-			  
-				this._oModel.setProperty("/AssignRuleVM/SubRCU",this.getSubRCUDropDown(null));
+				ruleVM[rowId].SUB_RCU =    this.getSubRCUDropDown(null); 
+				ruleVM[rowId].SUB_RCU_CODE = -1;
 			}
 		},
 		getRulesDropDown : function () {
@@ -378,7 +377,12 @@ sap.ui.define([
 		
 		onAddRow:function(oEvent){
 			var path = oEvent.getSource().getBindingContext().getPath();
+			 var selectedRulekey = this.getView().byId("cmbRuleSetList").getSelectedItem().getKey();
 		    // create new empty rule object
+		    var subRCU = "None";
+		    if(selectedRulekey !== "-1"){
+		    	subRCU = this.getSubRCUDropDown(null);
+		    }
 		    var obj = {
 			    		LEVEL_ID : -1,
 			    		geographyErrorState : "None",
@@ -386,12 +390,13 @@ sap.ui.define([
 			    		productErrorState : "None",
 			    		RCU_CODE : -1,
 			    		cuErrorState : "None",
+			    		SUB_RCU : subRCU,
 			    		SUB_RCU_CODE : -1,
 			    		ubcuErrorState : "None",
 			    		createNew : false,
 			    		isError :false
 		    		};
-		    var selectedRulekey = this.getView().byId("cmbRuleSetList").getSelectedItem().getKey();
+		   
 	    	if (selectedRulekey !== "-1") // added this cond to show default values only if valid rule set is selected
 	    	{
 	    		obj = this.setDefaultPropertyValues(obj);
