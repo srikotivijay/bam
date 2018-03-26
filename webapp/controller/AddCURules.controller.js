@@ -51,6 +51,7 @@ sap.ui.define([
 			    		"productErrorState" : "None",
 			    		"RCU_CODE" : -1,
 			    		"cuErrorState" : "None",
+			    		"SUB_RCU": "None",
 			    		"SUB_RCU_CODE" : -1,
 			    		"subcuErrorState" : "None",
 			    		"createNew" : false,
@@ -79,12 +80,6 @@ sap.ui.define([
 	    		this._oModel.setProperty("/AssignRuleVM/RuleSet",this.getRulesDropDown());
 	    		this._oModel.setProperty("/CU_RULESET_SEQ",-1);
 	    		this._oModel.setProperty("/NAME","Please Select a Rule Set");
-	    		// this.getView().byId("cmbGeography").setValueStateText("");
-	    		// this.getView().byId("cmbProduct").setValueStateText("");
-	    		// this.getView().byId("cmbCU").setValueStateText("");
-	    	 //   this.getView().byId("cmbSubCU").setValueStateText("");
-	    	//	this.getDefaultPropertyValues();
-		    //	this.setDefaultValuesToGrid();
 			}
 			if(firstTimePageLoad)
 	    	{
@@ -124,7 +119,12 @@ sap.ui.define([
 				this._oModel.setProperty("/AssignRuleVM/Geography",this.getGeoLevelDropDown(geoLevel));
 				this._oModel.setProperty("/AssignRuleVM/Product",this.getProductLevelDropDown(productLevel));
 			    this._oModel.setProperty("/AssignRuleVM/RCU",this.getRCUDropDown());
-		    	this._oModel.setProperty("/AssignRuleVM/SubRCU",this.getSubRCUDropDown(null));
+			    var subRcuDropDown = this.getSubRCUDropDown(null);
+			    var ruleVM = this._oViewModelData.AssignRuleVM;
+			    for(var i = 0; i < ruleVM.length - 1; i++) {
+			    	ruleVM[i].SUB_RCU =    subRcuDropDown;                      
+			    }
+		    	//this._oModel.setProperty("/AssignRuleVM/SubRCU",this.getSubRCUDropDown(null));
 		    	this.getDefaultPropertyValues();
 				this.setDefaultValuesToGrid();
 			}
@@ -142,11 +142,16 @@ sap.ui.define([
 			// get the selected value
 			var selectedCU = sourceControl.getSelectedItem().getKey();
 			if (selectedCU !== "-1")
-			{
-					this._oModel.setProperty("/AssignRuleVM/SubRCU",this.getSubRCUDropDown(selectedCU));
+			{	
+				var subRcuDropDown = this.getSubRCUDropDown(selectedCU);
+				var ruleVM = this._oViewModelData.AssignRuleVM;
+			//	var rowId = this.getView().byId(oEvent.getParameters().id).oParent.getId();
+				ruleVM[0].SUB_RCU =    subRcuDropDown; 
+					//this._oModel.setProperty("/AssignRuleVM/SubRCU",this.getSubRCUDropDown(selectedCU));
 			}
 			else
 			{
+			  
 				this._oModel.setProperty("/AssignRuleVM/SubRCU",this.getSubRCUDropDown(null));
 			}
 		},

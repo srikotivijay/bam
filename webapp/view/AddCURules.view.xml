@@ -108,7 +108,7 @@
 										selectedKey="{SUB_RCU_CODE}"
 										width="500px"
 										items="{
-											path: '/AssignRuleVM/SubRCU',
+											path: 'SUB_RCU',
 											templateShareable : true
 										}"
 										visible="{path: 'createNew', formatter: '.disableControl'}"
