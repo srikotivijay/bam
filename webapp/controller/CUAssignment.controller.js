@@ -1,6 +1,7 @@
 sap.ui.define([
 		"sap/ui/core/mvc/Controller",
 		"bam/services/DataContext",
+		"sap/m/MessageBox",
 		"sap/ui/model/resource/ResourceModel",
 		"sap/ui/core/routing/History",
 		"sap/ui/model/Filter",
@@ -118,7 +119,40 @@ sap.ui.define([
 	
 	// navigate to edit attribute page on click of edit
 			onEdit: function(){
-			this.getOwnerComponent().getRouter().navTo("editCURules");	
+				this._oSmartTable = this.getView().byId("smartTblCUAssignment").getTable();
+				// check if more than or less than 1 checkbox is checked
+				var index,context,path,indexOfParentheses1,indexOfParentheses2;
+				if(this._oSmartTable.getSelectedIndices().length > 1){
+				index = this._oSmartTable.getSelectedIndices();
+				var ids="";
+				var idArr = [];
+				for (var i=0;i < index.length;i++)
+				{
+					context = this._oSmartTable.getContextByIndex(index[i]); 
+						if(context != undefined){
+							path = context.getPath();
+							indexOfParentheses1 = path.indexOf("(");
+							indexOfParentheses2 = path.indexOf(")");
+							ids=path.substring(indexOfParentheses1 + 1,indexOfParentheses2);
+							idArr.push(ids);
+	
+						}
+				}
+				ids = ids.substring(0, ids.length - 1);
+					var oData = idArr;
+					//add to model
+					var oModel = new sap.ui.model.json.JSONModel(oData);
+					sap.ui.getCore().setModel(oModel);
+				this.getOwnerComponent().getRouter().navTo("editCURules");
+				}
+				else
+				{
+					MessageBox.alert("Please select one CU Rule record for edit.",
+							{
+								icon : MessageBox.Icon.ERROR,
+								title : "Error"
+						});
+				}
 			}
   	});
 });
