@@ -39,13 +39,9 @@ sap.ui.define([
 				this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
 				
 				 // set all the dropdowns, get the data from the code master table
-		    	oModel.setProperty("/STORED_CURRENCY_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddStoredCurrency")));
-		    	oModel.setProperty("/IBP_RELEVANCY_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddIBPRelevancyFlag")));
-		    	oModel.setProperty("/NETTING_DEFAULT_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddNettingDefaultFlag")));
-		    	oModel.setProperty("/QUADRANT_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddQuadrant")));
-		    	oModel.setProperty("/CHANNEL_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddChannel")));
-		    	oModel.setProperty("/MARKET_DEFAULT_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddMarketDefault")));
-		    	oModel.setProperty("/SUPPORT_SYSTEM_FLAG_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddSupplySystemFlag")));
+		    	oModel.setProperty("/AssignRuleVM/RCU",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddlCU")));
+		    	oModel.setProperty("/AssignRuleVM/SubRCU",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddlSubCU")));
+		    	
 			    	
 		    	// assign VM and VM data to a global variable for the page
 				this._oGMIDShipToCountryUpdViewModel = oModel;            
@@ -55,7 +51,7 @@ sap.ui.define([
 				{
 					//attach _onRouteMatched to be called everytime on navigation to Edit Attributes Single page
 					var oRouter = this.getRouter();
-					oRouter.getRoute("editAttributesSingle").attachMatched(this._onRouteMatched, this);
+					oRouter.getRoute("editCURules").attachMatched(this._onRouteMatched, this);
 					firstTimePageLoad = false;
 				}
 				
@@ -207,161 +203,11 @@ sap.ui.define([
 				}
 			},
 			onChange: function(oEvent){
-				var sourceControl = oEvent.getSource();
-				var sourceControlName = oEvent.getSource().getName();
-				// call the method to check if any of the attribute value has been updated 
-				if (this.validateAttributeValueChange(sourceControlName)){
-					// if true set the value state to warning to highlight the change to the user
-					sourceControl.setValueStateText("Attribute value changed");
-					sourceControl.setValueState(sap.ui.core.ValueState.Warning);
-				}
-				else{
-					// if false set the value state to none to remove highlight from the control
-					sourceControl.setValueStateText("");
-					sourceControl.setValueState(sap.ui.core.ValueState.None);
-				}
-			},
-			// validate if the value of various attributes has been updated
-			validateAttributeValueChange: function (sourceControlName){
-				if ((sourceControlName === "ddlStoredCurrency" && this._oViewModelData.CURRENCY_CODE_ID_ORG != this._oViewModelData.CURRENCY_CODE_ID)
-				|| (sourceControlName === "ddlIBPRelevancyFlag" && this._oViewModelData.IBP_RELEVANCY_CODE_ID_ORG != this._oViewModelData.IBP_RELEVANCY_CODE_ID)
-				|| (sourceControlName === "ddlNettingDefaultFlag" && this._oViewModelData.NETTING_DEFAULT_CODE_ID_ORG != this._oViewModelData.NETTING_DEFAULT_CODE_ID)
-				|| (sourceControlName === "ddlQuadrant" && this._oViewModelData.QUADRANT_CODE_ID_ORG != this._oViewModelData.QUADRANT_CODE_ID)
-				|| (sourceControlName === "ddlChannel" && this._oViewModelData.CHANNEL_CODE_ID_ORG != this._oViewModelData.CHANNEL_CODE_ID)
-				|| (sourceControlName === "ddlMarketDefaultFlag" && this._oViewModelData.MARKET_DEFAULT_CODE_ID_ORG != this._oViewModelData.MARKET_DEFAULT_CODE_ID)
-				|| (sourceControlName === "ddlSupportSystemFlag" && this._oViewModelData.SUPPLY_SYSTEM_FLAG_CODE_ID_ORG != this._oViewModelData.SUPPLY_SYSTEM_FLAG_CODE_ID)
-				|| (sourceControlName === "txtDemandAtt1" && this._oViewModelData.DEMAND_ATTRIBUTE1_ORG != this._oViewModelData.DEMAND_ATTRIBUTE1)
-				|| (sourceControlName === "txtDemandAtt2" && this._oViewModelData.DEMAND_ATTRIBUTE2_ORG != this._oViewModelData.DEMAND_ATTRIBUTE2)
-				|| (sourceControlName === "txtMktAtt1" && this._oViewModelData.MARKETING_ATTRIBUTE1_ORG != this._oViewModelData.MARKETING_ATTRIBUTE1)
-				|| (sourceControlName === "txtMktAtt2" && this._oViewModelData.MARKETING_ATTRIBUTE2_ORG != this._oViewModelData.MARKETING_ATTRIBUTE2)
-				|| (sourceControlName === "txtSupplyAtt1" && this._oViewModelData.SUPPLY_ATTRIBUTE1_ORG != this._oViewModelData.SUPPLY_ATTRIBUTE1)
-				|| (sourceControlName === "txtSupplyAtt2" && this._oViewModelData.SUPPLY_ATTRIBUTE2_ORG != this._oViewModelData.SUPPLY_ATTRIBUTE2)
-				){ 
-					return true;
-				}
-				else{
-					return false;
-				}
+				
 			},
 			//click of submit button
 			onSubmit: function(){
-				var curr = this;
-				// Check if any Attributes have the comma or semicolon,
-				// need to show message to use if either of these ( , or ;) are entered
-			   //get the list of updated attributes where special characters are entered
-			   var invalidCharUpdatedAttributes = curr.getInvalidCharUpdatedAttributes();
-		  	   if (invalidCharUpdatedAttributes !== "")
-		        {
-		        	MessageBox.alert("Special characters comma and semi-colon are not allowed in " + invalidCharUpdatedAttributes + ".",
-			        	{
-			        		icon : MessageBox.Icon.ERROR,
-							title : "Error"
-			        	});
-			        	return;
-		        }
-				var gmid = this._oViewModelData.GMID;
-				var country = this._oViewModelData.COUNTRY;
-				// check if user wants to update the attributes for GMID and country
-				MessageBox.confirm("Highlighted attributes will be updated for GMID " + gmid + " and country " + country + ". Continue?", {
-            		icon: sap.m.MessageBox.Icon.WARNING,
-            		actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
-            		onClose: function(oAction) {
-            			curr.fnCallbackSubmitConfirm(oAction);
-            		}
-        		});
-			},
-			//get the list of  attributes in string format where invalid characters has been entered
-			getInvalidCharUpdatedAttributes: function(){
-				// get the crop protection and seeds value from i18n file
-		    	var oi18nModel = this.getView().getModel("i18n");
-				var invalidCharacterAttributesString = "";
-				if (this.getView().byId("txtDemandAtt1").getValue().indexOf(",") >= 0 || this.getView().byId("txtDemandAtt1").getValue().indexOf(";") >= 0){
-					invalidCharacterAttributesString += oi18nModel.getProperty("demandAtt1");
-					invalidCharacterAttributesString += ", ";
-				}
-				if (this.getView().byId("txtDemandAtt2").getValue().indexOf(",") >= 0 || this.getView().byId("txtDemandAtt2").getValue().indexOf(";") >= 0){
-					invalidCharacterAttributesString += oi18nModel.getProperty("demandAtt2");
-					invalidCharacterAttributesString += ", ";
-				}
-				if (this.getView().byId("txtMktAtt1").getValue().indexOf(",") >= 0 || this.getView().byId("txtMktAtt1").getValue().indexOf(";") >= 0){
-					invalidCharacterAttributesString += oi18nModel.getProperty("mktAtt1");
-					invalidCharacterAttributesString += ", ";
-				}
-				if (this.getView().byId("txtMktAtt2").getValue().indexOf(",") >= 0 || this.getView().byId("txtMktAtt2").getValue().indexOf(";") >= 0){
-					invalidCharacterAttributesString += oi18nModel.getProperty("mktAtt2");
-					invalidCharacterAttributesString += ", ";
-				}
-				if (this.getView().byId("txtSupplyAtt1").getValue().indexOf(",") >= 0 || this.getView().byId("txtSupplyAtt1").getValue().indexOf(";") >= 0){
-					invalidCharacterAttributesString += oi18nModel.getProperty("supplyAtt1");
-					invalidCharacterAttributesString += ", ";
-				}
-				if (this.getView().byId("txtSupplyAtt2").getValue().indexOf(",") >= 0 || this.getView().byId("txtSupplyAtt2").getValue().indexOf(";") >= 0){
-					invalidCharacterAttributesString += oi18nModel.getProperty("supplyAtt2");
-					invalidCharacterAttributesString += ", ";
-				}
-				return invalidCharacterAttributesString.substring(0, invalidCharacterAttributesString.length - 2);
-			},
-			// update the attributes based on user response
-			fnCallbackSubmitConfirm: function(oAction){
-				var curr = this;
-				//if user confirmed to update the attributes, prepare the object and update the attributes for the GMID and country
-				//else do nothing
-				if (oAction === "YES") {
-					// Create current timestamp
-			    	var oDate = new Date();
-			    	var country = this._oViewModelData.COUNTRY;
-					// create updated GMIDShipToCountry object
-					var updGMIDCountry = {
-								ID: this._oEditAttributesID,
-					        	GMID: this._oViewModelData.GMID,
-					        	COUNTRY_CODE_ID: parseInt(this._oViewModelData.COUNTRY_CODE_ID,10),
-					        	TYPE:this._oViewModelData.TYPE,
-					        	CURRENCY_CODE_ID: parseInt(this._oViewModelData.CURRENCY_CODE_ID,10),
-					        	IBP_RELEVANCY_CODE_ID: parseInt(this._oViewModelData.IBP_RELEVANCY_CODE_ID,10),
-					        	NETTING_DEFAULT_CODE_ID: parseInt(this._oViewModelData.NETTING_DEFAULT_CODE_ID,10),
-					        	QUADRANT_CODE_ID:parseInt(this._oViewModelData.QUADRANT_CODE_ID,10),
-					        	CHANNEL_CODE_ID: parseInt(this._oViewModelData.CHANNEL_CODE_ID,10),
-					        	MARKET_DEFAULT_CODE_ID: parseInt(this._oViewModelData.MARKET_DEFAULT_CODE_ID,10),
-					        	SUPPLY_SYSTEM_FLAG_CODE_ID: parseInt(this._oViewModelData.SUPPLY_SYSTEM_FLAG_CODE_ID,10),
-					        	DEMAND_ATTRIBUTE1: this._oViewModelData.DEMAND_ATTRIBUTE1,
-					        	DEMAND_ATTRIBUTE2: this._oViewModelData.DEMAND_ATTRIBUTE2,
-					        	MARKETING_ATTRIBUTE1: this._oViewModelData.MARKETING_ATTRIBUTE1,
-					        	MARKETING_ATTRIBUTE2: this._oViewModelData.MARKETING_ATTRIBUTE2,
-					        	SUPPLY_ATTRIBUTE1: this._oViewModelData.SUPPLY_ATTRIBUTE1,
-					        	SUPPLY_ATTRIBUTE2: this._oViewModelData.SUPPLY_ATTRIBUTE2,
-					        	FINANCE_SYSTEM_FLAG_CODE_ID: this._oViewModelData.FINANCE_SYSTEM_FLAG_CODE_ID,
-					        	GMID_COUNTRY_STATUS_CODE_ID:this._oViewModelData.GMID_COUNTRY_STATUS_CODE_ID,
-					        	CREATED_BY:this._oViewModelData.CREATED_BY,
-					        	CREATED_ON:this._oViewModelData.CREATED_ON,
-					        	LAST_UPDATED_BY: loggedInUserID,
-					        	LAST_UPDATED_ON: oDate,
-					        	COMMENTS:this._oViewModelData.COMMENTS
-			    	};
-			    
-					this._oDataModel.update("/GMID_SHIP_TO_COUNTRY("+this._oEditAttributesID+")", updGMIDCountry,
-			        {
-						merge: true,
-			        	// show success alert to the user
-					    success: function(){
-							MessageBox.alert("Attributes for GMID " + updGMIDCountry.GMID + " and country " + country + " updated successfully.",
-								{
-									icon : MessageBox.Icon.SUCCESS,
-									title : "Success",
-									onClose: function() {
-            							curr.getOwnerComponent().getRouter().navTo("maintainAttributes");
-            						}
-							});
-						},
-						// show error alert to the user
-						error: function(oError){
-							MessageBox.alert("Error updating attributes for GMID " + updGMIDCountry.GMID + " and country " + country + ".",
-								{
-									icon : MessageBox.Icon.ERROR,
-									title : "Error"
-							});
-						}
-			        });
-				}
+				
 			},
 			//cancel click on edit attributes page
 			onCancel: function(){
@@ -372,7 +218,7 @@ sap.ui.define([
             		actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
             		onClose: function(oAction) {
             			if(oAction === "YES"){
-            				curr.getOwnerComponent().getRouter().navTo("maintainAttributes");
+            				curr.getOwnerComponent().getRouter().navTo("cuAssignment");
             			}
             		}
         		});
@@ -386,7 +232,7 @@ sap.ui.define([
 					window.history.go(-1);
 				} else {
 					var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-					oRouter.navTo("maintainAttributes", true);
+					oRouter.navTo("cuAssignment", true);
 				}
 			}
   	});

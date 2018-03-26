@@ -2,8 +2,10 @@ sap.ui.define([
 		"sap/ui/core/mvc/Controller",
 		"bam/services/DataContext",
 		"sap/ui/model/resource/ResourceModel",
-		"sap/ui/core/routing/History"
-	], function (Controller,DataContext,MessageBox,ResourceModel,History) {
+		"sap/ui/core/routing/History",
+		"sap/ui/model/Filter",
+		"sap/ui/model/Sorter"
+	], function (Controller,DataContext,MessageBox,ResourceModel,History,Filter,Sorter) {
 		"use strict";
 
   	var loggedInUserID;
@@ -15,6 +17,9 @@ sap.ui.define([
 			 // define a global variable for the oData model		    
 		   	var oView = this.getView();
 		   	oView.setModel(this.getOwnerComponent().getModel());
+		   	this._oModel = new sap.ui.model.json.JSONModel();
+		   	this._oModel.setProperty("/showEditButton",false);
+		   	this.getView().setModel(this._oModel,"CUAssignmentVM");
 		   		// get resource model
 			this._oi18nModel = this.getOwnerComponent().getModel("i18n");
 	    	//
@@ -27,6 +32,7 @@ sap.ui.define([
 				if(permissions[i].ATTRIBUTE === maintainRule)
 				{
 						hasAccess = true;
+						this._oModel.setProperty("/showEditButton",true);
 						break;
 				}
 			}

@@ -27,8 +27,8 @@
 		                <OverflowToolbar design="Transparent"> 
 		                        <ToolbarSpacer/> 
 		                        <!-- <Button id="btnClearFilter" text="Clear" width="100px"  press="onClearFilter" icon="sap-icon://clear-filter" activeIcon="sap-icon://clear-filter"  /> -->
-		                        <Button id="btnAdd"  text="{i18n>addRule}" press="onAdd" icon="sap-icon://add" activeIcon="sap-icon://add"/>
-		                        <Button id="btnEdit" visible="{MaintainAttributesVM>/showEditButton}" text="{i18n>edit}" press="onEdit" icon="sap-icon://edit" activeIcon="sap-icon://edit"/>
+		                        <Button id="btnAdd"  visible="{CUAssignmentVM>/showEditButton}" text="{i18n>addRule}" press="onAdd" icon="sap-icon://add" activeIcon="sap-icon://add"/>
+		                        <Button id="btnEdit" visible="{CUAssignmentVM>/showEditButton}" text="{i18n>edit}" press="onEdit" icon="sap-icon://edit" activeIcon="sap-icon://edit"/>
 		               </OverflowToolbar> 
 			       </smartTable:customToolbar>
 					</smartTable:SmartTable>
