@@ -8,7 +8,7 @@ sap.ui.define([
 		"sap/ui/model/resource/ResourceModel"
 	], function (Controller,JSONModel, MessageToast, MessageBox, DataContext,History,ResourceModel) {
 		"use strict";
-		
+	var firstTimePageLoad = true;	
 	return Controller.extend("bam.controller.MaintainRules", {
 		onInit : function(){
 			this._oi18nModel = this.getOwnerComponent().getModel("i18n");
@@ -27,7 +27,14 @@ sap.ui.define([
 			//
 			// if the user does not have access then redirect to accessdenied page
 			if(hasAccess === false){
-				this.getOwnerComponent().getRouter().navTo("accessDenied");
+				this.getRouter().getTargets().display("accessDenied", {
+					fromTarget : "maintainRules"
+				});
+			}
+			if(firstTimePageLoad === true){
+				var oRouter = this.getRouter();
+				oRouter.getRoute("maintainRules").attachMatched(this._onRouteMatched, this);
+				firstTimePageLoad = false;
 			}
 		},
 		// Navigate to CU SUB CU Assignment page
@@ -51,6 +58,17 @@ sap.ui.define([
 				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 				oRouter.navTo("home", true);
 			}
-		}
+		},
+		
+		_onRouteMatched : function (oEvent) {
+			if(DataContext.isBAMUser() === false)
+			{
+				this.getOwnerComponent().getRouter().navTo("accessDenied");
+			}
+			else
+			{
+				this.onInit();
+			}
+		}		
   	});
 });

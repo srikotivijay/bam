@@ -33,7 +33,9 @@ sap.ui.define([
 			}
 			
 			if(hasAccess === false){
-				this.getOwnerComponent().getRouter().navTo("accessDenied");
+				this.getRouter().getTargets().display("accessDenied", {
+					fromTarget : "gmidSubmission"
+				});
 			}
 			else
 			{
