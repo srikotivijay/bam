@@ -147,6 +147,7 @@ sap.ui.define([
 			{	
 				var subRcuDropDown = this.getSubRCUDropDown(selectedCU);
 				ruleVM[rowId].SUB_RCU =    subRcuDropDown; 
+				ruleVM[rowId].subcuErrorState = "None";
 			}
 			else
 			{
