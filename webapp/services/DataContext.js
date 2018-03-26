@@ -527,6 +527,37 @@ sap.ui.define([
 			return result;
 		}
 		
+		// function to get unique Rules Combinations
+    	function getrulesFromDB(rulekey,viewpath) {
+            var result;                            
+           // Create a filter to fetch the Rules based on Rule Seq
+			var ruleseqFilterArray = [];
+			var ruleseqtypeFilter = new Filter("CU_RULESET_SEQ",sap.ui.model.FilterOperator.EQ,rulekey);
+			ruleseqFilterArray.push(ruleseqtypeFilter);
+            // Get data for all GMIDS Entered in UI
+            oDataModel.read(viewpath, {
+                filters: ruleseqFilterArray,
+                async: false,
+				success: function(oData, oResponse) {
+                    var RulesList = [];
+		            // get all the GMID/Country List for each row returned
+		            oData.results.forEach(function(item) {
+		            RulesList.push(item);
+		            });
+            		result = RulesList;
+                },
+                error: function(oError) {
+                    MessageBox.alert("Error getting Rules List for Validation. Please contact System Admin.",
+					{
+						icon : MessageBox.Icon.ERROR,
+						title : "Error"
+					});    
+                    result = [];
+                }
+            });
+			return result;
+		}
+		
 		var exports = {
 			getAttributeListBasedOnUserID: getAttributeListBasedOnUserID,
 			getUserID: getUserID,
@@ -539,7 +570,8 @@ sap.ui.define([
 			getNonAdminDropdownValues : getNonAdminDropdownValues,
 			deleteStagingData: deleteStagingData,
 			getGMIDCountryStatusID: getGMIDCountryStatusID,
-			getGMIDCountryPlantListFromDB : getGMIDCountryPlantListFromDB
+			getGMIDCountryPlantListFromDB : getGMIDCountryPlantListFromDB,
+			getrulesFromDB : getrulesFromDB
 		};
 	
 		return exports;

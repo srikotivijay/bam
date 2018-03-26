@@ -36,7 +36,9 @@ sap.ui.define([
 			//
 			// if the user does not have access then redirect to accessdenied page
 			if(hasAccess === false){
-				this.getOwnerComponent().getRouter().navTo("accessDenied");
+				this.getRouter().getTargets().display("accessDenied", {
+					fromTarget : "addCURules"
+				});	
 			}
 			else{
 				this._isChanged = false;
@@ -46,9 +48,10 @@ sap.ui.define([
 			    		"LEVEL_ID" : -1,
 			    		"geographyErrorState" : "None",
 			    		"PRODUCT_CODE" : -1,
-			    		"productErrorStae" : "None",
+			    		"productErrorState" : "None",
 			    		"RCU_CODE" : -1,
 			    		"cuErrorState" : "None",
+			    		"SUB_RCU": "None",
 			    		"SUB_RCU_CODE" : -1,
 			    		"subcuErrorState" : "None",
 			    		"createNew" : false,
@@ -77,12 +80,6 @@ sap.ui.define([
 	    		this._oModel.setProperty("/AssignRuleVM/RuleSet",this.getRulesDropDown());
 	    		this._oModel.setProperty("/CU_RULESET_SEQ",-1);
 	    		this._oModel.setProperty("/NAME","Please Select a Rule Set");
-	    		// this.getView().byId("cmbGeography").setValueStateText("");
-	    		// this.getView().byId("cmbProduct").setValueStateText("");
-	    		// this.getView().byId("cmbCU").setValueStateText("");
-	    	 //   this.getView().byId("cmbSubCU").setValueStateText("");
-	    	//	this.getDefaultPropertyValues();
-		    //	this.setDefaultValuesToGrid();
 			}
 			if(firstTimePageLoad)
 	    	{
@@ -109,6 +106,8 @@ sap.ui.define([
     	onChangeRuleSet: function(oEvent){
     		// update ischanged to true for any attribute changed
     		this._isChanged = true;
+    		// reset the error message property to false before doing any validation
+			this.resetValidationForModel();
 			var sourceControl = oEvent.getSource();
 			// get the selected value
 			var selectedRulekey = sourceControl.getSelectedItem().getKey();
@@ -122,7 +121,11 @@ sap.ui.define([
 				this._oModel.setProperty("/AssignRuleVM/Geography",this.getGeoLevelDropDown(geoLevel));
 				this._oModel.setProperty("/AssignRuleVM/Product",this.getProductLevelDropDown(productLevel));
 			    this._oModel.setProperty("/AssignRuleVM/RCU",this.getRCUDropDown());
-		    	this._oModel.setProperty("/AssignRuleVM/SubRCU",this.getSubRCUDropDown());
+			    var subRcuDropDown = this.getSubRCUDropDown(null);
+			    var ruleVM = this._oViewModelData.AssignRuleVM;
+			    for(var i = 0; i < ruleVM.length - 1; i++) {
+			    	ruleVM[i].SUB_RCU =    subRcuDropDown;                      
+			    }
 		    	this.getDefaultPropertyValues();
 				this.setDefaultValuesToGrid();
 			}
@@ -131,6 +134,42 @@ sap.ui.define([
 				this.onInit();
 			}
 
+		},
+		// Populate Sub CU on bases of CU, if CU is selected
+		onChangeCU : function (oEvent)
+		{
+			this._isChanged = true;
+			var sourceControl = oEvent.getSource();
+			// get the selected value
+			var selectedCU = sourceControl.getSelectedItem().getKey();
+			var ruleVM = this._oViewModelData.AssignRuleVM;
+			var rowId = this.getView().byId(oEvent.getParameters().id).getParent().getIndex();
+			if (selectedCU !== "-1")
+			{	
+				var subRcuDropDown = this.getSubRCUDropDown(selectedCU);
+				ruleVM[rowId].SUB_RCU =    subRcuDropDown; 
+				ruleVM[rowId].SUB_RCU_CODE = -1;
+				ruleVM[rowId].subcuErrorState = "None";
+			}
+			else
+			{
+				ruleVM[rowId].SUB_RCU =    this.getSubRCUDropDown(null); 
+				ruleVM[rowId].SUB_RCU_CODE = -1;
+			}
+		},
+		// clear the error message from CU, if SUB CU is selected
+		onChangeSUBCU : function (oEvent)
+		{
+			this._isChanged = true;
+			var sourceControl = oEvent.getSource();
+			// get the selected value
+			var selectedSUBCU = sourceControl.getSelectedItem().getKey();
+			var ruleVM = this._oViewModelData.AssignRuleVM;
+			var rowId = this.getView().byId(oEvent.getParameters().id).getParent().getIndex();
+			if (selectedSUBCU !== "-1")
+			{	
+				ruleVM[rowId].cuErrorState = "None";
+			}
 		},
 		getRulesDropDown : function () {
 			var result;
@@ -146,7 +185,7 @@ sap.ui.define([
 	                	// add Please select item on top of the list
 		                oData.results.unshift({	"CU_RULESET_SEQ":-1,
 		              							"NAME":"Please Select a Rule Set"});
-		                // Bind the Country data to the GMIDShipToCountry model
+		                // Bind the CU RuleSet data
 		                result =  oData.results;
 	                },
 	    		    error: function(){
@@ -178,7 +217,7 @@ sap.ui.define([
 	                	// add Please select item on top of the list
 		                oData.results.unshift({	"LEVEL_ID":-1,
 		              							"NAME":"Select.."});
-		                // Bind the Country data to the GMIDShipToCountry model
+		                // Bind the Geography data
 		                result =  oData.results;
 	                },
 	    		    error: function(){
@@ -212,7 +251,7 @@ sap.ui.define([
 		                	// add Please select item on top of the list
 			                oData.results.unshift({	"PRODUCT_CODE":-1,
 			              							"PRODUCT_DESC":"Select.."});
-			                // Bind the Country data to the GMIDShipToCountry model
+			                // Bind the Product data 
 			                result =  oData.results;
 		                },
 		    		    error: function(){
@@ -235,9 +274,7 @@ sap.ui.define([
 		},
 		getRCUDropDown : function () {
 			var result;
-			
 			// Create a filter & sorter array
-
 			var sortArray = [];
 			var sorter = new sap.ui.model.Sorter("RCU_DESC",false);
 			sortArray.push(sorter);
@@ -249,7 +286,7 @@ sap.ui.define([
 	                	// add Please select item on top of the list
 		                oData.results.unshift({	"RCU_CODE":-1,
 		              							"RCU_DESC":"Select.."});
-		                // Bind the Country data to the GMIDShipToCountry model
+		                // Bind the RCU  data 
 		                result =  oData.results;
 	                },
 	    		    error: function(){
@@ -263,22 +300,30 @@ sap.ui.define([
 	    	});
 	    	return result;
 		},
-		getSubRCUDropDown : function () {
+		getSubRCUDropDown : function (selectedCU) {
 			var result;
-			// Create a filter & sorter array
-
+		// Create a filter & sorter array
+		// filter RCU based on CU, if CU is selected
+		// show all RCU if CU is not selected
+			var filterArray = [];
+			if (selectedCU !== null)
+			{
+				var subCUFilter = new Filter("RCU_CODE",sap.ui.model.FilterOperator.EQ,selectedCU);
+				filterArray.push(subCUFilter);
+			}
 			var sortArray = [];
 			var sorter = new sap.ui.model.Sorter("SUB_RCU_DESC",false);
 			sortArray.push(sorter);
 			// Get the Country dropdown list from the CODE_MASTER table
 			this._oDataModel.read("/MST_SUB_RCU",{
+					filters: filterArray,
 					sorters: sortArray,
 					async: false,
 	                success: function(oData, oResponse){
 	                	// add Please select item on top of the list
 		                oData.results.unshift({	"SUB_RCU_CODE":-1,
 		              							"SUB_RCU_DESC":"Select.."});
-		                // Bind the Country data to the GMIDShipToCountry model
+		                // Bind the SUB RCU  data
 		                result =  oData.results;
 	                },
 	    		    error: function(){
@@ -340,7 +385,7 @@ sap.ui.define([
 				{
 					// found a match, remove this row from the data
 					rows.splice(i,1);
-					// refresh the GMID VM, this will automatically update the UI
+					// refresh the AssignRuleVM VM, this will automatically update the UI
 					this._oAssignRuleViewModel.refresh();
 					break;
 				}
@@ -349,20 +394,26 @@ sap.ui.define([
 		
 		onAddRow:function(oEvent){
 			var path = oEvent.getSource().getBindingContext().getPath();
+			 var selectedRulekey = this.getView().byId("cmbRuleSetList").getSelectedItem().getKey();
 		    // create new empty rule object
+		    var subRCU = "None";
+		    if(selectedRulekey !== "-1"){
+		    	subRCU = this.getSubRCUDropDown(null);
+		    }
 		    var obj = {
 			    		LEVEL_ID : -1,
 			    		geographyErrorState : "None",
 			    		PRODUCT_CODE : -1,
-			    		productErrorStae : "None",
+			    		productErrorState : "None",
 			    		RCU_CODE : -1,
 			    		cuErrorState : "None",
+			    		SUB_RCU : subRCU,
 			    		SUB_RCU_CODE : -1,
 			    		ubcuErrorState : "None",
 			    		createNew : false,
 			    		isError :false
 		    		};
-		    var selectedRulekey = this.getView().byId("cmbRuleSetList").getSelectedItem().getKey();
+		   
 	    	if (selectedRulekey !== "-1") // added this cond to show default values only if valid rule set is selected
 	    	{
 	    		obj = this.setDefaultPropertyValues(obj);
@@ -390,46 +441,272 @@ sap.ui.define([
 			}
         	return obj;
         },
-		
+		// This function loops through all the rows on the form and checks each input to see if it is filled in
+        validateTextFieldValues :function () {
+    		
+        	var returnValue = true;
+        	var data = this._oViewModelData.AssignRuleVM;
+            for(var i = 0; i < data.length - 1; i++) 
+            {
+            	if(this.checkForEmptyFields(data[i]))
+            	{
+            		data[i].isError = true;
+            		if(data[i].errorSummary !== "")
+	                {
+	                	data[i].errorSummary += "\n";  
+	                }
+	            	data[i].errorSummary += "Please enter all mandatory fields highlighted in red.";
+	            	returnValue = false;
+            	}
+            }
+            return returnValue;
+        },
+        // method to check for duplicate Rule Set, Geography, Product
+        validateUniqueRules : function (){
+            // loop through the rows and for each row check for duplicate entry in DB
+            var isDuplicate = false;
+            var data = this._oViewModelData.AssignRuleVM;
+	        // need to pass the above array to the DB to get the duplicate records
+	        var viewpath = "V_VALIDATE_CU_RULES";
+	        var selectedRulekey = this.getView().byId("cmbRuleSetList").getSelectedItem().getKey();
+            if (selectedRulekey !== "-1")
+	        {
+	        	var ruleSetRecords = DataContext.getrulesFromDB(selectedRulekey,viewpath); 
+	            for(var i = 0; i < data.length - 1; i++) 
+	            {
+	                var geo_level_id = parseInt(data[i].LEVEL_ID,10);
+	                var product_code;
+	                if (data[i].PRODUCT_CODE === 0 )
+                    {
+                    	product_code = null;
+                    }
+                    else
+                    {
+                    	product_code = data[i].PRODUCT_CODE;
+                    }
+                                        
+	                // loop the Rule Set Records from DB to check Unique
+	                for(var k = 0; k < ruleSetRecords.length; k++) 
+	                {
+	                    // check if Rule already exists in system
+	                    if (geo_level_id === ruleSetRecords[k].GEO_LEVEL_ID && product_code === ruleSetRecords[k].PRODUCT_CODE)
+			            {
+			                isDuplicate = true;
+			                data[i].isError = true;
+			                data[i].geographyErrorState = "Error";
+			                data[i].productErrorState = "Error";
+			                if(data[i].errorSummary !== "")
+			                {
+			        			data[i].errorSummary += "\n";  
+			                }
+			            	data[i].errorSummary += "Rule Combination already exists in the system.";
+			            }
+			            else
+			            {
+			                continue;
+			            }
+	                }
+	            }
+	          }
+            this._oAssignRuleViewModel.refresh();
+            
+            return isDuplicate;
+        },
+        // function to check whether the user has entered a duplicate RuleSet/Geography,Product on the form
+        validateDuplicateEntries :function(){
+	        var returnValue = true;
+	        var selectedRulekey = this.getView().byId("cmbRuleSetList").getSelectedItem().getKey();
+	        if (selectedRulekey !== "-1")
+	        {
+		        var data = this._oViewModelData.AssignRuleVM;
+		        for(var i = 0; i < data.length - 1; i++) 
+		        {
+		            for( var j = i + 1; j < data.length - 1; j++)
+		            { 
+			            if((data[i].LEVEL_ID !== -1 &&  data[j].LEVEL_ID !== -1) && (data[i].PRODUCT_CODE !== -1 &&  data[j].PRODUCT_CODE !== -1) && (data[i].LEVEL_ID === data[j].LEVEL_ID) && (data[i].PRODUCT_CODE ===  data[j].PRODUCT_CODE))
+			            {
+			            	// highlight the geography and product boxed in red
+			            	 data[i].isError = true;
+			            	 data[i].geographyErrorState = "Error";
+			            	 data[i].productErrorState = "Error";
+			            	 data[j].isError = true;
+			            	 data[j].geographyErrorState = "Error";
+			            	 data[j].productErrorState = "Error";
+			            	 
+			            	 if(data[i].errorSummary !== "")
+		                	 {
+		                		data[i].errorSummary += "\n";  
+		                	 }
+		            		 data[i].errorSummary += "Duplicate RuleSet/Geography/Product Combination found at row # " + (j + 1);
+		            		 
+		            		 if(data[j].errorSummary !== "")
+		                	 {
+		                		data[j].errorSummary += "\n";  
+		                	 }
+		            		 data[j].errorSummary += "Duplicate RuleSet/Geography/Product Combination found at row # " + (i + 1);
+		            		 
+			            	 returnValue = false;
+			            }
+		            } 
+		        }
+	        }
+	        return returnValue;
+        },
+        // This functions takes one row and check each field to see if it is filled in, if not -> highlight in red
+        checkForEmptyFields: function (row) {
+        	var errorsFound = false;
+        	var strValidate = this._oi18nModel.getProperty("validation");
+			if (this.checkEmptyRows(row,strValidate) === false)
+			{
+				return errorsFound;
+			}
+            if(parseInt(row.LEVEL_ID,10) === -1)
+            {
+            	row.geographyErrorState = "Error";
+            	errorsFound = true;
+            }
+            if(parseInt(row.PRODUCT_CODE,10) === -1)
+            {
+            	row.productErrorState = "Error";
+            	errorsFound = true;
+            }
+            //
+            if(parseInt(row.RCU_CODE,10) === -1 && parseInt(row.SUB_RCU_CODE,10) === -1){
+				row.cuErrorState = "Error";
+				row.subcuErrorState = "Error";
+				errorsFound = true;
+            }
+            return errorsFound;
+        },
+         resetValidationForModel : function () {
+        	var data = this._oViewModelData.AssignRuleVM;
+            for(var i = 0; i < data.length - 1; i++) 
+            {	
+            	data[i].isError = false;
+            	data[i].errorSummary = "";
+            	data[i].geographyErrorState = "None";
+            	data[i].productErrorState = "None";
+            	data[i].cuErrorState = "None";
+            	data[i].subcuErrorState = "None";
+            }
+            this._oAssignRuleViewModel.refresh();
+        },
+       showErrorMessage: function(oEvent)
+        {
+		    var text = oEvent.getSource().data("text");
+		         MessageBox.alert(text, {
+			     icon : MessageBox.Icon.ERROR,
+			title : "Invalid Input"
+			       });
+        },
+         // below function will check if anything is changed  or modified in submission page
+        chkIsModified: function() {
+        	var AssignRule = this._oAssignRuleViewModel.getProperty("/AssignRuleVM");
+        	var isModified = false;
+        	var rcuModel = this._oModel.getProperty("/AssignRuleVM/RuleSet");
+        	 var selectedRulekey = this.getView().byId("cmbRuleSetList").getSelectedItem().getKey();
+        	 var productLevel = rcuModel.find(function(data) {return data.CU_RULESET_SEQ == selectedRulekey;}).PRODUCT_LEVEL;
+	        if (productLevel !== null)
+	        { // for Product level which is not ALL
+	        	// loop through the rows and for each row check if is anything is modified or changed
+		    		for(var i = 0; i < AssignRule.length - 1; i++) 
+		    		{   
+			        			if ((parseInt(AssignRule[i].LEVEL_ID,10) !== -1) 
+			        			|| (parseInt(AssignRule[i].PRODUCT_CODE,10) !== -1)
+			        		    ||	(parseInt(AssignRule[i].RCU_CODE,10) !== -1) 
+			        		    || (parseInt(AssignRule[i].SUB_RCU_CODE,10) !== -1))
+			        		     {
+			        		    	isModified = true;
+			        		    	break;
+			        		     }
+
+		    			}
+	        }
+	        else
+	        { //for Product level which is not ALL
+	        	// loop through the rows and for each row check if is anything is modified or changed
+		    		for(var i = 0; i < AssignRule.length - 1; i++) 
+		    		{   
+			        			if ((parseInt(AssignRule[i].LEVEL_ID,10) !== -1) 
+			        			|| (parseInt(AssignRule[i].PRODUCT_CODE,10) !== 0)
+			        		    ||	(parseInt(AssignRule[i].RCU_CODE,10) !== -1) 
+			        		    || (parseInt(AssignRule[i].SUB_RCU_CODE,10) !== -1))
+			        		     {
+			        		    	isModified = true;
+			        		    	break;
+			        		     }
+
+		    			}
+	        	
+	        }
+            	
+		    		return isModified;
+        },
 		onSubmit : function(){
                     var errorCount = 0;
                     var successCount = 0;
+                    // reset the error message property to false before doing any validation
+					this.resetValidationForModel();
                     var AssignRule = this._oAssignRuleViewModel.getProperty("/AssignRuleVM");
                       // current limit for saving is 200 records
-                      // check if GMID Submission Grid  has more than 200 records
+                      // check if Rule Submission Grid  has more than 200 records
                       // if more than 200 than show a validation message to user
                     var maxLimitSubmit = parseInt(this._oi18nModel.getProperty("MaxLimit"),10) ;
                     var RulesMaxLimitSubmit = this._oi18nModel.getProperty("MaxLimitSubmit.text");
                     // adding one to account for the extra line at the bottom
-	                   if (AssignRule.length > (maxLimitSubmit)) {
+					if (AssignRule.length > (maxLimitSubmit)) {
                                MessageBox.alert(RulesMaxLimitSubmit,{
                                                 icon : MessageBox.Icon.ERROR,
                                                 title : "Error"});
                             return;
-                         }
-                        if (AssignRule.length === 1)
-                        {
-                                    MessageBox.alert("Please enter at least one rule.", {
+                    }
+                    // validation for Rule Set
+                    var selectedRulekey = this.getView().byId("cmbRuleSetList").getSelectedItem().getKey();
+					if (selectedRulekey === "-1")
+					{
+						MessageBox.alert("Please select rule set.", {
+                                    icon : MessageBox.Icon.ERROR,
+                                    title : "Invalid Input"
+                        });
+                        return;
+					}
+                    if (AssignRule.length === 1 || this.chkIsModified() === false)
+                    {
+						MessageBox.alert("Please enter at least one rule.", {
                                     icon : MessageBox.Icon.ERROR,
                                     title : "Invalid Input"
                                });
                             return;
                         }
-                                // reset error on page to false
+                        // reset error on page to false
                         this._oAssignRuleViewModel.setProperty("/ErrorOnPage",false);
 
                         //open busy dialog
                         this._busyDialog.open();
                         // // need to declare local this variable to call global functions in the timeout function
                         var t = this;
-                        //this._ruleList = this.ruleList();
-                        
-                        // //permission to submit gmid without plants
-                        // //var hasPermission = false;
-                        
+
                         // // setting timeout function in order to show the busy dialog before doing all the validation
                         setTimeout(function()
                 {
+                if (t.validateTextFieldValues() === false)
+		        {
+		        	// Set error message column to false (not visible by default)
+			    	t._oAssignRuleViewModel.setProperty("/ErrorOnPage",true);
+		        }
+		        // Rule Set, geography and product should be unique
+		        // check duplicate entries in the system
+		        if(t.validateUniqueRules() === true)
+	        	{
+	        		t._oAssignRuleViewModel.setProperty("/ErrorOnPage",true);
+	        	}
+		        // check for duplicate entries on the page
+	        	if (t.validateDuplicateEntries() === false)
+	        	{
+	        		t._oAssignRuleViewModel.setProperty("/ErrorOnPage",true);
+	        	}
+                 if(!t._oAssignRuleViewModel.getProperty("/ErrorOnPage"))
+		        	{
                         // 
                         // Check validations here 
                         var tablePath = "/MST_CU_RULE";
@@ -443,7 +720,7 @@ sap.ui.define([
                                 		var productLevelCode;
                                 		var rcuCode;
                                 		var subRcuCode;
-                                        var geoLevelValId    = parseInt(AssignRule[i].LEVEL_ID,10);
+                                        var geoLevelValId = parseInt(AssignRule[i].LEVEL_ID,10);
                                         if (AssignRule[i].PRODUCT_CODE === 0 )
                                         {
                                         	productLevelCode = '';
@@ -458,7 +735,7 @@ sap.ui.define([
                                         }
                                         else
                                         {
-                                        	 rcuCode          = AssignRule[i].RCU_CODE;
+                                        	 rcuCode = AssignRule[i].RCU_CODE;
                                         }
                                         if (AssignRule[i].SUB_RCU_CODE === -1 )
                                         {
@@ -466,7 +743,7 @@ sap.ui.define([
                                         }
                                         else
                                         {
-                                        	 subRcuCode		 =  AssignRule[i].SUB_RCU_CODE;
+                                        	 subRcuCode	= AssignRule[i].SUB_RCU_CODE;
                                         }
                                         //
                                         var newAssignRule = {
@@ -514,7 +791,15 @@ sap.ui.define([
 								title : "Error"
 							});
 					}
-
+				}
+				else
+				{
+	        		MessageBox.alert("Error: There is an entry error on the page. Please correct.",
+							{
+								icon : MessageBox.Icon.ERROR,
+								title : "Error"
+						});
+	        	}
                     // close busy dialog
                     t._busyDialog.close();
                     },500); // end of timeout function
@@ -542,7 +827,6 @@ sap.ui.define([
 		//cancel click on Add CU Rules page
 			onCancel: function(){
 				var curr = this;
-				// check if user wants to update the attributes for GMID and country
 				MessageBox.confirm("Are you sure you want to cancel your changes and navigate back to the previous page?", {
            		icon: sap.m.MessageBox.Icon.WARNING,
            		actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],

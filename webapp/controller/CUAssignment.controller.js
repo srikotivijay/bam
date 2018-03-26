@@ -39,7 +39,9 @@ sap.ui.define([
 			//
 			// if the user does not have access then redirect to accessdenied page
 			if(hasAccess === false){
-				this.getOwnerComponent().getRouter().navTo("accessDenied");
+				this.getRouter().getTargets().display("accessDenied", {
+					fromTarget : "cuAssignment"
+				});	
 			}
 			else{
 	    		//remove the selection column
@@ -84,9 +86,19 @@ sap.ui.define([
 		onHome: function(){
 			this.getOwnerComponent().getRouter().navTo("home");
 		},
-		onBeforeRebindTable: function(){
-			this.getOwnerComponent().getModel().refresh(true);
-		},
+		onBeforeRebindTable: function(oEvent) {
+                // refresh the odata model, this will force a refresh of the smart table UI
+                this.getOwnerComponent().getModel().refresh(true);
+                                //Get bindinParams Object, which includes filters
+                this._oBindingParams = oEvent.getParameter("bindingParams");
+                                // setting up sorters
+                var aSorters = this._oBindingParams.sorter;
+                var GMIDSorter = new Sorter("CU_RULESET_DESCRIPTION",false);
+                var CountrySorter = new Sorter("GEOGRAPHY",false);
+                aSorters.push(GMIDSorter);
+                aSorters.push(CountrySorter);
+        },
+
 		//navigate back from rules page
 		onNavBack: function () {
 			var oHistory = History.getInstance();

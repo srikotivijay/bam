@@ -26,13 +26,13 @@
 				</HBox>	
 				<table:Table id="rulesTable" rows="{/AssignRuleVM}" visible="true" width="auto" visibleRowCount="8" selectionMode="None" enableColumnReordering="false">
 					<table:columns>
-						<table:Column id="clmHdrAction" width="90px" resizable="false">
+						<table:Column id="clmHdrAction" width="110px" resizable="false">
 							<Label text="{i18n>action}" id="lblAction"/>
 							<table:template>
 								<HBox alignContent="Start" direction="Inherit" alignItems="Baseline">
 									<Button id="btnRemoveRow" icon="sap-icon://delete" visible="{path: 'createNew', formatter: '.disableControl'}" press="onRemoveRow" class="sapUiTinyMarginEnd"/>
 									<core:Icon id="btnAddRow" src="sap-icon://add" visible="{path: 'createNew', formatter: '.enableControl'}" press="onAddRow"/>
-									<Button visible="{path: 'isError'}" icon="sap-icon://error" press="showErrorMessage" app:text="{errorSummary}" app:GMID ="{GMID}" app:CountryCode ="{COUNTRY_CODE_ID}" tooltip="{i18n>errorIcon}" type="Reject"/>				            	
+									<Button visible="{path: 'isError'}" icon="sap-icon://error" press="showErrorMessage" app:text="{errorSummary}" tooltip="{i18n>errorIcon}" type="Reject"/>				            	
 								</HBox>
 							</table:template>
 						</table:Column>
@@ -48,7 +48,8 @@
 									selectedKey="{LEVEL_ID}"
 									width="500px"
 									items="{path :'/AssignRuleVM/Geography', templateShareable : true}"
-									visible="{path: 'createNew', formatter: '.disableControl'}">
+									visible="{path: 'createNew', formatter: '.disableControl'}"
+									valueState="{geographyErrorState}">
 								<core:ListItem key="{LEVEL_ID}" text="{NAME}"/>
 							</ComboBox>
 					</table:template>
@@ -69,7 +70,8 @@
 											path: '/AssignRuleVM/Product',
 											templateShareable : true
 										}"
-										visible="{path: 'createNew', formatter: '.disableControl'}">
+										visible="{path: 'createNew', formatter: '.disableControl'}"
+								 	    valueState="{productErrorState}">
 									<core:ListItem key="{PRODUCT_CODE}" text="{PRODUCT_DESC}" additionalText="{PRODUCT_CODE}"/>
 								</ComboBox>
 							</table:template>
@@ -81,6 +83,7 @@
 										id="cmbCU"
 										showSecondaryValues= "true"
 										filterSecondaryValues= "true"
+									    change="onChangeCU"
 										value="{RCU_DESC}"
 										selectedKey="{RCU_CODE}"
 										width="500px"
@@ -88,7 +91,8 @@
 											path: '/AssignRuleVM/RCU',
 											templateShareable : true
 										}"
-										visible="{path: 'createNew', formatter: '.disableControl'}">
+										visible="{path: 'createNew', formatter: '.disableControl'}"
+										valueState="{cuErrorState}">
 									<core:ListItem key="{RCU_CODE}" text="{RCU_DESC}" additionalText="{RCU_CODE}"/>
 								</ComboBox>
 							</table:template>
@@ -100,14 +104,16 @@
 										id="cmbSubCU"
 										showSecondaryValues= "true"
 										filterSecondaryValues= "true"
+										change="onChangeSUBCU"
 										value="{SUB_RCU_DESC}"
 										selectedKey="{SUB_RCU_CODE}"
 										width="500px"
 										items="{
-											path: '/AssignRuleVM/SubRCU',
+											path: 'SUB_RCU',
 											templateShareable : true
 										}"
-										visible="{path: 'createNew', formatter: '.disableControl'}">
+										visible="{path: 'createNew', formatter: '.disableControl'}"
+										valueState="{subcuErrorState}">
 									<core:ListItem key="{SUB_RCU_CODE}" text="{SUB_RCU_DESC}" additionalText="{SUB_RCU_CODE}"/>
 								</ComboBox>
 							</table:template>
