@@ -45,7 +45,7 @@ sap.ui.define([
 	    		//remove the selection column
 	    		var oSmartTable = this.getView().byId("smartTblCUAssignment");     //Get Hold of smart table
 				var oTable = oSmartTable.getTable();          //Analytical Table embedded into SmartTable
-				oTable.setSelectionMode("None");
+
 				oTable.setEnableColumnFreeze(true);
 				//oTable.getColumns();
 		    	

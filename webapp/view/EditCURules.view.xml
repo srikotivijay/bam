@@ -1,4 +1,4 @@
-<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:html="http://www.w3.org/1999/xhtml" controllerName="bam.controller.EditAttributesSingle">
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:html="http://www.w3.org/1999/xhtml" controllerName="bam.controller.EditCURules">
 	<App id="editCURules">
 		<pages>
 			<Page title="{i18n>title}" 
@@ -10,15 +10,40 @@
 				        <f:FormContainer title="{i18n>editCURules}" id="fConEditCURules">
 				            <f:formElements>
 				                <f:FormElement label="{i18n>cu}{i18n>mandatory}" id="felmCU">
-				                    <Select xmlns:sap.ui.core="sap.ui.core" width="90%" id="ddlCU" name="ddlCU" change="onChange" items="{path: '/AssignRuleVM/RCU', templateShareable : true}" selectedKey="{RCU_CODE}">
-		                            		<sap.ui.core:ListItem key="{RCU_CODE}" text="{RCU_DESC}"/>
-										</Select>
+				                	<ComboBox
+										id="cmbCU"
+										showSecondaryValues= "true"
+										filterSecondaryValues= "true"
+										value="{RCU_DESC}"
+										selectedKey="{RCU_CODE}"
+										width="500px"
+										items="{
+											path: '/EditCURuleVM/RCU',
+											templateShareable : true
+										}"
+										visible="{path: 'createNew', formatter: '.disableControl'}">
+										<core:ListItem key="{RCU_CODE}" text="{RCU_DESC}" additionalText="{RCU_CODE}"/>
+									</ComboBox>
+				      <!--              <Select xmlns:sap.ui.core="sap.ui.core" width="90%" id="ddlCU" name="ddlCU" change="onChange" items="{path: '/EditCURuleVM/RCU', templateShareable : true}" selectedKey="{RCU_CODE}">-->
+		        <!--                    		<sap.ui.core:ListItem key="{RCU_CODE}" text="{RCU_DESC}"/>-->
+										<!--</Select>-->
 								   <CheckBox id="chkCU1" name="chkCU1" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_DEMAND_ATTRIBUTE1}" tooltip="{i18n>updateNullTooltip}" />
 				                </f:FormElement>
 				                <f:FormElement label="{i18n>subCU}{i18n>mandatory}" id="felmSubCU">
-				                    <Select xmlns:sap.ui.core="sap.ui.core" width="90%" id="ddlSubCU" name="ddlSubCU" change="onChange" items="{path: '/AssignRuleVM/SubRCU', templateShareable : true}" selectedKey="{SUB_RCU_CODE}">
-		                            		<sap.ui.core:ListItem key="{SUB_RCU_CODE}" text="{SUB_RCU_DESC}"/>
-										</Select>
+				                    <ComboBox
+										id="cmbSubCU"
+										showSecondaryValues= "true"
+										filterSecondaryValues= "true"
+										value="{SUB_RCU_DESC}"
+										selectedKey="{SUB_RCU_CODE}"
+										width="500px"
+										items="{
+											path: '/EditCURuleVM/SubRCU',
+											templateShareable : true
+										}"
+										visible="{path: 'createNew', formatter: '.disableControl'}">
+									<core:ListItem key="{SUB_RCU_CODE}" text="{SUB_RCU_DESC}" additionalText="{SUB_RCU_CODE}"/>
+								</ComboBox>
 									<CheckBox id="chkSubCU1" name="chkSubCU1" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_DEMAND_ATTRIBUTE2}" tooltip="{i18n>updateNullTooltip}" />
 				                </f:FormElement>
 				            </f:formElements>
