@@ -23,6 +23,7 @@ sap.ui.define([
 		   	this.getView().setModel(this._oModel,"CUAssignmentVM");
 		   		// get resource model
 			this._oi18nModel = this.getOwnerComponent().getModel("i18n");
+			this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
 	    	//
 	    	// checking the permission
 	    	var maintainRule = this._oi18nModel.getProperty("Module.maintainRules");
@@ -116,43 +117,112 @@ sap.ui.define([
 		onAdd: function(){
 			this.getOwnerComponent().getRouter().navTo("addCURules");
 	},
-	
 	// navigate to edit attribute page on click of edit
-			onEdit: function(){
-				this._oSmartTable = this.getView().byId("smartTblCUAssignment").getTable();
-				// check if more than or less than 1 checkbox is checked
-				var index,context,path,indexOfParentheses1,indexOfParentheses2;
-				if(this._oSmartTable.getSelectedIndices().length > 1){
-				index = this._oSmartTable.getSelectedIndices();
-				var ids="";
-				var idArr = [];
-				for (var i=0;i < index.length;i++)
-				{
-					context = this._oSmartTable.getContextByIndex(index[i]); 
-						if(context != undefined){
-							path = context.getPath();
-							indexOfParentheses1 = path.indexOf("(");
-							indexOfParentheses2 = path.indexOf(")");
-							ids=path.substring(indexOfParentheses1 + 1,indexOfParentheses2);
-							idArr.push(ids);
-	
-						}
-				}
-				ids = ids.substring(0, ids.length - 1);
-					var oData = idArr;
-					//add to model
-					var oModel = new sap.ui.model.json.JSONModel(oData);
-					sap.ui.getCore().setModel(oModel);
-				this.getOwnerComponent().getRouter().navTo("editCURules");
-				}
-				else
-				{
-					MessageBox.alert("Please select one CU Rule record for edit.",
-							{
-								icon : MessageBox.Icon.ERROR,
-								title : "Error"
-						});
+	onEdit: function(){
+		this._oSmartTable = this.getView().byId("smartTblCUAssignment").getTable();
+		// check if more than or less than 1 checkbox is checked
+		var index,context,path,indexOfParentheses1,indexOfParentheses2;
+		var selectedIndicesLength = this._oSmartTable.getSelectedIndices().length;
+		if(selectedIndicesLength > 1){
+		index = this._oSmartTable.getSelectedIndices();
+		var ids="";
+		var idArr = [];
+		
+		var performFullList = false;
+
+		for (var i=0;i < index.length;i++)
+		{
+			context = this._oSmartTable.getContextByIndex(index[i]); 
+			if(context != undefined){
+				path = context.getPath();
+				indexOfParentheses1 = path.indexOf("(");
+				indexOfParentheses2 = path.indexOf(")");
+				ids=path.substring(indexOfParentheses1 + 1,indexOfParentheses2);
+				idArr.push(ids);
+			}
+			else{
+				//if undefined record is hit then stop and go do the full grab
+				performFullList = true;
+				break;
+			}
+		}
+
+		if (performFullList){
+			idArr = [];
+			
+			var editSelection = this.getAllRules();
+			for (var i=0;i < index.length;i++)
+			{
+				context = editSelection[index[i]]; 
+				if(context != undefined){
+					
+					idArr.push(context.ID);
+
 				}
 			}
+		}
+		
+		
+		ids = ids.substring(0, ids.length - 1);
+			var oData = idArr;
+			//add to model
+			var oModel = new sap.ui.model.json.JSONModel(oData);
+			sap.ui.getCore().setModel(oModel);
+		this.getOwnerComponent().getRouter().navTo("editCURules");
+		}
+		else
+		{
+			MessageBox.alert("Please select one CU Rule record for edit.",
+					{
+						icon : MessageBox.Icon.ERROR,
+						title : "Error"
+				});
+		}
+	},
+	getAllRules : function () {
+		var result;
+		// Create a filter & sorter array
+		// filter RCU based on CU, if CU is selected
+		// show all RCU if CU is not selected
+		var filterArray = [];
+		var sortArray = [];
+		// for (var a = 0; a < this._oBindingParams.filters[0].aFilters.length; a++){
+		// 	filterArray.push(this._oBindingParams.filters[0].aFilters[a]);
+		// }
+		var aApplicationFilters = this._oSmartTable.getBinding().aApplicationFilters;
+		for (var a = 0; a < aApplicationFilters.length; a++){
+			filterArray.push(aApplicationFilters[a]);
+		}
+		var aSorters = this._oSmartTable.getBinding().aSorters;
+		for (var a = 0; a < aSorters.length; a++){
+			sortArray.push(aSorters[a]);
+		}
+		
+			//var sortArray = [];
+			//var sorter = new sap.ui.model.Sorter("SUB_RCU_DESC",false);
+			//sortArray.push(sorter);
+			// Get the Country dropdown list from the CODE_MASTER table
+			this._oDataModel.read("/V_WEB_CU_RULES",{
+					filters: filterArray,
+					sorters: sortArray,
+					async: false,
+	                success: function(oData, oResponse){
+	                	// add Please select item on top of the list
+		                // oData.results.unshift({	"SUB_RCU_CODE":-1,
+		              		// 					"SUB_RCU_DESC":"Select.."});
+		                // Bind the SUB RCU  data
+		                result =  oData.results;
+	                },
+	    		    error: function(){
+    		    		MessageBox.alert("Unable to retreive values for edit. Please contact System Admin.",
+						{
+							icon : MessageBox.Icon.ERROR,
+							title : "Error"
+						});
+	            		result = [];
+	    			}
+	    	});
+	    	return result;
+		}
   	});
 });

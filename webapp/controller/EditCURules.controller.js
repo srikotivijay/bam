@@ -13,6 +13,7 @@ sap.ui.define([
 	var attributeList = [];
 	var loggedInUserID;
 	var firstTimePageLoad = true;
+	var globalIds;
 	return Controller.extend("bam.controller.EditCURules", {
 			onInit : function () {
 			// Get logged in user id
@@ -23,6 +24,7 @@ sap.ui.define([
 	   		// get resource model
 			this._oi18nModel = this.getOwnerComponent().getModel("i18n");
 	    	//
+	    	this._oEditCURulesViewModel = new sap.ui.model.json.JSONModel();
 	    	// checking the permission
 	    	var maintainRule = this._oi18nModel.getProperty("Module.maintainRules");
 			var permissions = DataContext.getUserPermissions();
@@ -95,6 +97,14 @@ sap.ui.define([
 				else
 				{
 					this._oEditAttributesID = oEvent.getParameter("arguments").editAttributesID;
+					
+					//get current list of ids from model
+			    	var core = sap.ui.getCore();
+			    	//debugger; // eslint-disable-line
+			    	var globalModel = core.getModel();
+			    	globalIds = globalModel.getData();  
+					//debugger; // eslint-disable-line
+					this.setEditCURulesVM(globalIds);
 
 				}
 			},
@@ -166,6 +176,16 @@ sap.ui.define([
 	    	var emptyObject = {createNew: true, isError: false};
 	    	aData.push(emptyObject);
 	    	this._oAssignRuleViewModel.setProperty("/EditCURuleVM", aData);
+		},
+		setEditCURulesVM: function(editAttributesIDs){
+			var initData = [];
+			for (var i = 0; i < editAttributesIDs.length; i++) {
+	    		initData.push({
+	    			ID:editAttributesIDs[i]
+	    		});
+			}
+			this._oModel.setProperty("/EDIT_ATTRIBUTES_ID_LIST",initData);
+			this._oModel.setProperty("/RULE_COUNT",editAttributesIDs.length);
 		}
 			// onChange: function(oEvent){
 				

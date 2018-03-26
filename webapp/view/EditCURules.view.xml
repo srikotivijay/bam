@@ -5,6 +5,8 @@
 				showNavButton="true"
 				navButtonPress="onNavBack">
 				<content>
+				<Text id="lblGMID" text="{i18n>curuleedit}" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom pageHeaderFont boldFont"/>	
+				<Text id="lblGMIDCountryCount" text="{/RULE_COUNT}" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom pageHeaderFont boldFont"/>
 				<f:Form editable="true" id="formEditAttributeSingle">
 				    <f:formContainers>
 				        <f:FormContainer title="{i18n>editCURules}" id="fConEditCURules">
