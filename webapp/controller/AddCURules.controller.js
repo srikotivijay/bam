@@ -36,7 +36,9 @@ sap.ui.define([
 			//
 			// if the user does not have access then redirect to accessdenied page
 			if(hasAccess === false){
-				this.getOwnerComponent().getRouter().navTo("accessDenied");
+				this.getRouter().getTargets().display("accessDenied", {
+					fromTarget : "addCURules"
+				});	
 			}
 			else{
 				this._isChanged = false;
@@ -541,15 +543,11 @@ sap.ui.define([
             	row.productErrorState = "Error";
             	errorsFound = true;
             }
-            if(parseInt(row.RCU_CODE,10) === -1)
-            {
-            	row.cuErrorState = "Error";
-            	errorsFound = true;
-            }
-            if(parseInt(row.SUB_RCU_CODE,10) === -1)
-            {
-            	row.subcuErrorState = "Error";
-            	errorsFound = true;
+            //
+            if(parseInt(row.RCU_CODE,10) === -1 && parseInt(row.SUB_RCU_CODE,10) === -1){
+				row.cuErrorState = "Error";
+				row.subcuErrorState = "Error";
+				errorsFound = true;
             }
             return errorsFound;
         },
@@ -625,25 +623,25 @@ sap.ui.define([
                     var maxLimitSubmit = parseInt(this._oi18nModel.getProperty("MaxLimit"),10) ;
                     var RulesMaxLimitSubmit = this._oi18nModel.getProperty("MaxLimitSubmit.text");
                     // adding one to account for the extra line at the bottom
-	                   if (AssignRule.length > (maxLimitSubmit)) {
+					if (AssignRule.length > (maxLimitSubmit)) {
                                MessageBox.alert(RulesMaxLimitSubmit,{
                                                 icon : MessageBox.Icon.ERROR,
                                                 title : "Error"});
                             return;
-                         }
-                            // validation for Rule Set
-                         	var selectedRulekey = this.getView().byId("cmbRuleSetList").getSelectedItem().getKey();
-					        if (selectedRulekey === "-1")
-					        {
-					        	MessageBox.alert("Please select rule set.", {
+                    }
+                    // validation for Rule Set
+                    var selectedRulekey = this.getView().byId("cmbRuleSetList").getSelectedItem().getKey();
+					if (selectedRulekey === "-1")
+					{
+						MessageBox.alert("Please select rule set.", {
                                     icon : MessageBox.Icon.ERROR,
                                     title : "Invalid Input"
-                               });
-                            return;
-					        }
-                        if (AssignRule.length === 1 || this.chkIsModified() === false)
-                        {
-                                    MessageBox.alert("Please enter at least one rule.", {
+                        });
+                        return;
+					}
+                    if (AssignRule.length === 1 || this.chkIsModified() === false)
+                    {
+						MessageBox.alert("Please enter at least one rule.", {
                                     icon : MessageBox.Icon.ERROR,
                                     title : "Invalid Input"
                                });

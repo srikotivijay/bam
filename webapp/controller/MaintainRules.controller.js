@@ -27,7 +27,9 @@ sap.ui.define([
 			//
 			// if the user does not have access then redirect to accessdenied page
 			if(hasAccess === false){
-				this.getOwnerComponent().getRouter().navTo("accessDenied");
+				this.getRouter().getTargets().display("accessDenied", {
+					fromTarget : "maintainRules"
+				});		
 			}
 		},
 		// Navigate to CU SUB CU Assignment page
@@ -51,6 +53,9 @@ sap.ui.define([
 				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 				oRouter.navTo("home", true);
 			}
-		}
+		},
+		getRouter : function () {
+			return sap.ui.core.UIComponent.getRouterFor(this);
+		}		
   	});
 });
