@@ -51,7 +51,6 @@ sap.ui.define([
 			    		"productErrorState" : "None",
 			    		"RCU_CODE" : -1,
 			    		"cuErrorState" : "None",
-			    		"SUB_RCU": "None",
 			    		"SUB_RCU_CODE" : -1,
 			    		"subcuErrorState" : "None",
 			    		"createNew" : false,
@@ -523,7 +522,7 @@ sap.ui.define([
 		        {
 		            for( var j = i + 1; j < data.length - 1; j++)
 		            { 
-			            if((data[i].LEVEL_ID !== -1 &&  data[j].LEVEL_ID !== -1) && (data[i].PRODUCT_CODE !== -1 &&  data[j].PRODUCT_CODE !== -1) && (data[i].LEVEL_ID === data[j].LEVEL_ID) && (data[i].PRODUCT_CODE ===  data[j].PRODUCT_CODE))
+			            if((parseInt(data[i].LEVEL_ID,10) !== -1 &&  parseInt(data[j].LEVEL_ID,10) !== -1) && (parseInt(data[i].PRODUCT_CODE,10) !== -1 &&  parseInt(data[j].PRODUCT_CODE,10) !== -1) && (parseInt(data[i].LEVEL_ID,10) === parseInt(data[j].LEVEL_ID,10)) && (parseInt(data[i].PRODUCT_CODE,10) ===  parseInt(data[j].PRODUCT_CODE,10)))
 			            {
 			            	// highlight the geography and product boxed in red
 			            	 data[i].isError = true;
