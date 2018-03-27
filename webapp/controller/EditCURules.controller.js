@@ -288,19 +288,19 @@ sap.ui.define([
 			}
 		},		
 			//cancel click on edit attributes page
-			// onCancel: function(){
-			// 	var curr = this;
-			// 	// check if user wants to update the attributes for GMID and country
-			// 	MessageBox.confirm("Are you sure you want to cancel your changes and navigate back to the previous page?", {
-   //         		icon: sap.m.MessageBox.Icon.WARNING,
-   //         		actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
-   //         		onClose: function(oAction) {
-   //         			if(oAction === "YES"){
-   //         				curr.getOwnerComponent().getRouter().navTo("cuAssignment");
-   //         			}
-   //         		}
-   //     		});
-			// },
+			onCancel: function(){
+				var curr = this;
+				// check if user wants to update the attributes for GMID and country
+				MessageBox.confirm("Are you sure you want to cancel your changes and navigate back to the previous page?", {
+            		icon: sap.m.MessageBox.Icon.WARNING,
+            		actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+            		onClose: function(oAction) {
+            			if(oAction === "YES"){
+            				curr.getOwnerComponent().getRouter().navTo("cuAssignment");
+            			}
+            		}
+        		});
+			},
 			// //navigate back from edit page
 		onNavBack: function () {
 			var oHistory = History.getInstance();
