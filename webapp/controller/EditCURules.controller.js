@@ -72,7 +72,9 @@ sap.ui.define([
 				this._oModel.setProperty("/SUBRCU_CODE","-1");
 				this._oModel.setProperty("/SUBRCU_DESC","Select..");
 				this._oModel.setProperty("/CU_STATE","None");
-				this._oModel.setProperty("/SUBCU_STATE","Error");
+				this._oModel.setProperty("/SUBCU_STATE","None");
+				this._oModel.setProperty("/CU_STATE_TEXT","None");
+				this._oModel.setProperty("/SUBCU_STATE_TEXT","None");
 				
 				this._oRuleUpdViewModel = this._oModel;
 				this._oViewModelData = this._oRuleUpdViewModel.getData();
@@ -349,6 +351,21 @@ sap.ui.define([
 				updatedAttributesString += ", ";
 			}
 			return updatedAttributesString.substring(0, updatedAttributesString.length - 2);
+		},
+		onChange: function(oEvent){
+				var sourceControl = oEvent.getSource();
+				var sourceControlName = oEvent.getSource().getName();
+				// call the method to check if any of the attribute value has been updated 
+				if (this.validateRuleValueChange(sourceControlName)){
+					// if true set the value state to warning to highlight the change to the user
+					sourceControl.setValueStateText("Attribute value changed");
+					sourceControl.setValueState(sap.ui.core.ValueState.Warning);
+				}
+				else{
+					// if false set the value state to none to remove highlight from the control
+					sourceControl.setValueStateText("");
+					sourceControl.setValueState(sap.ui.core.ValueState.None);
+				}
 		}		
   	});
 });

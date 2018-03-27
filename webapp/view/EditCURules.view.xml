@@ -14,6 +14,7 @@
 				                <f:FormElement label="{i18n>cu}{i18n>mandatory}" id="felmCU">
 				                	<ComboBox
 										id="cmbCU"
+										name="cmbCU"
 										showSecondaryValues= "true"
 										filterSecondaryValues= "true"
 										selectedKey="{/RCU_CODE}"
@@ -23,7 +24,7 @@
 											path: '/RCU',
 											templateShareable : true
 										}"
-										valueState="{/CU_STATE}">
+										change = "onChange">
 										<core:ListItem key="{RCU_CODE}" text="{RCU_DESC}" additionalText="{RCU_CODE}"/>
 									</ComboBox>
 								   <CheckBox id="chkCU1" name="chkCU1" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_RCU}" tooltip="{i18n>updateNullTooltip}" />
@@ -31,6 +32,7 @@
 				                <f:FormElement label="{i18n>subCU}{i18n>mandatory}" id="felmSubCU">
 				                    <ComboBox
 										id="cmbSubCU"
+										name="cmbSubCU"
 										showSecondaryValues= "true"
 										filterSecondaryValues= "true"
 										selectedKey="{/SUBRCU_CODE}"
@@ -39,7 +41,8 @@
 										items="{
 											path: '/SubRCU',
 											templateShareable : true
-										}">
+										}"
+										change = "onChange">
 									<core:ListItem key="{SUB_RCU_CODE}" text="{SUB_RCU_DESC}" additionalText="{SUB_RCU_CODE}"/>
 								</ComboBox>
 									<CheckBox id="chkSubCU1" name="chkSubCU1" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_SUBRCU}" tooltip="{i18n>updateNullTooltip}" />
