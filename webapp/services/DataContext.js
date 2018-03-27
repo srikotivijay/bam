@@ -557,6 +557,34 @@ sap.ui.define([
             });
 			return result;
 		}
+
+		function getApplicationActivityID(jobName)
+		{
+           // create filter based on App job name
+			var AppActivityFilterArray = [];
+			var jobnametypeFilter = new Filter("JOB_NAME",sap.ui.model.FilterOperator.EQ,jobName);
+			AppActivityFilterArray.push(jobnametypeFilter);
+			
+			var appActivityID = null;
+
+			// Get the GMID Country Status Code ID CODE_MASTER table
+			oDataModel.read("/RULE_APPLICATION_ACTIVITY?$select=ID",{
+					filters: AppActivityFilterArray,
+					async: false,
+	                success: function(oData, oResponse){
+	                	//return the Code ID
+	                   appActivityID = oData.results[0].ID; 
+	                },
+	    		    error: function(){
+    		    		MessageBox.alert("Unable to retrieve ID for RULE_APPLICATION_ACTIVITY.",
+						{
+							icon : MessageBox.Icon.ERROR,
+							title : "Error"
+						});
+	    			}
+	    		});
+	    	return appActivityID;
+		}
 		
 		var exports = {
 			getAttributeListBasedOnUserID: getAttributeListBasedOnUserID,
@@ -571,7 +599,8 @@ sap.ui.define([
 			deleteStagingData: deleteStagingData,
 			getGMIDCountryStatusID: getGMIDCountryStatusID,
 			getGMIDCountryPlantListFromDB : getGMIDCountryPlantListFromDB,
-			getrulesFromDB : getrulesFromDB
+			getrulesFromDB : getrulesFromDB,
+			getApplicationActivityID : getApplicationActivityID
 		};
 	
 		return exports;

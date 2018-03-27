@@ -11,8 +11,11 @@ sap.ui.define([
 		"use strict";
 
 	var firstTimePageLoad = true;
+	var loggedInUserID;
 	return Controller.extend("bam.controller.CUAssignment", {
 		onInit : function () {
+			// Get logged in user id
+			loggedInUserID = DataContext.getUserID();
 			if(firstTimePageLoad)
 			{
 				//attach _onRouteMatched to be called everytime on navigation to Maintain Attributes page
@@ -211,6 +214,58 @@ sap.ui.define([
 	    			}
 	    	});
 	    	return result;
-		}
+		},
+		onApply : function(){
+			var curr = this;
+			MessageBox.confirm("Are you sure you want to apply rules?",{
+       		icon: sap.m.MessageBox.Icon.WARNING,
+       		actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+       		onClose: function(oAction) {
+       			if(oAction === "YES"){
+       			curr.applyRules();
+       			}
+       		}
+      		});
+		},
+		// apply rule button logic
+		applyRules : function(){
+			var curr = this;
+			var applyCURule = this._oi18nModel.getProperty("applucurule");
+			var notStarted = this._oi18nModel.getProperty("notstarted");
+			 // Get the Application Activity id for Apply Rules
+    	    var appActivityID = DataContext.getApplicationActivityID(applyCURule);
+    	    var oDate = new Date();
+    	    	var updAppActivity = {
+    	    		ID: appActivityID,
+    	    		APPLY_FLAG : 'T',
+    	    		JOB_STATUS : notStarted,
+    	    		APPLIED_ON : oDate,
+    	    		APPLIED_BY : loggedInUserID
+		};
+		
+			this._oDataModel.update("/RULE_APPLICATION_ACTIVITY("+appActivityID+")", updAppActivity,
+			        {
+						merge: true,
+			        	// show success alert to the user
+					    success: function(){
+							MessageBox.alert("Rules Applied successfully.",
+								{
+									icon : MessageBox.Icon.SUCCESS,
+									title : "Success",
+									onClose: function() {
+            							curr.getOwnerComponent().getRouter().navTo("cuAssignment");
+            						}
+							});
+						},
+						// show error alert to the user
+						error: function(oError){
+							MessageBox.alert("Error updating rules.",
+								{
+									icon : MessageBox.Icon.ERROR,
+									title : "Error"
+							});
+						}
+			        });
+  		}
   	});
 });
