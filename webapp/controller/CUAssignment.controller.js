@@ -56,7 +56,7 @@ sap.ui.define([
 				var oSmartTable = this.getView().byId("smartTblCUAssignment");     //Get Hold of smart table
 				var oTable = oSmartTable.getTable();          //Analytical Table embedded into SmartTable
 				oTable.setEnableColumnFreeze(true);
-				oSmartTable.rebindTable();
+				//oSmartTable.rebindTable();
 				//oTable.getColumns();
 			}
 				
