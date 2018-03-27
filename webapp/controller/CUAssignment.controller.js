@@ -7,7 +7,7 @@ sap.ui.define([
 		"sap/ui/core/routing/History",
 		"sap/ui/model/Filter",
 		"sap/ui/model/Sorter"
-	], function (Controller,DataContext,MessageToast,MessageBox,ResourceModel,History,Filter,Sorter) {
+	], function (Controller,DataContext,MessageBox,MessageToast,ResourceModel,History,Filter,Sorter) {
 		"use strict";
 
 	var firstTimePageLoad = true;

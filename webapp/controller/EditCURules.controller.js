@@ -30,6 +30,10 @@ sap.ui.define([
 			oView.setModel(this.getOwnerComponent().getModel());
 			// get resource model
 			this._oi18nModel = this.getOwnerComponent().getModel("i18n");
+			
+			// setting Remove Value checkboxes to true by default
+			this.getView().byId("cmbCU").setEnabled(true);
+			this.getView().byId("cmbSubCU").setEnabled(true);
 			//
 			this._oEditCURulesViewModel = new sap.ui.model.json.JSONModel();
 			// checking the permission
@@ -217,6 +221,36 @@ sap.ui.define([
 					title : "Error"
 	       		});
 			}			
+		},
+		onChecked: function(oEvent){
+			var sourceControlName = oEvent.getSource().getName();
+			var isChecked = oEvent.getParameter("selected");
+			// if check box is checked then clear the value of the attributes else dont do anything
+			// depending on Id clear the text areas of the attributes
+			if (sourceControlName === "chkCU1")
+			{	
+				if(isChecked){
+					this.getView().byId("cmbCU").setValue("Select..");
+					this.getView().byId("cmbCU").setEnabled(false);
+					this.getView().byId("cmbCU").setValueState(sap.ui.core.ValueState.Warning);
+				}
+				else{
+					this.getView().byId("cmbCU").setEnabled(true);
+					this.getView().byId("cmbCU").setValueState(sap.ui.core.ValueState.None);
+				}
+			}
+			else if(sourceControlName === "chkSubCU1")
+			{
+				if(isChecked){
+					this.getView().byId("cmbSubCU").setValue("Select..");
+					this.getView().byId("cmbSubCU").setEnabled(false);
+					this.getView().byId("cmbSubCU").setValueState(sap.ui.core.ValueState.Warning);
+				}
+				else{
+					this.getView().byId("cmbSubCU").setEnabled(true);
+					this.getView().byId("cmbSubCU").setValueState(sap.ui.core.ValueState.None);
+				}
+			}
 		},
 		//
 		createUpdateObject: function(){
