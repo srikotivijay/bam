@@ -265,14 +265,26 @@ sap.ui.define([
 				this._oDataModel.submitBatch(
 					function(oData,oResponse)
 					{
-						busyDialog.close();
-						MessageBox.alert("CU for " + successCount + " Rules updated successfully.",
-							{
-								icon : MessageBox.Icon.SUCCESS,
-								title : "Success",
-								onClose: function() {
-				        			curr.getOwnerComponent().getRouter().navTo("cuAssignment");
-				        	}
+						curr._oDataModel.remove("/MST_CU_RULE(" + editRuleIdList[0].ID + ")", {
+							success: function(){
+								busyDialog.close();
+								MessageBox.alert("CU for " + successCount + " Rules updated successfully.",
+									{
+										icon : MessageBox.Icon.SUCCESS,
+										title : "Success",
+										onClose: function() {
+						        			curr.getOwnerComponent().getRouter().navTo("cuAssignment");
+						        	}
+								});
+							},
+							error: function(){
+								busyDialog.close();
+				    			MessageBox.alert("CU for " + successCount + " Rules updated successfully with errors deleting nulled Rules.",
+								{
+									icon : MessageBox.Icon.ERROR,
+									title : "Error"
+								});
+							}
 						});
 			    	},
 			    	function(oError)
