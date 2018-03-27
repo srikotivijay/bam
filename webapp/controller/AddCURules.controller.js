@@ -123,7 +123,9 @@ sap.ui.define([
 			    var subRcuDropDown = this.getSubRCUDropDown(null);
 			    var ruleVM = this._oViewModelData.AssignRuleVM;
 			    for(var i = 0; i < ruleVM.length - 1; i++) {
-			    	ruleVM[i].SUB_RCU =    subRcuDropDown;                      
+			    	ruleVM[i].SUB_RCU =    subRcuDropDown;   
+			    	ruleVM[i].SUB_RCU_CODE = "-1";
+			    	ruleVM[i].SUB_RCU_DESC = "Select..";
 			    }
 		    	this.getDefaultPropertyValues();
 				this.setDefaultValuesToGrid();
