@@ -75,6 +75,14 @@ sap.ui.define([
 				this._oModel.setProperty("/SUBCU_STATE","None");
 				this._oModel.setProperty("/CU_STATE_TEXT","None");
 				this._oModel.setProperty("/SUBCU_STATE_TEXT","None");
+				//
+				var ddlCU = this.getView().byId("cmbCU");
+				ddlCU.setValueStateText("");
+				ddlCU.setValueState(sap.ui.core.ValueState.None);
+				var ddlSubCU = this.getView().byId("cmbSubCU");
+				ddlSubCU.setValueStateText("");
+				ddlSubCU.setValueState(sap.ui.core.ValueState.None);
+				//
 				
 				this._oRuleUpdViewModel = this._oModel;
 				this._oViewModelData = this._oRuleUpdViewModel.getData();
