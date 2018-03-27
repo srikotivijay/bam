@@ -51,7 +51,6 @@ sap.ui.define([
 			    		"productErrorState" : "None",
 			    		"RCU_CODE" : -1,
 			    		"cuErrorState" : "None",
-			    		"SUB_RCU": "None",
 			    		"SUB_RCU_CODE" : -1,
 			    		"subcuErrorState" : "None",
 			    		"createNew" : false,
