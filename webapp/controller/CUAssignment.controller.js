@@ -16,13 +16,7 @@ sap.ui.define([
 		onInit : function () {
 			// Get logged in user id
 			loggedInUserID = DataContext.getUserID();
-			if(firstTimePageLoad)
-			{
-				//attach _onRouteMatched to be called everytime on navigation to Maintain Attributes page
-				var oRouter = this.getRouter();
-				oRouter.getRoute("cuAssignment").attachMatched(this._onRouteMatched, this);
-				firstTimePageLoad = false;
-			}			
+					
 			// Get logged in user id
 			// define a global variable for the oData model		
 			var oView = this.getView();
@@ -62,6 +56,21 @@ sap.ui.define([
 				//oSmartTable.rebindTable();
 				//oTable.getColumns();
 			}
+			if(firstTimePageLoad)
+			{
+				//attach _onRouteMatched to be called everytime on navigation to Maintain Attributes page
+				var oRouter = this.getRouter();
+				oRouter.getRoute("cuAssignment").attachMatched(this._onRouteMatched, this);
+				firstTimePageLoad = false;
+			}
+			else
+			{
+				this.getOwnerComponent().getModel().refresh(true);
+				//This is a bandaid for resetting the Checkboxes on the grid, we could not find a method that directly unsets the checkboxes
+				//Instead we can unset and set the checkbox
+				oTable.setSelectionMode("None");
+				oTable.setSelectionMode("MultiToggle");
+			}	
 				
 		},
 		getRouter : function () {
