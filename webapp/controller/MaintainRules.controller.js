@@ -8,9 +8,16 @@ sap.ui.define([
 		"sap/ui/model/resource/ResourceModel"
 	], function (Controller,JSONModel, MessageToast, MessageBox, DataContext,History,ResourceModel) {
 		"use strict";
-		
+	var firstTimePageLoad = true;
 	return Controller.extend("bam.controller.MaintainRules", {
 		onInit : function(){
+			if(firstTimePageLoad)
+	    	{
+				var oRouter = this.getRouter();
+				oRouter.getRoute("maintainRules").attachMatched(this._onRouteMatched, this);
+				firstTimePageLoad = false;
+	    	}
+	    	//
 			this._oi18nModel = this.getOwnerComponent().getModel("i18n");
 			var maintainRule = this._oi18nModel.getProperty("Module.maintainRules");
 			var permissions = DataContext.getUserPermissions();
@@ -32,6 +39,17 @@ sap.ui.define([
 				});		
 			}
 		},
+		// force init method to be called everytime we naviagte to Maintain Attribuets page 
+		_onRouteMatched : function (oEvent) {
+			if(DataContext.isBAMUser() === false)
+			{
+				this.getOwnerComponent().getRouter().navTo("accessDenied");
+			}
+			else
+			{
+				this.onInit();
+			}
+		},		
 		// Navigate to CU SUB CU Assignment page
 		onGoToCuSubCuAssignment : function(){
 			this.getOwnerComponent().getRouter().navTo("cuAssignment");

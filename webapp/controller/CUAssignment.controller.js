@@ -2,31 +2,34 @@ sap.ui.define([
 		"sap/ui/core/mvc/Controller",
 		"bam/services/DataContext",
 		"sap/m/MessageBox",
+		"sap/m/MessageToast",
 		"sap/ui/model/resource/ResourceModel",
 		"sap/ui/core/routing/History",
 		"sap/ui/model/Filter",
 		"sap/ui/model/Sorter"
-	], function (Controller,DataContext,MessageBox,ResourceModel,History,Filter,Sorter) {
+	], function (Controller,DataContext,MessageToast,MessageBox,ResourceModel,History,Filter,Sorter) {
 		"use strict";
 
-  	var loggedInUserID;
 	var firstTimePageLoad = true;
 	return Controller.extend("bam.controller.CUAssignment", {
 		onInit : function () {
+			if(firstTimePageLoad)
+			{
+				//attach _onRouteMatched to be called everytime on navigation to Maintain Attributes page
+				var oRouter = this.getRouter();
+				oRouter.getRoute("cuAssignment").attachMatched(this._onRouteMatched, this);
+				firstTimePageLoad = false;
+			}			
 			// Get logged in user id
-		    loggedInUserID = DataContext.getUserID();
-			 // define a global variable for the oData model		    
-		   	var oView = this.getView();
-		   	oView.setModel(this.getOwnerComponent().getModel());
-		   	this._oModel = new sap.ui.model.json.JSONModel();
-		   	this._oModel.setProperty("/showEditButton",false);
-		   	this.getView().setModel(this._oModel,"CUAssignmentVM");
-		   		// get resource model
+			// define a global variable for the oData model		
+			var oView = this.getView();
+			oView.setModel(this.getOwnerComponent().getModel());
+			//
+			// get resource model
 			this._oi18nModel = this.getOwnerComponent().getModel("i18n");
-			this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
-	    	//
-	    	// checking the permission
-	    	var maintainRule = this._oi18nModel.getProperty("Module.maintainRules");
+			//
+			// checking the permission
+			var maintainRule = this._oi18nModel.getProperty("Module.maintainRules");
 			var permissions = DataContext.getUserPermissions();
 			var hasAccess = false;
 			for(var i = 0; i < permissions.length; i++)
@@ -34,7 +37,6 @@ sap.ui.define([
 				if(permissions[i].ATTRIBUTE === maintainRule)
 				{
 						hasAccess = true;
-						this._oModel.setProperty("/showEditButton",true);
 						break;
 				}
 			}
@@ -43,24 +45,20 @@ sap.ui.define([
 			if(hasAccess === false){
 				this.getRouter().getTargets().display("accessDenied", {
 					fromTarget : "cuAssignment"
-				});	
+				});					
 			}
 			else{
-	    		//remove the selection column
-	    		var oSmartTable = this.getView().byId("smartTblCUAssignment");     //Get Hold of smart table
+				this._oModel = new sap.ui.model.json.JSONModel();
+				this.getView().setModel(this._oModel,"CUAssignmentVM");
+				this._oModel.setProperty("/showEditButton",true);
+				this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
+				//remove the selection column
+				var oSmartTable = this.getView().byId("smartTblCUAssignment");     //Get Hold of smart table
 				var oTable = oSmartTable.getTable();          //Analytical Table embedded into SmartTable
-
 				oTable.setEnableColumnFreeze(true);
 				//oTable.getColumns();
-		    	
-		    	if(firstTimePageLoad)
-		    	{
-		    		//attach _onRouteMatched to be called everytime on navigation to Maintain Attributes page
-		    		var oRouter = this.getRouter();
-					oRouter.getRoute("cuAssignment").attachMatched(this._onRouteMatched, this);
-		    	}				
 			}
-
+				
 		},
 		getRouter : function () {
 			return sap.ui.core.UIComponent.getRouterFor(this);
@@ -74,14 +72,7 @@ sap.ui.define([
 			}
 			else
 			{
-				if(firstTimePageLoad)
-				{
-					firstTimePageLoad = false;
-				}
-				else
-				{
-					this.onInit();
-				}
+				this.onInit();
 			}
 		},
 		// navigate back to the homepage
