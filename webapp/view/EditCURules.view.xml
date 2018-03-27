@@ -16,37 +16,34 @@
 										id="cmbCU"
 										showSecondaryValues= "true"
 										filterSecondaryValues= "true"
-										value="{RCU_DESC}"
-										selectedKey="{RCU_CODE}"
+										selectedKey="{/RCU_CODE}"
+										value="{/RCU_DESC}"
 										width="500px"
 										items="{
-											path: '/EditCURuleVM/RCU',
+											path: '/RCU',
 											templateShareable : true
 										}"
-										visible="{path: 'createNew', formatter: '.disableControl'}">
+										valueState="{/CU_STATE}">
 										<core:ListItem key="{RCU_CODE}" text="{RCU_DESC}" additionalText="{RCU_CODE}"/>
 									</ComboBox>
-				      <!--              <Select xmlns:sap.ui.core="sap.ui.core" width="90%" id="ddlCU" name="ddlCU" change="onChange" items="{path: '/EditCURuleVM/RCU', templateShareable : true}" selectedKey="{RCU_CODE}">-->
-		        <!--                    		<sap.ui.core:ListItem key="{RCU_CODE}" text="{RCU_DESC}"/>-->
-										<!--</Select>-->
-								   <CheckBox id="chkCU1" name="chkCU1" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_DEMAND_ATTRIBUTE1}" tooltip="{i18n>updateNullTooltip}" />
+								   <CheckBox id="chkCU1" name="chkCU1" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_RCU}" tooltip="{i18n>updateNullTooltip}" />
 				                </f:FormElement>
 				                <f:FormElement label="{i18n>subCU}{i18n>mandatory}" id="felmSubCU">
 				                    <ComboBox
 										id="cmbSubCU"
 										showSecondaryValues= "true"
 										filterSecondaryValues= "true"
-										value="{SUB_RCU_DESC}"
-										selectedKey="{SUB_RCU_CODE}"
+										selectedKey="{/SUBRCU_CODE}"
+										value="{/SUBRCU_DESC}"
 										width="500px"
 										items="{
-											path: '/EditCURuleVM/SubRCU',
+											path: '/SubRCU',
 											templateShareable : true
 										}"
-										visible="{path: 'createNew', formatter: '.disableControl'}">
+										valueState="{/SUBCU_STATE}">
 									<core:ListItem key="{SUB_RCU_CODE}" text="{SUB_RCU_DESC}" additionalText="{SUB_RCU_CODE}"/>
 								</ComboBox>
-									<CheckBox id="chkSubCU1" name="chkSubCU1" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_DEMAND_ATTRIBUTE2}" tooltip="{i18n>updateNullTooltip}" />
+									<CheckBox id="chkSubCU1" name="chkSubCU1" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_SUBRCU}" tooltip="{i18n>updateNullTooltip}" />
 				                </f:FormElement>
 				            </f:formElements>
 				        </f:FormContainer>

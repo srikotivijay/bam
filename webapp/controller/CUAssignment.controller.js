@@ -114,21 +114,21 @@ sap.ui.define([
 		// check if more than or less than 1 checkbox is checked
 		var index,context,path,indexOfParentheses1,indexOfParentheses2;
 		var selectedIndicesLength = this._oSmartTable.getSelectedIndices().length;
-		if(selectedIndicesLength > 1){
+		if(selectedIndicesLength > 0){
 		index = this._oSmartTable.getSelectedIndices();
-		var ids="";
+		var ids = "";
 		var idArr = [];
 		
 		var performFullList = false;
 
-		for (var i=0;i < index.length;i++)
+		for (var i = 0; i < index.length; i++)
 		{
 			context = this._oSmartTable.getContextByIndex(index[i]); 
-			if(context != undefined){
+			if(context !== undefined){
 				path = context.getPath();
 				indexOfParentheses1 = path.indexOf("(");
 				indexOfParentheses2 = path.indexOf(")");
-				ids=path.substring(indexOfParentheses1 + 1,indexOfParentheses2);
+				ids = path.substring(indexOfParentheses1 + 1,indexOfParentheses2);
 				idArr.push(ids);
 			}
 			else{
@@ -140,20 +140,16 @@ sap.ui.define([
 
 		if (performFullList){
 			idArr = [];
-			
 			var editSelection = this.getAllRules();
-			for (var i=0;i < index.length;i++)
+			for (var j = 0; j < index.length; j++)
 			{
-				context = editSelection[index[i]]; 
-				if(context != undefined){
-					
+				context = editSelection[index[j]]; 
+				if(context !== undefined){
 					idArr.push(context.ID);
-
 				}
 			}
 		}
-		
-		
+		//
 		ids = ids.substring(0, ids.length - 1);
 			var oData = idArr;
 			//add to model
