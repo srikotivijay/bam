@@ -73,6 +73,9 @@ sap.ui.define([
 				this._oModel.setProperty("/SUBRCU_DESC","Select..");
 				this._oModel.setProperty("/CU_STATE","None");
 				this._oModel.setProperty("/SUBCU_STATE","Error");
+				
+				this._oRuleUpdViewModel = this._oModel;
+				this._oViewModelData = this._oRuleUpdViewModel.getData();
 				//
 				var core = sap.ui.getCore();
 				var globalModel = core.getModel();
@@ -182,10 +185,108 @@ sap.ui.define([
 				
 			// },
 			// //click of submit button
-			// onSubmit: function(){
+		onSubmit: function(){
+			var currObj = this;
+			var updatedCodes = currObj.getUpdatedCodes();	
+			if (updatedCodes !== ""){
+				var ruleCount = this._oModel.getProperty("/RULE_COUNT");
+				// check if user wants to update the attributes for GMID and country
+				MessageBox.confirm((updatedCodes + " will be updated for " + ruleCount + " rule(s). Continue?"), {
+	    			icon: sap.m.MessageBox.Icon.WARNING,
+	    			actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+	          		onClose: function(oAction) {
+	          			var editRuleIdList = currObj._oModel.getProperty("/EDIT_ATTRIBUTES_ID_LIST");
+	        			currObj.fnCallbackSubmitConfirm(oAction, editRuleIdList);
+	            	}
+	       		});				
+			}
+			else{
+				// check if user wants to update the attributes for GMID and country
+				MessageBox.alert("There are no pending changes", {
+	    			icon : MessageBox.Icon.ERROR,
+					title : "Error"
+	       		});
+			}			
+		},
+		//
+		createUpdateObject: function(){
+			// Create current timestamp
+			var oDate = new Date();
+			var updRule = {
+			    		LAST_UPDATED_BY: loggedInUserID,
+					    LAST_UPDATED_ON: oDate
+			    	};
+			if(this.getView().byId("chkCU1").getSelected()){
+					updRule.RCU_CODE = null;
+			}
+			else if (this._oViewModelData.RCU_CODE !== "-1" && this._oViewModelData.RCU_CODE !== undefined){
+					updRule.RCU_CODE = this._oViewModelData.RCU_CODE;
+			}
+			//
+			if(this.getView().byId("chkSubCU1").getSelected()){
+				updRule.SUBRCU_CODE = null;
+			}
+			else if (this._oViewModelData.SUBRCU_CODE !== "-1" && this._oViewModelData.SUBRCU_CODE !== undefined){
+				updRule.SUBRCU_CODE = this._oViewModelData.SUBRCU_CODE;
+			}
+			//return the object of updated attributes
+			return updRule;
+		},		
+		// update the rules based on user response
+		fnCallbackSubmitConfirm: function(oAction, editRuleIdList){
+			var curr = this;
+			var successCount = 0;
+			var updRule = curr.createUpdateObject();
+			//if user confirmed to update the attributes, prepare the object and update the attributes for the GMID and country
+			//else do nothing
+			if (oAction === "YES") 
+			{
+				// create a batch array and push each updated GMID to it
+				var batchArray = [];
+				for(var i = 0; i < editRuleIdList.length; i++) 
+			    {
+			    	batchArray.push(this._oDataModel.createBatchOperation("MST_CU_RULE(" + editRuleIdList[i].ID + ")", "MERGE", updRule));
+			    	successCount++;
+				}
+				this._oDataModel.addBatchChangeOperations(batchArray);
+				// creating busy dialog lazily
+				if (!this._busyDialog) 
+				{
+					this._busyDialog = sap.ui.xmlfragment("bam.view.BusyLoading", this);
+					this.getView().addDependent(this._dialog);
+				}
 				
-			// },
-			// //cancel click on edit attributes page
+				// setting to a local variable since we are closing it in an oData success function that has no access to global variables.
+				var busyDialog = this._busyDialog;
+				busyDialog.open();
+				
+				// submit the batch update command
+				this._oDataModel.submitBatch(
+					function(oData,oResponse)
+					{
+						busyDialog.close();
+						MessageBox.alert("CU for " + successCount + " Rules updated successfully.",
+							{
+								icon : MessageBox.Icon.SUCCESS,
+								title : "Success",
+								onClose: function() {
+				        			curr.getOwnerComponent().getRouter().navTo("cuAssignment");
+				        	}
+						});
+			    	},
+			    	function(oError)
+			    	{
+			    		busyDialog.close();
+		    			MessageBox.alert("Error updating attributes for Rules.",
+						{
+							icon : MessageBox.Icon.ERROR,
+							title : "Error"
+						});
+			    	}
+			    );
+			}
+		},		
+			//cancel click on edit attributes page
 			// onCancel: function(){
 			// 	var curr = this;
 			// 	// check if user wants to update the attributes for GMID and country
@@ -209,6 +310,29 @@ sap.ui.define([
 				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 				oRouter.navTo("cuAssignment", true);
 			}
-		}
+		},
+		validateRuleValueChange: function (sourceControlName){
+			var type = sourceControlName.substring(0,3);
+			if((type === "cmb" && this.getView().byId(sourceControlName).getSelectedKey() !== "-1") || (type === "txt" && this.getView().byId(sourceControlName).getValue().trim() !== "")){
+				return true;
+			}
+			else{
+				return false;
+			}
+		},
+		getUpdatedCodes: function(){
+			// get the crop protection and seeds value from i18n file
+	    	var oi18nModel = this.getView().getModel("i18n");
+			var updatedAttributesString = "";
+			if (this.validateRuleValueChange("cmbCU")){
+				updatedAttributesString += oi18nModel.getProperty("cu");
+				updatedAttributesString += ", ";
+			}
+			if (this.validateRuleValueChange("cmbSubCU")){
+				updatedAttributesString += oi18nModel.getProperty("subCU");
+				updatedAttributesString += ", ";
+			}
+			return updatedAttributesString.substring(0, updatedAttributesString.length - 2);
+		}		
   	});
 });

@@ -39,8 +39,7 @@
 										items="{
 											path: '/SubRCU',
 											templateShareable : true
-										}"
-										valueState="{/SUBCU_STATE}">
+										}">
 									<core:ListItem key="{SUB_RCU_CODE}" text="{SUB_RCU_DESC}" additionalText="{SUB_RCU_CODE}"/>
 								</ComboBox>
 									<CheckBox id="chkSubCU1" name="chkSubCU1" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_SUBRCU}" tooltip="{i18n>updateNullTooltip}" />
