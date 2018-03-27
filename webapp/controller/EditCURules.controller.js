@@ -224,10 +224,10 @@ sap.ui.define([
 			}
 			//
 			if(this.getView().byId("chkSubCU1").getSelected()){
-				updRule.SUBRCU_CODE = null;
+				updRule.SUB_RCU_CODE = null;
 			}
 			else if (this._oViewModelData.SUBRCU_CODE !== "-1" && this._oViewModelData.SUBRCU_CODE !== undefined){
-				updRule.SUBRCU_CODE = this._oViewModelData.SUBRCU_CODE;
+				updRule.SUB_RCU_CODE = this._oViewModelData.SUBRCU_CODE;
 			}
 			//return the object of updated attributes
 			return updRule;
@@ -236,11 +236,12 @@ sap.ui.define([
 		fnCallbackSubmitConfirm: function(oAction, editRuleIdList){
 			var curr = this;
 			var successCount = 0;
-			var updRule = curr.createUpdateObject();
+			
 			//if user confirmed to update the attributes, prepare the object and update the attributes for the GMID and country
 			//else do nothing
 			if (oAction === "YES") 
 			{
+				var updRule = curr.createUpdateObject();
 				// create a batch array and push each updated GMID to it
 				var batchArray = [];
 				for(var i = 0; i < editRuleIdList.length; i++) 
@@ -313,7 +314,10 @@ sap.ui.define([
 		},
 		validateRuleValueChange: function (sourceControlName){
 			var type = sourceControlName.substring(0,3);
-			if((type === "cmb" && this.getView().byId(sourceControlName).getSelectedKey() !== "-1") || (type === "txt" && this.getView().byId(sourceControlName).getValue().trim() !== "")){
+			if((type === "cmb" && this.getView().byId(sourceControlName).getSelectedKey() !== "-1") || 
+				(type === "txt" && this.getView().byId(sourceControlName).getValue().trim() !== "") ||
+				(type === "chk" && this.getView().byId(sourceControlName).getSelected())
+				){
 				return true;
 			}
 			else{
@@ -324,11 +328,11 @@ sap.ui.define([
 			// get the crop protection and seeds value from i18n file
 	    	var oi18nModel = this.getView().getModel("i18n");
 			var updatedAttributesString = "";
-			if (this.validateRuleValueChange("cmbCU")){
+			if (this.validateRuleValueChange("cmbCU") || this.validateRuleValueChange("chkCU1")){
 				updatedAttributesString += oi18nModel.getProperty("cu");
 				updatedAttributesString += ", ";
 			}
-			if (this.validateRuleValueChange("cmbSubCU")){
+			if (this.validateRuleValueChange("cmbSubCU")|| this.validateRuleValueChange("chkSubCU1")){
 				updatedAttributesString += oi18nModel.getProperty("subCU");
 				updatedAttributesString += ", ";
 			}
