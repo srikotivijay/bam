@@ -8,17 +8,17 @@
 				 
 				<!-- use this to make the table occupy the available screen height -->
 				<VBox fitContainer="true">
-					<smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="V_WEB_CU_RULES">
+					<!--<smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="V_PEOPLE_RULE">
 					<smartFilterBar:controlConfiguration>
-						<smartFilterBar:ControlConfiguration key="CU_RULESET_DESCRIPTION" visibleInAdvancedArea="true">
+						<smartFilterBar:ControlConfiguration key="DESCRIPTION" visibleInAdvancedArea="true">
 						</smartFilterBar:ControlConfiguration>
-							<smartFilterBar:ControlConfiguration key="GEOGRAPHY" visibleInAdvancedArea="true">
+						<smartFilterBar:ControlConfiguration key="GEO_LEVEL_NAME" visibleInAdvancedArea="true">
 						</smartFilterBar:ControlConfiguration>
 					</smartFilterBar:controlConfiguration>
-				</smartFilterBar:SmartFilterBar>
-					<smartTable:SmartTable smartFilterId = "smartFilterBar" id="smartTblCUAssignment" beforeRebindTable="onBeforeRebindTable" entitySet="V_WEB_CU_RULES" tableType="Table" useExportToExcel="true" useVariantManagement="true" showFullScreenButton="true" 
-					useTablePersonalisation="true" header="CU and Sub CU Rules" showRowCount="true" enableAutoBinding="true" app:useSmartField="true" class="sapUiResponsiveContentPadding" ignoreFromPersonalisation="ID"
-					initiallyVisibleFields="CU_RULESET_DESCRIPTION,GEOGRAPHY,PRODUCT_DESCRIPTION,CU_DESCRIPTION,SCU_DESCRIPTION">
+				</smartFilterBar:SmartFilterBar>-->
+					<smartTable:SmartTable id="smartTblPeopleAssignment" beforeRebindTable="onBeforeRebindTable" entitySet="V_PEOPLE_RULE" tableType="Table" useExportToExcel="true" useVariantManagement="true" showFullScreenButton="true" 
+					useTablePersonalisation="true" header="People Rules" showRowCount="true" enableAutoBinding="true" app:useSmartField="true" class="sapUiResponsiveContentPadding" ignoreFromPersonalisation="ID"
+					initiallyVisibleFields="DESCRIPTION,GEO_LEVEL_NAME">
 						<!-- layout data used to make the table growing but the filter bar fixed -->
 						<smartTable:layoutData>
 								<FlexItemData growFactor="1" baseSize="0%"/>
@@ -27,9 +27,9 @@
 		                <OverflowToolbar design="Transparent"> 
 		                        <ToolbarSpacer/> 
 		                        <!-- <Button id="btnClearFilter" text="Clear" width="100px"  press="onClearFilter" icon="sap-icon://clear-filter" activeIcon="sap-icon://clear-filter"  /> -->
-		                        <Button id="btnAdd"  visible="{CUAssignmentVM>/showEditButton}" text="{i18n>addRule}" press="onAdd" icon="sap-icon://add" activeIcon="sap-icon://add"/>
-		                        <Button id="btnEdit" visible="{CUAssignmentVM>/showEditButton}" text="{i18n>edit}" press="onEdit" icon="sap-icon://edit" activeIcon="sap-icon://edit"/>
-		                        <Button id="btnApply" visible="{CUAssignmentVM>/showEditButton}" text="{i18n>applyRules}" press="onApply" icon="sap-icon://detail-view" activeIcon="sap-icon://detail-view"/>
+		                        <!--<Button id="btnAdd"  visible="{CUAssignmentVM>/showEditButton}" text="{i18n>addRule}" press="onAdd" icon="sap-icon://add" activeIcon="sap-icon://add"/>-->
+		                        <!--<Button id="btnEdit" visible="{CUAssignmentVM>/showEditButton}" text="{i18n>edit}" press="onEdit" icon="sap-icon://edit" activeIcon="sap-icon://edit"/>-->
+		                        <!--<Button id="btnApply" visible="{CUAssignmentVM>/showEditButton}" text="{i18n>applyRules}" press="onApply" icon="sap-icon://detail-view" activeIcon="sap-icon://detail-view"/>-->
 		               </OverflowToolbar> 
 			       </smartTable:customToolbar>
 					</smartTable:SmartTable>

@@ -41,16 +41,16 @@ sap.ui.define([
 			// if the user does not have access then redirect to accessdenied page
 			if(hasAccess === false){
 				this.getRouter().getTargets().display("accessDenied", {
-					fromTarget : "cuAssignment"
+					fromTarget : "peopleAssignment"
 				});					
 			}
 			else{
 				this._oModel = new sap.ui.model.json.JSONModel();
-				this.getView().setModel(this._oModel,"CUAssignmentVM");
+				this.getView().setModel(this._oModel,"PeopleAssignmentVM");
 				this._oModel.setProperty("/showEditButton",true);
 				this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
 				//remove the selection column
-				var oSmartTable = this.getView().byId("smartTblCUAssignment");     //Get Hold of smart table
+				var oSmartTable = this.getView().byId("smartTblPeopleAssignment");     //Get Hold of smart table
 				var oTable = oSmartTable.getTable();          //Analytical Table embedded into SmartTable
 				oTable.setEnableColumnFreeze(true);
 				//oSmartTable.rebindTable();
@@ -60,7 +60,7 @@ sap.ui.define([
 			{
 				//attach _onRouteMatched to be called everytime on navigation to Maintain Attributes page
 				var oRouter = this.getRouter();
-				oRouter.getRoute("cuAssignment").attachMatched(this._onRouteMatched, this);
+				oRouter.getRoute("peopleAssignment").attachMatched(this._onRouteMatched, this);
 				firstTimePageLoad = false;
 			}
 			else
@@ -99,8 +99,8 @@ sap.ui.define([
                 this._oBindingParams = oEvent.getParameter("bindingParams");
                                 // setting up sorters
                 var aSorters = this._oBindingParams.sorter;
-                var GMIDSorter = new Sorter("CU_RULESET_DESCRIPTION",false);
-                var CountrySorter = new Sorter("GEOGRAPHY",false);
+                var GMIDSorter = new Sorter("DESCRIPTION",false);
+                var CountrySorter = new Sorter("GEO_LEVEL_NAME",false);
                 aSorters.push(GMIDSorter);
                 aSorters.push(CountrySorter);
         },
@@ -118,12 +118,12 @@ sap.ui.define([
 			}
 		},
 		// open the new page to add rule/ruleset
-		onAdd: function(){
-			this.getOwnerComponent().getRouter().navTo("addCURules");
-	},
+	// 	onAdd: function(){
+	// 		this.getOwnerComponent().getRouter().navTo("addCURules");
+	// },
 	// navigate to edit attribute page on click of edit
-	onEdit: function(){
-		this._oSmartTable = this.getView().byId("smartTblCUAssignment").getTable();
+	/*onEdit: function(){
+		this._oSmartTable = this.getView().byId("smartTblPeopleAssignment").getTable();
 		// check if more than or less than 1 checkbox is checked
 		var index,context,path,indexOfParentheses1,indexOfParentheses2;
 		var selectedIndicesLength = this._oSmartTable.getSelectedIndices().length;
@@ -178,7 +178,7 @@ sap.ui.define([
 						title : "Error"
 				});
 		}
-	},
+	},*/
 	getAllRules : function () {
 		var result;
 		// Create a filter & sorter array
@@ -202,7 +202,7 @@ sap.ui.define([
 			//var sorter = new sap.ui.model.Sorter("SUB_RCU_DESC",false);
 			//sortArray.push(sorter);
 			// Get the Country dropdown list from the CODE_MASTER table
-			this._oDataModel.read("/V_WEB_CU_RULES",{
+			this._oDataModel.read("/V_PEOPLE_RULE",{
 					filters: filterArray,
 					sorters: sortArray,
 					async: false,
@@ -223,21 +223,21 @@ sap.ui.define([
 	    			}
 	    	});
 	    	return result;
-		},
-		onApply : function(){
-			var curr = this;
-			MessageBox.confirm("Are you sure you want to apply rules?",{
-       		icon: sap.m.MessageBox.Icon.WARNING,
-       		actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
-       		onClose: function(oAction) {
-       			if(oAction === "YES"){
-       			curr.applyRules();
-       			}
-       		}
-      		});
-		},
+		}
+		// onApply : function(){
+		// 	var curr = this;
+		// 	MessageBox.confirm("Are you sure you want to apply rules?",{
+  //     		icon: sap.m.MessageBox.Icon.WARNING,
+  //     		actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+  //     		onClose: function(oAction) {
+  //     			if(oAction === "YES"){
+  //     			curr.applyRules();
+  //     			}
+  //     		}
+  //    		});
+		// },
 		// apply rule button logic
-		applyRules : function(){
+		/*applyRules : function(){
 			var curr = this;
 			var applyCURule = this._oi18nModel.getProperty("applucurule");
 			var notStarted = this._oi18nModel.getProperty("notstarted");
@@ -275,6 +275,6 @@ sap.ui.define([
 							});
 						}
 			        });
-  		}
+  		}*/
   	});
 });

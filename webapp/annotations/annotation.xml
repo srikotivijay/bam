@@ -761,6 +761,12 @@
 			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_RULESType/SCU_DESCRIPTION">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SCU_DESCRIPTION}"/>
 			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_PEOPLE_RULEType/DESCRIPTION">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.DESCRIPTION}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_PEOPLE_RULEType/GEO_LEVEL_NAME">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.GEO_LEVEL_NAME}"/>
+			</Annotations>
 		</Schema>
 	</edmx:DataServices>
 </edmx:Edmx>
