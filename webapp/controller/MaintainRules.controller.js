@@ -56,8 +56,8 @@ sap.ui.define([
 		},
 		// Navigate to People Assignment page In Future
 		onGoToPeopleAssignment : function(){
-			//this.getOwnerComponent().getRouter().navTo("cuAssignment");
-			MessageBox.alert('Functionality coming soon');
+			this.getOwnerComponent().getRouter().navTo("peopleAssignment");
+			//MessageBox.alert('Functionality coming soon');
 			return;
 		},
 			//navigate back from rules page

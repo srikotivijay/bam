@@ -191,6 +191,11 @@
 					"pattern": "editCURules",
 					"name": "editCURules",
 					"target": "editCURules"
+				},
+				{
+					"pattern": "peopleAssignment",
+					"name": "peopleAssignment",
+					"target": "peopleAssignment"
 				}
 			],
 			"targets": {
@@ -254,6 +259,10 @@
 				"editCURules": {
 					"viewName": "EditCURules",
 					"viewId": "editCURules"
+				},
+				"peopleAssignment": {
+					"viewName": "PeopleAssignment",
+					"viewId": "peopleAssignment"
 				}
 			}
 		}
