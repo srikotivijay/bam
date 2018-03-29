@@ -11,7 +11,17 @@ sap.ui.define([
 		"use strict";
 
 	var firstTimePageLoad = true;
+	var permissions;
 	var loggedInUserID;
+	var demandManagerAssigner;
+	var globalLeaderAssigner;
+	var marketingDirectorAssigner;
+	var marketingManagerAssigner;
+	var masterPlannerAssigner;
+	var productManagerAssigner;
+	var regulatorSupplyChainManagerAssigner;
+	var supplyChainManagerAssigner;
+    var supplyChainPlanningSpecialistAssigner;	
 	return Controller.extend("bam.controller.PeopleAssignment", {
 		onInit : function () {
 			// Get logged in user id
@@ -28,16 +38,16 @@ sap.ui.define([
 			this._oi18nModel = this.getOwnerComponent().getModel("i18n");
 			//
 			// checking the permission
-			var demandManagerAssigner = this._oi18nModel.getProperty("Module.demandManagerAssigner");
-	        var globalLeaderAssigner = this._oi18nModel.getProperty("Module.globalLeaderAssigner");
-	        var marketingDirectorAssigner = this._oi18nModel.getProperty("Module.marketingDirectorAssigner");
-	        var marketingManagerAssigner = this._oi18nModel.getProperty("Module.marketingManagerAssigner");
-	        var masterPlannerAssigner = this._oi18nModel.getProperty("Module.masterPlannerAssigner");
-	        var productManagerAssigner = this._oi18nModel.getProperty("Module.productManagerAssigner");
-	        var regulatorSupplyChainManagerAssigner = this._oi18nModel.getProperty("Module.regulatorSupplyChainManagerAssigner");
-	        var supplyChainManagerAssigner = this._oi18nModel.getProperty("Module.supplyChainManagerAssigner");
-	        var supplyChainPlanningSpecialistAssigner = this._oi18nModel.getProperty("Module.supplyChainPlanningSpecialistAssigner");			
-			var permissions = DataContext.getUserPermissions();
+			demandManagerAssigner = this._oi18nModel.getProperty("Module.demandManagerAssigner");
+	        globalLeaderAssigner = this._oi18nModel.getProperty("Module.globalLeaderAssigner");
+	        marketingDirectorAssigner = this._oi18nModel.getProperty("Module.marketingDirectorAssigner");
+	        marketingManagerAssigner = this._oi18nModel.getProperty("Module.marketingManagerAssigner");
+	        masterPlannerAssigner = this._oi18nModel.getProperty("Module.masterPlannerAssigner");
+	        productManagerAssigner = this._oi18nModel.getProperty("Module.productManagerAssigner");
+	        regulatorSupplyChainManagerAssigner = this._oi18nModel.getProperty("Module.regulatorSupplyChainManagerAssigner");
+	        supplyChainManagerAssigner = this._oi18nModel.getProperty("Module.supplyChainManagerAssigner");
+	        supplyChainPlanningSpecialistAssigner = this._oi18nModel.getProperty("Module.supplyChainPlanningSpecialistAssigner");			
+			permissions = DataContext.getUserPermissions();
 			var hasAccess = false;
 			for(var i = 0; i < permissions.length; i++)
 			{
@@ -123,16 +133,41 @@ sap.ui.define([
 			this.getOwnerComponent().getRouter().navTo("home");
 		},
 		onBeforeRebindTable: function(oEvent) {
-                // refresh the odata model, this will force a refresh of the smart table UI
-                this.getOwnerComponent().getModel().refresh(true);
-                                //Get bindinParams Object, which includes filters
-                this._oBindingParams = oEvent.getParameter("bindingParams");
-                                // setting up sorters
-                var aSorters = this._oBindingParams.sorter;
-                var GMIDSorter = new Sorter("DESCRIPTION",false);
-                var CountrySorter = new Sorter("GEO_LEVEL_NAME",false);
-                aSorters.push(GMIDSorter);
-                aSorters.push(CountrySorter);
+            // refresh the odata model, this will force a refresh of the smart table UI
+            this.getOwnerComponent().getModel().refresh(true);
+            //Get bindinParams Object, which includes filters
+            this._oBindingParams = oEvent.getParameter("bindingParams");
+            // setting up filters
+            var aFilters = this._oBindingParams.filters;
+            if(permissions === undefined){
+            	permissions = DataContext.getUserPermissions();
+            }
+            var filter = [];
+            for(var j = 0; j < permissions.length; j++){
+            	if(permissions[j].ATTRIBUTE === demandManagerAssigner ||
+					permissions[j].ATTRIBUTE === globalLeaderAssigner ||
+					permissions[j].ATTRIBUTE === marketingDirectorAssigner ||
+					permissions[j].ATTRIBUTE === marketingManagerAssigner ||
+					permissions[j].ATTRIBUTE === masterPlannerAssigner ||
+					permissions[j].ATTRIBUTE === productManagerAssigner ||
+					permissions[j].ATTRIBUTE === regulatorSupplyChainManagerAssigner ||
+					permissions[j].ATTRIBUTE === supplyChainManagerAssigner ||
+					permissions[j].ATTRIBUTE === supplyChainPlanningSpecialistAssigner
+					){
+					filter.push(new Filter(permissions[j].ATTRIBUTE.replace("_ASSIGNER",""),sap.ui.model.FilterOperator.NE,""));
+				}
+            }
+             var gmidFilterList = new Filter ({
+                    filters : filter,
+                        and : false
+                    });
+				aFilters.push(gmidFilterList);
+            // setting up sorters
+            var aSorters = this._oBindingParams.sorter;
+            var GMIDSorter = new Sorter("DESCRIPTION",false);
+            var CountrySorter = new Sorter("GEO_LEVEL_NAME",false);
+            aSorters.push(GMIDSorter);
+            aSorters.push(CountrySorter);
         },
 
 		//navigate back from rules page
