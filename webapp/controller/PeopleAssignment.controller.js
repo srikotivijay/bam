@@ -21,7 +21,8 @@ sap.ui.define([
 	var productManagerAssigner;
 	var regulatorSupplyChainManagerAssigner;
 	var supplyChainManagerAssigner;
-    var supplyChainPlanningSpecialistAssigner;	
+    var supplyChainPlanningSpecialistAssigner;
+    var filter = [];
 	return Controller.extend("bam.controller.PeopleAssignment", {
 		onInit : function () {
 			// Get logged in user id
@@ -77,6 +78,7 @@ sap.ui.define([
 				//remove the selection column
 				var oSmartTable = this.getView().byId("smartTblPeopleAssignment");     //Get Hold of smart table
 				//         
+				filter = [];
 				for(var j = 0; j < permissions.length; j++){
 					if(permissions[j].ATTRIBUTE === demandManagerAssigner || permissions[j].ATTRIBUTE === globalLeaderAssigner ||
 					  permissions[j].ATTRIBUTE === marketingDirectorAssigner || permissions[j].ATTRIBUTE === marketingManagerAssigner ||
@@ -85,6 +87,7 @@ sap.ui.define([
 					  permissions[j].ATTRIBUTE === supplyChainPlanningSpecialistAssigner){
 						initiallyVisibleColumns = initiallyVisibleColumns + "," + permissions[j].ATTRIBUTE.replace("_ASSIGNER","");
 						ignorableColumns = ignorableColumns.replace("," + permissions[j].ATTRIBUTE.replace("_ASSIGNER",""), "");
+						filter.push(new Filter(permissions[j].ATTRIBUTE.replace("_ASSIGNER",""),sap.ui.model.FilterOperator.NE,""));
 					}
 				}
 				oSmartTable.setIgnoredFields(ignorableColumns);
@@ -132,24 +135,24 @@ sap.ui.define([
             this._oBindingParams = oEvent.getParameter("bindingParams");
             // setting up filters
             var aFilters = this._oBindingParams.filters;
-            if(permissions === undefined){
-            	permissions = DataContext.getUserPermissions();
-            }
-            var filter = [];
-            for(var j = 0; j < permissions.length; j++){
-            	if(permissions[j].ATTRIBUTE === demandManagerAssigner ||
-					permissions[j].ATTRIBUTE === globalLeaderAssigner ||
-					permissions[j].ATTRIBUTE === marketingDirectorAssigner ||
-					permissions[j].ATTRIBUTE === marketingManagerAssigner ||
-					permissions[j].ATTRIBUTE === masterPlannerAssigner ||
-					permissions[j].ATTRIBUTE === productManagerAssigner ||
-					permissions[j].ATTRIBUTE === regulatorSupplyChainManagerAssigner ||
-					permissions[j].ATTRIBUTE === supplyChainManagerAssigner ||
-					permissions[j].ATTRIBUTE === supplyChainPlanningSpecialistAssigner
-					){
-					filter.push(new Filter(permissions[j].ATTRIBUTE.replace("_ASSIGNER",""),sap.ui.model.FilterOperator.NE,""));
-				}
-            }
+            // if(permissions === undefined){
+            // 	permissions = DataContext.getUserPermissions();
+            // }
+    //         var filter = [];
+    //         for(var j = 0; j < permissions.length; j++){
+    //         	if(permissions[j].ATTRIBUTE === demandManagerAssigner ||
+				// 	permissions[j].ATTRIBUTE === globalLeaderAssigner ||
+				// 	permissions[j].ATTRIBUTE === marketingDirectorAssigner ||
+				// 	permissions[j].ATTRIBUTE === marketingManagerAssigner ||
+				// 	permissions[j].ATTRIBUTE === masterPlannerAssigner ||
+				// 	permissions[j].ATTRIBUTE === productManagerAssigner ||
+				// 	permissions[j].ATTRIBUTE === regulatorSupplyChainManagerAssigner ||
+				// 	permissions[j].ATTRIBUTE === supplyChainManagerAssigner ||
+				// 	permissions[j].ATTRIBUTE === supplyChainPlanningSpecialistAssigner
+				// 	){
+				// 	filter.push(new Filter(permissions[j].ATTRIBUTE.replace("_ASSIGNER",""),sap.ui.model.FilterOperator.NE,""));
+				// }
+    //         }
              var gmidFilterList = new Filter ({
                     filters : filter,
                         and : false
