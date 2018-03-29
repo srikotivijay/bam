@@ -767,6 +767,36 @@
 			<Annotations Target="ODataService.BAMDataService.V_PEOPLE_RULEType/GEO_LEVEL_NAME">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.GEO_LEVEL_NAME}"/>
 			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_PEOPLE_RULEType/PRODUCT_LEVEL_NAME">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRODUCT_DESCRIPTION}"/>
+			</Annotations>	
+			<Annotations Target="ODataService.BAMDataService.V_PEOPLE_RULEType/DEMAND_MANAGER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.DEMAND_MANAGER}"/>
+			</Annotations>			
+			<Annotations Target="ODataService.BAMDataService.V_PEOPLE_RULEType/GLOBAL_LEADER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.GLOBAL_LEADER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_PEOPLE_RULEType/MARKETING_DIRECTOR">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MARKETING_DIRECTOR}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_PEOPLE_RULEType/MARKETING_MANAGER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MARKETING_MANAGER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_PEOPLE_RULEType/MASTER_PLANNER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MASTER_PLANNER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_PEOPLE_RULEType/PRODUCT_MANAGER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRODUCT_MANAGER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_PEOPLE_RULEType/REG_SUPPLY_CHAIN_MANAGER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.REG_SUPPLY_CHAIN_MANAGER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_PEOPLE_RULEType/SUPPLY_CHAIN_MANAGER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SUPPLY_CHAIN_MANAGER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_PEOPLE_RULEType/SUPPLY_CHAIN_PLANNING_SPECIALIST">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SUPPLY_CHAIN_PLANNING_SPECIALIST}"/>
+			</Annotations>			
 		</Schema>
 	</edmx:DataServices>
 </edmx:Edmx>
