@@ -16,6 +16,8 @@ sap.ui.define([
 		onInit : function () {
 			// Get logged in user id
 			loggedInUserID = DataContext.getUserID();
+			var initiallyVisibleColumns = "DESCRIPTION,GEO_LEVEL_NAME,PRODUCT_LEVEL_NAME,DEMAND_MANAGER";
+			var ignorableColumns ="ID,DEMAND_MANAGER,GLOBAL_LEADER,MARKETING_DIRECTOR,MARKETING_MANAGER,MASTER_PLANNER,PRODUCT_MANAGER,REG_SUPPLY_CHAIN_MANAGER,SUPPLY_CHAIN_MANAGER,SUPPLY_CHAIN_PLANNING_SPECIALIST";
 					
 			// Get logged in user id
 			// define a global variable for the oData model		
@@ -67,16 +69,30 @@ sap.ui.define([
 				this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
 				//remove the selection column
 				var oSmartTable = this.getView().byId("smartTblPeopleAssignment");     //Get Hold of smart table
-				var oTable = oSmartTable.getTable();          //Analytical Table embedded into SmartTable
+				//         
+				for(var j = 0; j < permissions.length; j++){
+					if(permissions[j].ATTRIBUTE === demandManagerAssigner||
+					  permissions[j].ATTRIBUTE === globalLeaderAssigner ||
+					  permissions[j].ATTRIBUTE === marketingDirectorAssigner ||
+					  permissions[j].ATTRIBUTE === marketingManagerAssigner ||
+					  permissions[j].ATTRIBUTE === masterPlannerAssigner ||
+					  permissions[j].ATTRIBUTE === productManagerAssigner ||
+					  permissions[j].ATTRIBUTE === regulatorSupplyChainManagerAssigner ||
+					  permissions[j].ATTRIBUTE === supplyChainManagerAssigner ||
+					  permissions[j].ATTRIBUTE === supplyChainPlanningSpecialistAssigner){
+						initiallyVisibleColumns = initiallyVisibleColumns + "," + permissions[j].ATTRIBUTE.replace("_ASSIGNER","");
+						ignorableColumns = ignorableColumns.replace("," + permissions[j].ATTRIBUTE.replace("_ASSIGNER",""), "");
+					}
+				}
+				oSmartTable.setIgnoredFields(ignorableColumns);
+				oSmartTable.setInitiallyVisibleFields(initiallyVisibleColumns);
+				//Analytical Table embedded into SmartTable
+				var oTable = oSmartTable.getTable(); 
 				oTable.setEnableColumnFreeze(true);
 				//oSmartTable.rebindTable();
 				//oTable.getColumns();
 				if(firstTimePageLoad === false){
 					this.getOwnerComponent().getModel().refresh(true);
-					//This is a bandaid for resetting the Checkboxes on the grid, we could not find a method that directly unsets the checkboxes
-					//Instead we can unset and set the checkbox
-					oTable.setSelectionMode("None");
-					oTable.setSelectionMode("MultiToggle");
 				}
 			}
 			if(firstTimePageLoad)
