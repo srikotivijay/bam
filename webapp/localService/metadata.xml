@@ -596,6 +596,48 @@
 <Property Name="PRODUCT_DESC" Type="Edm.String" MaxLength="250"/>
 <Property Name="PRODUCT_LEVEL" Type="Edm.String" Nullable="false" MaxLength="11"/>
 </EntityType>
+<EntityType Name="V_PEOPLE_RULEType">
+<Key>
+<PropertyRef Name="ID"/>
+</Key>
+<Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="CU_RULESET_SEQ" Type="Edm.Int32" Nullable="false" />
+<Property Name="NAME" Type="Edm.String" MaxLength="250"/>
+<Property Name="DESCRIPTION" Type="Edm.String" MaxLength="250"/>
+<Property Name="GEO_LEVEL" Type="Edm.String" MaxLength="50"/>
+<Property Name="PRODUCT_LEVEL" Type="Edm.String" MaxLength="50"/>
+<Property Name="PRODUCT_CODE" Type="Edm.String" MaxLength="50"/>
+<Property Name="GEO_LEVEL_ID" Type="Edm.Int32" Nullable="true"/>
+<Property Name="GEO_LEVEL_NAME" Type="Edm.String" MaxLength="500"/>
+<Property Name="PRODUCT_LEVEL_NAME" Type="Edm.String" MaxLength="250"/>
+<Property Name="DEMAND_MANAGER" Type="Edm.String" MaxLength="50"/>
+<Property Name="PRODUCT_MANAGER" Type="Edm.String" MaxLength="50"/>
+<Property Name="GLOBAL_LEADER" Type="Edm.String" MaxLength="50"/>
+<Property Name="SUPPLY_CHAIN_MANAGER" Type="Edm.String" MaxLength="50"/>
+<Property Name="REG_SUPPLY_CHAIN_MANAGER" Type="Edm.String" MaxLength="50"/>
+<Property Name="MARKETING_DIRECTOR" Type="Edm.String" MaxLength="50"/>
+<Property Name="MARKETING_MANAGER" Type="Edm.String" MaxLength="50"/>
+<Property Name="MASTER_PLANNER" Type="Edm.String" MaxLength="50"/>
+<Property Name="SUPPLY_CHAIN_PLANNING_SPECIALIST" Type="Edm.String" MaxLength="50"/>
+</EntityType>
+<EntityType Name="V_WEB_PEOPLE_RULESType">
+<Key>
+<PropertyRef Name="ID"/>
+</Key>
+<Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="PEOPLE_RULESET_DESCRIPTION" Type="Edm.String" MaxLength="264"/>
+<Property Name="GEOGRAPHY" Type="Edm.String" MaxLength="50"/>
+<Property Name="PRODUCT_DESCRIPTION" Type="Edm.String" MaxLength="303"/>
+<Property Name="DEMAND_MANAGER" Type="Edm.String" MaxLength="50"/>
+<Property Name="PRODUCT_MANAGER" Type="Edm.String" MaxLength="50"/>
+<Property Name="GLOBAL_LEADER" Type="Edm.String" MaxLength="50"/>
+<Property Name="SUPPLY_CHAIN_MANAGER" Type="Edm.String" MaxLength="50"/>
+<Property Name="REG_SUPPLY_CHAIN_MANAGER" Type="Edm.String" MaxLength="50"/>
+<Property Name="MARKETING_DIRECTOR" Type="Edm.String" MaxLength="50"/>
+<Property Name="MARKETING_MANAGER" Type="Edm.String" MaxLength="50"/>
+<Property Name="MASTER_PLANNER" Type="Edm.String" MaxLength="50"/>
+<Property Name="SUPPLY_CHAIN_PLANNING_SPECIALIST" Type="Edm.String" MaxLength="50"/>
+</EntityType>
 <EntityContainer Name="BAMDataService" m:IsDefaultEntityContainer="true">
 <EntitySet Name="CODE_MASTER" EntityType="ODataService.BAMDataService.CODE_MASTERType"/>
 <EntitySet Name="GMID_SHIP_TO_COUNTRY" EntityType="ODataService.BAMDataService.GMID_SHIP_TO_COUNTRYType"/>
@@ -622,6 +664,8 @@
 <EntitySet Name="MST_SUB_RCU" EntityType="ODataService.BAMDataService.MST_SUB_RCUType"/>
 <EntitySet Name="V_GEO_ALL_LEVEL" EntityType="ODataService.BAMDataService.V_GEO_ALL_LEVELType"/>
 <EntitySet Name="V_PRODUCT_ALL_LEVEL" EntityType="ODataService.BAMDataService.V_PRODUCT_ALL_LEVELType"/>
+<EntitySet Name="V_PEOPLE_RULE" EntityType="ODataService.BAMDataService.V_PEOPLE_RULEType"/>
+<EntitySet Name="V_WEB_PEOPLE_RULES" EntityType="ODataService.BAMDataService.V_WEB_PEOPLE_RULESType"/>
 </EntityContainer>
 </Schema>
 </edmx:DataServices>

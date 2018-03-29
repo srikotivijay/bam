@@ -26,17 +26,14 @@ sap.ui.define([
 		onInit : function () {
 			// Get logged in user id
 			loggedInUserID = DataContext.getUserID();
-			var initiallyVisibleColumns = "DESCRIPTION,GEO_LEVEL_NAME,PRODUCT_LEVEL_NAME,DEMAND_MANAGER";
+			var initiallyVisibleColumns = "PEOPLE_RULESET_DESCRIPTION,GEOGRAPHY,PRODUCT_DESCRIPTION";
 			var ignorableColumns ="ID,DEMAND_MANAGER,GLOBAL_LEADER,MARKETING_DIRECTOR,MARKETING_MANAGER,MASTER_PLANNER,PRODUCT_MANAGER,REG_SUPPLY_CHAIN_MANAGER,SUPPLY_CHAIN_MANAGER,SUPPLY_CHAIN_PLANNING_SPECIALIST";
-					
 			// Get logged in user id
 			// define a global variable for the oData model		
 			var oView = this.getView();
 			oView.setModel(this.getOwnerComponent().getModel());
-			//
 			// get resource model
 			this._oi18nModel = this.getOwnerComponent().getModel("i18n");
-			//
 			// checking the permission
 			demandManagerAssigner = this._oi18nModel.getProperty("Module.demandManagerAssigner");
 	        globalLeaderAssigner = this._oi18nModel.getProperty("Module.globalLeaderAssigner");
@@ -81,14 +78,10 @@ sap.ui.define([
 				var oSmartTable = this.getView().byId("smartTblPeopleAssignment");     //Get Hold of smart table
 				//         
 				for(var j = 0; j < permissions.length; j++){
-					if(permissions[j].ATTRIBUTE === demandManagerAssigner||
-					  permissions[j].ATTRIBUTE === globalLeaderAssigner ||
-					  permissions[j].ATTRIBUTE === marketingDirectorAssigner ||
-					  permissions[j].ATTRIBUTE === marketingManagerAssigner ||
-					  permissions[j].ATTRIBUTE === masterPlannerAssigner ||
-					  permissions[j].ATTRIBUTE === productManagerAssigner ||
-					  permissions[j].ATTRIBUTE === regulatorSupplyChainManagerAssigner ||
-					  permissions[j].ATTRIBUTE === supplyChainManagerAssigner ||
+					if(permissions[j].ATTRIBUTE === demandManagerAssigner || permissions[j].ATTRIBUTE === globalLeaderAssigner ||
+					  permissions[j].ATTRIBUTE === marketingDirectorAssigner || permissions[j].ATTRIBUTE === marketingManagerAssigner ||
+					  permissions[j].ATTRIBUTE === masterPlannerAssigner || permissions[j].ATTRIBUTE === productManagerAssigner ||
+					  permissions[j].ATTRIBUTE === regulatorSupplyChainManagerAssigner || permissions[j].ATTRIBUTE === supplyChainManagerAssigner ||
 					  permissions[j].ATTRIBUTE === supplyChainPlanningSpecialistAssigner){
 						initiallyVisibleColumns = initiallyVisibleColumns + "," + permissions[j].ATTRIBUTE.replace("_ASSIGNER","");
 						ignorableColumns = ignorableColumns.replace("," + permissions[j].ATTRIBUTE.replace("_ASSIGNER",""), "");
@@ -161,11 +154,11 @@ sap.ui.define([
                     filters : filter,
                         and : false
                     });
-				aFilters.push(gmidFilterList);
+			aFilters.push(gmidFilterList);
             // setting up sorters
             var aSorters = this._oBindingParams.sorter;
-            var GMIDSorter = new Sorter("DESCRIPTION",false);
-            var CountrySorter = new Sorter("GEO_LEVEL_NAME",false);
+            var GMIDSorter = new Sorter("PEOPLE_RULESET_DESCRIPTION",false);
+            var CountrySorter = new Sorter("GEOGRAPHY",false);
             aSorters.push(GMIDSorter);
             aSorters.push(CountrySorter);
         },
