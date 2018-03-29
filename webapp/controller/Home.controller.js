@@ -31,7 +31,18 @@ sap.ui.define([
 	        	 // get the Module settings for i18n model
 	        	 var gmidSubmission = oi18nModel.getProperty("Module.gmidSubmission");
 	        	 var maintainRule = oi18nModel.getProperty("Module.maintainRules");
+	        	 var demandManagerAssigner = oi18nModel.getProperty("Module.demandManagerAssigner");
+	        	 var globalLeaderAssigner = oi18nModel.getProperty("Module.globalLeaderAssigner");
+	        	 var marketingDirectorAssigner = oi18nModel.getProperty("Module.marketingDirectorAssigner");
+	        	 var marketingManagerAssigner = oi18nModel.getProperty("Module.marketingManagerAssigner");
+	        	 var masterPlannerAssigner = oi18nModel.getProperty("Module.masterPlannerAssigner");
+	        	 var productManagerAssigner = oi18nModel.getProperty("Module.productManagerAssigner");
+	        	 var regulatorSupplyChainManagerAssigner = oi18nModel.getProperty("Module.regulatorSupplyChainManagerAssigner");
+	        	 var supplyChainManagerAssigner = oi18nModel.getProperty("Module.supplyChainManagerAssigner");
+	        	 var supplyChainPlanningSpecialistAssigner = oi18nModel.getProperty("Module.supplyChainPlanningSpecialistAssigner");
+	        	 
 	        	 var actionAdd = oi18nModel.getProperty("Module.actionAdd");
+	        	 
 				
 				// getting permissions for the current logged in user
 				var permissions = DataContext.getUserPermissions();
@@ -48,7 +59,16 @@ sap.ui.define([
 				}
 				for(var j = 0; j  < permissions.length; j++)
 				{
-					if(permissions[j].ATTRIBUTE === maintainRule)
+					if(permissions[j].ATTRIBUTE === maintainRule ||
+					  permissions[j].ATTRIBUTE === demandManagerAssigner ||
+					  permissions[j].ATTRIBUTE === globalLeaderAssigner ||
+					  permissions[j].ATTRIBUTE === marketingDirectorAssigner ||
+					  permissions[j].ATTRIBUTE === marketingManagerAssigner ||
+					  permissions[j].ATTRIBUTE === masterPlannerAssigner ||
+					  permissions[j].ATTRIBUTE === productManagerAssigner ||
+					  permissions[j].ATTRIBUTE === regulatorSupplyChainManagerAssigner ||
+					  permissions[j].ATTRIBUTE === supplyChainManagerAssigner ||
+					  permissions[j].ATTRIBUTE === supplyChainPlanningSpecialistAssigner)
 					{
 						oModel.setProperty("/showMaintainRule",true);
 						// break since the user may have more than one role, as long as one of the user roles has permission we can show the tile

@@ -26,12 +26,28 @@ sap.ui.define([
 			this._oi18nModel = this.getOwnerComponent().getModel("i18n");
 			//
 			// checking the permission
-			var maintainRule = this._oi18nModel.getProperty("Module.maintainRules");
+			var demandManagerAssigner = this._oi18nModel.getProperty("Module.demandManagerAssigner");
+	        var globalLeaderAssigner = this._oi18nModel.getProperty("Module.globalLeaderAssigner");
+	        var marketingDirectorAssigner = this._oi18nModel.getProperty("Module.marketingDirectorAssigner");
+	        var marketingManagerAssigner = this._oi18nModel.getProperty("Module.marketingManagerAssigner");
+	        var masterPlannerAssigner = this._oi18nModel.getProperty("Module.masterPlannerAssigner");
+	        var productManagerAssigner = this._oi18nModel.getProperty("Module.productManagerAssigner");
+	        var regulatorSupplyChainManagerAssigner = this._oi18nModel.getProperty("Module.regulatorSupplyChainManagerAssigner");
+	        var supplyChainManagerAssigner = this._oi18nModel.getProperty("Module.supplyChainManagerAssigner");
+	        var supplyChainPlanningSpecialistAssigner = this._oi18nModel.getProperty("Module.supplyChainPlanningSpecialistAssigner");			
 			var permissions = DataContext.getUserPermissions();
 			var hasAccess = false;
 			for(var i = 0; i < permissions.length; i++)
 			{
-				if(permissions[i].ATTRIBUTE === maintainRule)
+				if(permissions[i].ATTRIBUTE === demandManagerAssigner ||
+					  permissions[i].ATTRIBUTE === globalLeaderAssigner ||
+					  permissions[i].ATTRIBUTE === marketingDirectorAssigner ||
+					  permissions[i].ATTRIBUTE === marketingManagerAssigner ||
+					  permissions[i].ATTRIBUTE === masterPlannerAssigner ||
+					  permissions[i].ATTRIBUTE === productManagerAssigner ||
+					  permissions[i].ATTRIBUTE === regulatorSupplyChainManagerAssigner ||
+					  permissions[i].ATTRIBUTE === supplyChainManagerAssigner ||
+					  permissions[i].ATTRIBUTE === supplyChainPlanningSpecialistAssigner)
 				{
 						hasAccess = true;
 						break;
@@ -55,6 +71,13 @@ sap.ui.define([
 				oTable.setEnableColumnFreeze(true);
 				//oSmartTable.rebindTable();
 				//oTable.getColumns();
+				if(firstTimePageLoad === false){
+					this.getOwnerComponent().getModel().refresh(true);
+					//This is a bandaid for resetting the Checkboxes on the grid, we could not find a method that directly unsets the checkboxes
+					//Instead we can unset and set the checkbox
+					oTable.setSelectionMode("None");
+					oTable.setSelectionMode("MultiToggle");
+				}
 			}
 			if(firstTimePageLoad)
 			{
@@ -63,15 +86,6 @@ sap.ui.define([
 				oRouter.getRoute("peopleAssignment").attachMatched(this._onRouteMatched, this);
 				firstTimePageLoad = false;
 			}
-			else
-			{
-				this.getOwnerComponent().getModel().refresh(true);
-				//This is a bandaid for resetting the Checkboxes on the grid, we could not find a method that directly unsets the checkboxes
-				//Instead we can unset and set the checkbox
-				oTable.setSelectionMode("None");
-				oTable.setSelectionMode("MultiToggle");
-			}	
-				
 		},
 		getRouter : function () {
 			return sap.ui.core.UIComponent.getRouterFor(this);
