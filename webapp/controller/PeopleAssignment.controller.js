@@ -157,7 +157,16 @@ sap.ui.define([
                     filters : filter,
                         and : false
                     });
-			aFilters.push(gmidFilterList);
+        	// aFilters.push(gmidFilterList);
+            if(aFilters.length > 0){
+            	aFilters[0].aFilters.push(gmidFilterList.aFilters);
+            	// for(var i = 0; i < gmidFilterList.aFilters.length; i++ ){
+            	// 	aFilters[0].aFilters.push(gmidFilterList.aFilters);
+            	// }
+            }
+            else{
+            	aFilters.push(gmidFilterList);
+            }
             // setting up sorters
             var aSorters = this._oBindingParams.sorter;
             var GMIDSorter = new Sorter("PEOPLE_RULESET_DESCRIPTION",false);
