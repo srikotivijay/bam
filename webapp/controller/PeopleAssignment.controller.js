@@ -135,34 +135,13 @@ sap.ui.define([
             this._oBindingParams = oEvent.getParameter("bindingParams");
             // setting up filters
             var aFilters = this._oBindingParams.filters;
-            // if(permissions === undefined){
-            // 	permissions = DataContext.getUserPermissions();
-            // }
-    //         var filter = [];
-    //         for(var j = 0; j < permissions.length; j++){
-    //         	if(permissions[j].ATTRIBUTE === demandManagerAssigner ||
-				// 	permissions[j].ATTRIBUTE === globalLeaderAssigner ||
-				// 	permissions[j].ATTRIBUTE === marketingDirectorAssigner ||
-				// 	permissions[j].ATTRIBUTE === marketingManagerAssigner ||
-				// 	permissions[j].ATTRIBUTE === masterPlannerAssigner ||
-				// 	permissions[j].ATTRIBUTE === productManagerAssigner ||
-				// 	permissions[j].ATTRIBUTE === regulatorSupplyChainManagerAssigner ||
-				// 	permissions[j].ATTRIBUTE === supplyChainManagerAssigner ||
-				// 	permissions[j].ATTRIBUTE === supplyChainPlanningSpecialistAssigner
-				// 	){
-				// 	filter.push(new Filter(permissions[j].ATTRIBUTE.replace("_ASSIGNER",""),sap.ui.model.FilterOperator.NE,""));
-				// }
-    //         }
-             var gmidFilterList = new Filter ({
+            var gmidFilterList = new Filter ({
                     filters : filter,
                         and : false
                     });
-            if(aFilters.length > 0){
+            if(aFilters.length > 0 && aFilters[0].aFilters != undefined){
             	aFilters[0].bAnd = true;
             	aFilters[0].aFilters.push(gmidFilterList);
-            	// for(var i = 0; i < gmidFilterList.aFilters.length; i++ ){
-            	// 	aFilters[0].aFilters.push(gmidFilterList.aFilters);
-            	// }
             }
             else{
             	aFilters.push(gmidFilterList);
