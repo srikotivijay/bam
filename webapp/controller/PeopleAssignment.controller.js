@@ -140,7 +140,7 @@ sap.ui.define([
                     filters : filter,
                         and : false
                     });
-            if(aFilters.length > 0){
+            if(aFilters.length > 0 && aFilters[0].aFilters != undefined){
             	aFilters[0].bAnd = true;
             	aFilters[0].aFilters.push(gmidFilterList);
             }
