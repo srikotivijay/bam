@@ -157,9 +157,9 @@ sap.ui.define([
                     filters : filter,
                         and : false
                     });
-        	// aFilters.push(gmidFilterList);
             if(aFilters.length > 0){
-            	aFilters[0].aFilters.push(gmidFilterList.aFilters);
+            	aFilters[0].bAnd = true;
+            	aFilters[0].aFilters.push(gmidFilterList);
             	// for(var i = 0; i < gmidFilterList.aFilters.length; i++ ){
             	// 	aFilters[0].aFilters.push(gmidFilterList.aFilters);
             	// }
