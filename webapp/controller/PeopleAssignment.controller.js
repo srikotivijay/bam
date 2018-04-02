@@ -47,6 +47,7 @@ sap.ui.define([
 	        supplyChainPlanningSpecialistAssigner = this._oi18nModel.getProperty("Module.supplyChainPlanningSpecialistAssigner");			
 			permissions = DataContext.getUserPermissions();
 			var hasAccess = false;
+			var hasEditPermission = false;
 			for(var i = 0; i < permissions.length; i++)
 			{
 				if(permissions[i].ATTRIBUTE === demandManagerAssigner ||
@@ -60,6 +61,10 @@ sap.ui.define([
 					  permissions[i].ATTRIBUTE === supplyChainPlanningSpecialistAssigner)
 				{
 						hasAccess = true;
+						if(permissions[i].ACTION === "ADD" || permissions[i].ACTION === "EDIT")
+						{
+							hasEditPermission = true;
+						}
 						break;
 				}
 			}
@@ -73,7 +78,7 @@ sap.ui.define([
 			else{
 				this._oModel = new sap.ui.model.json.JSONModel();
 				this.getView().setModel(this._oModel,"PeopleAssignmentVM");
-				this._oModel.setProperty("/showEditButton",true);
+				this._oModel.setProperty("/showEditButton",hasEditPermission);
 				this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
 				//remove the selection column
 				var oSmartTable = this.getView().byId("smartTblPeopleAssignment");     //Get Hold of smart table
@@ -168,9 +173,9 @@ sap.ui.define([
 			}
 		},
 		// open the new page to add rule/ruleset
-	// 	onAdd: function(){
-	// 		this.getOwnerComponent().getRouter().navTo("addCURules");
-	// },
+		onAdd: function(){
+			this.getOwnerComponent().getRouter().navTo("addCURules");
+		},
 	// navigate to edit attribute page on click of edit
 	/*onEdit: function(){
 		this._oSmartTable = this.getView().byId("smartTblPeopleAssignment").getTable();
