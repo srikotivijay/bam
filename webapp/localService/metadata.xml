@@ -638,6 +638,21 @@
 <Property Name="MASTER_PLANNER" Type="Edm.String" MaxLength="50"/>
 <Property Name="SUPPLY_CHAIN_PLANNING_SPECIALIST" Type="Edm.String" MaxLength="50"/>
 </EntityType>
+<EntityType Name="MST_PEOPLE_RULESETType">
+<Key>
+<PropertyRef Name="PEOPLE_RULESET_SEQ"/>
+</Key>
+<Property Name="PEOPLE_RULESET_SEQ" Type="Edm.Int32" Nullable="false"/>
+<Property Name="NAME" Type="Edm.String" MaxLength="250"/>
+<Property Name="DESCRIPTION" Type="Edm.String" MaxLength="250"/>
+<Property Name="GEO_LEVEL" Type="Edm.String" MaxLength="50"/>
+<Property Name="PRODUCT_LEVEL" Type="Edm.String" MaxLength="50"/>
+<Property Name="VALID_FLAG" Type="Edm.String" Nullable="false" DefaultValue="T" MaxLength="1"/>
+<Property Name="CREATED_ON" Type="Edm.DateTime" Nullable="false"/>
+<Property Name="CREATED_BY" Type="Edm.String" Nullable="false" MaxLength="50"/>
+<Property Name="LAST_UPDATED_ON" Type="Edm.DateTime"/>
+<Property Name="LAST_UPDATED_BY" Type="Edm.String" MaxLength="50"/>
+</EntityType>
 <EntityContainer Name="BAMDataService" m:IsDefaultEntityContainer="true">
 <EntitySet Name="CODE_MASTER" EntityType="ODataService.BAMDataService.CODE_MASTERType"/>
 <EntitySet Name="GMID_SHIP_TO_COUNTRY" EntityType="ODataService.BAMDataService.GMID_SHIP_TO_COUNTRYType"/>
@@ -666,6 +681,7 @@
 <EntitySet Name="V_PRODUCT_ALL_LEVEL" EntityType="ODataService.BAMDataService.V_PRODUCT_ALL_LEVELType"/>
 <EntitySet Name="V_PEOPLE_RULE" EntityType="ODataService.BAMDataService.V_PEOPLE_RULEType"/>
 <EntitySet Name="V_WEB_PEOPLE_RULES" EntityType="ODataService.BAMDataService.V_WEB_PEOPLE_RULESType"/>
+<EntitySet Name="MST_PEOPLE_RULESET" EntityType="ODataService.BAMDataService.MST_PEOPLE_RULESETType"/>
 </EntityContainer>
 </Schema>
 </edmx:DataServices>
