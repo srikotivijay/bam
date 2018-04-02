@@ -174,7 +174,7 @@ sap.ui.define([
 		},
 		// open the new page to add rule/ruleset
 		onAdd: function(){
-			this.getOwnerComponent().getRouter().navTo("addCURules");
+			this.getOwnerComponent().getRouter().navTo("addPeopleRules");
 		},
 	// navigate to edit attribute page on click of edit
 	/*onEdit: function(){

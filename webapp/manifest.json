@@ -196,6 +196,11 @@
 					"pattern": "peopleAssignment",
 					"name": "peopleAssignment",
 					"target": "peopleAssignment"
+				},
+				{
+					"pattern": "addPeopleRules",
+					"name": "addPeopleRules",
+					"target": "addPeopleRules"
 				}
 			],
 			"targets": {
@@ -263,6 +268,10 @@
 				"peopleAssignment": {
 					"viewName": "PeopleAssignment",
 					"viewId": "peopleAssignment"
+				},
+				"addPeopleRules" :{
+					"viewName": "AddPeopleRules",
+					"viewId": "addPeopleRules"					
 				}
 			}
 		}
