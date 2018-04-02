@@ -102,7 +102,7 @@
 											id="cmbGlobalLeader"
 											showSecondaryValues= "true"
 											filterSecondaryValues= "true"
-											value="{USER_NAME}"
+											value="{GLOBAL_LEADER_NAME}"
 											selectedKey="{GLOBAL_LEADER_ID}"
 											width="500px"
 											items="{
@@ -122,7 +122,7 @@
 											id="cmbMarketingDirector"
 											showSecondaryValues= "true"
 											filterSecondaryValues= "true"
-											value="{USER_NAME}"
+											value="{MARKETING_DIRECTOR_NAME}"
 											selectedKey="{MARKETING_DIRECTOR_ID}"
 											width="500px"
 											items="{
@@ -142,7 +142,7 @@
 											id="cmbMarketingManager"
 											showSecondaryValues= "true"
 											filterSecondaryValues= "true"
-											value="{USER_NAME}"
+											value="{MARKETING_MANAGER_NAME}"
 											selectedKey="{MARKETING_MANAGER_ID}"
 											width="500px"
 											items="{
@@ -162,7 +162,7 @@
 											id="cmbMasterPlanner"
 											showSecondaryValues= "true"
 											filterSecondaryValues= "true"
-											value="{USER_NAME}"
+											value="{MASTER_PLANNER_NAME}"
 											selectedKey="{MASTER_PLANNER_ID}"
 											width="500px"
 											items="{
@@ -182,7 +182,7 @@
 											id="cmbProuctManager"
 											showSecondaryValues= "true"
 											filterSecondaryValues= "true"
-											value="{USER_NAME}"
+											value="{PRODUCT_MANAGER_NAME}"
 											selectedKey="{PRODUCT_MANAGER_ID}"
 											width="500px"
 											items="{
@@ -202,7 +202,7 @@
 											id="cmbRegionalSupplyChainManager"
 											showSecondaryValues= "true"
 											filterSecondaryValues= "true"
-											value="{USER_NAME}"
+											value="{REGIONAL_SUPPLY_CHAIN_MANAGER_NAME}"
 											selectedKey="{REGIONAL_SUPPLY_CHAIN_MANAGER_ID}"
 											width="500px"
 											items="{
@@ -222,7 +222,7 @@
 											id="cmbSupplyChainManager"
 											showSecondaryValues= "true"
 											filterSecondaryValues= "true"
-											value="{USER_NAME}"
+											value="{SUPPLY_CHAIN_MANAGER_NAME}"
 											selectedKey="{SUPPLY_CHAIN_MANAGER_ID}"
 											width="500px"
 											items="{
@@ -236,13 +236,13 @@
 								</table:template>
 							</table:Column>	
 							<table:Column id="clmHdrSupplyChainPlanningSpecialist" width="350px" resizable="false" visible="{/AssignPeopleRuleVM/showSupplyChainPlanningSpecialist}">
-								<Label text="{i18n>PRODUCT_MANAGER}" id="lblSupplyChainPlanningSpecialist"/>
+								<Label text="{i18n>SUPPLY_CHAIN_PLANNING_SPECIALIST}" id="lblSupplyChainPlanningSpecialist"/>
 								<table:template>
 									<ComboBox
 											id="cmbSupplyChainPlanningSpecialist"
 											showSecondaryValues= "true"
 											filterSecondaryValues= "true"
-											value="{USER_NAME}"
+											value="{SUPPLY_CHAIN_PLANNING_SPECIALIST_NAME}"
 											selectedKey="{SUPPLY_CHAIN_PLANNING_SPECIALIST_ID}"
 											width="500px"
 											items="{

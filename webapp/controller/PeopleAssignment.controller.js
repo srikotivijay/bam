@@ -177,63 +177,68 @@ sap.ui.define([
 			this.getOwnerComponent().getRouter().navTo("addPeopleRules");
 		},
 	// navigate to edit attribute page on click of edit
-	/*onEdit: function(){
-		this._oSmartTable = this.getView().byId("smartTblPeopleAssignment").getTable();
-		// check if more than or less than 1 checkbox is checked
-		var index,context,path,indexOfParentheses1,indexOfParentheses2;
-		var selectedIndicesLength = this._oSmartTable.getSelectedIndices().length;
-		if(selectedIndicesLength > 0){
-		index = this._oSmartTable.getSelectedIndices();
-		var ids = "";
-		var idArr = [];
-		
-		var performFullList = false;
-
-		for (var i = 0; i < index.length; i++)
-		{
-			context = this._oSmartTable.getContextByIndex(index[i]); 
-			if(context !== undefined){
-				path = context.getPath();
-				indexOfParentheses1 = path.indexOf("(");
-				indexOfParentheses2 = path.indexOf(")");
-				ids = path.substring(indexOfParentheses1 + 1,indexOfParentheses2);
-				idArr.push(ids);
-			}
-			else{
-				//if undefined record is hit then stop and go do the full grab
-				performFullList = true;
-				break;
-			}
-		}
-
-		if (performFullList){
-			idArr = [];
-			var editSelection = this.getAllRules();
-			for (var j = 0; j < index.length; j++)
-			{
-				context = editSelection[index[j]]; 
-				if(context !== undefined){
-					idArr.push(context.ID);
-				}
-			}
-		}
-		//
-		ids = ids.substring(0, ids.length - 1);
-			var oData = idArr;
-			//add to model
-			var oModel = new sap.ui.model.json.JSONModel(oData);
-			sap.ui.getCore().setModel(oModel);
-		this.getOwnerComponent().getRouter().navTo("editCURules");
-		}
-		else
-		{
-			MessageBox.alert("Please select one CU Rule record for edit.",
+	onEdit: function(){
+		MessageBox.alert("Functionality Coming Soon.",
 					{
-						icon : MessageBox.Icon.ERROR,
-						title : "Error"
-				});
-		}
-	},*/
+		 				icon : MessageBox.Icon.ERROR,
+		 				title : "Error"
+		 		});
+		// this._oSmartTable = this.getView().byId("smartTblPeopleAssignment").getTable();
+		// // check if more than or less than 1 checkbox is checked
+		// var index,context,path,indexOfParentheses1,indexOfParentheses2;
+		// var selectedIndicesLength = this._oSmartTable.getSelectedIndices().length;
+		// if(selectedIndicesLength > 0){
+		// index = this._oSmartTable.getSelectedIndices();
+		// var ids = "";
+		// var idArr = [];
+		
+		// var performFullList = false;
+
+		// for (var i = 0; i < index.length; i++)
+		// {
+		// 	context = this._oSmartTable.getContextByIndex(index[i]); 
+		// 	if(context !== undefined){
+		// 		path = context.getPath();
+		// 		indexOfParentheses1 = path.indexOf("(");
+		// 		indexOfParentheses2 = path.indexOf(")");
+		// 		ids = path.substring(indexOfParentheses1 + 1,indexOfParentheses2);
+		// 		idArr.push(ids);
+		// 	}
+		// 	else{
+		// 		//if undefined record is hit then stop and go do the full grab
+		// 		performFullList = true;
+		// 		break;
+		// 	}
+		// }
+
+		// if (performFullList){
+		// 	idArr = [];
+		// 	var editSelection = this.getAllRules();
+		// 	for (var j = 0; j < index.length; j++)
+		// 	{
+		// 		context = editSelection[index[j]]; 
+		// 		if(context !== undefined){
+		// 			idArr.push(context.ID);
+		// 		}
+		// 	}
+		// }
+		// //
+		// ids = ids.substring(0, ids.length - 1);
+		// 	var oData = idArr;
+		// 	//add to model
+		// 	var oModel = new sap.ui.model.json.JSONModel(oData);
+		// 	sap.ui.getCore().setModel(oModel);
+		// this.getOwnerComponent().getRouter().navTo("editCURules");
+		// }
+		// else
+		// {
+		// 	MessageBox.alert("Please select one CU Rule record for edit.",
+		// 			{
+		// 				icon : MessageBox.Icon.ERROR,
+		// 				title : "Error"
+		// 		});
+		// }
+	},
 	getAllRules : function () {
 		var result;
 		// Create a filter & sorter array
@@ -278,26 +283,26 @@ sap.ui.define([
 	    			}
 	    	});
 	    	return result;
-		}
-		// onApply : function(){
-		// 	var curr = this;
-		// 	MessageBox.confirm("Are you sure you want to apply rules?",{
-  //     		icon: sap.m.MessageBox.Icon.WARNING,
-  //     		actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
-  //     		onClose: function(oAction) {
-  //     			if(oAction === "YES"){
-  //     			curr.applyRules();
-  //     			}
-  //     		}
-  //    		});
-		// },
-		// apply rule button logic
-		/*applyRules : function(){
+		},
+		onApply : function(){
 			var curr = this;
-			var applyCURule = this._oi18nModel.getProperty("applucurule");
+			MessageBox.confirm("Are you sure you want to apply rules?",{
+       		icon: sap.m.MessageBox.Icon.WARNING,
+       		actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+       		onClose: function(oAction) {
+       			if(oAction === "YES"){
+       			curr.applyRules();
+       			}
+       		}
+      		});
+		},
+		// apply rule button logic
+		applyRules : function(){
+			var curr = this;
+			var applyPeopleRule = this._oi18nModel.getProperty("applypeoplerule");
 			var notStarted = this._oi18nModel.getProperty("notstarted");
 			 // Get the Application Activity id for Apply Rules
-    	    var appActivityID = DataContext.getApplicationActivityID(applyCURule);
+    	    var appActivityID = DataContext.getApplicationActivityID(applyPeopleRule);
     	    var oDate = new Date();
     	    	var updAppActivity = {
     	    		ID: appActivityID,
@@ -317,7 +322,7 @@ sap.ui.define([
 									icon : MessageBox.Icon.SUCCESS,
 									title : "Success",
 									onClose: function() {
-            							curr.getOwnerComponent().getRouter().navTo("cuAssignment");
+            							curr.getOwnerComponent().getRouter().navTo("peopleAssignment");
             						}
 							});
 						},
@@ -330,6 +335,6 @@ sap.ui.define([
 							});
 						}
 			        });
-  		}*/
+  		}
   	});
 });

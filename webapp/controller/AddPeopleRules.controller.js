@@ -6,7 +6,7 @@ sap.ui.define([
 	"sap/ui/model/resource/ResourceModel",
 	"sap/ui/model/Filter",
 	"sap/ui/core/routing/History",
-	"sap/ui/model/FilterOperator",
+	"sap/ui/model/FilterOperator"
 	] , function (Controller,DataContext,MessageToast,MessageBox,ResourceModel,Filter,History,FilterOperator) {
 		"use strict";
 		
@@ -253,7 +253,7 @@ sap.ui.define([
     		// update ischanged to true for any attribute changed
     		this._isChanged = true;
     		// reset the error message property to false before doing any validation
-			//this.resetValidationForModel();
+			this.resetValidationForModel();
 			var sourceControl = oEvent.getSource();
 			// get the selected value
 			var selectedRulekey = sourceControl.getSelectedItem().getKey();
@@ -269,8 +269,8 @@ sap.ui.define([
 				//
 				// loading people role drop downs
 				if(showDemandManager){
-					var demandManader = this._oi18nModel.getProperty("DEMAND_MANAGER");
-					this._oModel.setProperty("/AssignPeopleRuleVM/DemandManager", this.getPeopleRoleDropDown(demandManader));
+					var demandManager = this._oi18nModel.getProperty("DEMAND_MANAGER");
+					this._oModel.setProperty("/AssignPeopleRuleVM/DemandManager", this.getPeopleRoleDropDown(demandManager));
 				}
 				if(showGlobalLeader){
 					var globalLeader = this._oi18nModel.getProperty("GLOBAL_LEADER");
@@ -437,15 +437,23 @@ sap.ui.define([
 			//
 			// setting pople roles
 			obj.DEMAND_MANAGER_ID = "-1";
-			obj.DEMAND_MANAGER_NAME ="Select..";
+			obj.DEMAND_MANAGER_NAME = "Select..";
 			obj.GLOBAL_LEADER_ID = "-1";
+			obj.GLOBAL_LEADER_NAME = "Select..";
 			obj.MARKETING_DIRECTOR_ID = "-1";
+			obj.MARKETING_DIRECTOR_NAME = "Select..";
 			obj.MARKETING_MANAGER_ID = "-1";
+			obj.MARKETING_MANAGER_NAME = "Select..";
 			obj.MASTER_PLANNER_ID = "-1";
+			obj.MASTER_PLANNER_NAME = "Select..";
 			obj.PRODUCT_MANAGER_ID = "-1";
+			obj.PRODUCT_MANAGER_NAME = "Select..";
 			obj.REGIONAL_SUPPLY_CHAIN_MANAGER_ID = "-1";
+			obj.REGIONAL_SUPPLY_CHAIN_MANAGER_NAME = "Select..";
 			obj.SUPPLY_CHAIN_MANAGER_ID = "-1";
+			obj.SUPPLY_CHAIN_MANAGER_NAME = "Select..";
 			obj.SUPPLY_CHAIN_PLANNING_SPECIALIST_ID = "-1";
+			obj.SUPPLY_CHAIN_PLANNING_SPECIALIST_NAME = "Select..";
         	return obj;
         },
 		
@@ -540,7 +548,565 @@ sap.ui.define([
 	    			}
 	    	});
 	    	return result;
-		}		
+		},
+		// This function loops through all the rows on the form and checks each input to see if it is filled in
+        validateTextFieldValues :function () {
+    		
+        	var returnValue = true;
+        	var data = this._oViewModelData.AssignPeopleRuleVM;
+            for(var i = 0; i < data.length - 1; i++) 
+            {
+            	if(this.checkForEmptyFields(data[i]))
+            	{
+            		data[i].isError = true;
+            		if(data[i].errorSummary !== "")
+	                {
+	                	data[i].errorSummary += "\n";  
+	                }
+	            	data[i].errorSummary += "Please enter all mandatory fields highlighted in red.";
+	            	returnValue = false;
+            	}
+            }
+            return returnValue;
+        },
+        // method to check for duplicate Rule Set, Geography, Product
+        validateUniqueRules : function (){
+            // loop through the rows and for each row check for duplicate entry in DB
+            var isDuplicate = false;
+            var data = this._oViewModelData.AssignPeopleRuleVM;
+	        // need to pass the above array to the DB to get the duplicate records
+	        var viewpath = "V_VALIDATE_PEOPLE_RULES";
+	        var selectedRulekey = this.getView().byId("cmbRuleSetList").getSelectedItem().getKey();
+            if (selectedRulekey !== "-1")
+	        {
+	        	var ruleSetRecords = DataContext.getrulesFromDB(selectedRulekey,viewpath); 
+	            for(var i = 0; i < data.length - 1; i++) 
+	            {
+	                var geo_level_id = parseInt(data[i].LEVEL_ID,10);
+	                var product_code;
+	                if (data[i].PRODUCT_CODE === 0 )
+                    {
+                    	product_code = null;
+                    }
+                    else
+                    {
+                    	product_code = data[i].PRODUCT_CODE;
+                    }
+                                        
+	                // loop the Rule Set Records from DB to check Unique
+	                for(var k = 0; k < ruleSetRecords.length; k++) 
+	                {
+	                    // check if Rule already exists in system
+	                    if (geo_level_id === ruleSetRecords[k].GEO_LEVEL_ID && product_code === ruleSetRecords[k].PRODUCT_CODE)
+			            {
+			                isDuplicate = true;
+			                data[i].isError = true;
+			                data[i].geographyErrorState = "Error";
+			                data[i].productErrorState = "Error";
+			                if(data[i].errorSummary !== "")
+			                {
+			        			data[i].errorSummary += "\n";  
+			                }
+			            	data[i].errorSummary += "Rule Combination already exists in the system.";
+			            }
+			            else
+			            {
+			                continue;
+			            }
+	                }
+	            }
+	          }
+            this._oAssignPeopleRuleViewModel.refresh();
+            
+            return isDuplicate;
+        },
+        // function to check whether the user has entered a duplicate RuleSet/Geography,Product on the form
+        validateDuplicateEntries :function(){
+	        var returnValue = true;
+	        var selectedRulekey = this.getView().byId("cmbRuleSetList").getSelectedItem().getKey();
+	        if (selectedRulekey !== "-1")
+	        {
+		        var data = this._oViewModelData.AssignPeopleRuleVM;
+		        for(var i = 0; i < data.length - 1; i++) 
+		        {
+		            for( var j = i + 1; j < data.length - 1; j++)
+		            { 
+			            if((parseInt(data[i].LEVEL_ID,10) !== -1 &&  parseInt(data[j].LEVEL_ID,10) !== -1) && (parseInt(data[i].PRODUCT_CODE,10) !== -1 &&  parseInt(data[j].PRODUCT_CODE,10) !== -1) && (parseInt(data[i].LEVEL_ID,10) === parseInt(data[j].LEVEL_ID,10)) && (parseInt(data[i].PRODUCT_CODE,10) ===  parseInt(data[j].PRODUCT_CODE,10)))
+			            {
+			            	// highlight the geography and product boxed in red
+			            	 data[i].isError = true;
+			            	 data[i].geographyErrorState = "Error";
+			            	 data[i].productErrorState = "Error";
+			            	 data[j].isError = true;
+			            	 data[j].geographyErrorState = "Error";
+			            	 data[j].productErrorState = "Error";
+			            	 
+			            	 if(data[i].errorSummary !== "")
+		                	 {
+		                		data[i].errorSummary += "\n";  
+		                	 }
+		            		 data[i].errorSummary += "Duplicate RuleSet/Geography/Product Combination found at row # " + (j + 1);
+		            		 
+		            		 if(data[j].errorSummary !== "")
+		                	 {
+		                		data[j].errorSummary += "\n";  
+		                	 }
+		            		 data[j].errorSummary += "Duplicate RuleSet/Geography/Product Combination found at row # " + (i + 1);
+		            		 
+			            	 returnValue = false;
+			            }
+		            } 
+		        }
+	        }
+	        return returnValue;
+        },
+        // This functions takes one row and check each field to see if it is filled in, if not -> highlight in red
+        checkForEmptyFields: function (row) {
+        	var errorsFound = false;
+        	var strValidate = this._oi18nModel.getProperty("validation");
+			if (this.checkEmptyRows(row,strValidate) === false)
+			{
+				return errorsFound;
+			}
+            if(parseInt(row.LEVEL_ID,10) === -1)
+            {
+            	row.geographyErrorState = "Error";
+            	errorsFound = true;
+            }
+            if(parseInt(row.PRODUCT_CODE,10) === -1)
+            {
+            	row.productErrorState = "Error";
+            	errorsFound = true;
+            }
+            // Based on Security for Assigner validate rows
+            if(showDemandManager){
+	            if(parseInt(row.DEMAND_MANAGER_ID,10) === -1){
+					row.demandManagerErrorState = "Error";
+					errorsFound = true;
+	            }
+            }
+            if(showGlobalLeader){
+				if(parseInt(row.GLOBAL_LEADER_ID,10) === -1){
+					row.globalLeaderErrorState = "Error";
+					errorsFound = true;
+	            }
+			}
+			if(showMarketingDirector){
+				if(parseInt(row.MARKETING_DIRECTOR_ID,10) === -1){
+					row.marketingDirectorErrorState = "Error";
+					errorsFound = true;
+	            }
+			}
+			if(showMarketingManger){
+				if(parseInt(row.MARKETING_DIRECTOR_ID,10) === -1){
+					row.marketingManagerErrorState = "Error";
+					errorsFound = true;
+	            }
+			}
+			if(showMasterPlanner){
+				if(parseInt(row.MASTER_PLANNER_ID,10) === -1){
+				row.masterPlannerErrorState = "Error";
+				errorsFound = true;
+            	}
+			}
+			if(showProductManager){
+				if(parseInt(row.PRODUCT_MANAGER_ID,10) === -1){
+				row.productManagerErrorState = "Error";
+				errorsFound = true;
+            	}
+			}
+			if(showRegionalSupplychainManager){
+				if(parseInt(row.REGIONAL_SUPPLY_CHAIN_MANAGER_ID,10) === -1){
+				row.regionalSupplyChainMangerErrorState = "Error";
+				errorsFound = true;
+            	}
+			}
+			if(showSupplyChainManager){
+				if(parseInt(row.SUPPLY_CHAIN_MANAGER_ID,10) === -1){
+				row.supplyChainManagerErrorState = "Error";
+				errorsFound = true;
+            	}
+			}
+			if(showSupplyChainPlanningSpecialist){
+				if(parseInt(row.SUPPLY_CHAIN_PLANNING_SPECIALIST_ID,10) === -1){
+				row.supplyChainPlanningSpecialistErrorState = "Error";
+				errorsFound = true;
+            	}
+			}
+            return errorsFound;
+        },
+         resetValidationForModel : function () {
+        	var data = this._oViewModelData.AssignPeopleRuleVM;
+            for(var i = 0; i < data.length - 1; i++) 
+            {	
+            	data[i].isError = false;
+            	data[i].errorSummary = "";
+            	data[i].geographyErrorState = "None";
+            	data[i].productErrorState = "None";
+            	data[i].demandManagerErrorState = "None";
+				data[i].globalLeaderErrorState = "None";
+				data[i].marketingDirectorErrorState = "None";
+				data[i].marketingManagerErrorState = "None";
+				data[i].masterPlannerErrorState = "None";
+				data[i].productManagerErrorState = "None";
+				data[i].regionalSupplyChainMangerErrorState = "None";
+				data[i].supplyChainManagerErrorState = "None";
+				data[i].supplyChainPlanningSpecialistErrorState = "None";
+            }
+            this._oAssignPeopleRuleViewModel.refresh();
+        },
+       showErrorMessage: function(oEvent)
+        {
+		    var text = oEvent.getSource().data("text");
+		         MessageBox.alert(text, {
+			     icon : MessageBox.Icon.ERROR,
+			title : "Invalid Input"
+			       });
+        },
+         // below function will check if anything is changed  or modified in submission page
+        chkIsModified: function() {
+        	var AssignPeopleRule = this._oAssignPeopleRuleViewModel.getProperty("/AssignPeopleRuleVM");
+        	var isModified = false;
+        	var rcuModel = this._oModel.getProperty("/AssignPeopleRuleVM/RuleSet");
+        	 var selectedRulekey = this.getView().byId("cmbRuleSetList").getSelectedItem().getKey();
+        	 var productLevel = rcuModel.find(function(data) {return data.PEOPLE_RULESET_SEQ == selectedRulekey;}).PRODUCT_LEVEL;
+	        if (productLevel !== null)
+	        { // for Product level which is not ALL
+	        	// loop through the rows and for each row check if is anything is modified or changed
+		    		for(var i = 0; i < AssignPeopleRule.length - 1; i++) 
+		    		{   
+			        			if ((parseInt(AssignPeopleRule[i].LEVEL_ID,10) !== -1) 
+			        			|| (parseInt(AssignPeopleRule[i].PRODUCT_CODE,10) !== -1)
+			        		    ||(parseInt(AssignPeopleRule[i].DEMAND_MANAGER_ID,10) !== -1) 
+			        		    || (parseInt(AssignPeopleRule[i].GLOBAL_LEADER_ID,10) !== -1)
+			        		    || (parseInt(AssignPeopleRule[i].MARKETING_DIRECTOR_ID,10) !== -1)
+			        		    || (parseInt(AssignPeopleRule[i].MARKETING_MANAGER_ID,10) !== -1)
+			        		    || (parseInt(AssignPeopleRule[i].MASTER_PLANNER_ID,10) !== -1)
+			        		    || (parseInt(AssignPeopleRule[i].PRODUCT_MANAGER_ID,10) !== -1)
+			        		    || (parseInt(AssignPeopleRule[i].REGIONAL_SUPPLY_CHAIN_MANAGER_ID,10) !== -1)
+			        		    || (parseInt(AssignPeopleRule[i].SUPPLY_CHAIN_MANAGER_ID,10) !== -1)
+			        		    || (parseInt(AssignPeopleRule[i].SUPPLY_CHAIN_PLANNING_SPECIALIST_ID,10) !== -1))
+			        		     {
+			        		    	isModified = true;
+			        		    	break;
+			        		     }
+
+		    			}
+	        }
+	        else
+	        { //for Product level which is not ALL
+	        	// loop through the rows and for each row check if is anything is modified or changed
+		    		for(var j = 0; i < AssignPeopleRule.length - 1; i++) 
+		    		{   
+			        			if ((parseInt(AssignPeopleRule[j].LEVEL_ID,10) !== -1) 
+			        			|| (parseInt(AssignPeopleRule[j].PRODUCT_CODE,10) !== 0)
+			        		    || (parseInt(AssignPeopleRule[j].DEMAND_MANAGER_ID,10) !== -1) 
+			        		    || (parseInt(AssignPeopleRule[j].GLOBAL_LEADER_ID,10) !== -1)
+			        		    || (parseInt(AssignPeopleRule[j].MARKETING_DIRECTOR_ID,10) !== -1)
+			        		    || (parseInt(AssignPeopleRule[j].MARKETING_MANAGER_ID,10) !== -1)
+			        		    || (parseInt(AssignPeopleRule[j].MASTER_PLANNER_ID,10) !== -1)
+			        		    || (parseInt(AssignPeopleRule[j].PRODUCT_MANAGER_ID,10) !== -1)
+			        		    || (parseInt(AssignPeopleRule[j].REGIONAL_SUPPLY_CHAIN_MANAGER_ID,10) !== -1)
+			        		    || (parseInt(AssignPeopleRule[j].SUPPLY_CHAIN_MANAGER_ID,10) !== -1)
+			        		    || (parseInt(AssignPeopleRule[j].SUPPLY_CHAIN_PLANNING_SPECIALIST_ID,10) !== -1))
+			        		     {
+			        		    	isModified = true;
+			        		    	break;
+			        		     }
+
+		    			}
+	        	
+	        }
+            	
+		    		return isModified;
+        },
+        
+    	onSubmit : function(){
+    		 var errorCount = 0;
+             var successCount = 0;
+             // reset the error message property to false before doing any validation
+			 this.resetValidationForModel();
+             var AssignPeopleRule = this._oAssignPeopleRuleViewModel.getProperty("/AssignPeopleRuleVM");
+               // current limit for saving is 200 records
+                // check if Rule Submission Grid  has more than 200 records
+                // if more than 200 than show a validation message to user
+                    var maxLimitSubmit = parseInt(this._oi18nModel.getProperty("MaxLimit"),10) ;
+                    var RulesMaxLimitSubmit = this._oi18nModel.getProperty("MaxLimitSubmit.text");
+                    // adding one to account for the extra line at the bottom
+					if (AssignPeopleRule.length > (maxLimitSubmit)) {
+                               MessageBox.alert(RulesMaxLimitSubmit,{
+                                                icon : MessageBox.Icon.ERROR,
+                                                title : "Error"});
+                            return;
+                    }
+                    // validation for Rule Set
+                    var selectedRulekey = this.getView().byId("cmbRuleSetList").getSelectedItem().getKey();
+					if (selectedRulekey === "-1")
+					{
+						MessageBox.alert("Please select rule set.", {
+                                    icon : MessageBox.Icon.ERROR,
+                                    title : "Invalid Input"
+                        });
+                        return;
+					}
+					if (AssignPeopleRule.length === 1 || this.chkIsModified() === false)
+                    {
+						MessageBox.alert("Please enter at least one rule.", {
+                                    icon : MessageBox.Icon.ERROR,
+                                    title : "Invalid Input"
+                               });
+                            return;
+                        }
+                        // reset error on page to false
+                        this._oAssignPeopleRuleViewModel.setProperty("/ErrorOnPage",false);
+
+                        //open busy dialog
+                        this._busyDialog.open();
+                        // // need to declare local this variable to call global functions in the timeout function
+                        var t = this;
+                         // // setting timeout function in order to show the busy dialog before doing all the validation
+                        setTimeout(function()
+                {
+                if (t.validateTextFieldValues() === false)
+		        {
+		        	// Set error message column to false (not visible by default)
+			    	t._oAssignPeopleRuleViewModel.setProperty("/ErrorOnPage",true);
+		        }
+		        // Rule Set, geography and product should be unique
+		        // check duplicate entries in the system
+		        //if(t.validateUniqueRules() === true)
+	        ///	{
+					//t._oAssignPeopleRuleViewModel.setProperty("/ErrorOnPage",true);
+	        //	}
+		        // check for duplicate entries on the page
+	        	if (t.validateDuplicateEntries() === false)
+	        	{
+	        		t._oAssignPeopleRuleViewModel.setProperty("/ErrorOnPage",true);
+	        	}
+                 if(!t._oAssignPeopleRuleViewModel.getProperty("/ErrorOnPage"))
+		        	{
+                        // 
+                        // Check validations here 
+                        var tablePath = "/MST_PEOPLE_RULE";
+                        // Create current timestamp
+                        var oDate = new Date();                
+                       var ruleSetSeq = t._oViewModelData.CU_RULESET_SEQ;
+                       var strSubmission = t._oi18nModel.getProperty("submission");
+                        for(var i = 0; i < AssignPeopleRule.length - 1; i++) {
+                                if(t.checkEmptyRows(AssignPeopleRule[i],strSubmission) === true)
+                                {
+                                		var productLevelCode;
+                                        var geoLevelValId = parseInt(AssignPeopleRule[i].LEVEL_ID,10);
+                                        var demandManagerID;
+                                        var globalLeaderID;
+                                        var marketingDirectorID;
+                                        var marketingManagerID;
+                                        var masterPlannerID;
+                                        var productManagerID;
+                                        var regionalsupplychainManagerID;
+                                        var supplychainmanagerID;
+                                        var supplychainplanningSpecialistID;
+                                        if (AssignPeopleRule[i].PRODUCT_CODE === 0 )
+                                        {
+                                        	productLevelCode = '';
+                                        }
+                                        else
+                                        {
+                                        	productLevelCode = AssignPeopleRule[i].PRODUCT_CODE;
+                                        }
+                                        // Based on permissions assign values
+                                        if(showDemandManager){
+								            if(parseInt(AssignPeopleRule[i].DEMAND_MANAGER_ID,10) === -1){
+												demandManagerID = '';
+								            }
+								            else
+								            {
+								            	demandManagerID = AssignPeopleRule[i].DEMAND_MANAGER_ID;
+								            }
+							            }
+							            
+							            if(showGlobalLeader){
+							            	if(parseInt(AssignPeopleRule[i].GLOBAL_LEADER_ID,10) === -1){
+												globalLeaderID = '';
+								            }
+								            else
+								            {
+								            	globalLeaderID = AssignPeopleRule[i].GLOBAL_LEADER_ID;
+								            }
+										}
+										
+										if(showMarketingDirector){
+											if(parseInt(AssignPeopleRule[i].MARKETING_DIRECTOR_ID,10) === -1){
+												marketingDirectorID = '';
+								            }
+								            else
+								            {
+								            	marketingDirectorID = AssignPeopleRule[i].MARKETING_DIRECTOR_ID;
+								            }
+										}
+										if(showMarketingManger){
+											if(parseInt(AssignPeopleRule[i].MARKETING_MANAGER_ID,10) === -1){
+												marketingManagerID = '';
+								            }
+								            else
+								            {
+								            	marketingManagerID = AssignPeopleRule[i].MARKETING_MANAGER_ID;
+								            }
+										}
+										
+										if(showMasterPlanner){
+											if(parseInt(AssignPeopleRule[i].MASTER_PLANNER_ID,10) === -1){
+												masterPlannerID = '';
+								            }
+								            else
+								            {
+								            	masterPlannerID = AssignPeopleRule[i].MASTER_PLANNER_ID;
+								            }
+										}
+										
+										if(showProductManager){
+										  if(parseInt(AssignPeopleRule[i].PRODUCT_MANAGER_ID,10) === -1){
+												productManagerID = '';
+								            }
+								            else
+								            {
+								            	productManagerID = AssignPeopleRule[i].PRODUCT_MANAGER_ID;
+								            }
+										}
+										
+										if(showRegionalSupplychainManager){
+											if(parseInt(AssignPeopleRule[i].REGIONAL_SUPPLY_CHAIN_MANAGER_ID,10) === -1){
+												regionalsupplychainManagerID = '';
+								            }
+								            else
+								            {
+								            	regionalsupplychainManagerID = AssignPeopleRule[i].REGIONAL_SUPPLY_CHAIN_MANAGER_ID;
+								            }
+										}
+										
+										if(showSupplyChainManager){
+											if(parseInt(AssignPeopleRule[i].SUPPLY_CHAIN_MANAGER_ID,10) === -1){
+												supplychainmanagerID = '';
+								            }
+								            else
+								            {
+								            	supplychainmanagerID = AssignPeopleRule[i].SUPPLY_CHAIN_MANAGER_ID;
+								            }
+										}
+										
+										if(showSupplyChainPlanningSpecialist){
+											if(parseInt(AssignPeopleRule[i].SUPPLY_CHAIN_PLANNING_SPECIALIST_ID,10) === -1){
+												supplychainplanningSpecialistID = '';
+								            }
+								            else
+								            {
+								            	supplychainplanningSpecialistID = AssignPeopleRule[i].SUPPLY_CHAIN_PLANNING_SPECIALIST_ID;
+								            }
+										}
+			
+                                        
+                                        //
+                                        var newPeopleAssignRule = {
+                                        				PEOPLE_RULE_ID: 1,
+                                                        PEOPLE_RULESET_SEQ : ruleSetSeq,
+                                                        GEO_LEVEL_VAL_ID : geoLevelValId,
+                                                        PRODUCT_LEVEL_VAL_CODE : productLevelCode,
+                                                        MARKETING_MANAGER_ID : marketingManagerID,
+                                                        MARKETING_DIRECTOR_ID : marketingDirectorID,
+                                                        DEMAND_MANAGER_ID : demandManagerID,
+                                                        GLOBAL_BUSINESS_LEADER_ID : globalLeaderID,
+                                                        SUPPLY_CHAIN_PLANNING_SPECIALIST_ID : supplychainplanningSpecialistID,
+                                                        MARKETING_SPECIALIST_ID : productManagerID,
+                                                        GLOBAL_SUPPLY_CHAIN_MANAGER_ID : supplychainmanagerID,
+                                                        REG_SUPPLY_CHAIN_MANAGER_ID : regionalsupplychainManagerID,
+                                                        MASTER_PLANNER_ID : masterPlannerID,
+                                                        VALID_FLAG : "T",
+                                                        CREATED_ON : oDate,
+                                                        CREATED_BY : loggedInUserID
+                                        };
+                                            t._oDataModel.create(tablePath, newPeopleAssignRule,
+                                            {
+                                                    success: function(){
+                                                                    successCount++;
+                                                    },
+                                                    error: function(){
+                                                                    errorCount++;
+                                                    }
+                                            });                                                                                           
+                                }
+                       }
+                       
+                       //Show success or error message
+		    		if(errorCount === 0) 
+		    		{
+	        				var oRouter = t.getRouter();
+	        				// once insertion is success, navigate to homepage
+	        				MessageBox.alert("You have successfully submitted " + successCount + " Rule(s)",
+								{
+									icon : MessageBox.Icon.SUCCESS,
+									title : "Success",
+									onClose: function() {
+					        			oRouter.navTo("peopleAssignment");
+					        		}
+								});
+		    		}
+					else
+					{
+						MessageBox.alert("Error: There is an entry error on the page. Please correct.",
+							{
+								icon : MessageBox.Icon.ERROR,
+								title : "Error"
+							});
+					}
+				}
+				else
+				{
+	        		MessageBox.alert("Error: There is an entry error on the page. Please correct.",
+							{
+								icon : MessageBox.Icon.ERROR,
+								title : "Error"
+						});
+	        	}
+                    // close busy dialog
+                    t._busyDialog.close();
+                    },500); // end of timeout function
+    	},
+    		checkEmptyRows : function(row,strtype){
+		        var errorsFound = false;
+		        var data = this._oViewModelData.AssignPeopleRuleVM;
+		        //below check needs to be performed if we have more than one row, if only one row in grid no need to check
+		        //	dont validate the fields if nothing is changed for the row, i.e. user does not wnat to enter any data
+		        	if ((data.length >= 2) && (this._isChanged === true)){
+			        			if ((parseInt(row.LEVEL_ID,10) === -1) && (parseInt(row.PRODUCT_CODE,10) === -1 ||
+			        				parseInt(row.PRODUCT_CODE,10) === 0) && (parseInt(row.DEMAND_MANAGER_ID,10) === -1)
+			        		    	&& (parseInt(row.GLOBAL_LEADER_ID,10) === -1) && (parseInt(row.MARKETING_DIRECTOR_ID,10) === -1)
+			        		    	&& (parseInt(row.MARKETING_MANAGER_ID,10) === -1) && (parseInt(row.MASTER_PLANNER_ID,10) === -1)
+			        		    	&& (parseInt(row.PRODUCT_MANAGER_ID,10) === -1) && (parseInt(row.REGIONAL_SUPPLY_CHAIN_MANAGER_ID,10) === -1)
+			        		    	&& (parseInt(row.SUPPLY_CHAIN_MANAGER_ID,10) === -1) && (parseInt(row.SUPPLY_CHAIN_PLANNING_SPECIALIST_ID,10) === -1))
+			        		     {
+			        		    	errorsFound = false;
+			        		    	return errorsFound;
+			        		     }
+			        		    else
+			        		    {
+			        		    	if (strtype === "Submission")
+			        		    	return true;
+			        		    }
+		        	}
+        },
+        		//cancel click on Add CU Rules page
+			onCancel: function(){
+				var curr = this;
+				MessageBox.confirm("Are you sure you want to cancel your changes and navigate back to the previous page?", {
+           		icon: sap.m.MessageBox.Icon.WARNING,
+           		actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+           		onClose: function(oAction) {
+           			if(oAction === "YES"){
+           				curr.getOwnerComponent().getRouter().navTo("peopleAssignment");
+           			}
+           		}
+      		});			
+		}
 
 	});
 
