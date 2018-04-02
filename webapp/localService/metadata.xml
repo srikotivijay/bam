@@ -653,6 +653,14 @@
 <Property Name="LAST_UPDATED_ON" Type="Edm.DateTime"/>
 <Property Name="LAST_UPDATED_BY" Type="Edm.String" MaxLength="50"/>
 </EntityType>
+<EntityType Name="V_USER_BY_PEOPLE_ROLEType">
+<Key>
+<PropertyRef Name="USER_ID"/>
+</Key>
+<Property Name="USER_ID" Type="Edm.String" Nullable="false" MaxLength="12"/>
+<Property Name="USER_NAME" Type="Edm.String" MaxLength="50"/>
+<Property Name="USER_ROLE" Type="Edm.String" Nullable="false" MaxLength="32"/>
+</EntityType>
 <EntityContainer Name="BAMDataService" m:IsDefaultEntityContainer="true">
 <EntitySet Name="CODE_MASTER" EntityType="ODataService.BAMDataService.CODE_MASTERType"/>
 <EntitySet Name="GMID_SHIP_TO_COUNTRY" EntityType="ODataService.BAMDataService.GMID_SHIP_TO_COUNTRYType"/>
@@ -682,6 +690,7 @@
 <EntitySet Name="V_PEOPLE_RULE" EntityType="ODataService.BAMDataService.V_PEOPLE_RULEType"/>
 <EntitySet Name="V_WEB_PEOPLE_RULES" EntityType="ODataService.BAMDataService.V_WEB_PEOPLE_RULESType"/>
 <EntitySet Name="MST_PEOPLE_RULESET" EntityType="ODataService.BAMDataService.MST_PEOPLE_RULESETType"/>
+<EntitySet Name="V_USER_BY_PEOPLE_ROLE" EntityType="ODataService.BAMDataService.V_USER_BY_PEOPLE_ROLEType"/>
 </EntityContainer>
 </Schema>
 </edmx:DataServices>

@@ -82,177 +82,176 @@
 											id="cmbDemandManager"
 											showSecondaryValues= "true"
 											filterSecondaryValues= "true"
-										    change="onChangeCU"
-											value="{RCU_DESC}"
+											value="{DEMAND_MANAGER_NAME}"
 											selectedKey="{DEMAND_MANAGER_ID}"
 											width="500px"
 											items="{
-												path: '/AssignRuleVM/RCU',
+												path: '/AssignPeopleRuleVM/DemandManager',
 												templateShareable : true
 											}"
 											visible="{path: 'createNew', formatter: '.disableControl'}"
 											valueState="{demandManagerErrorState}">
-										<core:ListItem key="{RCU_CODE}" text="{RCU_DESC}" additionalText="{RCU_CODE}"/>
+										<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
 									</ComboBox>
 								</table:template>
 							</table:Column>	
-							<table:Column id="clmHdrGlobalLeader" width="270px" resizable="false" visible="{/AssignPeopleRuleVM/showGlobalLeader}">
+							<table:Column id="clmHdrGlobalLeader" width="350px" resizable="false" visible="{/AssignPeopleRuleVM/showGlobalLeader}">
 								<Label text="{i18n>GLOBAL_LEADER}" id="lblGlobalLeader"/>
 								<table:template>
 									<ComboBox
 											id="cmbGlobalLeader"
 											showSecondaryValues= "true"
 											filterSecondaryValues= "true"
-											value="{SUB_RCU_DESC}"
+											value="{USER_NAME}"
 											selectedKey="{GLOBAL_LEADER_ID}"
 											width="500px"
 											items="{
-												path: 'SUB_RCU',
+												path: '/AssignPeopleRuleVM/GlobalBusinessLeader',
 												templateShareable : true
 											}"
 											visible="{path: 'createNew', formatter: '.disableControl'}"
 											valueState="{globalLeaderErrorState}">
-										<core:ListItem key="{SUB_RCU_CODE}" text="{SUB_RCU_DESC}" additionalText="{SUB_RCU_CODE}"/>
+										<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
 									</ComboBox>
 								</table:template>
 							</table:Column>	
-							<table:Column id="clmHdrMarketingDirector" width="270px" resizable="false" visible="{/AssignPeopleRuleVM/showMarketingDirector}">
+							<table:Column id="clmHdrMarketingDirector" width="350px" resizable="false" visible="{/AssignPeopleRuleVM/showMarketingDirector}">
 								<Label text="{i18n>MARKETING_DIRECTOR}" id="lblMarketingDirector"/>
 								<table:template>
 									<ComboBox
 											id="cmbMarketingDirector"
 											showSecondaryValues= "true"
 											filterSecondaryValues= "true"
-											value="{SUB_RCU_DESC}"
+											value="{USER_NAME}"
 											selectedKey="{MARKETING_DIRECTOR_ID}"
 											width="500px"
 											items="{
-												path: 'SUB_RCU',
+												path: '/AssignPeopleRuleVM/MarketingDirector',
 												templateShareable : true
 											}"
 											visible="{path: 'createNew', formatter: '.disableControl'}"
 											valueState="{marketingDirectorErrorState}">
-										<core:ListItem key="{SUB_RCU_CODE}" text="{SUB_RCU_DESC}" additionalText="{SUB_RCU_CODE}"/>
+										<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
 									</ComboBox>
 								</table:template>
 							</table:Column>	
-							<table:Column id="clmHdrMarketingManager" width="270px" resizable="false" visible="{/AssignPeopleRuleVM/showMarketingManger}">
+							<table:Column id="clmHdrMarketingManager" width="350px" resizable="false" visible="{/AssignPeopleRuleVM/showMarketingManger}">
 								<Label text="{i18n>MARKETING_MANAGER}" id="lblMarketingManager"/>
 								<table:template>
 									<ComboBox
 											id="cmbMarketingManager"
 											showSecondaryValues= "true"
 											filterSecondaryValues= "true"
-											value="{SUB_RCU_DESC}"
+											value="{USER_NAME}"
 											selectedKey="{MARKETING_MANAGER_ID}"
 											width="500px"
 											items="{
-												path: 'SUB_RCU',
+												path: '/AssignPeopleRuleVM/MarketingManager',
 												templateShareable : true
 											}"
 											visible="{path: 'createNew', formatter: '.disableControl'}"
 											valueState="{marketingManagerErrorState}">
-										<core:ListItem key="{SUB_RCU_CODE}" text="{SUB_RCU_DESC}" additionalText="{SUB_RCU_CODE}"/>
+										<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
 									</ComboBox>
 								</table:template>
 							</table:Column>	
-							<table:Column id="clmHdrMasterPlanner" width="270px" resizable="false" visible="{/AssignPeopleRuleVM/showMasterPlanner}">
+							<table:Column id="clmHdrMasterPlanner" width="350px" resizable="false" visible="{/AssignPeopleRuleVM/showMasterPlanner}">
 								<Label text="{i18n>MASTER_PLANNER}" id="lblMasterPlanner"/>
 								<table:template>
 									<ComboBox
 											id="cmbMasterPlanner"
 											showSecondaryValues= "true"
 											filterSecondaryValues= "true"
-											value="{SUB_RCU_DESC}"
+											value="{USER_NAME}"
 											selectedKey="{MASTER_PLANNER_ID}"
 											width="500px"
 											items="{
-												path: 'SUB_RCU',
+												path: '/AssignPeopleRuleVM/MasterPlanner',
 												templateShareable : true
 											}"
 											visible="{path: 'createNew', formatter: '.disableControl'}"
 											valueState="{masterPlannerErrorState}">
-										<core:ListItem key="{SUB_RCU_CODE}" text="{SUB_RCU_DESC}" additionalText="{SUB_RCU_CODE}"/>
+										<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
 									</ComboBox>
 								</table:template>
 							</table:Column>	
-							<table:Column id="clmHdrProductManager" width="270px" resizable="false" visible="{/AssignPeopleRuleVM/showProductManager}">
+							<table:Column id="clmHdrProductManager" width="350px" resizable="false" visible="{/AssignPeopleRuleVM/showProductManager}">
 								<Label text="{i18n>PRODUCT_MANAGER}" id="lblProductManger"/>
 								<table:template>
 									<ComboBox
 											id="cmbProuctManager"
 											showSecondaryValues= "true"
 											filterSecondaryValues= "true"
-											value="{SUB_RCU_DESC}"
+											value="{USER_NAME}"
 											selectedKey="{PRODUCT_MANAGER_ID}"
 											width="500px"
 											items="{
-												path: 'SUB_RCU',
+												path: '/AssignPeopleRuleVM/ProductManager',
 												templateShareable : true
 											}"
 											visible="{path: 'createNew', formatter: '.disableControl'}"
 											valueState="{productManagerErrorState}">
-										<core:ListItem key="{SUB_RCU_CODE}" text="{SUB_RCU_DESC}" additionalText="{SUB_RCU_CODE}"/>
+										<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
 									</ComboBox>
 								</table:template>
 							</table:Column>		
-							<table:Column id="clmHdrRegulatorySupplyChainManager" width="270px" resizable="false" visible="{/AssignPeopleRuleVM/showRegulatorySupplychainManager}">
-								<Label text="{i18n>REG_SUPPLY_CHAIN_MANAGER}" id="lblRegulatorySupplyChainManager"/>
+							<table:Column id="clmHdrRegionalSupplyChainManager" width="350px" resizable="false" visible="{/AssignPeopleRuleVM/showRegionalSupplychainManager}">
+								<Label text="{i18n>REG_SUPPLY_CHAIN_MANAGER}" id="lblRegionalSupplyChainManager"/>
 								<table:template>
 									<ComboBox
-											id="cmbRegulatorySupplyChainManager"
+											id="cmbRegionalSupplyChainManager"
 											showSecondaryValues= "true"
 											filterSecondaryValues= "true"
-											value="{SUB_RCU_DESC}"
-											selectedKey="{REGULATORY_SUPPLY_CHAIN_MANAGER_ID}"
+											value="{USER_NAME}"
+											selectedKey="{REGIONAL_SUPPLY_CHAIN_MANAGER_ID}"
 											width="500px"
 											items="{
-												path: 'SUB_RCU',
+												path: '/AssignPeopleRuleVM/RegionalSupplyChainManager',
 												templateShareable : true
 											}"
 											visible="{path: 'createNew', formatter: '.disableControl'}"
-											valueState="{regulatorySupplyChainMangerErrorState}">
-										<core:ListItem key="{SUB_RCU_CODE}" text="{SUB_RCU_DESC}" additionalText="{SUB_RCU_CODE}"/>
+											valueState="{regionalSupplyChainMangerErrorState}">
+										<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
 									</ComboBox>
 								</table:template>
 							</table:Column>	
-							<table:Column id="clmHdrSupplyChainManager" width="270px" resizable="false" visible="{/AssignPeopleRuleVM/showSupplyChainManager}">
+							<table:Column id="clmHdrSupplyChainManager" width="350px" resizable="false" visible="{/AssignPeopleRuleVM/showSupplyChainManager}">
 								<Label text="{i18n>SUPPLY_CHAIN_MANAGER}" id="lblSupplyChainManager"/>
 								<table:template>
 									<ComboBox
 											id="cmbSupplyChainManager"
 											showSecondaryValues= "true"
 											filterSecondaryValues= "true"
-											value="{SUB_RCU_DESC}"
+											value="{USER_NAME}"
 											selectedKey="{SUPPLY_CHAIN_MANAGER_ID}"
 											width="500px"
 											items="{
-												path: 'SUB_RCU',
+												path: '/AssignPeopleRuleVM/SupplyChainManager',
 												templateShareable : true
 											}"
 											visible="{path: 'createNew', formatter: '.disableControl'}"
 											valueState="{supplyChainManagerErrorState}">
-										<core:ListItem key="{SUB_RCU_CODE}" text="{SUB_RCU_DESC}" additionalText="{SUB_RCU_CODE}"/>
+										<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
 									</ComboBox>
 								</table:template>
 							</table:Column>	
-							<table:Column id="clmHdrSupplyChainPlanningSpecialist" width="270px" resizable="false" visible="{/AssignPeopleRuleVM/showSupplyChainPlanningSpecialist}">
+							<table:Column id="clmHdrSupplyChainPlanningSpecialist" width="350px" resizable="false" visible="{/AssignPeopleRuleVM/showSupplyChainPlanningSpecialist}">
 								<Label text="{i18n>PRODUCT_MANAGER}" id="lblSupplyChainPlanningSpecialist"/>
 								<table:template>
 									<ComboBox
 											id="cmbSupplyChainPlanningSpecialist"
 											showSecondaryValues= "true"
 											filterSecondaryValues= "true"
-											value="{SUB_RCU_DESC}"
+											value="{USER_NAME}"
 											selectedKey="{SUPPLY_CHAIN_PLANNING_SPECIALIST_ID}"
 											width="500px"
 											items="{
-												path: 'SUB_RCU',
+												path: '/AssignPeopleRuleVM/SupplyChainPlanningSpecialist',
 												templateShareable : true
 											}"
 											visible="{path: 'createNew', formatter: '.disableControl'}"
 											valueState="{supplyChainPlanningSpecialistErrorState}">
-										<core:ListItem key="{SUB_RCU_CODE}" text="{SUB_RCU_DESC}" additionalText="{SUB_RCU_CODE}"/>
+										<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
 									</ComboBox>
 								</table:template>
 							</table:Column>								

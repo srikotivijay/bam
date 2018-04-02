@@ -1,12 +1,15 @@
-sap.ui.define(["sap/ui/core/mvc/Controller",
-		"bam/services/DataContext",
-		"sap/m/MessageToast",
-		"sap/m/MessageBox",
-		"sap/ui/model/resource/ResourceModel",
-		"sap/ui/model/Filter",
-		"sap/ui/core/routing/History"
-		], function(Controller,DataContext,MessageToast,MessageBox,ResourceModel,Filter,History) {
-	"use strict";
+sap.ui.define([
+	"sap/ui/core/mvc/Controller",
+	"bam/services/DataContext",
+	"sap/m/MessageToast",
+	"sap/m/MessageBox",
+	"sap/ui/model/resource/ResourceModel",
+	"sap/ui/model/Filter",
+	"sap/ui/core/routing/History",
+	"sap/ui/model/FilterOperator",
+	] , function (Controller,DataContext,MessageToast,MessageBox,ResourceModel,Filter,History,FilterOperator) {
+		"use strict";
+		
   	var loggedInUserID;
 	var firstTimePageLoad = true;
 	var demandManagerAssigner;
@@ -15,7 +18,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 	var marketingManagerAssigner;
 	var masterPlannerAssigner;
 	var productManagerAssigner;
-	var regulatorSupplyChainManagerAssigner;
+	var regionalSupplyChainManagerAssigner;
 	var supplyChainManagerAssigner;
     var supplyChainPlanningSpecialistAssigner;
 	var permissions;    
@@ -25,7 +28,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 	var showMarketingManger = false;
 	var showMasterPlanner = false;
 	var showProductManager = false;
-	var showRegulatorySupplychainManager = false;
+	var showRegionalSupplychainManager = false;
 	var showSupplyChainManager= false; 
 	var showSupplyChainPlanningSpecialist = false;
 	return Controller.extend("bam.controller.AddPeopleRules", {
@@ -46,7 +49,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 	        marketingManagerAssigner = this._oi18nModel.getProperty("Module.marketingManagerAssigner");
 	        masterPlannerAssigner = this._oi18nModel.getProperty("Module.masterPlannerAssigner");
 	        productManagerAssigner = this._oi18nModel.getProperty("Module.productManagerAssigner");
-	        regulatorSupplyChainManagerAssigner = this._oi18nModel.getProperty("Module.regulatorSupplyChainManagerAssigner");
+	        regionalSupplyChainManagerAssigner = this._oi18nModel.getProperty("Module.regulatorSupplyChainManagerAssigner");
 	        supplyChainManagerAssigner = this._oi18nModel.getProperty("Module.supplyChainManagerAssigner");
 	        supplyChainPlanningSpecialistAssigner = this._oi18nModel.getProperty("Module.supplyChainPlanningSpecialistAssigner");			
 			permissions = DataContext.getUserPermissions();
@@ -59,11 +62,10 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 					  permissions[i].ATTRIBUTE === marketingManagerAssigner ||
 					  permissions[i].ATTRIBUTE === masterPlannerAssigner ||
 					  permissions[i].ATTRIBUTE === productManagerAssigner ||
-					  permissions[i].ATTRIBUTE === regulatorSupplyChainManagerAssigner ||
+					  permissions[i].ATTRIBUTE === regionalSupplyChainManagerAssigner ||
 					  permissions[i].ATTRIBUTE === supplyChainManagerAssigner ||
-					  permissions[i].ATTRIBUTE === supplyChainPlanningSpecialistAssigner) && (
-					  	permissions[i].ACTION === "ADD" || permissions[i].ACTION === "EDIT"
-					  	)
+					  permissions[i].ATTRIBUTE === supplyChainPlanningSpecialistAssigner) &&
+					  (permissions[i].ACTION === "ADD" || permissions[i].ACTION === "EDIT")
 					  )
 				{
 					if(permissions[i].ATTRIBUTE === demandManagerAssigner){
@@ -84,8 +86,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 					if(permissions[i].ATTRIBUTE === productManagerAssigner){
 						showProductManager = true;	
 					}
-					if(permissions[i].ATTRIBUTE === regulatorSupplyChainManagerAssigner){
-						showRegulatorySupplychainManager = true;	
+					if(permissions[i].ATTRIBUTE === regionalSupplyChainManagerAssigner){
+						showRegionalSupplychainManager = true;	
 					}
 					if(permissions[i].ATTRIBUTE === supplyChainManagerAssigner){
 						showSupplyChainManager = true;	
@@ -122,8 +124,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			    		"masterPlannerErrorState" : "None",
 			    		"PRODUCT_MANAGER_ID" : -1,
 			    		"productManagerErrorState" : "None",
-			    		"REGULATORY_SUPPLY_CHAIN_MANAGER_ID" : -1,
-			    		"regulatorySupplyChainMangerErrorState" : "None",
+			    		"REGIONAL_SUPPLY_CHAIN_MANAGER_ID" : -1,
+			    		"regionalSupplyChainMangerErrorState" : "None",
 			    		"SUPPLY_CHAIN_MANAGER_ID" : -1,
 			    		"supplyChainManagerErrorState" : "None",
 			    		"SUPPLY_CHAIN_PLANNING_SPECIALIST_ID" : -1,
@@ -151,7 +153,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 		    	this._oModel.setProperty("/AssignPeopleRuleVM/showMarketingManger",showMarketingManger);
 		    	this._oModel.setProperty("/AssignPeopleRuleVM/showMasterPlanner",showMasterPlanner);
 		    	this._oModel.setProperty("/AssignPeopleRuleVM/showProductManager",showProductManager);
-		    	this._oModel.setProperty("/AssignPeopleRuleVM/showRegulatorySupplychainManager",showRegulatorySupplychainManager);
+		    	this._oModel.setProperty("/AssignPeopleRuleVM/showRegionalSupplychainManager",showRegionalSupplychainManager);
 		    	this._oModel.setProperty("/AssignPeopleRuleVM/showSupplyChainManager",showSupplyChainManager);
 		    	this._oModel.setProperty("/AssignPeopleRuleVM/showSupplyChainPlanningSpecialist",showSupplyChainPlanningSpecialist);
 		    	//
@@ -264,14 +266,45 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			{
 				this._oModel.setProperty("/AssignPeopleRuleVM/Geography",this.getGeoLevelDropDown(geoLevel));
 				this._oModel.setProperty("/AssignPeopleRuleVM/Product",this.getProductLevelDropDown(productLevel));
-			   /* this._oModel.setProperty("/AssignRuleVM/RCU",this.getRCUDropDown());
-			    var subRcuDropDown = this.getSubRCUDropDown(null);
-			    var ruleVM = this._oViewModelData.AssignRuleVM;
-			    for(var i = 0; i < ruleVM.length - 1; i++) {
-			    	ruleVM[i].SUB_RCU =    subRcuDropDown;   
-			    	ruleVM[i].SUB_RCU_CODE = "-1";
-			    	ruleVM[i].SUB_RCU_DESC = "Select..";
-			    }*/
+				//
+				// loading people role drop downs
+				if(showDemandManager){
+					var demandManader = this._oi18nModel.getProperty("DEMAND_MANAGER");
+					this._oModel.setProperty("/AssignPeopleRuleVM/DemandManager", this.getPeopleRoleDropDown(demandManader));
+				}
+				if(showGlobalLeader){
+					var globalLeader = this._oi18nModel.getProperty("GLOBAL_LEADER");
+					this._oModel.setProperty("/AssignPeopleRuleVM/GlobalBusinessLeader", this.getPeopleRoleDropDown(globalLeader));
+				}
+				if(showMarketingDirector){
+					var marketingDirector = this._oi18nModel.getProperty("MARKETING_DIRECTOR");
+					this._oModel.setProperty("/AssignPeopleRuleVM/MarketingDirector", this.getPeopleRoleDropDown(marketingDirector));
+				}
+				if(showMarketingManger){
+					var marketingManager = this._oi18nModel.getProperty("MARKETING_MANAGER");
+					this._oModel.setProperty("/AssignPeopleRuleVM/MarketingManager", this.getPeopleRoleDropDown(marketingManager));
+				}
+				if(showMasterPlanner){
+					var masterPlanner = this._oi18nModel.getProperty("MASTER_PLANNER");
+					this._oModel.setProperty("/AssignPeopleRuleVM/MasterPlanner", this.getPeopleRoleDropDown(masterPlanner));	
+				}
+				if(showProductManager){
+					var productManager = this._oi18nModel.getProperty("PRODUCT_MANAGER");
+					this._oModel.setProperty("/AssignPeopleRuleVM/ProductManager", this.getPeopleRoleDropDown(productManager));	
+				}
+				if(showRegionalSupplychainManager){
+					var regionalSupplychainManager = this._oi18nModel.getProperty("REG_SUPPLY_CHAIN_MANAGER");
+					this._oModel.setProperty("/AssignPeopleRuleVM/RegionalSupplyChainManager", this.getPeopleRoleDropDown(regionalSupplychainManager));	
+				}
+				if(showSupplyChainManager){
+					var supplychainManager = this._oi18nModel.getProperty("SUPPLY_CHAIN_MANAGER");
+					this._oModel.setProperty("/AssignPeopleRuleVM/SupplyChainManager", this.getPeopleRoleDropDown(supplychainManager));	
+				}
+				if(showSupplyChainPlanningSpecialist){
+					var supplychainPlanningSpecialist = this._oi18nModel.getProperty("SUPPLY_CHAIN_PLANNING_SPECIALIST");
+					this._oModel.setProperty("/AssignPeopleRuleVM/SupplyChainPlanningSpecialist", this.getPeopleRoleDropDown(supplychainPlanningSpecialist));
+				}
+				//
 		    	this.getDefaultPropertyValues();
 				this.setDefaultValuesToGrid();
 			}
@@ -382,14 +415,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
         			this._productList = productList.find(function(data){return data.PRODUCT_CODE === 0; });
         		}
         	}
-        	/*var rcuList = this._oAssignRuleViewModel.getProperty("/AssignPeopleRuleVM/RCU");
-        	if(rcuList !== undefined){
-        		this._rcuList = rcuList.find(function(data){return data.RCU_CODE === -1; });
-        	}
-        	var subRcuList = this._oAssignRuleViewModel.getProperty("/AssignPeopleRuleVM/SubRCU");
-        	if(subRcuList !== undefined){
-        		this._subRcuList = subRcuList.find(function(data){return data.SUB_RCU_CODE === -1; });
-        	}*/
         },
         setDefaultValuesToGrid: function(){
         	var rows = this._oViewModelData.AssignPeopleRuleVM;
@@ -409,14 +434,18 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 				obj.PRODUCT_CODE = this._productList.PRODUCT_CODE;
 				obj.PRODUCT_DESC = this._productList.PRODUCT_DESC;			
 			}
-/*			if(this._rcuList !== undefined){
-				obj.RCU_CODE  = this._rcuList .RCU_CODE;
-				obj.RCU_DESC = this._rcuList.RCU_DESC;
-			}
-			if(this._subRcuList !== undefined){
-				obj.SUB_RCU_CODE  = this._subRcuList.SUB_RCU_CODE;
-				obj.SUB_RCU_DESC = this._subRcuList.SUB_RCU_DESC;
-			}*/
+			//
+			// setting pople roles
+			obj.DEMAND_MANAGER_ID = "-1";
+			obj.DEMAND_MANAGER_NAME ="Select..";
+			obj.GLOBAL_LEADER_ID = "-1";
+			obj.MARKETING_DIRECTOR_ID = "-1";
+			obj.MARKETING_MANAGER_ID = "-1";
+			obj.MASTER_PLANNER_ID = "-1";
+			obj.PRODUCT_MANAGER_ID = "-1";
+			obj.REGIONAL_SUPPLY_CHAIN_MANAGER_ID = "-1";
+			obj.SUPPLY_CHAIN_MANAGER_ID = "-1";
+			obj.SUPPLY_CHAIN_PLANNING_SPECIALIST_ID = "-1";
         	return obj;
         },
 		
@@ -464,8 +493,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			    		masterPlannerErrorState : "None",
 			    		PRODUCT_MANAGER_ID : -1,
 			    		productManagerErrorState : "None",
-			    		REGULATORY_SUPPLY_CHAIN_MANAGER_ID : -1,
-			    		regulatorySupplyChainMangerErrorState : "None",
+			    		REGIONAL_SUPPLY_CHAIN_MANAGER_ID : -1,
+			    		regionalSupplyChainMangerErrorState : "None",
 			    		SUPPLY_CHAIN_MANAGER_ID : -1,
 			    		supplyChainManagerErrorState : "None",
 			    		SUPPLY_CHAIN_PLANNING_SPECIALIST_ID : -1,
@@ -480,33 +509,38 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 	    	}
 	    	this._oAssignPeopleRuleViewModel.setProperty(path, obj);
 	    	this.addEmptyObject();	
+		},
+		getPeopleRoleDropDown : function (roleName) {
+			var result;
+			// Create a filter & sorter array
+			var sortArray = [];
+			var sorter = new sap.ui.model.Sorter("USER_NAME",false);
+			sortArray.push(sorter);
+			// Get the Country dropdown list from the CODE_MASTER table
+			this._oDataModel.read("/V_USER_BY_PEOPLE_ROLE",{
+					sorters: sortArray,
+					filters: [ 
+								new Filter("USER_ROLE", FilterOperator.EQ, roleName)
+							],
+					async: false,
+	                success: function(oData, oResponse){
+	                	// add Please select item on top of the list
+		                oData.results.unshift({	"USER_ID":"-1",
+		              							"USER_NAME":"Select.."});
+		                // Bind the RCU  data 
+		                result =  oData.results;
+	                },
+	    		    error: function(){
+    		    		MessageBox.alert("Unable to retrieve dropdown values for People Roles Please contact System Admin.",
+						{
+							icon : MessageBox.Icon.ERROR,
+							title : "Error"
+						});
+	            		result = [];
+	    			}
+	    	});
+	    	return result;
 		}		
-
-		/**
-		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
-		 * (NOT before the first rendering! onInit() is used for that one!).
-		 * @memberOf bam.view.AddPeopleRules
-		 */
-		//	onBeforeRendering: function() {
-		//
-		//	},
-
-		/**
-		 * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
-		 * This hook is the same one that SAPUI5 controls get after being rendered.
-		 * @memberOf bam.view.AddPeopleRules
-		 */
-		//	onAfterRendering: function() {
-		//
-		//	},
-
-		/**
-		 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
-		 * @memberOf bam.view.AddPeopleRules
-		 */
-		//	onExit: function() {
-		//
-		//	}
 
 	});
 
