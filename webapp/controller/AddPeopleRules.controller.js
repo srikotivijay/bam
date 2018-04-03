@@ -332,6 +332,7 @@ sap.ui.define([
 				this._isChanged = false;
 				var initData = this.addInitialObject();
 				this._oModel.setProperty("/AssignPeopleRuleVM",initData);
+				this._oModel.setProperty("/Geography",null);
 				// Adding empty row to the table
 				this.addEmptyObject();
 			}
@@ -663,7 +664,7 @@ sap.ui.define([
 		        {
 		            for( var j = i + 1; j < data.length - 1; j++)
 		            { 
-			            if((parseInt(data[i].LEVEL_ID,10) !== -1 &&  parseInt(data[j].LEVEL_ID,10) !== -1) && (parseInt(data[i].PRODUCT_CODE,10) !== -1 &&  parseInt(data[j].PRODUCT_CODE,10) !== -1) && (parseInt(data[i].LEVEL_ID,10) === parseInt(data[j].LEVEL_ID,10)) && (parseInt(data[i].PRODUCT_CODE,10) ===  parseInt(data[j].PRODUCT_CODE,10)))
+			            if((parseInt(data[i].LEVEL_ID,10) !== -1 &&  parseInt(data[j].LEVEL_ID,10) !== -1) && (data[i].PRODUCT_CODE !== -1 &&  data[j].PRODUCT_CODE !== -1) && (parseInt(data[i].LEVEL_ID,10) === parseInt(data[j].LEVEL_ID,10)) && (data[i].PRODUCT_CODE ===  data[j].PRODUCT_CODE))
 			            {
 			            	// highlight the geography and product boxed in red
 			            	 data[i].isError = true;
@@ -779,18 +780,34 @@ sap.ui.define([
 			return returnValue;
         },
          // below function will check if anything is changed  or modified in submission page
-        chkIsModified: function() {
+         chkIsModified: function() {
         	var AssignPeopleRule = this._oAssignPeopleRuleViewModel.getProperty("/AssignPeopleRuleVM");
         	var isModified = false;
         	var rcuModel = this._oModel.getProperty("/RuleSet");
         	 var selectedRulekey = this.getView().byId("cmbRuleSetList").getSelectedItem().getKey();
         	 var productLevel = rcuModel.find(function(data) {return data.PEOPLE_RULESET_SEQ == selectedRulekey;}).PRODUCT_LEVEL;
+        	 var geoLevel = rcuModel.find(function(data) {return data.PEOPLE_RULESET_SEQ == selectedRulekey;}).GEO_LEVEL;
 	        if (productLevel !== null)
 	        { // for Product level which is not ALL
 	        	// loop through the rows and for each row check if is anything is modified or changed
 		    		for(var i = 0; i < AssignPeopleRule.length - 1; i++) 
-		    		{   
-			        			if ((parseInt(AssignPeopleRule[i].LEVEL_ID,10) !== -1) 
+		    		{ 
+		    			if (geoLevel !== null)
+				    		{
+				    			var objgeo;
+				    			if (parseInt(AssignPeopleRule[i].LEVEL_ID,10) !== -1)
+				    			{
+				    				objgeo = false;
+				    			}
+				    		}
+				    		else
+				    		{
+				    			if (parseInt(AssignPeopleRule[i].LEVEL_ID,10) !== 0)
+				    			{
+				    				objgeo = false;
+				    			}
+				    		}
+			        			if (objgeo 
 			        			|| (parseInt(AssignPeopleRule[i].PRODUCT_CODE,10) !== -1)
 			        		    ||(parseInt(AssignPeopleRule[i].DEMAND_MANAGER_ID,10) !== -1) 
 			        		    || (parseInt(AssignPeopleRule[i].GLOBAL_LEADER_ID,10) !== -1)
@@ -812,7 +829,22 @@ sap.ui.define([
 	        	// loop through the rows and for each row check if is anything is modified or changed
 		    		for(var j = 0; j < AssignPeopleRule.length - 1; j++) 
 		    		{   
-			        			if ((parseInt(AssignPeopleRule[j].LEVEL_ID,10) !== -1) 
+		    			if (geoLevel !== null)
+				    		{
+				    			var objgeo1;
+				    			if (parseInt(AssignPeopleRule[i].LEVEL_ID,10) !== -1)
+				    			{
+				    				objgeo1 = false;
+				    			}
+				    		}
+				    		else
+				    		{
+				    			if (parseInt(AssignPeopleRule[i].LEVEL_ID,10) !== 0)
+				    			{
+				    				objgeo1 = false;
+				    			}
+				    		}
+			        			if (objgeo1
 			        			|| (parseInt(AssignPeopleRule[j].PRODUCT_CODE,10) !== 0)
 			        		    || (parseInt(AssignPeopleRule[j].DEMAND_MANAGER_ID,10) !== -1) 
 			        		    || (parseInt(AssignPeopleRule[j].GLOBAL_LEADER_ID,10) !== -1)
