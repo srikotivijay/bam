@@ -31,6 +31,7 @@ sap.ui.define([
 		var showRegionalSupplychainManager = false;
 		var showSupplyChainManager = false; 
 		var showSupplyChainPlanningSpecialist = false;
+		var filter = [];
 		return Controller.extend("bam.controller.AddPeopleRules", {
 			// Init function
 			onInit: function() {
@@ -142,6 +143,7 @@ sap.ui.define([
 		        supplyChainPlanningSpecialistAssigner = this._oi18nModel.getProperty("Module.supplyChainPlanningSpecialistAssigner");			
 				permissions = DataContext.getUserPermissions();
 				var hasAccess = false;
+				filter = [];
 				for(var i = 0; i < permissions.length; i++)
 				{
 					if((permissions[i].ATTRIBUTE === demandManagerAssigner ||
@@ -156,6 +158,9 @@ sap.ui.define([
 						  (permissions[i].ACTION === "ADD" || permissions[i].ACTION === "EDIT")
 						  )
 					{
+						//
+						// Creatting the filer collection
+						filter.push(new Filter(permissions[i].ATTRIBUTE.replace("_ASSIGNER",""),sap.ui.model.FilterOperator.NE,""));
 						if(permissions[i].ATTRIBUTE === demandManagerAssigner){
 							showDemandManager = true;	
 						}
@@ -593,49 +598,52 @@ sap.ui.define([
             var isDuplicate = false;
             var data = this._oViewModelData.AssignPeopleRuleVM;
 	        // need to pass the above array to the DB to get the duplicate records
-	        var viewpath = "V_VALIDATE_PEOPLE_RULES";
+	        var viewpath = "V_PEOPLE_RULE";
 	        var selectedRulekey = this.getView().byId("cmbRuleSetList").getSelectedItem().getKey();
             if (selectedRulekey !== "-1")
 	        {
-	        	var ruleSetRecords = DataContext.getrulesFromDB(selectedRulekey,viewpath); 
-	            for(var i = 0; i < data.length - 1; i++) 
-	            {
-	                var geo_level_id = parseInt(data[i].LEVEL_ID,10);
-	                var product_code;
-	                if (data[i].PRODUCT_CODE === 0 )
-                    {
-                    	product_code = null;
+	        	var userFilter = new Filter({
+                    filters : filter,
+                        and : false
+                    });
+                var peopleRuleFilter =[];
+                peopleRuleFilter.push(new Filter("PEOPLE_RULESET_SEQ",sap.ui.model.FilterOperator.EQ,selectedRulekey));
+                peopleRuleFilter.push(userFilter);
+                var mainFilter = new Filter({
+                	filters : peopleRuleFilter,
+                	and:true
+                });
+				var ruleSetRecords = DataContext.getPeopleRulesFromDB(viewpath, mainFilter); 
+				for(var i = 0; i < data.length - 1; i++) {
+					var geoLevelId = parseInt(data[i].LEVEL_ID,10);
+					var productCode;
+					if (data[i].PRODUCT_CODE === 0 ) {
+                    	productCode = null;
                     }
-                    else
-                    {
-                    	product_code = data[i].PRODUCT_CODE;
+                    else {
+                    	productCode = data[i].PRODUCT_CODE;
                     }
-                                        
-	                // loop the Rule Set Records from DB to check Unique
-	                for(var k = 0; k < ruleSetRecords.length; k++) 
-	                {
-	                    // check if Rule already exists in system
-	                    if (geo_level_id === ruleSetRecords[k].GEO_LEVEL_ID && product_code === ruleSetRecords[k].PRODUCT_CODE)
-			            {
-			                isDuplicate = true;
-			                data[i].isError = true;
-			                data[i].geographyErrorState = "Error";
-			                data[i].productErrorState = "Error";
-			                if(data[i].errorSummary !== "")
-			                {
-			        			data[i].errorSummary += "\n";  
-			                }
-			            	data[i].errorSummary += "Rule Combination already exists in the system.";
-			            }
-			            else
-			            {
-			                continue;
-			            }
-	                }
-	            }
-	          }
+                    //
+					// loop the Rule Set Records from DB to check Unique
+					for(var k = 0; k < ruleSetRecords.length; k++) {
+						// check if Rule already exists in system
+						if (geoLevelId === ruleSetRecords[k].GEO_LEVEL_ID && productCode === ruleSetRecords[k].PRODUCT_CODE) {
+							isDuplicate = true;
+							data[i].isError = true;
+							data[i].geographyErrorState = "Error";
+							data[i].productErrorState = "Error";
+						if(data[i].errorSummary !== "") {
+								data[i].errorSummary += "\n";  
+							}
+							data[i].errorSummary += "Rule Combination already exists in the system.";
+						}
+						else {
+							continue;
+						}
+					}
+				}
+			}
             this._oAssignPeopleRuleViewModel.refresh();
-            
             return isDuplicate;
         },
         // function to check whether the user has entered a duplicate RuleSet/Geography,Product on the form
@@ -927,10 +935,9 @@ sap.ui.define([
 		        }
 		        // Rule Set, geography and product should be unique
 		        // check duplicate entries in the system
-		        //if(t.validateUniqueRules() === true)
-	        	///	{
-					//t._oAssignPeopleRuleViewModel.setProperty("/ErrorOnPage",true);
-	        	//	}
+		        if(t.validateUniqueRules() === true) {
+					t._oAssignPeopleRuleViewModel.setProperty("/ErrorOnPage",true);
+				}
 		        // check for duplicate entries on the page
 				if (t.validateDuplicateEntries() === false){
 					t._oAssignPeopleRuleViewModel.setProperty("/ErrorOnPage",true);
