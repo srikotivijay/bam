@@ -17,8 +17,7 @@
 								selectedKey="{/PEOPLE_RULESET_SEQ}"
 								width="800px"
 								items="{
-									path: '/AssignPeopleRuleVM/RuleSet',
-									sorter: { path: 'text' }
+									path: '/AssignPeopleRuleVM/RuleSet'
 								}">
 							
 							<core:ListItem key="{PEOPLE_RULESET_SEQ}" text="{parts: ['NAME','DESCRIPTION'], formatter: '.formatText'}" additionalText="{PEOPLE_RULESET_SEQ}"/>
