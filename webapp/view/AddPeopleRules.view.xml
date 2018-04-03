@@ -95,7 +95,7 @@
 								</table:template>
 							</table:Column>	
 							<table:Column id="clmHdrGlobalLeader" width="350px" resizable="false" visible="{/showGlobalLeader}">
-								<Label text="{i18n>GLOBAL_LEADER}" id="lblGlobalLeader"/>
+								<Label text="{i18n>HDR_GLOBAL_LEADER}" id="lblGlobalLeader"/>
 								<table:template>
 									<ComboBox
 											id="cmbGlobalLeader"
@@ -115,7 +115,7 @@
 								</table:template>
 							</table:Column>	
 							<table:Column id="clmHdrMarketingDirector" width="350px" resizable="false" visible="{/showMarketingDirector}">
-								<Label text="{i18n>MARKETING_DIRECTOR}" id="lblMarketingDirector"/>
+								<Label text="{i18n>HDR_MARKETING_DIRECTOR}" id="lblMarketingDirector"/>
 								<table:template>
 									<ComboBox
 											id="cmbMarketingDirector"
@@ -135,7 +135,7 @@
 								</table:template>
 							</table:Column>	
 							<table:Column id="clmHdrMarketingManager" width="350px" resizable="false" visible="{/showMarketingManger}">
-								<Label text="{i18n>MARKETING_MANAGER}" id="lblMarketingManager"/>
+								<Label text="{i18n>HDR_MARKETING_MANAGER}" id="lblMarketingManager"/>
 								<table:template>
 									<ComboBox
 											id="cmbMarketingManager"
@@ -215,7 +215,7 @@
 								</table:template>
 							</table:Column>	
 							<table:Column id="clmHdrSupplyChainManager" width="350px" resizable="false" visible="{/showSupplyChainManager}">
-								<Label text="{i18n>SUPPLY_CHAIN_MANAGER}" id="lblSupplyChainManager"/>
+								<Label text="{i18n>HDR_SUPPLY_CHAIN_MANAGER}" id="lblSupplyChainManager"/>
 								<table:template>
 									<ComboBox
 											id="cmbSupplyChainManager"
@@ -235,7 +235,7 @@
 								</table:template>
 							</table:Column>	
 							<table:Column id="clmHdrSupplyChainPlanningSpecialist" width="350px" resizable="false" visible="{/showSupplyChainPlanningSpecialist}">
-								<Label text="{i18n>SUPPLY_CHAIN_PLANNING_SPECIALIST}" id="lblSupplyChainPlanningSpecialist"/>
+								<Label text="{i18n>HDR_SUPPLY_CHAIN_PLANNING_SPECIALIST}" id="lblSupplyChainPlanningSpecialist"/>
 								<table:template>
 									<ComboBox
 											id="cmbSupplyChainPlanningSpecialist"

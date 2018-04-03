@@ -269,6 +269,18 @@
 			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/SUBCROP_MOLECULE_DESC">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SUBCROP_MOLECULE_DESC}"/>
 			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/MARKETING_DIRECTOR_ID">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MARKETING_DIRECTOR_ID}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/MARKETING_MANAGER_ID">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MARKETING_MANAGER_ID}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/MASTER_PLANNER_ID">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MASTER_PLANNER_ID}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/MASTER_PLANNER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MASTER_PLANNER}"/>
+			</Annotations>
 			<Annotations Target="ODataService.BAMDataService.V_GMID_CROP_PROTECTIONType">
 				<Annotation Term="UI.PresentationVariant">
 					<Record Type="UI.PresentationVariantType">
