@@ -814,7 +814,7 @@ sap.ui.define([
 	        else
 	        { //for Product level which is not ALL
 	        	// loop through the rows and for each row check if is anything is modified or changed
-		    		for(var j = 0; i < AssignPeopleRule.length - 1; i++) 
+		    		for(var j = 0; j < AssignPeopleRule.length - 1; j++) 
 		    		{   
 			        			if ((parseInt(AssignPeopleRule[j].LEVEL_ID,10) !== -1) 
 			        			|| (parseInt(AssignPeopleRule[j].PRODUCT_CODE,10) !== 0)
