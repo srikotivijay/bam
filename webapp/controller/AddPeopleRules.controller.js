@@ -615,7 +615,13 @@ sap.ui.define([
                 });
 				var ruleSetRecords = DataContext.getPeopleRulesFromDB(viewpath, mainFilter); 
 				for(var i = 0; i < data.length - 1; i++) {
-					var geoLevelId = parseInt(data[i].LEVEL_ID,10);
+					var geoLevelId;
+					if(parseInt(data[i].LEVEL_ID,10) === 0){
+						geoLevelId = null;
+					}
+					else{
+						geoLevelId = parseInt(data[i].LEVEL_ID,10);
+					}
 					var productCode;
 					if (data[i].PRODUCT_CODE === 0 ) {
                     	productCode = null;
@@ -899,7 +905,7 @@ sap.ui.define([
 					var tablePath = "/MST_PEOPLE_RULE";
 					// Create current timestamp
 					var oDate = new Date();                
-					var ruleSetSeq = t._oViewModelData.CU_RULESET_SEQ;
+					var ruleSetSeq = t._oViewModelData.PEOPLE_RULESET_SEQ;
 					var strSubmission = t._oi18nModel.getProperty("submission");
 					for(var i = 0; i < AssignPeopleRule.length - 1; i++) {
 						if(t.checkEmptyRows(AssignPeopleRule[i],strSubmission) === true) {
@@ -914,12 +920,13 @@ sap.ui.define([
 							var regionalsupplychainManagerID;
 							var supplychainmanagerID;
 							var supplychainplanningSpecialistID;
-							if(parseInt(AssignPeopleRule[i].LEVEL_ID,10) === 0){
-								geoLevelValId = '';
-							}
-							else{
-								geoLevelValId = parseInt(AssignPeopleRule[i].LEVEL_ID,10);
-							}
+							geoLevelValId = parseInt(AssignPeopleRule[i].LEVEL_ID,10);
+							// if(parseInt(AssignPeopleRule[i].LEVEL_ID,10) === 0){
+							// 	geoLevelValId = '0';
+							// }
+							// else{
+							// 	geoLevelValId = parseInt(AssignPeopleRule[i].LEVEL_ID,10);
+							// }
 							if (AssignPeopleRule[i].PRODUCT_CODE === 0 ) {
 								productLevelCode = '';
 							}
@@ -927,77 +934,59 @@ sap.ui.define([
 								productLevelCode = AssignPeopleRule[i].PRODUCT_CODE;
 							}
 							// Based on permissions assign values
-							if(showDemandManager){
-								if(parseInt(AssignPeopleRule[i].DEMAND_MANAGER_ID,10) === -1){
-									demandManagerID = '';
-								}
-								else {
-									demandManagerID = AssignPeopleRule[i].DEMAND_MANAGER_ID;
-								}
+							if(parseInt(AssignPeopleRule[i].DEMAND_MANAGER_ID,10) === -1){
+								demandManagerID = '';
 							}
-							if(showGlobalLeader){
-								if(parseInt(AssignPeopleRule[i].GLOBAL_LEADER_ID,10) === -1){
-									globalLeaderID = '';
-								}
-								else{
-									globalLeaderID = AssignPeopleRule[i].GLOBAL_LEADER_ID;
-								}
+							else {
+								demandManagerID = AssignPeopleRule[i].DEMAND_MANAGER_ID;
 							}
-							if(showMarketingDirector){
-								if(parseInt(AssignPeopleRule[i].MARKETING_DIRECTOR_ID,10) === -1){
-									marketingDirectorID = '';
-								}
-								else{
-									marketingDirectorID = AssignPeopleRule[i].MARKETING_DIRECTOR_ID;
-								}
+							if(parseInt(AssignPeopleRule[i].GLOBAL_LEADER_ID,10) === -1){
+								globalLeaderID = '';
 							}
-							if(showMarketingManger){
-								if(parseInt(AssignPeopleRule[i].MARKETING_MANAGER_ID,10) === -1){
-									marketingManagerID = '';
-								}
-								else{
-									marketingManagerID = AssignPeopleRule[i].MARKETING_MANAGER_ID;
-								}
+							else{
+								globalLeaderID = AssignPeopleRule[i].GLOBAL_LEADER_ID;
 							}
-							if(showMasterPlanner){
-								if(parseInt(AssignPeopleRule[i].MASTER_PLANNER_ID,10) === -1){
-									masterPlannerID = '';
-								}
-								else{
-									masterPlannerID = AssignPeopleRule[i].MASTER_PLANNER_ID;
-								}
+							if(parseInt(AssignPeopleRule[i].MARKETING_DIRECTOR_ID,10) === -1){
+								marketingDirectorID = '';
 							}
-							if(showProductManager){
-								if(parseInt(AssignPeopleRule[i].PRODUCT_MANAGER_ID,10) === -1){
-									productManagerID = '';
-								}
-								else{
-									productManagerID = AssignPeopleRule[i].PRODUCT_MANAGER_ID;
-								}
+							else{
+								marketingDirectorID = AssignPeopleRule[i].MARKETING_DIRECTOR_ID;
 							}
-							if(showRegionalSupplychainManager){
-								if(parseInt(AssignPeopleRule[i].REGIONAL_SUPPLY_CHAIN_MANAGER_ID,10) === -1){
-									regionalsupplychainManagerID = '';
-								}
-								else{
-									regionalsupplychainManagerID = AssignPeopleRule[i].REGIONAL_SUPPLY_CHAIN_MANAGER_ID;
-								}
+							if(parseInt(AssignPeopleRule[i].MARKETING_MANAGER_ID,10) === -1){
+								marketingManagerID = '';
 							}
-							if(showSupplyChainManager){
-								if(parseInt(AssignPeopleRule[i].SUPPLY_CHAIN_MANAGER_ID,10) === -1){
-									supplychainmanagerID = '';
-								}
-								else {
-									supplychainmanagerID = AssignPeopleRule[i].SUPPLY_CHAIN_MANAGER_ID;
-								}
+							else{
+								marketingManagerID = AssignPeopleRule[i].MARKETING_MANAGER_ID;
 							}
-							if(showSupplyChainPlanningSpecialist){
-								if(parseInt(AssignPeopleRule[i].SUPPLY_CHAIN_PLANNING_SPECIALIST_ID,10) === -1){
-									supplychainplanningSpecialistID = '';
-								}
-								else {
-									supplychainplanningSpecialistID = AssignPeopleRule[i].SUPPLY_CHAIN_PLANNING_SPECIALIST_ID;
-								}
+							if(parseInt(AssignPeopleRule[i].MASTER_PLANNER_ID,10) === -1){
+								masterPlannerID = '';
+							}
+							else{
+								masterPlannerID = AssignPeopleRule[i].MASTER_PLANNER_ID;
+							}
+							if(parseInt(AssignPeopleRule[i].PRODUCT_MANAGER_ID,10) === -1){
+								productManagerID = '';
+							}
+							else{
+								productManagerID = AssignPeopleRule[i].PRODUCT_MANAGER_ID;
+							}
+							if(parseInt(AssignPeopleRule[i].REGIONAL_SUPPLY_CHAIN_MANAGER_ID,10) === -1){
+								regionalsupplychainManagerID = '';
+							}
+							else{
+								regionalsupplychainManagerID = AssignPeopleRule[i].REGIONAL_SUPPLY_CHAIN_MANAGER_ID;
+							}
+							if(parseInt(AssignPeopleRule[i].SUPPLY_CHAIN_MANAGER_ID,10) === -1){
+								supplychainmanagerID = '';
+							}
+							else {
+								supplychainmanagerID = AssignPeopleRule[i].SUPPLY_CHAIN_MANAGER_ID;
+							}
+							if(parseInt(AssignPeopleRule[i].SUPPLY_CHAIN_PLANNING_SPECIALIST_ID,10) === -1){
+								supplychainplanningSpecialistID = '';
+							}
+							else {
+								supplychainplanningSpecialistID = AssignPeopleRule[i].SUPPLY_CHAIN_PLANNING_SPECIALIST_ID;
 							}
 							//
 							var newPeopleAssignRule = {
@@ -1022,7 +1011,7 @@ sap.ui.define([
 								success: function(){
 									successCount++;
 								},
-								error: function(){
+								error: function(err){
 									errorCount++;
 								}
 							});                                                                                           
@@ -1067,7 +1056,7 @@ sap.ui.define([
 			//below check needs to be performed if we have more than one row, if only one row in grid no need to check
 			//	dont validate the fields if nothing is changed for the row, i.e. user does not wnat to enter any data
 			if ((data.length >= 2) && (this._isChanged === true)){
-				if ((parseInt(row.LEVEL_ID,10) === -1) && 
+				if ((parseInt(row.LEVEL_ID,10) === -1 || parseInt(row.LEVEL_ID,10) === 0) && 
 					(parseInt(row.PRODUCT_CODE,10) === -1 || parseInt(row.PRODUCT_CODE,10) === 0) && 
 					(parseInt(row.DEMAND_MANAGER_ID,10) === -1)	&& (parseInt(row.GLOBAL_LEADER_ID,10) === -1) && 
 					(parseInt(row.MARKETING_DIRECTOR_ID,10) === -1) && (parseInt(row.MARKETING_MANAGER_ID,10) === -1) && 
