@@ -704,61 +704,6 @@ sap.ui.define([
             	row.productErrorState = "Error";
             	errorsFound = true;
             }
-            // Based on Security for Assigner validate rows
-            if(showDemandManager){
-	            if(parseInt(row.DEMAND_MANAGER_ID,10) === -1){
-					row.demandManagerErrorState = "Error";
-					errorsFound = true;
-	            }
-            }
-            if(showGlobalLeader){
-				if(parseInt(row.GLOBAL_LEADER_ID,10) === -1){
-					row.globalLeaderErrorState = "Error";
-					errorsFound = true;
-	            }
-			}
-			if(showMarketingDirector){
-				if(parseInt(row.MARKETING_DIRECTOR_ID,10) === -1){
-					row.marketingDirectorErrorState = "Error";
-					errorsFound = true;
-	            }
-			}
-			if(showMarketingManger){
-				if(parseInt(row.MARKETING_DIRECTOR_ID,10) === -1){
-					row.marketingManagerErrorState = "Error";
-					errorsFound = true;
-	            }
-			}
-			if(showMasterPlanner){
-				if(parseInt(row.MASTER_PLANNER_ID,10) === -1){
-				row.masterPlannerErrorState = "Error";
-				errorsFound = true;
-            	}
-			}
-			if(showProductManager){
-				if(parseInt(row.PRODUCT_MANAGER_ID,10) === -1){
-				row.productManagerErrorState = "Error";
-				errorsFound = true;
-            	}
-			}
-			if(showRegionalSupplychainManager){
-				if(parseInt(row.REGIONAL_SUPPLY_CHAIN_MANAGER_ID,10) === -1){
-				row.regionalSupplyChainMangerErrorState = "Error";
-				errorsFound = true;
-            	}
-			}
-			if(showSupplyChainManager){
-				if(parseInt(row.SUPPLY_CHAIN_MANAGER_ID,10) === -1){
-				row.supplyChainManagerErrorState = "Error";
-				errorsFound = true;
-            	}
-			}
-			if(showSupplyChainPlanningSpecialist){
-				if(parseInt(row.SUPPLY_CHAIN_PLANNING_SPECIALIST_ID,10) === -1){
-				row.supplyChainPlanningSpecialistErrorState = "Error";
-				errorsFound = true;
-            	}
-			}
             return errorsFound;
         },
          resetValidationForModel : function () {
