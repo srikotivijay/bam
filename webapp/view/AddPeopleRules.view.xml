@@ -17,7 +17,7 @@
 								selectedKey="{/PEOPLE_RULESET_SEQ}"
 								width="800px"
 								items="{
-									path: '/AssignPeopleRuleVM/RuleSet'
+									path: '/RuleSet'
 								}">
 							
 							<core:ListItem key="{PEOPLE_RULESET_SEQ}" text="{parts: ['NAME','DESCRIPTION'], formatter: '.formatText'}" additionalText="{PEOPLE_RULESET_SEQ}"/>
@@ -46,7 +46,7 @@
 										value="{NAME}"
 										selectedKey="{LEVEL_ID}"
 										width="500px"
-										items="{path :'/AssignPeopleRuleVM/Geography', templateShareable : true}"
+										items="{path :'/Geography', templateShareable : true}"
 										visible="{path: 'createNew', formatter: '.disableControl'}"
 										valueState="{geographyErrorState}">
 										<core:ListItem key="{LEVEL_ID}" text="{NAME}"/>
@@ -74,7 +74,7 @@
 									</ComboBox>
 								</table:template>
 							</table:Column>		
-							<table:Column id="clmHdrDemandManager" width="350px" resizable="false" visible="{/AssignPeopleRuleVM/showDemandManager}">
+							<table:Column id="clmHdrDemandManager" width="350px" resizable="false" visible="{/showDemandManager}">
 								<Label text="{i18n>DEMAND_MANAGER}" id="lblDemandManager"/>
 								<table:template>
 									<ComboBox
@@ -94,7 +94,7 @@
 									</ComboBox>
 								</table:template>
 							</table:Column>	
-							<table:Column id="clmHdrGlobalLeader" width="350px" resizable="false" visible="{/AssignPeopleRuleVM/showGlobalLeader}">
+							<table:Column id="clmHdrGlobalLeader" width="350px" resizable="false" visible="{/showGlobalLeader}">
 								<Label text="{i18n>GLOBAL_LEADER}" id="lblGlobalLeader"/>
 								<table:template>
 									<ComboBox
@@ -114,7 +114,7 @@
 									</ComboBox>
 								</table:template>
 							</table:Column>	
-							<table:Column id="clmHdrMarketingDirector" width="350px" resizable="false" visible="{/AssignPeopleRuleVM/showMarketingDirector}">
+							<table:Column id="clmHdrMarketingDirector" width="350px" resizable="false" visible="{/showMarketingDirector}">
 								<Label text="{i18n>MARKETING_DIRECTOR}" id="lblMarketingDirector"/>
 								<table:template>
 									<ComboBox
@@ -134,7 +134,7 @@
 									</ComboBox>
 								</table:template>
 							</table:Column>	
-							<table:Column id="clmHdrMarketingManager" width="350px" resizable="false" visible="{/AssignPeopleRuleVM/showMarketingManger}">
+							<table:Column id="clmHdrMarketingManager" width="350px" resizable="false" visible="{/showMarketingManger}">
 								<Label text="{i18n>MARKETING_MANAGER}" id="lblMarketingManager"/>
 								<table:template>
 									<ComboBox
@@ -154,7 +154,7 @@
 									</ComboBox>
 								</table:template>
 							</table:Column>	
-							<table:Column id="clmHdrMasterPlanner" width="350px" resizable="false" visible="{/AssignPeopleRuleVM/showMasterPlanner}">
+							<table:Column id="clmHdrMasterPlanner" width="350px" resizable="false" visible="{/showMasterPlanner}">
 								<Label text="{i18n>MASTER_PLANNER}" id="lblMasterPlanner"/>
 								<table:template>
 									<ComboBox
@@ -174,7 +174,7 @@
 									</ComboBox>
 								</table:template>
 							</table:Column>	
-							<table:Column id="clmHdrProductManager" width="350px" resizable="false" visible="{/AssignPeopleRuleVM/showProductManager}">
+							<table:Column id="clmHdrProductManager" width="350px" resizable="false" visible="{/showProductManager}">
 								<Label text="{i18n>PRODUCT_MANAGER}" id="lblProductManger"/>
 								<table:template>
 									<ComboBox
@@ -194,7 +194,7 @@
 									</ComboBox>
 								</table:template>
 							</table:Column>		
-							<table:Column id="clmHdrRegionalSupplyChainManager" width="350px" resizable="false" visible="{/AssignPeopleRuleVM/showRegionalSupplychainManager}">
+							<table:Column id="clmHdrRegionalSupplyChainManager" width="350px" resizable="false" visible="{/showRegionalSupplychainManager}">
 								<Label text="{i18n>REG_SUPPLY_CHAIN_MANAGER}" id="lblRegionalSupplyChainManager"/>
 								<table:template>
 									<ComboBox
@@ -214,7 +214,7 @@
 									</ComboBox>
 								</table:template>
 							</table:Column>	
-							<table:Column id="clmHdrSupplyChainManager" width="350px" resizable="false" visible="{/AssignPeopleRuleVM/showSupplyChainManager}">
+							<table:Column id="clmHdrSupplyChainManager" width="350px" resizable="false" visible="{/showSupplyChainManager}">
 								<Label text="{i18n>SUPPLY_CHAIN_MANAGER}" id="lblSupplyChainManager"/>
 								<table:template>
 									<ComboBox
@@ -234,7 +234,7 @@
 									</ComboBox>
 								</table:template>
 							</table:Column>	
-							<table:Column id="clmHdrSupplyChainPlanningSpecialist" width="350px" resizable="false" visible="{/AssignPeopleRuleVM/showSupplyChainPlanningSpecialist}">
+							<table:Column id="clmHdrSupplyChainPlanningSpecialist" width="350px" resizable="false" visible="{/showSupplyChainPlanningSpecialist}">
 								<Label text="{i18n>SUPPLY_CHAIN_PLANNING_SPECIALIST}" id="lblSupplyChainPlanningSpecialist"/>
 								<table:template>
 									<ComboBox

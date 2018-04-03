@@ -1,180 +1,193 @@
 sap.ui.define([
-	"sap/ui/core/mvc/Controller",
-	"bam/services/DataContext",
-	"sap/m/MessageToast",
-	"sap/m/MessageBox",
-	"sap/ui/model/resource/ResourceModel",
-	"sap/ui/model/Filter",
-	"sap/ui/core/routing/History",
-	"sap/ui/model/FilterOperator"
-	] , function (Controller,DataContext,MessageToast,MessageBox,ResourceModel,Filter,History,FilterOperator) {
+		"sap/ui/core/mvc/Controller",
+		"bam/services/DataContext",
+		"sap/m/MessageToast",
+		"sap/m/MessageBox",
+		"sap/ui/model/resource/ResourceModel",
+		"sap/ui/model/Filter",
+		"sap/ui/core/routing/History",
+		"sap/ui/model/FilterOperator"
+	] , 
+	function (Controller,DataContext,MessageToast,MessageBox,ResourceModel,Filter,History,FilterOperator) {
 		"use strict";
-		
-  	var loggedInUserID;
-	var firstTimePageLoad = true;
-	var demandManagerAssigner;
-	var globalLeaderAssigner;
-	var marketingDirectorAssigner;
-	var marketingManagerAssigner;
-	var masterPlannerAssigner;
-	var productManagerAssigner;
-	var regionalSupplyChainManagerAssigner;
-	var supplyChainManagerAssigner;
-    var supplyChainPlanningSpecialistAssigner;
-	var permissions;    
-	var showDemandManager = false;
-	var showGlobalLeader = false;
-	var showMarketingDirector = false; 
-	var showMarketingManger = false;
-	var showMasterPlanner = false;
-	var showProductManager = false;
-	var showRegionalSupplychainManager = false;
-	var showSupplyChainManager= false; 
-	var showSupplyChainPlanningSpecialist = false;
-	return Controller.extend("bam.controller.AddPeopleRules", {
-		// Init function
-		onInit: function() {
-			// Get logged in user id
-			loggedInUserID = DataContext.getUserID();
-			 // define a global variable for the oData model		    
-			var oView = this.getView();
-			oView.setModel(this.getOwnerComponent().getModel());
-			// get resource model
-			this._oi18nModel = this.getOwnerComponent().getModel("i18n");			
-	    	//
-	    	// checking the permission
-			demandManagerAssigner = this._oi18nModel.getProperty("Module.demandManagerAssigner");
-	        globalLeaderAssigner = this._oi18nModel.getProperty("Module.globalLeaderAssigner");
-	        marketingDirectorAssigner = this._oi18nModel.getProperty("Module.marketingDirectorAssigner");
-	        marketingManagerAssigner = this._oi18nModel.getProperty("Module.marketingManagerAssigner");
-	        masterPlannerAssigner = this._oi18nModel.getProperty("Module.masterPlannerAssigner");
-	        productManagerAssigner = this._oi18nModel.getProperty("Module.productManagerAssigner");
-	        regionalSupplyChainManagerAssigner = this._oi18nModel.getProperty("Module.regulatorSupplyChainManagerAssigner");
-	        supplyChainManagerAssigner = this._oi18nModel.getProperty("Module.supplyChainManagerAssigner");
-	        supplyChainPlanningSpecialistAssigner = this._oi18nModel.getProperty("Module.supplyChainPlanningSpecialistAssigner");			
-			permissions = DataContext.getUserPermissions();
-			var hasAccess = false;
-			for(var i = 0; i < permissions.length; i++)
-			{
-				if((permissions[i].ATTRIBUTE === demandManagerAssigner ||
-					  permissions[i].ATTRIBUTE === globalLeaderAssigner ||
-					  permissions[i].ATTRIBUTE === marketingDirectorAssigner ||
-					  permissions[i].ATTRIBUTE === marketingManagerAssigner ||
-					  permissions[i].ATTRIBUTE === masterPlannerAssigner ||
-					  permissions[i].ATTRIBUTE === productManagerAssigner ||
-					  permissions[i].ATTRIBUTE === regionalSupplyChainManagerAssigner ||
-					  permissions[i].ATTRIBUTE === supplyChainManagerAssigner ||
-					  permissions[i].ATTRIBUTE === supplyChainPlanningSpecialistAssigner) &&
-					  (permissions[i].ACTION === "ADD" || permissions[i].ACTION === "EDIT")
-					  )
-				{
-					if(permissions[i].ATTRIBUTE === demandManagerAssigner){
-						showDemandManager = true;	
-					}
-					if(permissions[i].ATTRIBUTE === globalLeaderAssigner){
-						showGlobalLeader = true;	
-					}	
-					if(permissions[i].ATTRIBUTE === marketingDirectorAssigner){
-						showMarketingDirector = true;	
-					}	
-					if(permissions[i].ATTRIBUTE === marketingManagerAssigner){
-						showMarketingManger = true;	
-					}
-					if(permissions[i].ATTRIBUTE === masterPlannerAssigner){
-						showMasterPlanner = true;	
-					}
-					if(permissions[i].ATTRIBUTE === productManagerAssigner){
-						showProductManager = true;	
-					}
-					if(permissions[i].ATTRIBUTE === regionalSupplyChainManagerAssigner){
-						showRegionalSupplychainManager = true;	
-					}
-					if(permissions[i].ATTRIBUTE === supplyChainManagerAssigner){
-						showSupplyChainManager = true;	
-					}
-					if(permissions[i].ATTRIBUTE === supplyChainPlanningSpecialistAssigner){
-						showSupplyChainPlanningSpecialist = true;	
-					}
-					hasAccess = true;
-				}
-			}	
-			if(hasAccess === false){
-				this.getRouter().getTargets().display("accessDenied", {
-					fromTarget : "peopleAssignment"
-				});					
-			}
-			else{
-				this._isChanged = false;
-			    var initData = [];
-			    for(var j = 0; j < 5; j++){
-			    	initData.push({
-			    		"LEVEL_ID" : -1,
-			    		"geographyErrorState" : "None",
-			    		"PRODUCT_CODE" : -1,
-			    		"productErrorState" : "None",
-			    		"DEMAND_MANAGER_ID" : -1,
-			    		"demandManagerErrorState" : "None",
-			    		"GLOBAL_LEADER_ID" : -1,
-			    		"globalLeaderErrorState" : "None",
-			    		"MARKETING_DIRECTOR_ID" : -1,
-			    		"marketingDirectorErrorState" : "None",
-			    		"MARKETING_MANAGER_ID" : -1,
-			    		"marketingManagerErrorState" : "None",
-			    		"MASTER_PLANNER_ID" : -1,
-			    		"masterPlannerErrorState" : "None",
-			    		"PRODUCT_MANAGER_ID" : -1,
-			    		"productManagerErrorState" : "None",
-			    		"REGIONAL_SUPPLY_CHAIN_MANAGER_ID" : -1,
-			    		"regionalSupplyChainMangerErrorState" : "None",
-			    		"SUPPLY_CHAIN_MANAGER_ID" : -1,
-			    		"supplyChainManagerErrorState" : "None",
-			    		"SUPPLY_CHAIN_PLANNING_SPECIALIST_ID" : -1,
-			    		"supplyChainPlanningSpecialistErrorState" : "None",
-			    		"createNew" : false,
-			    		"isError" :false
-			    	});
-			    }
-			    // Assigning view model for the page
-			    this._oModel = new sap.ui.model.json.JSONModel({AssignPeopleRuleVM : initData});
-			    // Create table model, set size limit to 300, add an empty row
-			    this._oModel.setSizeLimit(2000);
-			    // define a global variable for the view model, the view model data and oData model
-			    this._oAssignPeopleRuleViewModel = this._oModel;
-			    this._oViewModelData = this._oAssignPeopleRuleViewModel.getData();
-			    this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
-			    this.getView().setModel(this._oModel);	
-			    // Adding empty row to the table
-		    	this.addEmptyObject();
+		var loggedInUserID;
+		var firstTimePageLoad = true;
+		var demandManagerAssigner;
+		var globalLeaderAssigner;
+		var marketingDirectorAssigner;
+		var marketingManagerAssigner;
+		var masterPlannerAssigner;
+		var productManagerAssigner;
+		var regionalSupplyChainManagerAssigner;
+		var supplyChainManagerAssigner;
+		var supplyChainPlanningSpecialistAssigner;
+		var permissions;    
+		var showDemandManager = false;
+		var showGlobalLeader = false;
+		var showMarketingDirector = false; 
+		var showMarketingManger = false;
+		var showMasterPlanner = false;
+		var showProductManager = false;
+		var showRegionalSupplychainManager = false;
+		var showSupplyChainManager = false; 
+		var showSupplyChainPlanningSpecialist = false;
+		return Controller.extend("bam.controller.AddPeopleRules", {
+			// Init function
+			onInit: function() {
+				// Get logged in user id
+				loggedInUserID = DataContext.getUserID();
+				 // define a global variable for the oData model		    
+				var oView = this.getView();
+				oView.setModel(this.getOwnerComponent().getModel());
+				// get resource model
+				this._oi18nModel = this.getOwnerComponent().getModel("i18n");			
 		    	//
-		    	// Changing the visiblit of columns
-		    	this._oModel.setProperty("/AssignPeopleRuleVM/showDemandManager", showDemandManager);
-		    	this._oModel.setProperty("/AssignPeopleRuleVM/showGlobalLeader",showGlobalLeader);
-		    	this._oModel.setProperty("/AssignPeopleRuleVM/showMarketingDirector",showMarketingDirector);
-		    	this._oModel.setProperty("/AssignPeopleRuleVM/showMarketingManger",showMarketingManger);
-		    	this._oModel.setProperty("/AssignPeopleRuleVM/showMasterPlanner",showMasterPlanner);
-		    	this._oModel.setProperty("/AssignPeopleRuleVM/showProductManager",showProductManager);
-		    	this._oModel.setProperty("/AssignPeopleRuleVM/showRegionalSupplychainManager",showRegionalSupplychainManager);
-		    	this._oModel.setProperty("/AssignPeopleRuleVM/showSupplyChainManager",showSupplyChainManager);
-		    	this._oModel.setProperty("/AssignPeopleRuleVM/showSupplyChainPlanningSpecialist",showSupplyChainPlanningSpecialist);
-		    	//
-		    	if (!this._busyDialog) 
-				{
-					this._busyDialog = sap.ui.xmlfragment("bam.view.BusyLoading", this);
-					this.getView().addDependent(this._dialog);
+		    	// checking the permission
+		    	var hasAccess = this.checkPermission();
+				//	
+				if(hasAccess === false){
+					this.getRouter().getTargets().display("accessDenied", {
+						fromTarget : "peopleAssignment"
+					});					
 				}
-				// set all the dropdowns, get the data from the code master table
-				// default load
-				this._oModel.setProperty("/AssignPeopleRuleVM/RuleSet",this.getRulesDropDown());
-				this._oModel.setProperty("/PEOPLE_RULESET_SEQ",-1);
-				this._oModel.setProperty("/NAME","Please Select a Rule Set");
-			}
-			if(firstTimePageLoad)
-	    	{
-	    		var oRouter = this.getRouter();
-				oRouter.getRoute("addPeopleRules").attachMatched(this._onRouteMatched, this);
-				firstTimePageLoad = false;
-	    	}			
-		},
+				else{
+					this._isChanged = false;
+				    var initData = this.addInitialObject();
+				    // Assigning view model for the page
+				    this._oModel = new sap.ui.model.json.JSONModel({AssignPeopleRuleVM : initData});
+				    // Create table model, set size limit to 300, add an empty row
+				    this._oModel.setSizeLimit(2000);
+				    // define a global variable for the view model, the view model data and oData model
+				    this._oAssignPeopleRuleViewModel = this._oModel;
+				    this._oViewModelData = this._oAssignPeopleRuleViewModel.getData();
+				    this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
+				    this.getView().setModel(this._oModel);	
+				    // Adding empty row to the table
+			    	this.addEmptyObject();
+			    	//
+			    	// Changing the visiblit of columns
+			    	this._oModel.setProperty("/showDemandManager", showDemandManager);
+			    	this._oModel.setProperty("/showGlobalLeader",showGlobalLeader);
+			    	this._oModel.setProperty("/showMarketingDirector",showMarketingDirector);
+			    	this._oModel.setProperty("/showMarketingManger",showMarketingManger);
+			    	this._oModel.setProperty("/showMasterPlanner",showMasterPlanner);
+			    	this._oModel.setProperty("/showProductManager",showProductManager);
+			    	this._oModel.setProperty("/showRegionalSupplychainManager",showRegionalSupplychainManager);
+			    	this._oModel.setProperty("/showSupplyChainManager",showSupplyChainManager);
+			    	this._oModel.setProperty("/showSupplyChainPlanningSpecialist",showSupplyChainPlanningSpecialist);
+			    	//
+			    	if (!this._busyDialog) 
+					{
+						this._busyDialog = sap.ui.xmlfragment("bam.view.BusyLoading", this);
+						this.getView().addDependent(this._dialog);
+					}
+					// set all the dropdowns, get the data from the code master table
+					// default load
+					this._oModel.setProperty("/RuleSet",this.getRulesDropDown());
+					this._oModel.setProperty("/PEOPLE_RULESET_SEQ",-1);
+					this._oModel.setProperty("/NAME","Please Select a Rule Set");
+				}
+				if(firstTimePageLoad)
+		    	{
+		    		var oRouter = this.getRouter();
+					oRouter.getRoute("addPeopleRules").attachMatched(this._onRouteMatched, this);
+					firstTimePageLoad = false;
+		    	}			
+			},
+			///
+			// function to create the initial rows for the table
+			addInitialObject : function(){
+				var initData = [];
+				for(var j = 0; j < 5; j++){
+					initData.push({
+						"LEVEL_ID" : -1,
+						"geographyErrorState" : "None",
+						"PRODUCT_CODE" : -1,
+						"productErrorState" : "None",
+						"DEMAND_MANAGER_ID" : -1,
+						"demandManagerErrorState" : "None",
+						"GLOBAL_LEADER_ID" : -1,
+						"globalLeaderErrorState" : "None",
+						"MARKETING_DIRECTOR_ID" : -1,
+						"marketingDirectorErrorState" : "None",
+						"MARKETING_MANAGER_ID" : -1,
+						"marketingManagerErrorState" : "None",
+						"MASTER_PLANNER_ID" : -1,
+						"masterPlannerErrorState" : "None",
+						"PRODUCT_MANAGER_ID" : -1,
+						"productManagerErrorState" : "None",
+						"REGIONAL_SUPPLY_CHAIN_MANAGER_ID" : -1,
+						"regionalSupplyChainMangerErrorState" : "None",
+						"SUPPLY_CHAIN_MANAGER_ID" : -1,
+						"supplyChainManagerErrorState" : "None",
+						"SUPPLY_CHAIN_PLANNING_SPECIALIST_ID" : -1,
+						"supplyChainPlanningSpecialistErrorState" : "None",
+						"createNew" : false,
+						"isError" :false
+					});
+				}
+				 return initData;
+			},
+			//
+			// function to check the permission
+			checkPermission : function(){
+				demandManagerAssigner = this._oi18nModel.getProperty("Module.demandManagerAssigner");
+		        globalLeaderAssigner = this._oi18nModel.getProperty("Module.globalLeaderAssigner");
+		        marketingDirectorAssigner = this._oi18nModel.getProperty("Module.marketingDirectorAssigner");
+		        marketingManagerAssigner = this._oi18nModel.getProperty("Module.marketingManagerAssigner");
+		        masterPlannerAssigner = this._oi18nModel.getProperty("Module.masterPlannerAssigner");
+		        productManagerAssigner = this._oi18nModel.getProperty("Module.productManagerAssigner");
+		        regionalSupplyChainManagerAssigner = this._oi18nModel.getProperty("Module.regulatorSupplyChainManagerAssigner");
+		        supplyChainManagerAssigner = this._oi18nModel.getProperty("Module.supplyChainManagerAssigner");
+		        supplyChainPlanningSpecialistAssigner = this._oi18nModel.getProperty("Module.supplyChainPlanningSpecialistAssigner");			
+				permissions = DataContext.getUserPermissions();
+				var hasAccess = false;
+				for(var i = 0; i < permissions.length; i++)
+				{
+					if((permissions[i].ATTRIBUTE === demandManagerAssigner ||
+						  permissions[i].ATTRIBUTE === globalLeaderAssigner ||
+						  permissions[i].ATTRIBUTE === marketingDirectorAssigner ||
+						  permissions[i].ATTRIBUTE === marketingManagerAssigner ||
+						  permissions[i].ATTRIBUTE === masterPlannerAssigner ||
+						  permissions[i].ATTRIBUTE === productManagerAssigner ||
+						  permissions[i].ATTRIBUTE === regionalSupplyChainManagerAssigner ||
+						  permissions[i].ATTRIBUTE === supplyChainManagerAssigner ||
+						  permissions[i].ATTRIBUTE === supplyChainPlanningSpecialistAssigner) &&
+						  (permissions[i].ACTION === "ADD" || permissions[i].ACTION === "EDIT")
+						  )
+					{
+						if(permissions[i].ATTRIBUTE === demandManagerAssigner){
+							showDemandManager = true;	
+						}
+						if(permissions[i].ATTRIBUTE === globalLeaderAssigner){
+							showGlobalLeader = true;	
+						}	
+						if(permissions[i].ATTRIBUTE === marketingDirectorAssigner){
+							showMarketingDirector = true;	
+						}	
+						if(permissions[i].ATTRIBUTE === marketingManagerAssigner){
+							showMarketingManger = true;	
+						}
+						if(permissions[i].ATTRIBUTE === masterPlannerAssigner){
+							showMasterPlanner = true;	
+						}
+						if(permissions[i].ATTRIBUTE === productManagerAssigner){
+							showProductManager = true;	
+						}
+						if(permissions[i].ATTRIBUTE === regionalSupplyChainManagerAssigner){
+							showRegionalSupplychainManager = true;	
+						}
+						if(permissions[i].ATTRIBUTE === supplyChainManagerAssigner){
+							showSupplyChainManager = true;	
+						}
+						if(permissions[i].ATTRIBUTE === supplyChainPlanningSpecialistAssigner){
+							showSupplyChainPlanningSpecialist = true;	
+						}
+						hasAccess = true;
+					}
+				}
+				return hasAccess;
+			},
 		// on navigate back button
 		onNavBack: function () {
 			var oHistory = History.getInstance();
@@ -257,14 +270,14 @@ sap.ui.define([
 			var sourceControl = oEvent.getSource();
 			// get the selected value
 			var selectedRulekey = sourceControl.getSelectedItem().getKey();
-			var rcuModel = this._oModel.getProperty("/AssignPeopleRuleVM/RuleSet");
+			var rcuModel = this._oModel.getProperty("/RuleSet");
 			var geoLevel = rcuModel.find(function(data) {return data.PEOPLE_RULESET_SEQ == selectedRulekey;}).GEO_LEVEL;
 			var productLevel = rcuModel.find(function(data) {return data.PEOPLE_RULESET_SEQ == selectedRulekey;}).PRODUCT_LEVEL;
 			// from selected value fetch the Geolevel
 			// bind the geo level dropdown based on rule
 			if (selectedRulekey !== "-1")
 			{
-				this._oModel.setProperty("/AssignPeopleRuleVM/Geography",this.getGeoLevelDropDown(geoLevel));
+				this._oModel.setProperty("/Geography",this.getGeoLevelDropDown(geoLevel));
 				this._oModel.setProperty("/AssignPeopleRuleVM/Product",this.getProductLevelDropDown(productLevel));
 				//
 				// loading people role drop downs
@@ -310,7 +323,12 @@ sap.ui.define([
 			}
 			else
 			{
-				this.onInit();
+				//this.onInit();
+				this._isChanged = false;
+				var initData = this.addInitialObject();
+				this._oModel.setProperty("/AssignPeopleRuleVM",initData);
+				// Adding empty row to the table
+				this.addEmptyObject();
 			}
 
 		},
@@ -401,7 +419,7 @@ sap.ui.define([
 			return !!value;
 		},
 		getDefaultPropertyValues : function(){
-        	var geographyList = this._oAssignPeopleRuleViewModel.getProperty("/AssignPeopleRuleVM/Geography");
+        	var geographyList = this._oAssignPeopleRuleViewModel.getProperty("/Geography");
         	if(geographyList !== undefined){
         		this._geographyList = geographyList.find(function(data){return data.LEVEL_ID === -1; });
         		if(this._geographyList === undefined){
@@ -767,7 +785,7 @@ sap.ui.define([
         chkIsModified: function() {
         	var AssignPeopleRule = this._oAssignPeopleRuleViewModel.getProperty("/AssignPeopleRuleVM");
         	var isModified = false;
-        	var rcuModel = this._oModel.getProperty("/AssignPeopleRuleVM/RuleSet");
+        	var rcuModel = this._oModel.getProperty("/RuleSet");
         	 var selectedRulekey = this.getView().byId("cmbRuleSetList").getSelectedItem().getKey();
         	 var productLevel = rcuModel.find(function(data) {return data.PEOPLE_RULESET_SEQ == selectedRulekey;}).PRODUCT_LEVEL;
 	        if (productLevel !== null)
@@ -1109,5 +1127,4 @@ sap.ui.define([
 		}
 
 	});
-
-});
+	});
