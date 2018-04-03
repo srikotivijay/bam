@@ -38,8 +38,8 @@ sap.ui.define([
 				// Get logged in user id
 				loggedInUserID = DataContext.getUserID();
 				 // define a global variable for the oData model		    
-				var oView = this.getView();
-				oView.setModel(this.getOwnerComponent().getModel());
+				//var oView = this.getView();
+				//oView.setModel(this.getOwnerComponent().getModel());
 				// get resource model
 				this._oi18nModel = this.getOwnerComponent().getModel("i18n");			
 		    	//
