@@ -773,13 +773,51 @@ sap.ui.define([
             }
             this._oAssignPeopleRuleViewModel.refresh();
         },
-       showErrorMessage: function(oEvent)
+		showErrorMessage: function(oEvent)
         {
 		    var text = oEvent.getSource().data("text");
 		         MessageBox.alert(text, {
 			     icon : MessageBox.Icon.ERROR,
 			title : "Invalid Input"
 			       });
+        },
+        //
+        // function to check at least one rule is selected or not
+        checkAtleastOnePeopleAssigned : function(){
+        	var returnValue = true;
+			var AssignPeopleRule = this._oViewModelData.AssignPeopleRuleVM;	
+			for(var i = 0; i < AssignPeopleRule.length - 1; i++){
+				if(parseInt(AssignPeopleRule[i].LEVEL_ID,10) !== -1 && parseInt(AssignPeopleRule[i].PRODUCT_CODE,10) !== -1){
+					if(parseInt(AssignPeopleRule[i].DEMAND_MANAGER_ID,10) === -1 && 
+						parseInt(AssignPeopleRule[i].GLOBAL_LEADER_ID,10) === -1 && 
+						parseInt(AssignPeopleRule[i].MARKETING_DIRECTOR_ID,10) === -1 && 
+						parseInt(AssignPeopleRule[i].MARKETING_MANAGER_ID,10) === -1 && 
+						parseInt(AssignPeopleRule[i].MASTER_PLANNER_ID,10) === -1 && 
+						parseInt(AssignPeopleRule[i].PRODUCT_MANAGER_ID,10) === -1 && 
+						parseInt(AssignPeopleRule[i].REGIONAL_SUPPLY_CHAIN_MANAGER_ID,10) === -1 && 
+						parseInt(AssignPeopleRule[i].SUPPLY_CHAIN_MANAGER_ID,10) === -1 && 
+						parseInt(AssignPeopleRule[i].SUPPLY_CHAIN_PLANNING_SPECIALIST_ID,10) === -1)
+					{
+							AssignPeopleRule[i].isError = true;
+							AssignPeopleRule[i].demandManagerErrorState = "Error";
+							AssignPeopleRule[i].globalLeaderErrorState = "Error";
+							AssignPeopleRule[i].marketingDirectorErrorState = "Error";
+							AssignPeopleRule[i].marketingManagerErrorState = "Error";
+							AssignPeopleRule[i].masterPlannerErrorState = "Error";
+							AssignPeopleRule[i].productManagerErrorState = "Error";
+							AssignPeopleRule[i].regionalSupplyChainMangerErrorState = "Error";
+							AssignPeopleRule[i].supplyChainManagerErrorState = "Error";
+							AssignPeopleRule[i].supplyChainPlanningSpecialistErrorState = "Error";
+							 if(AssignPeopleRule[i].errorSummary !== "")
+		                	 {
+		                		AssignPeopleRule[i].errorSummary += "\n";  
+		                	 }
+							AssignPeopleRule[i].errorSummary += "Assign atleast one role";
+							returnValue = false;
+					}
+				}
+			}
+			return returnValue;
         },
          // below function will check if anything is changed  or modified in submission page
         chkIsModified: function() {
@@ -808,7 +846,6 @@ sap.ui.define([
 			        		    	isModified = true;
 			        		    	break;
 			        		     }
-
 		    			}
 	        }
 	        else
@@ -838,235 +875,218 @@ sap.ui.define([
             	
 		    		return isModified;
         },
-        
-    	onSubmit : function(){
-    		 var errorCount = 0;
-             var successCount = 0;
-             // reset the error message property to false before doing any validation
-			 this.resetValidationForModel();
-             var AssignPeopleRule = this._oAssignPeopleRuleViewModel.getProperty("/AssignPeopleRuleVM");
-               // current limit for saving is 200 records
-                // check if Rule Submission Grid  has more than 200 records
-                // if more than 200 than show a validation message to user
-                    var maxLimitSubmit = parseInt(this._oi18nModel.getProperty("MaxLimit"),10) ;
-                    var RulesMaxLimitSubmit = this._oi18nModel.getProperty("MaxLimitSubmit.text");
-                    // adding one to account for the extra line at the bottom
-					if (AssignPeopleRule.length > (maxLimitSubmit)) {
-                               MessageBox.alert(RulesMaxLimitSubmit,{
-                                                icon : MessageBox.Icon.ERROR,
-                                                title : "Error"});
-                            return;
-                    }
-                    // validation for Rule Set
-                    var selectedRulekey = this.getView().byId("cmbRuleSetList").getSelectedItem().getKey();
-					if (selectedRulekey === "-1")
-					{
-						MessageBox.alert("Please select rule set.", {
-                                    icon : MessageBox.Icon.ERROR,
-                                    title : "Invalid Input"
-                        });
-                        return;
-					}
-					if (AssignPeopleRule.length === 1 || this.chkIsModified() === false)
-                    {
-						MessageBox.alert("Please enter at least one rule.", {
-                                    icon : MessageBox.Icon.ERROR,
-                                    title : "Invalid Input"
-                               });
-                            return;
-                        }
-                        // reset error on page to false
-                        this._oAssignPeopleRuleViewModel.setProperty("/ErrorOnPage",false);
-
-                        //open busy dialog
-                        this._busyDialog.open();
-                        // // need to declare local this variable to call global functions in the timeout function
-                        var t = this;
-                         // // setting timeout function in order to show the busy dialog before doing all the validation
-                        setTimeout(function()
-                {
-                if (t.validateTextFieldValues() === false)
-		        {
-		        	// Set error message column to false (not visible by default)
-			    	t._oAssignPeopleRuleViewModel.setProperty("/ErrorOnPage",true);
+		//
+		// Submit function
+		onSubmit : function(){
+			var errorCount = 0;
+            var successCount = 0;
+            // reset the error message property to false before doing any validation
+			this.resetValidationForModel();
+            var AssignPeopleRule = this._oAssignPeopleRuleViewModel.getProperty("/AssignPeopleRuleVM");
+            // current limit for saving is 200 records
+            // check if Rule Submission Grid  has more than 200 records
+            // if more than 200 than show a validation message to user
+            var maxLimitSubmit = parseInt(this._oi18nModel.getProperty("MaxLimit"),10);
+            var RulesMaxLimitSubmit = this._oi18nModel.getProperty("MaxLimitSubmit.text");
+			if (AssignPeopleRule.length > (maxLimitSubmit)) {
+                MessageBox.alert(RulesMaxLimitSubmit,{
+                	icon : MessageBox.Icon.ERROR,
+                    title : "Error"});
+                return;
+            }
+            //
+            // validation for Rule Set
+            var selectedRulekey = this.getView().byId("cmbRuleSetList").getSelectedItem().getKey();
+			if (selectedRulekey === "-1"){
+				MessageBox.alert("Please select rule set.", {
+					icon : MessageBox.Icon.ERROR,
+                    title : "Invalid Input"});
+                return;
+			}
+			//
+			// Check at leat one rule is entered
+			if (AssignPeopleRule.length === 1 || this.chkIsModified() === false){
+				MessageBox.alert("Please enter at least one rule.", {
+					icon : MessageBox.Icon.ERROR,
+                    title : "Invalid Input"});
+                return;
+            }
+            // reset error on page to false
+            this._oAssignPeopleRuleViewModel.setProperty("/ErrorOnPage",false);
+            //open busy dialog
+            this._busyDialog.open();
+            // 
+            // need to declare local this variable to call global functions in the timeout function
+            var t = this;
+            // 
+            // setting timeout function in order to show the busy dialog before doing all the validation
+            setTimeout(function(){
+				if (t.validateTextFieldValues() === false){
+					// Set error message column to false (not visible by default)
+					t._oAssignPeopleRuleViewModel.setProperty("/ErrorOnPage",true);
 		        }
 		        // Rule Set, geography and product should be unique
 		        // check duplicate entries in the system
 		        //if(t.validateUniqueRules() === true)
-	        ///	{
+	        	///	{
 					//t._oAssignPeopleRuleViewModel.setProperty("/ErrorOnPage",true);
-	        //	}
+	        	//	}
 		        // check for duplicate entries on the page
-	        	if (t.validateDuplicateEntries() === false)
-	        	{
-	        		t._oAssignPeopleRuleViewModel.setProperty("/ErrorOnPage",true);
-	        	}
-                 if(!t._oAssignPeopleRuleViewModel.getProperty("/ErrorOnPage"))
-		        	{
-                        // 
-                        // Check validations here 
-                        var tablePath = "/MST_PEOPLE_RULE";
-                        // Create current timestamp
-                        var oDate = new Date();                
-                       var ruleSetSeq = t._oViewModelData.CU_RULESET_SEQ;
-                       var strSubmission = t._oi18nModel.getProperty("submission");
-                        for(var i = 0; i < AssignPeopleRule.length - 1; i++) {
-                                if(t.checkEmptyRows(AssignPeopleRule[i],strSubmission) === true)
-                                {
-                                		var productLevelCode;
-                                        var geoLevelValId = parseInt(AssignPeopleRule[i].LEVEL_ID,10);
-                                        var demandManagerID;
-                                        var globalLeaderID;
-                                        var marketingDirectorID;
-                                        var marketingManagerID;
-                                        var masterPlannerID;
-                                        var productManagerID;
-                                        var regionalsupplychainManagerID;
-                                        var supplychainmanagerID;
-                                        var supplychainplanningSpecialistID;
-                                        if (AssignPeopleRule[i].PRODUCT_CODE === 0 )
-                                        {
-                                        	productLevelCode = '';
-                                        }
-                                        else
-                                        {
-                                        	productLevelCode = AssignPeopleRule[i].PRODUCT_CODE;
-                                        }
-                                        // Based on permissions assign values
-                                        if(showDemandManager){
-								            if(parseInt(AssignPeopleRule[i].DEMAND_MANAGER_ID,10) === -1){
-												demandManagerID = '';
-								            }
-								            else
-								            {
-								            	demandManagerID = AssignPeopleRule[i].DEMAND_MANAGER_ID;
-								            }
-							            }
-							            
-							            if(showGlobalLeader){
-							            	if(parseInt(AssignPeopleRule[i].GLOBAL_LEADER_ID,10) === -1){
-												globalLeaderID = '';
-								            }
-								            else
-								            {
-								            	globalLeaderID = AssignPeopleRule[i].GLOBAL_LEADER_ID;
-								            }
-										}
-										
-										if(showMarketingDirector){
-											if(parseInt(AssignPeopleRule[i].MARKETING_DIRECTOR_ID,10) === -1){
-												marketingDirectorID = '';
-								            }
-								            else
-								            {
-								            	marketingDirectorID = AssignPeopleRule[i].MARKETING_DIRECTOR_ID;
-								            }
-										}
-										if(showMarketingManger){
-											if(parseInt(AssignPeopleRule[i].MARKETING_MANAGER_ID,10) === -1){
-												marketingManagerID = '';
-								            }
-								            else
-								            {
-								            	marketingManagerID = AssignPeopleRule[i].MARKETING_MANAGER_ID;
-								            }
-										}
-										
-										if(showMasterPlanner){
-											if(parseInt(AssignPeopleRule[i].MASTER_PLANNER_ID,10) === -1){
-												masterPlannerID = '';
-								            }
-								            else
-								            {
-								            	masterPlannerID = AssignPeopleRule[i].MASTER_PLANNER_ID;
-								            }
-										}
-										
-										if(showProductManager){
-										  if(parseInt(AssignPeopleRule[i].PRODUCT_MANAGER_ID,10) === -1){
-												productManagerID = '';
-								            }
-								            else
-								            {
-								            	productManagerID = AssignPeopleRule[i].PRODUCT_MANAGER_ID;
-								            }
-										}
-										
-										if(showRegionalSupplychainManager){
-											if(parseInt(AssignPeopleRule[i].REGIONAL_SUPPLY_CHAIN_MANAGER_ID,10) === -1){
-												regionalsupplychainManagerID = '';
-								            }
-								            else
-								            {
-								            	regionalsupplychainManagerID = AssignPeopleRule[i].REGIONAL_SUPPLY_CHAIN_MANAGER_ID;
-								            }
-										}
-										
-										if(showSupplyChainManager){
-											if(parseInt(AssignPeopleRule[i].SUPPLY_CHAIN_MANAGER_ID,10) === -1){
-												supplychainmanagerID = '';
-								            }
-								            else
-								            {
-								            	supplychainmanagerID = AssignPeopleRule[i].SUPPLY_CHAIN_MANAGER_ID;
-								            }
-										}
-										
-										if(showSupplyChainPlanningSpecialist){
-											if(parseInt(AssignPeopleRule[i].SUPPLY_CHAIN_PLANNING_SPECIALIST_ID,10) === -1){
-												supplychainplanningSpecialistID = '';
-								            }
-								            else
-								            {
-								            	supplychainplanningSpecialistID = AssignPeopleRule[i].SUPPLY_CHAIN_PLANNING_SPECIALIST_ID;
-								            }
-										}
-			
-                                        
-                                        //
-                                        var newPeopleAssignRule = {
-                                        				PEOPLE_RULE_ID: 1,
-                                                        PEOPLE_RULESET_SEQ : ruleSetSeq,
-                                                        GEO_LEVEL_VAL_ID : geoLevelValId,
-                                                        PRODUCT_LEVEL_VAL_CODE : productLevelCode,
-                                                        MARKETING_MANAGER_ID : marketingManagerID,
-                                                        MARKETING_DIRECTOR_ID : marketingDirectorID,
-                                                        DEMAND_MANAGER_ID : demandManagerID,
-                                                        GLOBAL_BUSINESS_LEADER_ID : globalLeaderID,
-                                                        SUPPLY_CHAIN_PLANNING_SPECIALIST_ID : supplychainplanningSpecialistID,
-                                                        MARKETING_SPECIALIST_ID : productManagerID,
-                                                        GLOBAL_SUPPLY_CHAIN_MANAGER_ID : supplychainmanagerID,
-                                                        REG_SUPPLY_CHAIN_MANAGER_ID : regionalsupplychainManagerID,
-                                                        MASTER_PLANNER_ID : masterPlannerID,
-                                                        VALID_FLAG : "T",
-                                                        CREATED_ON : oDate,
-                                                        CREATED_BY : loggedInUserID
-                                        };
-                                            t._oDataModel.create(tablePath, newPeopleAssignRule,
-                                            {
-                                                    success: function(){
-                                                                    successCount++;
-                                                    },
-                                                    error: function(){
-                                                                    errorCount++;
-                                                    }
-                                            });                                                                                           
-                                }
-                       }
-                       
-                       //Show success or error message
-		    		if(errorCount === 0) 
-		    		{
-	        				var oRouter = t.getRouter();
-	        				// once insertion is success, navigate to homepage
-	        				MessageBox.alert("You have successfully submitted " + successCount + " Rule(s)",
-								{
-									icon : MessageBox.Icon.SUCCESS,
-									title : "Success",
-									onClose: function() {
-					        			oRouter.navTo("peopleAssignment");
-					        		}
-								});
+				if (t.validateDuplicateEntries() === false){
+					t._oAssignPeopleRuleViewModel.setProperty("/ErrorOnPage",true);
+				}
+				//
+				if(t.checkAtleastOnePeopleAssigned() === false){
+					t._oAssignPeopleRuleViewModel.setProperty("/ErrorOnPage",true);
+				}
+				//
+				// After all validation inserting to the table
+                if(!t._oAssignPeopleRuleViewModel.getProperty("/ErrorOnPage")){
+					// 
+					// Check validations here 
+					var tablePath = "/MST_PEOPLE_RULE";
+					// Create current timestamp
+					var oDate = new Date();                
+					var ruleSetSeq = t._oViewModelData.CU_RULESET_SEQ;
+					var strSubmission = t._oi18nModel.getProperty("submission");
+					for(var i = 0; i < AssignPeopleRule.length - 1; i++) {
+						if(t.checkEmptyRows(AssignPeopleRule[i],strSubmission) === true) {
+							var productLevelCode;
+							var geoLevelValId;
+							var demandManagerID;
+							var globalLeaderID;
+							var marketingDirectorID;
+							var marketingManagerID;
+							var masterPlannerID;
+							var productManagerID;
+							var regionalsupplychainManagerID;
+							var supplychainmanagerID;
+							var supplychainplanningSpecialistID;
+							if(parseInt(AssignPeopleRule[i].LEVEL_ID,10) === 0){
+								geoLevelValId = '';
+							}
+							else{
+								geoLevelValId = parseInt(AssignPeopleRule[i].LEVEL_ID,10);
+							}
+							if (AssignPeopleRule[i].PRODUCT_CODE === 0 ) {
+								productLevelCode = '';
+							}
+							else{
+								productLevelCode = AssignPeopleRule[i].PRODUCT_CODE;
+							}
+							// Based on permissions assign values
+							if(showDemandManager){
+								if(parseInt(AssignPeopleRule[i].DEMAND_MANAGER_ID,10) === -1){
+									demandManagerID = '';
+								}
+								else {
+									demandManagerID = AssignPeopleRule[i].DEMAND_MANAGER_ID;
+								}
+							}
+							if(showGlobalLeader){
+								if(parseInt(AssignPeopleRule[i].GLOBAL_LEADER_ID,10) === -1){
+									globalLeaderID = '';
+								}
+								else{
+									globalLeaderID = AssignPeopleRule[i].GLOBAL_LEADER_ID;
+								}
+							}
+							if(showMarketingDirector){
+								if(parseInt(AssignPeopleRule[i].MARKETING_DIRECTOR_ID,10) === -1){
+									marketingDirectorID = '';
+								}
+								else{
+									marketingDirectorID = AssignPeopleRule[i].MARKETING_DIRECTOR_ID;
+								}
+							}
+							if(showMarketingManger){
+								if(parseInt(AssignPeopleRule[i].MARKETING_MANAGER_ID,10) === -1){
+									marketingManagerID = '';
+								}
+								else{
+									marketingManagerID = AssignPeopleRule[i].MARKETING_MANAGER_ID;
+								}
+							}
+							if(showMasterPlanner){
+								if(parseInt(AssignPeopleRule[i].MASTER_PLANNER_ID,10) === -1){
+									masterPlannerID = '';
+								}
+								else{
+									masterPlannerID = AssignPeopleRule[i].MASTER_PLANNER_ID;
+								}
+							}
+							if(showProductManager){
+								if(parseInt(AssignPeopleRule[i].PRODUCT_MANAGER_ID,10) === -1){
+									productManagerID = '';
+								}
+								else{
+									productManagerID = AssignPeopleRule[i].PRODUCT_MANAGER_ID;
+								}
+							}
+							if(showRegionalSupplychainManager){
+								if(parseInt(AssignPeopleRule[i].REGIONAL_SUPPLY_CHAIN_MANAGER_ID,10) === -1){
+									regionalsupplychainManagerID = '';
+								}
+								else{
+									regionalsupplychainManagerID = AssignPeopleRule[i].REGIONAL_SUPPLY_CHAIN_MANAGER_ID;
+								}
+							}
+							if(showSupplyChainManager){
+								if(parseInt(AssignPeopleRule[i].SUPPLY_CHAIN_MANAGER_ID,10) === -1){
+									supplychainmanagerID = '';
+								}
+								else {
+									supplychainmanagerID = AssignPeopleRule[i].SUPPLY_CHAIN_MANAGER_ID;
+								}
+							}
+							if(showSupplyChainPlanningSpecialist){
+								if(parseInt(AssignPeopleRule[i].SUPPLY_CHAIN_PLANNING_SPECIALIST_ID,10) === -1){
+									supplychainplanningSpecialistID = '';
+								}
+								else {
+									supplychainplanningSpecialistID = AssignPeopleRule[i].SUPPLY_CHAIN_PLANNING_SPECIALIST_ID;
+								}
+							}
+							//
+							var newPeopleAssignRule = {
+								PEOPLE_RULE_ID: 1,
+                                PEOPLE_RULESET_SEQ : ruleSetSeq,
+                                GEO_LEVEL_VAL_ID : geoLevelValId,
+                                PRODUCT_LEVEL_VAL_CODE : productLevelCode,
+                                MARKETING_MANAGER_ID : marketingManagerID,
+                                MARKETING_DIRECTOR_ID : marketingDirectorID,
+                                DEMAND_MANAGER_ID : demandManagerID,
+                                GLOBAL_BUSINESS_LEADER_ID : globalLeaderID,
+                                SUPPLY_CHAIN_PLANNING_SPECIALIST_ID : supplychainplanningSpecialistID,
+                                MARKETING_SPECIALIST_ID : productManagerID,
+                                GLOBAL_SUPPLY_CHAIN_MANAGER_ID : supplychainmanagerID,
+                                REG_SUPPLY_CHAIN_MANAGER_ID : regionalsupplychainManagerID,
+                                MASTER_PLANNER_ID : masterPlannerID,
+                                VALID_FLAG : "T",
+                                CREATED_ON : oDate,
+                                CREATED_BY : loggedInUserID
+							};
+                            t._oDataModel.create(tablePath, newPeopleAssignRule,{
+								success: function(){
+									successCount++;
+								},
+								error: function(){
+									errorCount++;
+								}
+							});                                                                                           
+                        }
+					}
+					//Show success or error message
+					if(errorCount === 0) {
+						var oRouter = t.getRouter();
+						// once insertion is success, navigate to homepage
+						MessageBox.alert("You have successfully submitted " + successCount + " Rule(s)",{
+							icon : MessageBox.Icon.SUCCESS,
+							title : "Success",
+							onClose: function() {
+								oRouter.navTo("peopleAssignment");
+					        }
+						});
 		    		}
 					else
 					{
@@ -1085,45 +1105,44 @@ sap.ui.define([
 								title : "Error"
 						});
 	        	}
-                    // close busy dialog
-                    t._busyDialog.close();
-                    },500); // end of timeout function
+				// close busy dialog
+				t._busyDialog.close();
+            },500); // end of timeout function
     	},
-    		checkEmptyRows : function(row,strtype){
-		        var errorsFound = false;
-		        var data = this._oViewModelData.AssignPeopleRuleVM;
-		        //below check needs to be performed if we have more than one row, if only one row in grid no need to check
-		        //	dont validate the fields if nothing is changed for the row, i.e. user does not wnat to enter any data
-		        	if ((data.length >= 2) && (this._isChanged === true)){
-			        			if ((parseInt(row.LEVEL_ID,10) === -1) && (parseInt(row.PRODUCT_CODE,10) === -1 ||
-			        				parseInt(row.PRODUCT_CODE,10) === 0) && (parseInt(row.DEMAND_MANAGER_ID,10) === -1)
-			        		    	&& (parseInt(row.GLOBAL_LEADER_ID,10) === -1) && (parseInt(row.MARKETING_DIRECTOR_ID,10) === -1)
-			        		    	&& (parseInt(row.MARKETING_MANAGER_ID,10) === -1) && (parseInt(row.MASTER_PLANNER_ID,10) === -1)
-			        		    	&& (parseInt(row.PRODUCT_MANAGER_ID,10) === -1) && (parseInt(row.REGIONAL_SUPPLY_CHAIN_MANAGER_ID,10) === -1)
-			        		    	&& (parseInt(row.SUPPLY_CHAIN_MANAGER_ID,10) === -1) && (parseInt(row.SUPPLY_CHAIN_PLANNING_SPECIALIST_ID,10) === -1))
-			        		     {
-			        		    	errorsFound = false;
-			        		    	return errorsFound;
-			        		     }
-			        		    else
-			        		    {
-			        		    	if (strtype === "Submission")
-			        		    	return true;
-			        		    }
-		        	}
+		checkEmptyRows : function(row,strtype){
+			var errorsFound = false;
+			var data = this._oViewModelData.AssignPeopleRuleVM;
+			//below check needs to be performed if we have more than one row, if only one row in grid no need to check
+			//	dont validate the fields if nothing is changed for the row, i.e. user does not wnat to enter any data
+			if ((data.length >= 2) && (this._isChanged === true)){
+				if ((parseInt(row.LEVEL_ID,10) === -1) && 
+					(parseInt(row.PRODUCT_CODE,10) === -1 || parseInt(row.PRODUCT_CODE,10) === 0) && 
+					(parseInt(row.DEMAND_MANAGER_ID,10) === -1)	&& (parseInt(row.GLOBAL_LEADER_ID,10) === -1) && 
+					(parseInt(row.MARKETING_DIRECTOR_ID,10) === -1) && (parseInt(row.MARKETING_MANAGER_ID,10) === -1) && 
+					(parseInt(row.MASTER_PLANNER_ID,10) === -1) && (parseInt(row.PRODUCT_MANAGER_ID,10) === -1) && 
+					(parseInt(row.REGIONAL_SUPPLY_CHAIN_MANAGER_ID,10) === -1) && (parseInt(row.SUPPLY_CHAIN_MANAGER_ID,10) === -1) && 
+					(parseInt(row.SUPPLY_CHAIN_PLANNING_SPECIALIST_ID,10) === -1)) {
+						errorsFound = false;
+						return errorsFound;
+				}
+				else {
+					if (strtype === "Submission")
+						return true;
+				}
+			}
         },
-        		//cancel click on Add CU Rules page
-			onCancel: function(){
-				var curr = this;
-				MessageBox.confirm("Are you sure you want to cancel your changes and navigate back to the previous page?", {
-           		icon: sap.m.MessageBox.Icon.WARNING,
-           		actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
-           		onClose: function(oAction) {
-           			if(oAction === "YES"){
-           				curr.getOwnerComponent().getRouter().navTo("peopleAssignment");
-           			}
-           		}
-      		});			
+		//cancel click on Add CU Rules page
+		onCancel: function(){
+			var curr = this;
+			MessageBox.confirm("Are you sure you want to cancel your changes and navigate back to the previous page?", {
+				icon: sap.m.MessageBox.Icon.WARNING,
+				actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+				onClose: function(oAction) {
+					if(oAction === "YES"){
+						curr.getOwnerComponent().getRouter().navTo("peopleAssignment");
+					}
+	           	}
+			});			
 		}
 
 	});
