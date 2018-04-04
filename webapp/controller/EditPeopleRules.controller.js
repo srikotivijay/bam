@@ -66,6 +66,12 @@ sap.ui.define([
 				this._oModel = new sap.ui.model.json.JSONModel();
 				this.getView().setModel(this._oModel);
 				this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);				
+				//
+				if (!this._busyDialog) 
+				{
+					this._busyDialog = sap.ui.xmlfragment("bam.view.BusyLoading", this);
+					this.getView().addDependent(this._dialog);
+				}
 				this.setEditPeopleRulesVM();
 				//
 				// Changing the visiblit of columns
@@ -173,31 +179,58 @@ sap.ui.define([
 					// Creatting the filer collection
 					filter.push(new Filter(permissions[i].ATTRIBUTE.replace("_ASSIGNER",""),sap.ui.model.FilterOperator.NE,""));
 					if(permissions[i].ATTRIBUTE === demandManagerAssigner){
-						showDemandManager = true;	
+						showDemandManager = true;
+						this.getView().byId("cmbDemandManager").setEnabled(true);
+						this.getView().byId("cmbDemandManager").setValueStateText("");
+						this.getView().byId("cmbDemandManager").setValueState(sap.ui.core.ValueState.None);
 					}
 					if(permissions[i].ATTRIBUTE === globalLeaderAssigner){
-						showGlobalLeader = true;	
+						showGlobalLeader = true;
+						this.getView().byId("cmbGlobalLeader").setEnabled(true);
+						this.getView().byId("cmbGlobalLeader").setValueStateText("");
+						this.getView().byId("cmbGlobalLeader").setValueState(sap.ui.core.ValueState.None);
 					}	
 					if(permissions[i].ATTRIBUTE === marketingDirectorAssigner){
-						showMarketingDirector = true;	
+						showMarketingDirector = true;
+						this.getView().byId("cmbMarketingDirector").setEnabled(true);
+						this.getView().byId("cmbMarketingDirector").setValueStateText("");
+						this.getView().byId("cmbMarketingDirector").setValueState(sap.ui.core.ValueState.None);
 					}	
 					if(permissions[i].ATTRIBUTE === marketingManagerAssigner){
 						showMarketingManger = true;	
+						this.getView().byId("cmbMarketingManager").setEnabled(true);
+						this.getView().byId("cmbMarketingManager").setValueStateText("");
+						this.getView().byId("cmbMarketingManager").setValueState(sap.ui.core.ValueState.None);
 					}
 					if(permissions[i].ATTRIBUTE === masterPlannerAssigner){
-						showMasterPlanner = true;	
+						showMasterPlanner = true;
+						this.getView().byId("cmbMasterPlanner").setEnabled(true);
+						this.getView().byId("cmbMasterPlanner").setValueStateText("");
+						this.getView().byId("cmbMasterPlanner").setValueState(sap.ui.core.ValueState.None);
 					}
 					if(permissions[i].ATTRIBUTE === productManagerAssigner){
-						showProductManager = true;	
+						showProductManager = true;
+						this.getView().byId("cmbProductManager").setEnabled(true);
+						this.getView().byId("cmbProductManager").setValueStateText("");
+						this.getView().byId("cmbProductManager").setValueState(sap.ui.core.ValueState.None);
 					}
 					if(permissions[i].ATTRIBUTE === regionalSupplyChainManagerAssigner){
-						showRegionalSupplychainManager = true;	
+						showRegionalSupplychainManager = true;
+						this.getView().byId("cmbRegionalSupplyChainManager").setEnabled(true);
+						this.getView().byId("cmbRegionalSupplyChainManager").setValueStateText("");
+						this.getView().byId("cmbRegionalSupplyChainManager").setValueState(sap.ui.core.ValueState.None);
 					}
 					if(permissions[i].ATTRIBUTE === supplyChainManagerAssigner){
-						showSupplyChainManager = true;	
+						showSupplyChainManager = true;
+						this.getView().byId("cmbSupplyChainManager").setEnabled(true);
+						this.getView().byId("cmbSupplyChainManager").setValueStateText("");
+						this.getView().byId("cmbSupplyChainManager").setValueState(sap.ui.core.ValueState.None);
 					}
 					if(permissions[i].ATTRIBUTE === supplyChainPlanningSpecialistAssigner){
-						showSupplyChainPlanningSpecialist = true;	
+						showSupplyChainPlanningSpecialist = true;
+						this.getView().byId("cmbSupplyChainPlanningSpecialist").setEnabled(true);
+						this.getView().byId("cmbSupplyChainPlanningSpecialist").setValueStateText("");
+						this.getView().byId("cmbSupplyChainPlanningSpecialist").setValueState(sap.ui.core.ValueState.None);
 					}
 					hasAccess = true;
 				}
@@ -328,6 +361,120 @@ sap.ui.define([
 	       			});
 				}
 		},
+		onChecked: function(oEvent){
+			var sourceControlName = oEvent.getSource().getName();
+			var isChecked = oEvent.getParameter("selected");
+				// if check box is checked then clear the value of the attributes else dont do anything
+			// depending on Id clear the text areas of the attributes
+			if (sourceControlName === "chkDemandManager")
+			{	
+				if(isChecked){
+					this.getView().byId("cmbDemandManager").setValue("Select..");
+					this.getView().byId("cmbDemandManager").setEnabled(false);
+					this.getView().byId("cmbDemandManager").setValueState(sap.ui.core.ValueState.Warning);
+				}
+				else{
+					this.getView().byId("cmbDemandManager").setEnabled(true);
+					this.getView().byId("cmbDemandManager").setValueState(sap.ui.core.ValueState.None);
+				}
+			}
+			else if (sourceControlName === "chkGlobalLeader")
+			{	
+				if(isChecked){
+					this.getView().byId("cmbGlobalLeader").setValue("Select..");
+					this.getView().byId("cmbGlobalLeader").setEnabled(false);
+					this.getView().byId("cmbGlobalLeader").setValueState(sap.ui.core.ValueState.Warning);
+				}
+				else{
+					this.getView().byId("cmbGlobalLeader").setEnabled(true);
+					this.getView().byId("cmbGlobalLeader").setValueState(sap.ui.core.ValueState.None);
+				}
+			}
+			else if (sourceControlName === "chkMarketingDirector")
+			{	
+				if(isChecked){
+					this.getView().byId("cmbMarketingDirector").setValue("Select..");
+					this.getView().byId("cmbMarketingDirector").setEnabled(false);
+					this.getView().byId("cmbMarketingDirector").setValueState(sap.ui.core.ValueState.Warning);
+				}
+				else{
+					this.getView().byId("cmbMarketingDirector").setEnabled(true);
+					this.getView().byId("cmbMarketingDirector").setValueState(sap.ui.core.ValueState.None);
+				}
+			}
+			else if (sourceControlName === "chkMarketingManager")
+			{	
+				if(isChecked){
+					this.getView().byId("cmbMarketingManager").setValue("Select..");
+					this.getView().byId("cmbMarketingManager").setEnabled(false);
+					this.getView().byId("cmbMarketingManager").setValueState(sap.ui.core.ValueState.Warning);
+				}
+				else{
+					this.getView().byId("cmbMarketingManager").setEnabled(true);
+					this.getView().byId("cmbMarketingManager").setValueState(sap.ui.core.ValueState.None);
+				}
+			}
+			else if (sourceControlName === "chkMasterPlanner")
+			{	
+				if(isChecked){
+					this.getView().byId("cmbMasterPlanner").setValue("Select..");
+					this.getView().byId("cmbMasterPlanner").setEnabled(false);
+					this.getView().byId("cmbMasterPlanner").setValueState(sap.ui.core.ValueState.Warning);
+				}
+				else{
+					this.getView().byId("cmbMasterPlanner").setEnabled(true);
+					this.getView().byId("cmbMasterPlanner").setValueState(sap.ui.core.ValueState.None);
+				}
+			}
+			else if (sourceControlName === "chkProductManager")
+			{	
+				if(isChecked){
+					this.getView().byId("cmbProductManager").setValue("Select..");
+					this.getView().byId("cmbProductManager").setEnabled(false);
+					this.getView().byId("cmbProductManager").setValueState(sap.ui.core.ValueState.Warning);
+				}
+				else{
+					this.getView().byId("cmbProductManager").setEnabled(true);
+					this.getView().byId("cmbProductManager").setValueState(sap.ui.core.ValueState.None);
+				}
+			}
+			else if (sourceControlName === "chkRegionalSupplyChainManager")
+			{	
+				if(isChecked){
+					this.getView().byId("cmbRegionalSupplyChainManager").setValue("Select..");
+					this.getView().byId("cmbRegionalSupplyChainManager").setEnabled(false);
+					this.getView().byId("cmbRegionalSupplyChainManager").setValueState(sap.ui.core.ValueState.Warning);
+				}
+				else{
+					this.getView().byId("cmbRegionalSupplyChainManager").setEnabled(true);
+					this.getView().byId("cmbRegionalSupplyChainManager").setValueState(sap.ui.core.ValueState.None);
+				}
+			}
+			else if (sourceControlName === "chkSupplyChainManager")
+			{	
+				if(isChecked){
+					this.getView().byId("cmbSupplyChainManager").setValue("Select..");
+					this.getView().byId("cmbSupplyChainManager").setEnabled(false);
+					this.getView().byId("cmbSupplyChainManager").setValueState(sap.ui.core.ValueState.Warning);
+				}
+				else{
+					this.getView().byId("cmbSupplyChainManager").setEnabled(true);
+					this.getView().byId("cmbSupplyChainManager").setValueState(sap.ui.core.ValueState.None);
+				}
+			}
+			else if (sourceControlName === "chkSupplyChainPlanningSpecialist")
+			{	
+				if(isChecked){
+					this.getView().byId("cmbSupplyChainPlanningSpecialist").setValue("Select..");
+					this.getView().byId("cmbSupplyChainPlanningSpecialist").setEnabled(false);
+					this.getView().byId("cmbSupplyChainPlanningSpecialist").setValueState(sap.ui.core.ValueState.Warning);
+				}
+				else{
+					this.getView().byId("cmbSupplyChainPlanningSpecialist").setEnabled(true);
+					this.getView().byId("cmbSupplyChainPlanningSpecialist").setValueState(sap.ui.core.ValueState.None);
+				}
+			}
+		},
 		//
 		getUpdatedCodes: function(){
 			// get the crop protection and seeds value from i18n file
@@ -438,7 +585,7 @@ sap.ui.define([
 						curr._oDataModel.remove("/MST_PEOPLE_RULE(" + editRuleIdList[0].ID + ")", {
 							success: function(){
 								busyDialog.close();
-								MessageBox.alert("CU for " + successCount + " Rules updated successfully.",
+								MessageBox.alert("People for " + successCount + " Rules updated successfully.",
 									{
 										icon : MessageBox.Icon.SUCCESS,
 										title : "Success",
@@ -449,7 +596,7 @@ sap.ui.define([
 							},
 							error: function(error){
 								busyDialog.close();
-				    			MessageBox.alert("CU for " + successCount + " Rules updated successfully with errors deleting nulled Rules.",
+				    			MessageBox.alert("People for " + successCount + " Rules updated successfully with errors deleting nulled Rules.",
 								{
 									icon : MessageBox.Icon.ERROR,
 									title : "Error"

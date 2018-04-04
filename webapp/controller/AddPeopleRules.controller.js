@@ -772,7 +772,7 @@ sap.ui.define([
 		                	 {
 		                		AssignPeopleRule[i].errorSummary += "\n";  
 		                	 }
-							AssignPeopleRule[i].errorSummary += "Assign atleast one role";
+							AssignPeopleRule[i].errorSummary += "Assign at least one role";
 							returnValue = false;
 					}
 				}
@@ -797,14 +797,14 @@ sap.ui.define([
 				    			var objgeo;
 				    			if (parseInt(AssignPeopleRule[i].LEVEL_ID,10) !== -1)
 				    			{
-				    				objgeo = false;
+				    				objgeo = true;
 				    			}
 				    		}
 				    		else
 				    		{
 				    			if (parseInt(AssignPeopleRule[i].LEVEL_ID,10) !== 0)
 				    			{
-				    				objgeo = false;
+				    				objgeo = true;
 				    			}
 				    		}
 			        			if (objgeo 
@@ -832,16 +832,16 @@ sap.ui.define([
 		    			if (geoLevel !== null)
 				    		{
 				    			var objgeo1;
-				    			if (parseInt(AssignPeopleRule[i].LEVEL_ID,10) !== -1)
+				    			if (parseInt(AssignPeopleRule[j].LEVEL_ID,10) !== -1)
 				    			{
-				    				objgeo1 = false;
+				    				objgeo1 = true;
 				    			}
 				    		}
 				    		else
 				    		{
-				    			if (parseInt(AssignPeopleRule[i].LEVEL_ID,10) !== 0)
+				    			if (parseInt(AssignPeopleRule[j].LEVEL_ID,10) !== 0)
 				    			{
-				    				objgeo1 = false;
+				    				objgeo1 = true;
 				    			}
 				    		}
 			        			if (objgeo1
