@@ -263,7 +263,7 @@ sap.ui.define([
 			//var sorter = new sap.ui.model.Sorter("SUB_RCU_DESC",false);
 			//sortArray.push(sorter);
 			// Get the Country dropdown list from the CODE_MASTER table
-			this._oDataModel.read("/V_PEOPLE_RULE",{
+			this._oDataModel.read("/V_WEB_PEOPLE_RULES",{
 					filters: filterArray,
 					sorters: sortArray,
 					async: false,
