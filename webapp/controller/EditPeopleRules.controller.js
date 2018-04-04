@@ -66,7 +66,7 @@ sap.ui.define([
 				this._oModel = new sap.ui.model.json.JSONModel();
 				this.getView().setModel(this._oModel);
 				this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);				
-				this.setEditCURulesVM();
+				this.setEditPeopleRulesVM();
 				//
 				// Changing the visiblit of columns
 				this._oModel.setProperty("/showDemandManager", showDemandManager);
@@ -101,6 +101,9 @@ sap.ui.define([
 				this._oModel.setProperty("/SUPPLY_CHAIN_MANAGER_NAME","Select..");
 				this._oModel.setProperty("/SUPPLY_CHAIN_PLANNING_SPECIALIST_ID","-1");
 				this._oModel.setProperty("/SUPPLY_CHAIN_PLANNING_SPECIALIST_NAME","Select..");
+				//
+				this._oRuleUpdViewModel = this._oModel;
+				this._oViewModelData = this._oRuleUpdViewModel.getData();
 			}
 		},
 		getRouter : function () {
@@ -202,7 +205,7 @@ sap.ui.define([
 			return hasAccess;
 		},
 		//
-		setEditCURulesVM: function(){
+		setEditPeopleRulesVM: function(){
 			var core = sap.ui.getCore();
 			var globalModel = core.getModel();
 			if(globalModel !== undefined){
@@ -287,6 +290,282 @@ sap.ui.define([
 	    			}
 	    	});
 	    	return result;
-		}
+		},		
+			//cancel click on edit attributes page
+		onCancel: function(){
+			var curr = this;
+			// check if user wants to update the attributes for GMID and country
+			MessageBox.confirm("Are you sure you want to cancel your changes and navigate back to the previous page?", {
+				icon: sap.m.MessageBox.Icon.WARNING,
+            	actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+            	onClose: function(oAction) {
+            		if(oAction === "YES"){
+            			curr.getOwnerComponent().getRouter().navTo("peopleAssignment");
+            		}
+            	}
+        	});
+		},
+		onSubmit : function(){
+			var currObj = this;
+			var updatedCodes = currObj.getUpdatedCodes();
+				if (updatedCodes !== ""){
+					var ruleCount = this._oModel.getProperty("/RULE_COUNT");
+					// check if user wants to update the attributes for GMID and country
+					MessageBox.confirm((updatedCodes + " will be updated for " + ruleCount + " rule(s). Continue?"), {
+	    				icon: sap.m.MessageBox.Icon.WARNING,
+	    				actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+	          			onClose: function(oAction) {
+	          				var editRuleIdList = currObj._oModel.getProperty("/EDIT_ATTRIBUTES_ID_LIST");
+	        				currObj.fnCallbackSubmitConfirm(oAction, editRuleIdList);
+	            		}
+	       			});	
+				}
+				else{
+					// check if user wants to update the attributes for GMID and country
+					MessageBox.alert("There are no pending changes", {
+						icon : MessageBox.Icon.ERROR,
+						title : "Error"
+	       			});
+				}
+		},
+		//
+		getUpdatedCodes: function(){
+			// get the crop protection and seeds value from i18n file
+	    	var oi18nModel = this.getView().getModel("i18n");
+			var updatedAttributesString = "";
+			if(showDemandManager){
+				if (this.validateRuleValueChange("cmbDemandManager") || this.validateRuleValueChange("chkDemandManager")){
+					updatedAttributesString += oi18nModel.getProperty("DEMAND_MANAGER");
+					updatedAttributesString += ", ";
+				}
+			}
+			if(showGlobalLeader){
+				if (this.validateRuleValueChange("cmbGlobalLeader") || this.validateRuleValueChange("chkGlobalLeader")){
+					updatedAttributesString += oi18nModel.getProperty("GLOBAL_LEADER");
+					updatedAttributesString += ", ";
+				}				
+			}
+			if(showMarketingDirector){
+				if (this.validateRuleValueChange("cmbMarketingDirector") || this.validateRuleValueChange("chkMarketingDirector")){
+					updatedAttributesString += oi18nModel.getProperty("MARKETING_DIRECTOR");
+					updatedAttributesString += ", ";
+				}				
+			}
+			if(showMarketingManger){
+				if (this.validateRuleValueChange("cmbMarketingManager") || this.validateRuleValueChange("chkMarketingManager")){
+					updatedAttributesString += oi18nModel.getProperty("MARKETING_MANAGER");
+					updatedAttributesString += ", ";
+				}				
+			}
+			if(showMasterPlanner){
+				if (this.validateRuleValueChange("cmbMasterPlanner") || this.validateRuleValueChange("chkMasterPlanner")){
+					updatedAttributesString += oi18nModel.getProperty("MASTER_PLANNER");
+					updatedAttributesString += ", ";
+				}				
+			}
+			if(showProductManager){
+				if (this.validateRuleValueChange("cmbProductManager") || this.validateRuleValueChange("chkProductManager")){
+					updatedAttributesString += oi18nModel.getProperty("PRODUCT_MANAGER");
+					updatedAttributesString += ", ";
+				}				
+			}
+			if(showRegionalSupplychainManager){
+				if (this.validateRuleValueChange("cmbRegionalSupplyChainManager") || this.validateRuleValueChange("chkRegionalSupplyChainManager")){
+					updatedAttributesString += oi18nModel.getProperty("REG_SUPPLY_CHAIN_MANAGER");
+					updatedAttributesString += ", ";
+				}				
+			}
+			if(showSupplyChainManager){
+				if (this.validateRuleValueChange("cmbSupplyChainManager") || this.validateRuleValueChange("chkSupplyChainManager")){
+					updatedAttributesString += oi18nModel.getProperty("GLOBAL_SUPPLY_CHAIN_MANAGER");
+					updatedAttributesString += ", ";
+				}				
+			}
+			if(showSupplyChainPlanningSpecialist){
+				if (this.validateRuleValueChange("cmbSupplyChainPlanningSpecialist") || this.validateRuleValueChange("chkSupplyChainPlanningSpecialist")){
+					updatedAttributesString += oi18nModel.getProperty("SUPPLY_CHAIN_PLANNING_SPECIALIST");
+					updatedAttributesString += ", ";
+				}				
+			}
+			return updatedAttributesString.substring(0, updatedAttributesString.length - 2);
+		},
+		
+		validateRuleValueChange: function (sourceControlName){
+			var type = sourceControlName.substring(0,3);
+			if((type === "cmb" && this.getView().byId(sourceControlName).getSelectedKey() !== "-1") || 
+				(type === "txt" && this.getView().byId(sourceControlName).getValue().trim() !== "") ||
+				(type === "chk" && this.getView().byId(sourceControlName).getSelected())
+				){
+				return true;
+			}
+			else{
+				return false;
+			}
+		},	
+		
+		// update the rules based on user response
+		fnCallbackSubmitConfirm: function(oAction, editRuleIdList){
+			var curr = this;
+			var successCount = 0;
+			//if user confirmed to update the attributes, prepare the object and update the attributes for the GMID and country
+			//else do nothing
+			if (oAction === "YES") 
+			{
+				var updRule = curr.createUpdateObject();
+				// create a batch array and push each updated GMID to it
+				var batchArray = [];
+				for(var i = 0; i < editRuleIdList.length; i++) 
+			    {
+			    	batchArray.push(this._oDataModel.createBatchOperation("MST_PEOPLE_RULE(" + editRuleIdList[i].ID + ")", "MERGE", updRule));
+			    	successCount++;
+				}
+				this._oDataModel.addBatchChangeOperations(batchArray);
+				// creating busy dialog lazily
+				if (!this._busyDialog) 
+				{
+					this._busyDialog = sap.ui.xmlfragment("bam.view.BusyLoading", this);
+					this.getView().addDependent(this._dialog);
+				}
+				
+				// setting to a local variable since we are closing it in an oData success function that has no access to global variables.
+				var busyDialog = this._busyDialog;
+				busyDialog.open();
+				
+				// submit the batch update command
+				this._oDataModel.submitBatch(
+					function(oData,oResponse)
+					{
+						curr._oDataModel.remove("/MST_PEOPLE_RULE(" + editRuleIdList[0].ID + ")", {
+							success: function(){
+								busyDialog.close();
+								MessageBox.alert("CU for " + successCount + " Rules updated successfully.",
+									{
+										icon : MessageBox.Icon.SUCCESS,
+										title : "Success",
+										onClose: function() {
+						        			curr.getOwnerComponent().getRouter().navTo("peopleAssignment");
+						        	}
+								});
+							},
+							error: function(error){
+								busyDialog.close();
+				    			MessageBox.alert("CU for " + successCount + " Rules updated successfully with errors deleting nulled Rules.",
+								{
+									icon : MessageBox.Icon.ERROR,
+									title : "Error"
+								});
+							}
+						});
+			    	},
+			    	function(oError)
+			    	{
+			    		busyDialog.close();
+		    			MessageBox.alert("Error updating attributes for Rules.",
+						{
+							icon : MessageBox.Icon.ERROR,
+							title : "Error"
+						});
+			    	}
+			    );
+			}
+		},
+		//
+		createUpdateObject: function(){
+			// Create current timestamp
+			var oDate = new Date();
+			var updRule = {
+			    		LAST_UPDATED_BY: loggedInUserID,
+					    LAST_UPDATED_ON: oDate
+			    	};
+			if(showDemandManager){
+				if(this.getView().byId("chkDemandManager").getSelected()){
+						updRule.DEMAND_MANAGER_ID = null;
+				}
+				else if (this._oViewModelData.DEMAND_MANAGER_ID !== "-1" && this._oViewModelData.DEMAND_MANAGER_ID !== undefined){
+						updRule.DEMAND_MANAGER_ID = this._oViewModelData.DEMAND_MANAGER_ID;
+				}				
+			}
+			if(showGlobalLeader){
+				if(this.getView().byId("chkGlobalLeader").getSelected()){
+						updRule.GLOBAL_BUSINESS_LEADER_ID = null;
+				}
+				else if (this._oViewModelData.GLOBAL_LEADER_ID !== "-1" && this._oViewModelData.GLOBAL_LEADER_ID !== undefined){
+						updRule.GLOBAL_BUSINESS_LEADER_ID = this._oViewModelData.GLOBAL_LEADER_ID;
+				}				
+			}
+			if(showMarketingDirector){
+				if(this.getView().byId("chkMarketingDirector").getSelected()){
+						updRule.MARKETING_DIRECTOR_ID = null;
+				}
+				else if (this._oViewModelData.MARKETING_DIRECTOR_ID !== "-1" && this._oViewModelData.MARKETING_DIRECTOR_ID !== undefined){
+						updRule.MARKETING_DIRECTOR_ID = this._oViewModelData.MARKETING_DIRECTOR_ID;
+				}
+			}
+			if(showMarketingManger){
+				if(this.getView().byId("chkMarketingManager").getSelected()){
+						updRule.MARKETING_MANAGER_ID = null;
+				}
+				else if (this._oViewModelData.MARKETING_MANAGER_ID !== "-1" && this._oViewModelData.MARKETING_MANAGER_ID !== undefined){
+						updRule.MARKETING_MANAGER_ID = this._oViewModelData.MARKETING_MANAGER_ID;
+				}
+			}
+			if(showMasterPlanner){
+				if(this.getView().byId("chkMasterPlanner").getSelected()){
+						updRule.MASTER_PLANNER_ID = null;
+				}
+				else if (this._oViewModelData.MASTER_PLANNER_ID !== "-1" && this._oViewModelData.MASTER_PLANNER_ID !== undefined){
+						updRule.MASTER_PLANNER_ID = this._oViewModelData.MASTER_PLANNER_ID;
+				}
+			}
+			if(showProductManager){
+				if(this.getView().byId("chkProductManager").getSelected()){
+						updRule.MARKETING_SPECIALIST_ID = null;
+				}
+				else if (this._oViewModelData.PRODUCT_MANAGER_ID !== "-1" && this._oViewModelData.PRODUCT_MANAGER_ID !== undefined){
+						updRule.MARKETING_SPECIALIST_ID = this._oViewModelData.PRODUCT_MANAGER_ID;
+				}
+			}
+			if(showRegionalSupplychainManager){
+				if(this.getView().byId("chkRegionalSupplyChainManager").getSelected()){
+						updRule.REG_SUPPLY_CHAIN_MANAGER_ID = null;
+				}
+				else if (this._oViewModelData.REGIONAL_SUPPLY_CHAIN_MANAGER_ID !== "-1" && this._oViewModelData.REGIONAL_SUPPLY_CHAIN_MANAGER_ID !== undefined){
+						updRule.REG_SUPPLY_CHAIN_MANAGER_ID = this._oViewModelData.REGIONAL_SUPPLY_CHAIN_MANAGER_ID;
+				}
+			}
+			if(showSupplyChainManager){
+				if(this.getView().byId("chkSupplyChainManager").getSelected()){
+						updRule.GLOBAL_SUPPLY_CHAIN_MANAGER_ID = null;
+				}
+				else if (this._oViewModelData.SUPPLY_CHAIN_MANAGER_ID !== "-1" && this._oViewModelData.SUPPLY_CHAIN_MANAGER_ID !== undefined){
+						updRule.GLOBAL_SUPPLY_CHAIN_MANAGER_ID = this._oViewModelData.SUPPLY_CHAIN_MANAGER_ID;
+				}
+			}
+			if(showSupplyChainPlanningSpecialist){
+				if(this.getView().byId("chkSupplyChainPlanningSpecialist").getSelected()){
+						updRule.SUPPLY_CHAIN_PLANNING_SPECIALIST_ID = null;
+				}
+				else if (this._oViewModelData.SUPPLY_CHAIN_PLANNING_SPECIALIST_ID !== "-1" && this._oViewModelData.SUPPLY_CHAIN_PLANNING_SPECIALIST_ID !== undefined){
+						updRule.SUPPLY_CHAIN_PLANNING_SPECIALIST_ID = this._oViewModelData.SUPPLY_CHAIN_PLANNING_SPECIALIST_ID;
+				}
+			}    	
+			//return the object of updated attributes
+			return updRule;
+		},
+		onChange: function(oEvent){
+				var sourceControl = oEvent.getSource();
+				var sourceControlName = oEvent.getSource().getName();
+				// call the method to check if any of the attribute value has been updated 
+				if (this.validateRuleValueChange(sourceControlName)){
+					// if true set the value state to warning to highlight the change to the user
+					sourceControl.setValueStateText("Attribute value changed");
+					sourceControl.setValueState(sap.ui.core.ValueState.Warning);
+				}
+				else{
+					// if false set the value state to none to remove highlight from the control
+					sourceControl.setValueStateText("");
+					sourceControl.setValueState(sap.ui.core.ValueState.None);
+				}
+		}		
 	});
 });

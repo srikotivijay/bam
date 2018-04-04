@@ -11,18 +11,19 @@
 						<f:formContainers>
 							<f:FormContainer title="{i18n>editPeopleRules}" id="fConEditPeopleRules">
 								<f:formElements>
-									<f:FormElement label="{i18n>DEMAND_MANAGER}{i18n>mandatory}" id="felmDemandManager" visible="true">
+									<f:FormElement label="{i18n>DEMAND_MANAGER}{i18n>mandatory}" id="felmDemandManager" visible="{/showDemandManager}">
 										<ComboBox id="cmbDemandManager" name="cmbDemandManager" showSecondaryValues= "true" filterSecondaryValues= "true"
 											selectedKey="{/DEMAND_MANAGER_ID}" value="{/DEMAND_MANAGER_NAME}" width="500px"
 											items="{
 												path: '/DEMAND_MANAGER',
 												templateShareable : true}"
-											change = "onChange">
+											change = "onChange"
+											>
 											<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
 										</ComboBox>
 										<CheckBox id="chkDemandManager" name="chkDemandManager" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_DEMAND_MANAGER}" tooltip="{i18n>updateNullTooltip}" />
 									</f:FormElement>
-									<f:FormElement label="{i18n>GLOBAL_LEADER}{i18n>mandatory}" id="felmGlobalLeader" visible="true">
+									<f:FormElement label="{i18n>GLOBAL_LEADER}{i18n>mandatory}" id="felmGlobalLeader" visible="{/showGlobalLeader}">
 										<ComboBox id="cmbGlobalLeader" name="cmbGlobalLeader" showSecondaryValues= "true" filterSecondaryValues= "true"
 											selectedKey="{/GLOBAL_LEADER_ID}" value="{/GLOBAL_LEADER_NAME}" width="500px"
 											items="{
@@ -33,7 +34,7 @@
 										</ComboBox>
 										<CheckBox id="chkGlobalLeader" name="chkGlobalLeader" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_GLOBAL_LEADER}" tooltip="{i18n>updateNullTooltip}" />
 									</f:FormElement>		
-									<f:FormElement label="{i18n>MARKETING_DIRECTOR}{i18n>mandatory}" id="felmMarketingDirector" visible="true">
+									<f:FormElement label="{i18n>MARKETING_DIRECTOR}{i18n>mandatory}" id="felmMarketingDirector" visible="{/showMarketingDirector}">
 										<ComboBox id="cmbMarketingDirector" name="cmbMarketingDirector" showSecondaryValues= "true" filterSecondaryValues= "true"
 											selectedKey="{/MARKETING_DIRECTOR_ID}" value="{/MARKETING_DIRECTOR_NAME}" width="500px"
 											items="{
@@ -44,7 +45,7 @@
 										</ComboBox>
 										<CheckBox id="chkMarketingDirector" name="chkMarketingDirector" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_MARKETING_DIRECTOR}" tooltip="{i18n>updateNullTooltip}" />
 									</f:FormElement>
-									<f:FormElement label="{i18n>MARKETING_MANAGER}{i18n>mandatory}" id="felmMarketingManager" visible="true">
+									<f:FormElement label="{i18n>MARKETING_MANAGER}{i18n>mandatory}" id="felmMarketingManager" visible="{/showMarketingManger}">
 										<ComboBox id="cmbMarketingManager" name="cmbMarketingManager" showSecondaryValues= "true" filterSecondaryValues= "true"
 											selectedKey="{/MARKETING_MANAGER_ID}" value="{/MARKETING_MANAGER_NAME}" width="500px"
 											items="{
@@ -55,7 +56,7 @@
 										</ComboBox>
 										<CheckBox id="chkMarketingManager" name="chkMarketingManager" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_MARKETING_MANAGER}" tooltip="{i18n>updateNullTooltip}" />
 									</f:FormElement>	
-									<f:FormElement label="{i18n>MASTER_PLANNER}{i18n>mandatory}" id="felmMasterPlanner" visible="true">
+									<f:FormElement label="{i18n>MASTER_PLANNER}{i18n>mandatory}" id="felmMasterPlanner" visible="{/showMasterPlanner}">
 										<ComboBox id="cmbMasterPlanner" name="cmbMasterPlanner" showSecondaryValues= "true" filterSecondaryValues= "true"
 											selectedKey="{/MASTER_PLANNER_ID}" value="{/MASTER_PLANNER_NAME}" width="500px"
 											items="{
@@ -66,7 +67,7 @@
 										</ComboBox>
 										<CheckBox id="chkMasterPlanner" name="chkMasterPlanner" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_MASTER_PLANNER}" tooltip="{i18n>updateNullTooltip}" />
 									</f:FormElement>
-									<f:FormElement label="{i18n>PRODUCT_MANAGER}{i18n>mandatory}" id="felmProductManager" visible="true">
+									<f:FormElement label="{i18n>PRODUCT_MANAGER}{i18n>mandatory}" id="felmProductManager" visible="{/showProductManager}">
 										<ComboBox id="cmbProductManager" name="cmbProductManager" showSecondaryValues= "true" filterSecondaryValues= "true"
 											selectedKey="{/PRODUCT_MANAGER_ID}" value="{/PRODUCT_MANAGER_NAME}" width="500px"
 											items="{
@@ -77,7 +78,7 @@
 										</ComboBox>
 										<CheckBox id="chkProductManager" name="chkProductManager" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_PRODUCT_MANAGER}" tooltip="{i18n>updateNullTooltip}" />
 									</f:FormElement>
-									<f:FormElement label="{i18n>REG_SUPPLY_CHAIN_MANAGER}{i18n>mandatory}" id="felmRegionalSupplyChainManager" visible="true">
+									<f:FormElement label="{i18n>REG_SUPPLY_CHAIN_MANAGER}{i18n>mandatory}" id="felmRegionalSupplyChainManager" visible="{/showRegionalSupplychainManager}">
 										<ComboBox id="cmbRegionalSupplyChainManager" name="cmbRegionalSupplyChainManager" showSecondaryValues= "true" filterSecondaryValues= "true"
 											selectedKey="{/REGIONAL_SUPPLY_CHAIN_MANAGER_ID}" value="{/REGIONAL_SUPPLY_CHAIN_MANAGER_NAME}" width="500px"
 											items="{
@@ -88,7 +89,7 @@
 										</ComboBox>
 										<CheckBox id="chkRegionalSupplyChainManager" name="chkRegionalSupplyChainManager" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_REGIONAL_SUPPLY_CHAIN_MANAGER}" tooltip="{i18n>updateNullTooltip}" />
 									</f:FormElement>
-									<f:FormElement label="{i18n>SUPPLY_CHAIN_MANAGER}{i18n>mandatory}" id="felmSupplyChainManager" visible="true">
+									<f:FormElement label="{i18n>SUPPLY_CHAIN_MANAGER}{i18n>mandatory}" id="felmSupplyChainManager" visible="{/showSupplyChainManager}">
 										<ComboBox id="cmbSupplyChainManager" name="cmbSupplyChainManager" showSecondaryValues= "true" filterSecondaryValues= "true"
 											selectedKey="{/SUPPLY_CHAIN_MANAGER_ID}" value="{/SUPPLY_CHAIN_MANAGER_NAME}" width="500px"
 											items="{
@@ -99,7 +100,7 @@
 										</ComboBox>
 										<CheckBox id="chkSupplyChainManager" name="chkSupplyChainManager" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_SUPPLY_CHAIN_MANAGER}" tooltip="{i18n>updateNullTooltip}" />
 									</f:FormElement>	
-									<f:FormElement label="{i18n>SUPPLY_CHAIN_PLANNING_SPECIALIST}{i18n>mandatory}" id="felmSupplyChainPlanningSpecialist" visible="true">
+									<f:FormElement label="{i18n>SUPPLY_CHAIN_PLANNING_SPECIALIST}{i18n>mandatory}" id="felmSupplyChainPlanningSpecialist" visible="{/showSupplyChainPlanningSpecialist}">
 										<ComboBox id="cmbSupplyChainPlanningSpecialist" name="cmbSupplyChainManager" showSecondaryValues= "true" filterSecondaryValues= "true"
 											selectedKey="{/SUPPLY_CHAIN_PLANNING_SPECIALIST_ID}" value="{/SUPPLY_CHAIN_PLANNING_SPECIALIST_NAME}" width="500px"
 											items="{
@@ -117,6 +118,13 @@
 				        <f:ResponsiveGridLayout id="fResGridEditAttributes"/>
 				    </f:layout>						
 					</f:Form>
+					<Toolbar width="100%" id="tbrSubmit">
+				    	<content>
+				        	<ToolbarSpacer id="tbrSpSubmit"/>
+							<Button text="{i18n>submit}" width="100px" id="btnSubmit" press="onSubmit"/>
+				        	<Button text="{i18n>cancel}" width="100px" id="btnCancel" press="onCancel" class="sapUiLargeMarginEnd"/>
+				    	</content>
+					</Toolbar>
 				</content>
 			</Page>
 		</pages>
