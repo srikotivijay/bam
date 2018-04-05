@@ -77,13 +77,14 @@
 							<table:Column id="clmHdrDemandManager" width="350px" resizable="false" visible="{/showDemandManager}">
 								<Label text="{i18n>DEMAND_MANAGER}" id="lblDemandManager"/>
 								<table:template>
+									<HBox alignItems="Center">
 									<ComboBox
 											id="cmbDemandManager"
 											showSecondaryValues= "true"
 											filterSecondaryValues= "true"
 											value="{DEMAND_MANAGER_NAME}"
 											selectedKey="{DEMAND_MANAGER_ID}"
-											width="500px"
+											width="300px"
 											items="{
 												path: '/AssignPeopleRuleVM/DemandManager',
 												templateShareable : true
@@ -92,6 +93,8 @@
 											valueState="{demandManagerErrorState}">
 										<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
 									</ComboBox>
+									<Button id="btnSearchDemandManger" icon="sap-icon://search" visible="{path: 'createNew', formatter: '.disableControl'}" press="onSearch" class="sapUiTinyMarginEnd"/>
+									</HBox>
 								</table:template>
 							</table:Column>	
 							<table:Column id="clmHdrGlobalLeader" width="350px" resizable="false" visible="{/showGlobalLeader}">

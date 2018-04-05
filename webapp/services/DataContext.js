@@ -589,6 +589,31 @@ sap.ui.define([
             });
 			return result;
 		}
+		
+				// function to get people unique Rules Combinations
+    	function getViewByFilter(viewpath, filters) {
+            var result;                            
+           // Create a filter to fetch the Rules based on Rule Seq
+			var ruleseqFilterArray = [];
+			ruleseqFilterArray.push(filters);
+            // Get data for all GMIDS Entered in UI
+            oDataModel.read(viewpath, {
+                filters: ruleseqFilterArray,
+                async: false,
+				success: function(oData, oResponse) {
+                   return oData.results;
+                },
+                error: function(oError) {
+                    MessageBox.alert("Error reading data. Please contact System Admin.",
+					{
+						icon : MessageBox.Icon.ERROR,
+						title : "Error"
+					});    
+                    result = [];
+                }
+            });
+			return result;
+		}
 
 		function getApplicationActivityID(jobName)
 		{
@@ -633,7 +658,8 @@ sap.ui.define([
 			getGMIDCountryPlantListFromDB : getGMIDCountryPlantListFromDB,
 			getrulesFromDB : getrulesFromDB,
 			getApplicationActivityID : getApplicationActivityID,
-			getPeopleRulesFromDB : getPeopleRulesFromDB
+			getPeopleRulesFromDB : getPeopleRulesFromDB,
+			getViewByFilter : getViewByFilter
 		};
 	
 		return exports;

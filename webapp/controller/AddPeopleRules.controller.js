@@ -76,6 +76,7 @@ sap.ui.define([
 			    	this._oModel.setProperty("/showRegionalSupplychainManager",showRegionalSupplychainManager);
 			    	this._oModel.setProperty("/showSupplyChainManager",showSupplyChainManager);
 			    	this._oModel.setProperty("/showSupplyChainPlanningSpecialist",showSupplyChainPlanningSpecialist);
+			    	this._oModel.setProperty("/Users", this.getAllUsers());
 			    	//
 			    	if (!this._busyDialog) 
 					{
@@ -461,23 +462,23 @@ sap.ui.define([
 			//
 			// setting pople roles
 			obj.DEMAND_MANAGER_ID = "-1";
-			obj.DEMAND_MANAGER_NAME = "Select..";
+			obj.DEMAND_MANAGER_NAME = " Select..";
 			obj.GLOBAL_LEADER_ID = "-1";
-			obj.GLOBAL_LEADER_NAME = "Select..";
+			obj.GLOBAL_LEADER_NAME = " Select..";
 			obj.MARKETING_DIRECTOR_ID = "-1";
-			obj.MARKETING_DIRECTOR_NAME = "Select..";
+			obj.MARKETING_DIRECTOR_NAME = " Select..";
 			obj.MARKETING_MANAGER_ID = "-1";
-			obj.MARKETING_MANAGER_NAME = "Select..";
+			obj.MARKETING_MANAGER_NAME = " Select..";
 			obj.MASTER_PLANNER_ID = "-1";
-			obj.MASTER_PLANNER_NAME = "Select..";
+			obj.MASTER_PLANNER_NAME = " Select..";
 			obj.PRODUCT_MANAGER_ID = "-1";
-			obj.PRODUCT_MANAGER_NAME = "Select..";
+			obj.PRODUCT_MANAGER_NAME = " Select..";
 			obj.REGIONAL_SUPPLY_CHAIN_MANAGER_ID = "-1";
-			obj.REGIONAL_SUPPLY_CHAIN_MANAGER_NAME = "Select..";
+			obj.REGIONAL_SUPPLY_CHAIN_MANAGER_NAME = " Select..";
 			obj.SUPPLY_CHAIN_MANAGER_ID = "-1";
-			obj.SUPPLY_CHAIN_MANAGER_NAME = "Select..";
+			obj.SUPPLY_CHAIN_MANAGER_NAME = " Select..";
 			obj.SUPPLY_CHAIN_PLANNING_SPECIALIST_ID = "-1";
-			obj.SUPPLY_CHAIN_PLANNING_SPECIALIST_NAME = "Select..";
+			obj.SUPPLY_CHAIN_PLANNING_SPECIALIST_NAME = " Select..";
         	return obj;
         },
 		
@@ -499,6 +500,39 @@ sap.ui.define([
 					break;
 				}
 			}
+		},
+		
+		onSearch:function(oEvent){
+			var entryToSearch = oEvent.getSource().getBindingContext().getObject();
+			if(entryToSearch.PRODUCT_CODE !== -1 && entryToSearch.LEVEL_ID !== -1){
+				this._selectedRow = oEvent.getSource().getBindingContext().getObject();
+				//var rows = this._oViewModelData.AssignPeopleRuleVM;
+				this._searhRow = entryToSearch;
+				if(oEvent.getSource().getId().indexOf("btnSearchDemandManger") > 0){
+					this._searcColumn = "DemandManager";
+				}
+				if(!this._Dialog){
+					this._oDialog = sap.ui.xmlfragment("bam.view.SearchUser", this);
+					this._oDialog.setModel(this.getView().getModel());
+						
+				}
+				this._oDialog.setMultiSelect(true);
+				// clear the old search filter
+				this._oDialog.getBinding("items").filter([]);
+	
+				// toggle compact style
+				jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oDialog);
+				this._oDialog.open();
+			}
+			else{
+				MessageBox.alert("Select Geography and Product before searching the the user",
+						{
+							icon : MessageBox.Icon.INFORMATION,
+							title : "Error"
+						});
+			}
+			
+
 		},
 		
 		onAddRow:function(oEvent){
@@ -558,7 +592,7 @@ sap.ui.define([
 	                success: function(oData, oResponse){
 	                	// add Please select item on top of the list
 		                oData.results.unshift({	"USER_ID":"-1",
-		              							"USER_NAME":"Select.."});
+		              							"USER_NAME":" Select.."});
 		                // Bind the RCU  data 
 		                result =  oData.results;
 	                },
@@ -1116,6 +1150,81 @@ sap.ui.define([
 					}
 	           	}
 			});			
+		},
+		//
+		getAllUsers : function(){
+           	var result;
+			// Create a filter & sorter array
+			var sortArray = [];
+			var sorter = new sap.ui.model.Sorter("USER_NAME",false);
+			sortArray.push(sorter);
+			// Get the Country dropdown list from the CODE_MASTER table
+			this._oDataModel.read("/USER",{
+					sorters: sortArray,
+					filters: [ 
+								new Filter("VALID_FLAG", FilterOperator.EQ, "T")
+							],
+					async: false,
+	                success: function(oData, oResponse){
+		                result =  oData.results;
+	                },
+	    		    error: function(){
+    		    		MessageBox.alert("Unable to retrieve dropdown values for People Roles Please contact System Admin.",
+						{
+							icon : MessageBox.Icon.ERROR,
+							title : "Error"
+						});
+	            		result = [];
+	    			}
+	    	});
+	    	return result;
+		},
+		handleSearch : function(oEvent){
+			var sValue = oEvent.getParameter("value");
+			var oFilter = [];
+			oFilter.push(new Filter("USER_NAME", sap.ui.model.FilterOperator.Contains, sValue));
+			oFilter.push(new Filter("USER_ID", sap.ui.model.FilterOperator.Contains, sValue));
+			 var mainFilter = new Filter({
+                	filters : oFilter,
+                	and:false
+                });
+			var oBinding = oEvent.getSource().getBinding("items");
+			oBinding.filter([mainFilter]);
+		},
+		handleClose : function(oEvent){
+			var aContexts = oEvent.getParameter("selectedContexts");
+			if (aContexts && aContexts.length) {
+				var selectedUser = [];
+				aContexts.map(function(oContext) { selectedUser.push(oContext.getObject()); });
+				var rows = this._oViewModelData.AssignPeopleRuleVM;
+				var oFilter = [];
+				var selectedDropDown;
+				if(this._searcColumn === "DemandManager"){
+					selectedDropDown = this._oViewModelData.AssignPeopleRuleVM.DemandManager;
+				}
+				
+				for(var j =0 ; j< selectedUser.length; j++){
+					if(selectedDropDown.find(function(x) {if(x.USER_ID === selectedUser[j].USER_ID){return x ;}}) === undefined){
+						selectedDropDown.push({USER_ID : selectedUser[j].USER_ID, USER_NAME : selectedUser[j].USER_NAME});
+					}
+					selectedDropDown.sort(function(x, y){
+						return(x.USER_NAME > y.USER_NAME) ? 1 : -1;
+					});
+					this._oModel.setProperty("/AssignPeopleRuleVM/DemandManager", selectedDropDown);
+				}
+				for(var i = 0; i < rows.length; i++){
+					if(rows[i] === this._selectedRow){
+						if(this._searcColumn === "DemandManager"){
+							rows[i].DEMAND_MANAGER_ID = selectedUser[0].USER_ID;
+							rows[i].DEMAND_MANAGER_NAME = selectedUser[0].USER_NAME;
+						}
+						break;
+					}
+				}
+			//	MessageToast.show("You have chosen " + selectedUser[0].USER_NAME);
+			} 
+			oEvent.getSource().getBinding("items").filter();
+			this._oAssignPeopleRuleViewModel.refresh();
 		}
 
 	});
