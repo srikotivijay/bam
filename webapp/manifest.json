@@ -201,6 +201,11 @@
 					"pattern": "addPeopleRules",
 					"name": "addPeopleRules",
 					"target": "addPeopleRules"
+				},
+				{
+					"pattern": "editPeopleRules",
+					"name": "editPeopleRules",
+					"target": "editPeopleRules"
 				}
 			],
 			"targets": {
@@ -272,6 +277,10 @@
 				"addPeopleRules" :{
 					"viewName": "AddPeopleRules",
 					"viewId": "addPeopleRules"					
+				},
+				"editPeopleRules": {
+					"viewName": "EditPeopleRules",
+					"viewId": "editPeopleRules"
 				}
 			}
 		}

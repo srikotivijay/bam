@@ -232,14 +232,17 @@ sap.ui.define([
 		},
 		getRulesDropDown : function () {
 			var result;
-			// Create a filter & sorter array
-
+			var filterArray = [];
+			var validFlag = "T";
+			var validFlagFilter = new Filter("VALID_FLAG",sap.ui.model.FilterOperator.EQ,validFlag);
+			filterArray.push(validFlagFilter);
 			var sortArray = [];
 			var sorter = new sap.ui.model.Sorter("PEOPLE_RULESET_SEQ",false);
 			sortArray.push(sorter);
 			// Get the Country dropdown list from the CODE_MASTER table
 			this._oDataModel.read("/MST_PEOPLE_RULESET",{
 					async: false,
+					filters: filterArray,
 					sorters: sortArray,
 	                success: function(oData, oResponse){
 	                	// add Please select item on top of the list
@@ -774,7 +777,7 @@ sap.ui.define([
 		                	 {
 		                		AssignPeopleRule[i].errorSummary += "\n";  
 		                	 }
-							AssignPeopleRule[i].errorSummary += "Assign atleast one role";
+							AssignPeopleRule[i].errorSummary += "Assign at least one role";
 							returnValue = false;
 					}
 				}
@@ -799,14 +802,14 @@ sap.ui.define([
 				    			var objgeo;
 				    			if (parseInt(AssignPeopleRule[i].LEVEL_ID,10) !== -1)
 				    			{
-				    				objgeo = false;
+				    				objgeo = true;
 				    			}
 				    		}
 				    		else
 				    		{
 				    			if (parseInt(AssignPeopleRule[i].LEVEL_ID,10) !== 0)
 				    			{
-				    				objgeo = false;
+				    				objgeo = true;
 				    			}
 				    		}
 			        			if (objgeo 
@@ -834,16 +837,16 @@ sap.ui.define([
 		    			if (geoLevel !== null)
 				    		{
 				    			var objgeo1;
-				    			if (parseInt(AssignPeopleRule[i].LEVEL_ID,10) !== -1)
+				    			if (parseInt(AssignPeopleRule[j].LEVEL_ID,10) !== -1)
 				    			{
-				    				objgeo1 = false;
+				    				objgeo1 = true;
 				    			}
 				    		}
 				    		else
 				    		{
-				    			if (parseInt(AssignPeopleRule[i].LEVEL_ID,10) !== 0)
+				    			if (parseInt(AssignPeopleRule[j].LEVEL_ID,10) !== 0)
 				    			{
-				    				objgeo1 = false;
+				    				objgeo1 = true;
 				    			}
 				    		}
 			        			if (objgeo1

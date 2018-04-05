@@ -113,6 +113,12 @@ sap.ui.define([
 				oRouter.getRoute("peopleAssignment").attachMatched(this._onRouteMatched, this);
 				firstTimePageLoad = false;
 			}
+			else
+			{
+				this.getOwnerComponent().getModel().refresh(true);
+				oTable.setSelectionMode("None");
+				oTable.setSelectionMode("MultiToggle");
+			}
 		},
 		getRouter : function () {
 			return sap.ui.core.UIComponent.getRouterFor(this);
@@ -154,10 +160,10 @@ sap.ui.define([
             }
             // setting up sorters
             var aSorters = this._oBindingParams.sorter;
-            var GMIDSorter = new Sorter("PEOPLE_RULESET_DESCRIPTION",false);
-            var CountrySorter = new Sorter("GEOGRAPHY",false);
-            aSorters.push(GMIDSorter);
-            aSorters.push(CountrySorter);
+            var RuleSetSorter = new Sorter("RULESET_SEQ",false);
+            var geoSorter = new Sorter("GEOGRAPHY",false);
+            aSorters.push(RuleSetSorter);
+            aSorters.push(geoSorter);
         },
 
 		//navigate back from rules page
@@ -178,66 +184,61 @@ sap.ui.define([
 		},
 	// navigate to edit attribute page on click of edit
 	onEdit: function(){
-		MessageBox.alert("Functionality Coming Soon.",
-					{
-		 				icon : MessageBox.Icon.ERROR,
-		 				title : "Error"
-		 		});
-		// this._oSmartTable = this.getView().byId("smartTblPeopleAssignment").getTable();
-		// // check if more than or less than 1 checkbox is checked
-		// var index,context,path,indexOfParentheses1,indexOfParentheses2;
-		// var selectedIndicesLength = this._oSmartTable.getSelectedIndices().length;
-		// if(selectedIndicesLength > 0){
-		// index = this._oSmartTable.getSelectedIndices();
-		// var ids = "";
-		// var idArr = [];
-		
-		// var performFullList = false;
+		//
+		this._oSmartTable = this.getView().byId("smartTblPeopleAssignment").getTable();
+		// check if more than or less than 1 checkbox is checked
+		var index,context,path,indexOfParentheses1,indexOfParentheses2;
+		var selectedIndicesLength = this._oSmartTable.getSelectedIndices().length;
+		if(selectedIndicesLength > 0){
+			index = this._oSmartTable.getSelectedIndices();
+			var ids = "";
+			var idArr = [];
+			var performFullList = false;
 
-		// for (var i = 0; i < index.length; i++)
-		// {
-		// 	context = this._oSmartTable.getContextByIndex(index[i]); 
-		// 	if(context !== undefined){
-		// 		path = context.getPath();
-		// 		indexOfParentheses1 = path.indexOf("(");
-		// 		indexOfParentheses2 = path.indexOf(")");
-		// 		ids = path.substring(indexOfParentheses1 + 1,indexOfParentheses2);
-		// 		idArr.push(ids);
-		// 	}
-		// 	else{
-		// 		//if undefined record is hit then stop and go do the full grab
-		// 		performFullList = true;
-		// 		break;
-		// 	}
-		// }
-
-		// if (performFullList){
-		// 	idArr = [];
-		// 	var editSelection = this.getAllRules();
-		// 	for (var j = 0; j < index.length; j++)
-		// 	{
-		// 		context = editSelection[index[j]]; 
-		// 		if(context !== undefined){
-		// 			idArr.push(context.ID);
-		// 		}
-		// 	}
-		// }
-		// //
-		// ids = ids.substring(0, ids.length - 1);
-		// 	var oData = idArr;
-		// 	//add to model
-		// 	var oModel = new sap.ui.model.json.JSONModel(oData);
-		// 	sap.ui.getCore().setModel(oModel);
-		// this.getOwnerComponent().getRouter().navTo("editCURules");
-		// }
-		// else
-		// {
-		// 	MessageBox.alert("Please select one CU Rule record for edit.",
-		// 			{
-		// 				icon : MessageBox.Icon.ERROR,
-		// 				title : "Error"
-		// 		});
-		// }
+			for (var i = 0; i < index.length; i++)
+			{
+				context = this._oSmartTable.getContextByIndex(index[i]); 
+				if(context !== undefined){
+					path = context.getPath();
+					indexOfParentheses1 = path.indexOf("(");
+					indexOfParentheses2 = path.indexOf(")");
+					ids = path.substring(indexOfParentheses1 + 1,indexOfParentheses2);
+					idArr.push(ids);
+				}
+				else{
+					//if undefined record is hit then stop and go do the full grab
+					performFullList = true;
+					break;
+				}
+			}
+			//
+			if (performFullList){
+				idArr = [];
+				var editSelection = this.getAllRules();
+				for (var j = 0; j < index.length; j++)
+				{
+					context = editSelection[index[j]]; 
+					if(context !== undefined){
+						idArr.push(context.ID);
+					}
+				}
+			}
+			//
+			ids = ids.substring(0, ids.length - 1);
+			var oSelectedPeopleRule = idArr;
+			//add to model
+			var oModel = new sap.ui.model.json.JSONModel(oSelectedPeopleRule);
+			sap.ui.getCore().setModel(oModel);
+			this.getOwnerComponent().getRouter().navTo("editPeopleRules");
+		}
+		else
+		{
+			MessageBox.alert("Please select one Rule record for edit.",
+				{
+					icon : MessageBox.Icon.ERROR,
+					title : "Error"
+				});
+		}
 	},
 	getAllRules : function () {
 		var result;
@@ -262,7 +263,7 @@ sap.ui.define([
 			//var sorter = new sap.ui.model.Sorter("SUB_RCU_DESC",false);
 			//sortArray.push(sorter);
 			// Get the Country dropdown list from the CODE_MASTER table
-			this._oDataModel.read("/V_PEOPLE_RULE",{
+			this._oDataModel.read("/V_WEB_PEOPLE_RULES",{
 					filters: filterArray,
 					sorters: sortArray,
 					async: false,
