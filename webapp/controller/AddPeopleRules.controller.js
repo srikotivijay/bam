@@ -1158,6 +1158,31 @@ sap.ui.define([
 				if(oEvent.getSource().getId().indexOf("btnSearchDemandManger") > 0){
 					this._searchColumn = "DemandManager";
 				}
+				else if(oEvent.getSource().getId().indexOf("btnSearchGlobalLeader") > 0){
+					this._searchColumn = "GlobalLeader";
+				}
+				else if(oEvent.getSource().getId().indexOf("btnSearchMarketingDirector") > 0){
+					this._searchColumn = "MarketingDirector";
+				}
+				else if(oEvent.getSource().getId().indexOf("btnSearchMarketingManager") > 0){
+					this._searchColumn = "MarketingManager";
+				}
+				else if(oEvent.getSource().getId().indexOf("btnSearchMasterPlanner") > 0){
+					this._searchColumn = "MasterPlanner";
+				}
+				else if(oEvent.getSource().getId().indexOf("btnSearchProductManager") > 0){
+					this._searchColumn = "ProductManager";
+				}
+				else if(oEvent.getSource().getId().indexOf("btnSearchRegSupplyChainManager") > 0){
+					this._searchColumn = "RegSupplyChainManager";
+				}
+				else if(oEvent.getSource().getId().indexOf("btnSupplyChainManager") > 0){
+					this._searchColumn = "SupplyChainManager";
+				}
+				else if(oEvent.getSource().getId().indexOf("btnSupplyChainPlanningSpecialist") > 0){
+					this._searchColumn = "SupplyChainPlanningSpecialist";
+				}
+
 				if(!this._Dialog){
 					this._oDialog = sap.ui.xmlfragment("bam.view.SearchUser", this);
 					this._oDialog.setModel(this.getView().getModel());
@@ -1202,6 +1227,30 @@ sap.ui.define([
 				if(this._searchColumn === "DemandManager"){
 					selectedDropDown = this._oViewModelData.AssignPeopleRuleVM.DemandManager;
 				}
+				else if(this._searchColumn === "GlobalLeader"){
+					selectedDropDown = this._oViewModelData.AssignPeopleRuleVM.GlobalLeader;
+				}
+				else if(this._searchColumn === "MarketingDirector"){
+					selectedDropDown = this._oViewModelData.AssignPeopleRuleVM.MarketingDirector;
+				}
+				else if(this._searchColumn === "MarketingManager"){
+					selectedDropDown = this._oViewModelData.AssignPeopleRuleVM.MarketingManager;
+				}
+				else if(this._searchColumn === "MasterPlanner"){
+					selectedDropDown = this._oViewModelData.AssignPeopleRuleVM.MasterPlanner;
+				}
+				else if(this._searchColumn === "ProductManager"){
+					selectedDropDown = this._oViewModelData.AssignPeopleRuleVM.ProductManager;
+				}
+				else if(this._searchColumn === "RegSupplyChainManager"){
+					selectedDropDown = this._oViewModelData.AssignPeopleRuleVM.RegSupplyChainManager;
+				}
+				else if(this._searchColumn === "SupplyChainManager"){
+					selectedDropDown = this._oViewModelData.AssignPeopleRuleVM.SupplyChainManager;
+				}
+				else if(this._searchColumn === "SupplyChainPlanningSpecialist"){
+					selectedDropDown = this._oViewModelData.AssignPeopleRuleVM.SupplyChainPlanningSpecialist;
+				}
 				
 				for(var j =0 ; j< selectedUser.length; j++){
 					if(selectedDropDown.find(function(x) {if(x.USER_ID === selectedUser[j].USER_ID){return x ;}}) === undefined){
@@ -1217,6 +1266,38 @@ sap.ui.define([
 						if(this._searchColumn === "DemandManager"){
 							rows[i].DEMAND_MANAGER_ID = selectedUser[0].USER_ID;
 							rows[i].DEMAND_MANAGER_NAME = selectedUser[0].USER_NAME;
+						}
+						else if(this._searchColumn === "GlobalLeader"){
+							rows[i].GLOBAL_LEADER_ID = selectedUser[0].USER_ID;
+							rows[i].GLOBAL_LEADER_NAME = selectedUser[0].USER_NAME;
+						}
+						else if(this._searchColumn === "MarketingDirector"){
+							rows[i].MARKETING_DIRECTOR_ID = selectedUser[0].USER_ID;
+							rows[i].MARKETING_DIRECTOR_NAME = selectedUser[0].USER_NAME;
+						}
+						else if(this._searchColumn === "MarketingManager"){
+							rows[i].MARKETING_MANAGER_ID = selectedUser[0].USER_ID;
+							rows[i].MARKETING_MANAGER_NAME = selectedUser[0].USER_NAME;
+						}
+						else if(this._searchColumn === "MasterPlanner"){
+							rows[i].MASTER_PLANNER_ID = selectedUser[0].USER_ID;
+							rows[i].MASTER_PLANNER_NAME = selectedUser[0].USER_NAME;
+						}
+						else if(this._searchColumn === "ProductManager"){
+							rows[i].PRODUCT_MANAGER_ID = selectedUser[0].USER_ID;
+							rows[i].PRODUCT_MANAGER_NAME = selectedUser[0].USER_NAME;
+						}
+						else if(this._searchColumn === "RegSupplyChainManager"){
+							rows[i].REGIONAL_SUPPLY_CHAIN_MANAGER_ID = selectedUser[0].USER_ID;
+							rows[i].REGIONAL_SUPPLY_CHAIN_MANAGER_NAME = selectedUser[0].USER_NAME;
+						}
+						else if(this._searchColumn === "SupplyChainManager"){
+							rows[i].SUPPLY_CHAIN_MANAGER_ID = selectedUser[0].USER_ID;
+							rows[i].SUPPLY_CHAIN_MANAGER_NAME = selectedUser[0].USER_NAME;
+						}
+						else if(this._searchColumn === "SupplyChainPlanningSpecialist"){
+							rows[i].SUPPLY_CHAIN_PLANNING_SPECIALIST_ID = selectedUser[0].USER_ID;
+							rows[i].SUPPLY_CHAIN_PLANNING_SPECIALIST_NAME = selectedUser[0].USER_NAME;
 						}
 						break;
 					}

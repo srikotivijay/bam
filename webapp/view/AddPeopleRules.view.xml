@@ -100,13 +100,14 @@
 							<table:Column id="clmHdrGlobalLeader" width="350px" resizable="false" visible="{/showGlobalLeader}">
 								<Label text="{i18n>HDR_GLOBAL_LEADER}" id="lblGlobalLeader"/>
 								<table:template>
+									<HBox alignItems="Center">
 									<ComboBox
 											id="cmbGlobalLeader"
 											showSecondaryValues= "true"
 											filterSecondaryValues= "true"
 											value="{GLOBAL_LEADER_NAME}"
 											selectedKey="{GLOBAL_LEADER_ID}"
-											width="500px"
+											width="300px"
 											items="{
 												path: '/AssignPeopleRuleVM/GlobalBusinessLeader',
 												templateShareable : true
@@ -115,18 +116,21 @@
 											valueState="{globalLeaderErrorState}">
 										<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
 									</ComboBox>
+									<Button id="btnSearchGlobalLeader" icon="sap-icon://search" visible="{path: 'createNew', formatter: '.disableControl'}" press="onSearch" class="sapUiTinyMarginEnd"/>
+									</HBox>
 								</table:template>
 							</table:Column>	
 							<table:Column id="clmHdrMarketingDirector" width="350px" resizable="false" visible="{/showMarketingDirector}">
 								<Label text="{i18n>HDR_MARKETING_DIRECTOR}" id="lblMarketingDirector"/>
 								<table:template>
+									<HBox alignItems="Center">
 									<ComboBox
 											id="cmbMarketingDirector"
 											showSecondaryValues= "true"
 											filterSecondaryValues= "true"
 											value="{MARKETING_DIRECTOR_NAME}"
 											selectedKey="{MARKETING_DIRECTOR_ID}"
-											width="500px"
+											width="300px"
 											items="{
 												path: '/AssignPeopleRuleVM/MarketingDirector',
 												templateShareable : true
@@ -135,18 +139,21 @@
 											valueState="{marketingDirectorErrorState}">
 										<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
 									</ComboBox>
+									<Button id="btnSearchMarketingDirector" icon="sap-icon://search" visible="{path: 'createNew', formatter: '.disableControl'}" press="onSearch" class="sapUiTinyMarginEnd"/>
+									</HBox>
 								</table:template>
 							</table:Column>	
 							<table:Column id="clmHdrMarketingManager" width="350px" resizable="false" visible="{/showMarketingManger}">
 								<Label text="{i18n>HDR_MARKETING_MANAGER}" id="lblMarketingManager"/>
 								<table:template>
+									<HBox alignItems="Center">
 									<ComboBox
 											id="cmbMarketingManager"
 											showSecondaryValues= "true"
 											filterSecondaryValues= "true"
 											value="{MARKETING_MANAGER_NAME}"
 											selectedKey="{MARKETING_MANAGER_ID}"
-											width="500px"
+											width="300px"
 											items="{
 												path: '/AssignPeopleRuleVM/MarketingManager',
 												templateShareable : true
@@ -155,18 +162,21 @@
 											valueState="{marketingManagerErrorState}">
 										<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
 									</ComboBox>
+									<Button id="btnSearchMarketingManager" icon="sap-icon://search" visible="{path: 'createNew', formatter: '.disableControl'}" press="onSearch" class="sapUiTinyMarginEnd"/>
+									</HBox>
 								</table:template>
 							</table:Column>	
 							<table:Column id="clmHdrMasterPlanner" width="350px" resizable="false" visible="{/showMasterPlanner}">
 								<Label text="{i18n>MASTER_PLANNER}" id="lblMasterPlanner"/>
 								<table:template>
+									<HBox alignItems="Center">
 									<ComboBox
 											id="cmbMasterPlanner"
 											showSecondaryValues= "true"
 											filterSecondaryValues= "true"
 											value="{MASTER_PLANNER_NAME}"
 											selectedKey="{MASTER_PLANNER_ID}"
-											width="500px"
+											width="300px"
 											items="{
 												path: '/AssignPeopleRuleVM/MasterPlanner',
 												templateShareable : true
@@ -175,18 +185,21 @@
 											valueState="{masterPlannerErrorState}">
 										<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
 									</ComboBox>
+									<Button id="btnSearchMasterPlanner" icon="sap-icon://search" visible="{path: 'createNew', formatter: '.disableControl'}" press="onSearch" class="sapUiTinyMarginEnd"/>
+									</HBox>
 								</table:template>
 							</table:Column>	
 							<table:Column id="clmHdrProductManager" width="350px" resizable="false" visible="{/showProductManager}">
 								<Label text="{i18n>PRODUCT_MANAGER}" id="lblProductManger"/>
 								<table:template>
+									<HBox alignItems="Center">
 									<ComboBox
-											id="cmbProuctManager"
+											id="cmbProductManager"
 											showSecondaryValues= "true"
 											filterSecondaryValues= "true"
 											value="{PRODUCT_MANAGER_NAME}"
 											selectedKey="{PRODUCT_MANAGER_ID}"
-											width="500px"
+											width="300px"
 											items="{
 												path: '/AssignPeopleRuleVM/ProductManager',
 												templateShareable : true
@@ -195,18 +208,21 @@
 											valueState="{productManagerErrorState}">
 										<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
 									</ComboBox>
+									<Button id="btnSearchProductManager" icon="sap-icon://search" visible="{path: 'createNew', formatter: '.disableControl'}" press="onSearch" class="sapUiTinyMarginEnd"/>
+									</HBox>
 								</table:template>
 							</table:Column>		
 							<table:Column id="clmHdrRegionalSupplyChainManager" width="350px" resizable="false" visible="{/showRegionalSupplychainManager}">
 								<Label text="{i18n>REG_SUPPLY_CHAIN_MANAGER}" id="lblRegionalSupplyChainManager"/>
 								<table:template>
+									<HBox alignItems="Center">
 									<ComboBox
 											id="cmbRegionalSupplyChainManager"
 											showSecondaryValues= "true"
 											filterSecondaryValues= "true"
 											value="{REGIONAL_SUPPLY_CHAIN_MANAGER_NAME}"
 											selectedKey="{REGIONAL_SUPPLY_CHAIN_MANAGER_ID}"
-											width="500px"
+											width="300px"
 											items="{
 												path: '/AssignPeopleRuleVM/RegionalSupplyChainManager',
 												templateShareable : true
@@ -215,18 +231,21 @@
 											valueState="{regionalSupplyChainMangerErrorState}">
 										<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
 									</ComboBox>
+									<Button id="btnSearchRegSupplyChainManager" icon="sap-icon://search" visible="{path: 'createNew', formatter: '.disableControl'}" press="onSearch" class="sapUiTinyMarginEnd"/>
+									</HBox>
 								</table:template>
 							</table:Column>	
 							<table:Column id="clmHdrSupplyChainManager" width="350px" resizable="false" visible="{/showSupplyChainManager}">
 								<Label text="{i18n>HDR_SUPPLY_CHAIN_MANAGER}" id="lblSupplyChainManager"/>
 								<table:template>
+									<HBox alignItems="Center">
 									<ComboBox
 											id="cmbSupplyChainManager"
 											showSecondaryValues= "true"
 											filterSecondaryValues= "true"
 											value="{SUPPLY_CHAIN_MANAGER_NAME}"
 											selectedKey="{SUPPLY_CHAIN_MANAGER_ID}"
-											width="500px"
+											width="300px"
 											items="{
 												path: '/AssignPeopleRuleVM/SupplyChainManager',
 												templateShareable : true
@@ -235,18 +254,21 @@
 											valueState="{supplyChainManagerErrorState}">
 										<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
 									</ComboBox>
+									<Button id="btnSupplyChainManager" icon="sap-icon://search" visible="{path: 'createNew', formatter: '.disableControl'}" press="onSearch" class="sapUiTinyMarginEnd"/>
+									</HBox>
 								</table:template>
 							</table:Column>	
 							<table:Column id="clmHdrSupplyChainPlanningSpecialist" width="350px" resizable="false" visible="{/showSupplyChainPlanningSpecialist}">
 								<Label text="{i18n>HDR_SUPPLY_CHAIN_PLANNING_SPECIALIST}" id="lblSupplyChainPlanningSpecialist"/>
 								<table:template>
+									<HBox alignItems="Center">
 									<ComboBox
 											id="cmbSupplyChainPlanningSpecialist"
 											showSecondaryValues= "true"
 											filterSecondaryValues= "true"
 											value="{SUPPLY_CHAIN_PLANNING_SPECIALIST_NAME}"
 											selectedKey="{SUPPLY_CHAIN_PLANNING_SPECIALIST_ID}"
-											width="500px"
+											width="300px"
 											items="{
 												path: '/AssignPeopleRuleVM/SupplyChainPlanningSpecialist',
 												templateShareable : true
@@ -255,6 +277,8 @@
 											valueState="{supplyChainPlanningSpecialistErrorState}">
 										<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
 									</ComboBox>
+									<Button id="btnSupplyChainPlanningSpecialist" icon="sap-icon://search" visible="{path: 'createNew', formatter: '.disableControl'}" press="onSearch" class="sapUiTinyMarginEnd"/>
+									</HBox>
 								</table:template>
 							</table:Column>								
 						</table:columns>	
