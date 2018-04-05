@@ -10,10 +10,6 @@
 		items="{
 			path: '/Users'
 		}" >
-		<DisplayListItem label = "{USER_ID}" value = "{USER_NAME}"/>
-		<!--<StandardListItem-->
-		<!--	title="{USER_ID}		{USER_NAME}"-->
-		<!--	description="{USER_NAME}"-->
-		<!--	type="Active" />-->
+		<DisplayListItem label = "{USER_NAME}" value = "{USER_ID}"/>
 	</SelectDialog>
 </core:FragmentDefinition>

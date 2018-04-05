@@ -502,38 +502,6 @@ sap.ui.define([
 			}
 		},
 		
-		onSearch:function(oEvent){
-			var entryToSearch = oEvent.getSource().getBindingContext().getObject();
-			if(entryToSearch.PRODUCT_CODE !== -1 && entryToSearch.LEVEL_ID !== -1){
-				this._selectedRow = oEvent.getSource().getBindingContext().getObject();
-				//var rows = this._oViewModelData.AssignPeopleRuleVM;
-				this._searhRow = entryToSearch;
-				if(oEvent.getSource().getId().indexOf("btnSearchDemandManger") > 0){
-					this._searcColumn = "DemandManager";
-				}
-				if(!this._Dialog){
-					this._oDialog = sap.ui.xmlfragment("bam.view.SearchUser", this);
-					this._oDialog.setModel(this.getView().getModel());
-						
-				}
-				this._oDialog.setMultiSelect(true);
-				// clear the old search filter
-				this._oDialog.getBinding("items").filter([]);
-	
-				// toggle compact style
-				jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oDialog);
-				this._oDialog.open();
-			}
-			else{
-				MessageBox.alert("Select Geography and Product before searching the the user",
-						{
-							icon : MessageBox.Icon.INFORMATION,
-							title : "Error"
-						});
-			}
-			
-
-		},
 		
 		onAddRow:function(oEvent){
 			var path = oEvent.getSource().getBindingContext().getPath();
@@ -1179,6 +1147,35 @@ sap.ui.define([
 	    	});
 	    	return result;
 		},
+		onSearch:function(oEvent){
+			var entryToSearch = oEvent.getSource().getBindingContext().getObject();
+			if(entryToSearch.PRODUCT_CODE !== -1 && entryToSearch.LEVEL_ID !== -1){
+				this._selectedRow = oEvent.getSource().getBindingContext().getObject();
+				this._searchRow = entryToSearch;
+				if(oEvent.getSource().getId().indexOf("btnSearchDemandManger") > 0){
+					this._searchColumn = "DemandManager";
+				}
+				if(!this._Dialog){
+					this._oDialog = sap.ui.xmlfragment("bam.view.SearchUser", this);
+					this._oDialog.setModel(this.getView().getModel());
+						
+				}
+				this._oDialog.setMultiSelect(false);
+				// clear the old search filter
+				this._oDialog.getBinding("items").filter([]);
+	
+				// toggle compact style
+				jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oDialog);
+				this._oDialog.open();
+			}
+			else{
+				MessageBox.alert("Select Geography and Product before searching the user",
+						{
+							icon : MessageBox.Icon.ERROR,
+							title : "Error"
+						});
+			}
+		},
 		handleSearch : function(oEvent){
 			var sValue = oEvent.getParameter("value");
 			var oFilter = [];
@@ -1199,7 +1196,7 @@ sap.ui.define([
 				var rows = this._oViewModelData.AssignPeopleRuleVM;
 				var oFilter = [];
 				var selectedDropDown;
-				if(this._searcColumn === "DemandManager"){
+				if(this._searchColumn === "DemandManager"){
 					selectedDropDown = this._oViewModelData.AssignPeopleRuleVM.DemandManager;
 				}
 				
@@ -1214,18 +1211,16 @@ sap.ui.define([
 				}
 				for(var i = 0; i < rows.length; i++){
 					if(rows[i] === this._selectedRow){
-						if(this._searcColumn === "DemandManager"){
+						if(this._searchColumn === "DemandManager"){
 							rows[i].DEMAND_MANAGER_ID = selectedUser[0].USER_ID;
 							rows[i].DEMAND_MANAGER_NAME = selectedUser[0].USER_NAME;
 						}
 						break;
 					}
 				}
-			//	MessageToast.show("You have chosen " + selectedUser[0].USER_NAME);
 			} 
 			oEvent.getSource().getBinding("items").filter();
 			this._oAssignPeopleRuleViewModel.refresh();
 		}
-
 	});
 	});
