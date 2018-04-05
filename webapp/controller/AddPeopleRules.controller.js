@@ -319,7 +319,7 @@ sap.ui.define([
 					this._oModel.setProperty("/AssignPeopleRuleVM/RegionalSupplyChainManager", this.getPeopleRoleDropDown(regionalSupplychainManager));	
 				}
 				if(showSupplyChainManager){
-					var supplychainManager = this._oi18nModel.getProperty("SUPPLY_CHAIN_MANAGER");
+					var supplychainManager = this._oi18nModel.getProperty("GLOBAL_SUPPLY_CHAIN_MANAGER");
 					this._oModel.setProperty("/AssignPeopleRuleVM/SupplyChainManager", this.getPeopleRoleDropDown(supplychainManager));	
 				}
 				if(showSupplyChainPlanningSpecialist){
@@ -1228,7 +1228,7 @@ sap.ui.define([
 					selectedDropDown = this._oViewModelData.AssignPeopleRuleVM.DemandManager;
 				}
 				else if(this._searchColumn === "GlobalLeader"){
-					selectedDropDown = this._oViewModelData.AssignPeopleRuleVM.GlobalLeader;
+					selectedDropDown = this._oViewModelData.AssignPeopleRuleVM.GlobalBusinessLeader;
 				}
 				else if(this._searchColumn === "MarketingDirector"){
 					selectedDropDown = this._oViewModelData.AssignPeopleRuleVM.MarketingDirector;
@@ -1259,7 +1259,6 @@ sap.ui.define([
 					selectedDropDown.sort(function(x, y){
 						return(x.USER_NAME > y.USER_NAME) ? 1 : -1;
 					});
-					this._oModel.setProperty("/AssignPeopleRuleVM/DemandManager", selectedDropDown);
 				}
 				for(var i = 0; i < rows.length; i++){
 					if(rows[i] === this._selectedRow){
