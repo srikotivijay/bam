@@ -286,7 +286,7 @@ sap.ui.define([
 				this._oModel.setProperty("/REGIONAL_SUPPLY_CHAIN_MANAGER", this.getPeopleRoleDropDown(regionalSupplychainManager));	
 			}
 			if(showSupplyChainManager){
-				var supplychainManager = this._oi18nModel.getProperty("SUPPLY_CHAIN_MANAGER");
+				var supplychainManager = this._oi18nModel.getProperty("GLOBAL_SUPPLY_CHAIN_MANAGER");
 				this._oModel.setProperty("/SUPPLY_CHAIN_MANAGER", this.getPeopleRoleDropDown(supplychainManager));	
 			}
 			if(showSupplyChainPlanningSpecialist){
