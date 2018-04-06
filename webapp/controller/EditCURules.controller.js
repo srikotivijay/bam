@@ -230,7 +230,8 @@ sap.ui.define([
 			if (sourceControlName === "chkCU1")
 			{	
 				if(isChecked){
-					this.getView().byId("cmbCU").setValue("Select..");
+					this.getView().byId("cmbCU").setSelectedKey('-1');
+					//this.getView().byId("cmbCU").setValue("Select..");
 					this.getView().byId("cmbCU").setEnabled(false);
 					this.getView().byId("cmbCU").setValueState(sap.ui.core.ValueState.Warning);
 				}
@@ -242,7 +243,8 @@ sap.ui.define([
 			else if(sourceControlName === "chkSubCU1")
 			{
 				if(isChecked){
-					this.getView().byId("cmbSubCU").setValue("Select..");
+					this.getView().byId("cmbSubCU").setSelectedKey('-1');
+					//this.getView().byId("cmbSubCU").setValue("Select..");
 					this.getView().byId("cmbSubCU").setEnabled(false);
 					this.getView().byId("cmbSubCU").setValueState(sap.ui.core.ValueState.Warning);
 				}

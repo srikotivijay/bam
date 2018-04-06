@@ -370,7 +370,6 @@ sap.ui.define([
 			if (sourceControlName === "chkDemandManager")
 			{	
 				if(isChecked){
-					this.getView().byId("cmbDemandManager").setValue(" Select..");
 					this.getView().byId("cmbDemandManager").setSelectedKey("-1");
 					this.getView().byId("cmbDemandManager").setEnabled(false);
 					this.getView().byId("cmbDemandManager").setValueState(sap.ui.core.ValueState.Warning);
@@ -385,7 +384,6 @@ sap.ui.define([
 			else if (sourceControlName === "chkGlobalLeader")
 			{	
 				if(isChecked){
-					this.getView().byId("cmbGlobalLeader").setValue(" Select..");
 					this.getView().byId("cmbGlobalLeader").setSelectedKey("-1");
 					this.getView().byId("cmbGlobalLeader").setEnabled(false);
 					this.getView().byId("cmbGlobalLeader").setValueState(sap.ui.core.ValueState.Warning);
@@ -400,7 +398,6 @@ sap.ui.define([
 			else if (sourceControlName === "chkMarketingDirector")
 			{	
 				if(isChecked){
-					this.getView().byId("cmbMarketingDirector").setValue(" Select..");
 					this.getView().byId("cmbMarketingDirector").setSelectedKey("-1");
 					this.getView().byId("cmbMarketingDirector").setEnabled(false);
 					this.getView().byId("cmbMarketingDirector").setValueState(sap.ui.core.ValueState.Warning);
@@ -415,7 +412,6 @@ sap.ui.define([
 			else if (sourceControlName === "chkMarketingManager")
 			{	
 				if(isChecked){
-					this.getView().byId("cmbMarketingManager").setValue(" Select..");
 					this.getView().byId("cmbMarketingManager").setSelectedKey("-1");
 					this.getView().byId("cmbMarketingManager").setEnabled(false);
 					this.getView().byId("cmbMarketingManager").setValueState(sap.ui.core.ValueState.Warning);
@@ -430,7 +426,6 @@ sap.ui.define([
 			else if (sourceControlName === "chkMasterPlanner")
 			{	
 				if(isChecked){
-					this.getView().byId("cmbMasterPlanner").setValue(" Select..");
 					this.getView().byId("cmbMasterPlanner").setSelectedKey("-1");
 					this.getView().byId("cmbMasterPlanner").setEnabled(false);
 					this.getView().byId("cmbMasterPlanner").setValueState(sap.ui.core.ValueState.Warning);
@@ -445,7 +440,6 @@ sap.ui.define([
 			else if (sourceControlName === "chkProductManager")
 			{	
 				if(isChecked){
-					this.getView().byId("cmbProductManager").setValue(" Select..");
 					this.getView().byId("cmbProductManager").setSelectedKey("-1");
 					this.getView().byId("cmbProductManager").setEnabled(false);
 					this.getView().byId("cmbProductManager").setValueState(sap.ui.core.ValueState.Warning);
@@ -460,7 +454,6 @@ sap.ui.define([
 			else if (sourceControlName === "chkRegionalSupplyChainManager")
 			{	
 				if(isChecked){
-					this.getView().byId("cmbRegionalSupplyChainManager").setValue(" Select..");
 					this.getView().byId("cmbRegionalSupplyChainManager").setSelectedKey("-1");
 					this.getView().byId("cmbRegionalSupplyChainManager").setEnabled(false);
 					this.getView().byId("cmbRegionalSupplyChainManager").setValueState(sap.ui.core.ValueState.Warning);
@@ -475,7 +468,6 @@ sap.ui.define([
 			else if (sourceControlName === "chkSupplyChainManager")
 			{	
 				if(isChecked){
-					this.getView().byId("cmbSupplyChainManager").setValue(" Select..");
 					this.getView().byId("cmbSupplyChainManager").setSelectedKey("-1");
 					this.getView().byId("cmbSupplyChainManager").setEnabled(false);
 					this.getView().byId("cmbSupplyChainManager").setValueState(sap.ui.core.ValueState.Warning);
@@ -490,7 +482,6 @@ sap.ui.define([
 			else if (sourceControlName === "chkSupplyChainPlanningSpecialist")
 			{	
 				if(isChecked){
-					this.getView().byId("cmbSupplyChainPlanningSpecialist").setValue(" Select..");
 					this.getView().byId("cmbSupplyChainPlanningSpecialist").setSelectedKey("-1");
 					this.getView().byId("cmbSupplyChainPlanningSpecialist").setEnabled(false);
 					this.getView().byId("cmbSupplyChainPlanningSpecialist").setValueState(sap.ui.core.ValueState.Warning);
