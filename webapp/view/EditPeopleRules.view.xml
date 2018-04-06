@@ -8,10 +8,19 @@
 					<Text id="lblPeopleRuleText" text="{i18n>curuleedit}" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom pageHeaderFont boldFont"/>	
 					<Text id="lblPeopleRuleCount" text="{/RULE_COUNT}" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom pageHeaderFont boldFont"/>
 					<f:Form editable="true" id="formEditPeopleRule">
+						<f:layout>
+							<f:ResponsiveGridLayout
+								labelSpanL="3"
+								adjustLabelSpan="false"
+								columnsXL="12"
+								columnsL="12"
+								columnsM="12"
+								singleContainerFullSize="true" />
+						</f:layout>
 						<f:formContainers>
 							<f:FormContainer title="{i18n>editPeopleRules}" id="fConEditPeopleRules" >
 								<f:formElements>
-									<f:FormElement label="{i18n>DEMAND_MANAGER}{i18n>mandatory}" id="felmDemandManager" visible="{/showDemandManager}">
+									<f:FormElement label="{i18n>HDR_GLOBAL_LEADER}{i18n>mandatory}" id="felmDemandManager" visible="{/showDemandManager}">
 										<FlexBox renderType="Bare">
 											<ComboBox id="cmbDemandManager" name="cmbDemandManager" showSecondaryValues= "true" filterSecondaryValues= "true"
 												selectedKey="{/DEMAND_MANAGER_ID}" value="{/DEMAND_MANAGER_NAME}" width="500px"
@@ -140,10 +149,7 @@
 									</f:FormElement>
 								</f:formElements>
 							</f:FormContainer>
-						</f:formContainers>
-				    <f:layout>
-				        <f:ResponsiveGridLayout id="fResGridEditAttributes"/>
-				    </f:layout>						
+						</f:formContainers>					
 					</f:Form>
 					<Toolbar width="100%" id="tbrSubmit">
 				    	<content>

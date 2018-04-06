@@ -1152,7 +1152,8 @@ sap.ui.define([
 		},
 		onSearch:function(oEvent){
 			var entryToSearch = oEvent.getSource().getBindingContext().getObject();
-			if(entryToSearch.PRODUCT_CODE !== -1 && entryToSearch.LEVEL_ID !== -1){
+			var ruleSet = this._oModel.getProperty("/PEOPLE_RULESET_SEQ");
+			if(ruleSet != -1 && entryToSearch.PRODUCT_CODE !== -1 && entryToSearch.LEVEL_ID !== -1){
 				this._selectedRow = oEvent.getSource().getBindingContext().getObject();
 				this._searchRow = entryToSearch;
 				if(oEvent.getSource().getId().indexOf("btnSearchDemandManger") > 0){
