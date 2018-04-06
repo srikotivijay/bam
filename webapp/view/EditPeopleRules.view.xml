@@ -26,7 +26,7 @@
 											<CheckBox id="chkDemandManager" name="chkDemandManager" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_DEMAND_MANAGER}" tooltip="{i18n>updateNullTooltip}"   class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
 										</FlexBox>
 									</f:FormElement>
-									<f:FormElement label="{i18n>GLOBAL_LEADER}{i18n>mandatory}" id="felmGlobalLeader" visible="{/showGlobalLeader}">
+									<f:FormElement label="{i18n>HDR_GLOBAL_LEADER}{i18n>mandatory}" id="felmGlobalLeader" visible="{/showGlobalLeader}">
 										<FlexBox renderType="Bare">
 											<ComboBox id="cmbGlobalLeader" name="cmbGlobalLeader" showSecondaryValues= "true" filterSecondaryValues= "true"
 												selectedKey="{/GLOBAL_LEADER_ID}" value="{/GLOBAL_LEADER_NAME}" width="500px"
@@ -40,7 +40,7 @@
 											<CheckBox id="chkGlobalLeader" name="chkGlobalLeader" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_GLOBAL_LEADER}" tooltip="{i18n>updateNullTooltip}" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
 										</FlexBox>
 									</f:FormElement>		
-									<f:FormElement label="{i18n>MARKETING_DIRECTOR}{i18n>mandatory}" id="felmMarketingDirector" visible="{/showMarketingDirector}">
+									<f:FormElement label="{i18n>HDR_MARKETING_DIRECTOR}{i18n>mandatory}" id="felmMarketingDirector" visible="{/showMarketingDirector}">
 										<FlexBox renderType="Bare">
 											<ComboBox id="cmbMarketingDirector" name="cmbMarketingDirector" showSecondaryValues= "true" filterSecondaryValues= "true"
 												selectedKey="{/MARKETING_DIRECTOR_ID}" value="{/MARKETING_DIRECTOR_NAME}" width="500px"
@@ -54,7 +54,7 @@
 											<CheckBox id="chkMarketingDirector" name="chkMarketingDirector" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_MARKETING_DIRECTOR}" tooltip="{i18n>updateNullTooltip}" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
 										</FlexBox>
 									</f:FormElement>
-									<f:FormElement label="{i18n>MARKETING_MANAGER}{i18n>mandatory}" id="felmMarketingManager" visible="{/showMarketingManger}">
+									<f:FormElement label="{i18n>HDR_MARKETING_MANAGER}{i18n>mandatory}" id="felmMarketingManager" visible="{/showMarketingManger}">
 										<FlexBox renderType="Bare">
 											<ComboBox id="cmbMarketingManager" name="cmbMarketingManager" showSecondaryValues= "true" filterSecondaryValues= "true"
 												selectedKey="{/MARKETING_MANAGER_ID}" value="{/MARKETING_MANAGER_NAME}" width="500px"
@@ -110,7 +110,7 @@
 											<CheckBox id="chkRegionalSupplyChainManager" name="chkRegionalSupplyChainManager" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_REGIONAL_SUPPLY_CHAIN_MANAGER}" tooltip="{i18n>updateNullTooltip}" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
 										</FlexBox>
 									</f:FormElement>
-									<f:FormElement label="{i18n>SUPPLY_CHAIN_MANAGER}{i18n>mandatory}" id="felmSupplyChainManager" visible="{/showSupplyChainManager}">
+									<f:FormElement label="{i18n>HDR_SUPPLY_CHAIN_MANAGER}{i18n>mandatory}" id="felmSupplyChainManager" visible="{/showSupplyChainManager}">
 										<FlexBox renderType="Bare">
 											<ComboBox id="cmbSupplyChainManager" name="cmbSupplyChainManager" showSecondaryValues= "true" filterSecondaryValues= "true"
 												selectedKey="{/SUPPLY_CHAIN_MANAGER_ID}" value="{/SUPPLY_CHAIN_MANAGER_NAME}" width="500px"
@@ -124,7 +124,7 @@
 											<CheckBox id="chkSupplyChainManager" name="chkSupplyChainManager" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_SUPPLY_CHAIN_MANAGER}" tooltip="{i18n>updateNullTooltip}" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
 										</FlexBox>
 									</f:FormElement>	
-									<f:FormElement label="{i18n>SUPPLY_CHAIN_PLANNING_SPECIALIST}{i18n>mandatory}" id="felmSupplyChainPlanningSpecialist" visible="{/showSupplyChainPlanningSpecialist}">
+									<f:FormElement label="{i18n>HDR_SUPPLY_CHAIN_PLANNING_SPECIALIST}{i18n>mandatory}" id="felmSupplyChainPlanningSpecialist" visible="{/showSupplyChainPlanningSpecialist}">
 										<FlexBox renderType="Bare">
 											<ComboBox id="cmbSupplyChainPlanningSpecialist" name="cmbSupplyChainManager" showSecondaryValues= "true" filterSecondaryValues= "true"
 												selectedKey="{/SUPPLY_CHAIN_PLANNING_SPECIALIST_ID}" value="{/SUPPLY_CHAIN_PLANNING_SPECIALIST_NAME}" width="500px"

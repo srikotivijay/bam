@@ -374,10 +374,12 @@ sap.ui.define([
 					this.getView().byId("cmbDemandManager").setSelectedKey("-1");
 					this.getView().byId("cmbDemandManager").setEnabled(false);
 					this.getView().byId("cmbDemandManager").setValueState(sap.ui.core.ValueState.Warning);
+					this.getView().byId("btnSearchDemandManger").setEnabled(false);
 				}
 				else{
 					this.getView().byId("cmbDemandManager").setEnabled(true);
 					this.getView().byId("cmbDemandManager").setValueState(sap.ui.core.ValueState.None);
+					this.getView().byId("btnSearchDemandManger").setEnabled(true);
 				}
 			}
 			else if (sourceControlName === "chkGlobalLeader")
@@ -387,10 +389,12 @@ sap.ui.define([
 					this.getView().byId("cmbGlobalLeader").setSelectedKey("-1");
 					this.getView().byId("cmbGlobalLeader").setEnabled(false);
 					this.getView().byId("cmbGlobalLeader").setValueState(sap.ui.core.ValueState.Warning);
+					this.getView().byId("btnSearchGlobalLeader").setEnabled(false);
 				}
 				else{
 					this.getView().byId("cmbGlobalLeader").setEnabled(true);
 					this.getView().byId("cmbGlobalLeader").setValueState(sap.ui.core.ValueState.None);
+					this.getView().byId("btnSearchGlobalLeader").setEnabled(true);
 				}
 			}
 			else if (sourceControlName === "chkMarketingDirector")
@@ -400,10 +404,12 @@ sap.ui.define([
 					this.getView().byId("cmbMarketingDirector").setSelectedKey("-1");
 					this.getView().byId("cmbMarketingDirector").setEnabled(false);
 					this.getView().byId("cmbMarketingDirector").setValueState(sap.ui.core.ValueState.Warning);
+					this.getView().byId("btnSearchMarketingDirector").setEnabled(false);
 				}
 				else{
 					this.getView().byId("cmbMarketingDirector").setEnabled(true);
 					this.getView().byId("cmbMarketingDirector").setValueState(sap.ui.core.ValueState.None);
+					this.getView().byId("btnSearchMarketingDirector").setEnabled(true);
 				}
 			}
 			else if (sourceControlName === "chkMarketingManager")
@@ -413,10 +419,12 @@ sap.ui.define([
 					this.getView().byId("cmbMarketingManager").setSelectedKey("-1");
 					this.getView().byId("cmbMarketingManager").setEnabled(false);
 					this.getView().byId("cmbMarketingManager").setValueState(sap.ui.core.ValueState.Warning);
+					this.getView().byId("btnSearchMarketingManager").setEnabled(false);
 				}
 				else{
 					this.getView().byId("cmbMarketingManager").setEnabled(true);
 					this.getView().byId("cmbMarketingManager").setValueState(sap.ui.core.ValueState.None);
+					this.getView().byId("btnSearchMarketingManager").setEnabled(true);
 				}
 			}
 			else if (sourceControlName === "chkMasterPlanner")
@@ -426,10 +434,12 @@ sap.ui.define([
 					this.getView().byId("cmbMasterPlanner").setSelectedKey("-1");
 					this.getView().byId("cmbMasterPlanner").setEnabled(false);
 					this.getView().byId("cmbMasterPlanner").setValueState(sap.ui.core.ValueState.Warning);
+					this.getView().byId("btnSearchMasterPlanner").setEnabled(false);
 				}
 				else{
 					this.getView().byId("cmbMasterPlanner").setEnabled(true);
 					this.getView().byId("cmbMasterPlanner").setValueState(sap.ui.core.ValueState.None);
+					this.getView().byId("btnSearchMasterPlanner").setEnabled(true);
 				}
 			}
 			else if (sourceControlName === "chkProductManager")
@@ -439,10 +449,12 @@ sap.ui.define([
 					this.getView().byId("cmbProductManager").setSelectedKey("-1");
 					this.getView().byId("cmbProductManager").setEnabled(false);
 					this.getView().byId("cmbProductManager").setValueState(sap.ui.core.ValueState.Warning);
+					this.getView().byId("btnSearchProductManager").setEnabled(false);
 				}
 				else{
 					this.getView().byId("cmbProductManager").setEnabled(true);
 					this.getView().byId("cmbProductManager").setValueState(sap.ui.core.ValueState.None);
+					this.getView().byId("btnSearchProductManager").setEnabled(true);
 				}
 			}
 			else if (sourceControlName === "chkRegionalSupplyChainManager")
@@ -452,10 +464,12 @@ sap.ui.define([
 					this.getView().byId("cmbRegionalSupplyChainManager").setSelectedKey("-1");
 					this.getView().byId("cmbRegionalSupplyChainManager").setEnabled(false);
 					this.getView().byId("cmbRegionalSupplyChainManager").setValueState(sap.ui.core.ValueState.Warning);
+					this.getView().byId("btnSearchRegSupplyChainManager").setEnabled(false);
 				}
 				else{
 					this.getView().byId("cmbRegionalSupplyChainManager").setEnabled(true);
 					this.getView().byId("cmbRegionalSupplyChainManager").setValueState(sap.ui.core.ValueState.None);
+					this.getView().byId("btnSearchRegSupplyChainManager").setEnabled(true);
 				}
 			}
 			else if (sourceControlName === "chkSupplyChainManager")
@@ -465,10 +479,12 @@ sap.ui.define([
 					this.getView().byId("cmbSupplyChainManager").setSelectedKey("-1");
 					this.getView().byId("cmbSupplyChainManager").setEnabled(false);
 					this.getView().byId("cmbSupplyChainManager").setValueState(sap.ui.core.ValueState.Warning);
+					this.getView().byId("btnSupplyChainManager").setEnabled(false);
 				}
 				else{
 					this.getView().byId("cmbSupplyChainManager").setEnabled(true);
 					this.getView().byId("cmbSupplyChainManager").setValueState(sap.ui.core.ValueState.None);
+					this.getView().byId("btnSupplyChainManager").setEnabled(true);
 				}
 			}
 			else if (sourceControlName === "chkSupplyChainPlanningSpecialist")
@@ -478,10 +494,12 @@ sap.ui.define([
 					this.getView().byId("cmbSupplyChainPlanningSpecialist").setSelectedKey("-1");
 					this.getView().byId("cmbSupplyChainPlanningSpecialist").setEnabled(false);
 					this.getView().byId("cmbSupplyChainPlanningSpecialist").setValueState(sap.ui.core.ValueState.Warning);
+					this.getView().byId("btnSupplyChainPlanningSpecialist").setEnabled(false);
 				}
 				else{
 					this.getView().byId("cmbSupplyChainPlanningSpecialist").setEnabled(true);
 					this.getView().byId("cmbSupplyChainPlanningSpecialist").setValueState(sap.ui.core.ValueState.None);
+					this.getView().byId("btnSupplyChainPlanningSpecialist").setEnabled(true);
 				}
 			}
 		},
