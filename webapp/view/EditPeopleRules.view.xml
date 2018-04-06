@@ -126,7 +126,7 @@
 									</f:FormElement>	
 									<f:FormElement label="{i18n>HDR_SUPPLY_CHAIN_PLANNING_SPECIALIST}{i18n>mandatory}" id="felmSupplyChainPlanningSpecialist" visible="{/showSupplyChainPlanningSpecialist}">
 										<FlexBox renderType="Bare">
-											<ComboBox id="cmbSupplyChainPlanningSpecialist" name="cmbSupplyChainManager" showSecondaryValues= "true" filterSecondaryValues= "true"
+											<ComboBox id="cmbSupplyChainPlanningSpecialist" name="cmbSupplyChainPlanningSpecialist" showSecondaryValues= "true" filterSecondaryValues= "true"
 												selectedKey="{/SUPPLY_CHAIN_PLANNING_SPECIALIST_ID}" value="{/SUPPLY_CHAIN_PLANNING_SPECIALIST_NAME}" width="500px"
 												items="{
 													path: '/SUPPLY_CHAIN_PLANNING_SPECIALIST',
