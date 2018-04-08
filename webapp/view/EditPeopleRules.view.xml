@@ -20,7 +20,7 @@
 						<f:formContainers>
 							<f:FormContainer title="{i18n>editPeopleRules}" id="fConEditPeopleRules" >
 								<f:formElements>
-									<f:FormElement label="{i18n>HDR_GLOBAL_LEADER}{i18n>mandatory}" id="felmDemandManager" visible="{/showDemandManager}">
+									<f:FormElement label="{i18n>DEMAND_MANAGER}{i18n>mandatory}" id="felmDemandManager" visible="{/showDemandManager}">
 										<FlexBox renderType="Bare">
 											<ComboBox id="cmbDemandManager" name="cmbDemandManager" showSecondaryValues= "true" filterSecondaryValues= "true"
 												selectedKey="{/DEMAND_MANAGER_ID}" value="{/DEMAND_MANAGER_NAME}" width="500px"
