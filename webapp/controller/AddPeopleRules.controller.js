@@ -1250,7 +1250,7 @@ sap.ui.define([
 					selectedDropDown = this._oViewModelData.AssignPeopleRuleVM.ProductManager;
 				}
 				else if(this._searchColumn === "RegSupplyChainManager"){
-					selectedDropDown = this._oViewModelData.AssignPeopleRuleVM.RegSupplyChainManager;
+					selectedDropDown = this._oViewModelData.AssignPeopleRuleVM.RegionalSupplyChainManager;
 				}
 				else if(this._searchColumn === "SupplyChainManager"){
 					selectedDropDown = this._oViewModelData.AssignPeopleRuleVM.SupplyChainManager;
