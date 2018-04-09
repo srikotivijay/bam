@@ -11,7 +11,7 @@
 				    <f:formContainers>
 				        <f:FormContainer title="{i18n>editCURules}" id="fConEditCURules">
 				            <f:formElements>
-				                <f:FormElement label="{i18n>cu}{i18n>mandatory}" id="felmCU">
+				                <f:FormElement label="{i18n>cu}" id="felmCU">
 				                	<ComboBox
 										id="cmbCU"
 										name="cmbCU"
@@ -29,7 +29,7 @@
 									</ComboBox>
 								   <CheckBox id="chkCU1" name="chkCU1" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_RCU}" tooltip="{i18n>updateNullTooltip}" />
 				                </f:FormElement>
-				                <f:FormElement label="{i18n>subCU}{i18n>mandatory}" id="felmSubCU">
+				                <f:FormElement label="{i18n>subCU}" id="felmSubCU">
 				                    <ComboBox
 										id="cmbSubCU"
 										name="cmbSubCU"

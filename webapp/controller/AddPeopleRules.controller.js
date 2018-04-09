@@ -57,7 +57,7 @@ sap.ui.define([
 				    // Assigning view model for the page
 				    this._oModel = new sap.ui.model.json.JSONModel({AssignPeopleRuleVM : initData});
 				    // Create table model, set size limit to 300, add an empty row
-				    this._oModel.setSizeLimit(2000);
+				    this._oModel.setSizeLimit(20000);
 				    // define a global variable for the view model, the view model data and oData model
 				    this._oAssignPeopleRuleViewModel = this._oModel;
 				    this._oViewModelData = this._oAssignPeopleRuleViewModel.getData();
@@ -286,6 +286,9 @@ sap.ui.define([
 			// bind the geo level dropdown based on rule
 			if (selectedRulekey !== "-1")
 			{
+				this._oModel.oData.AssignPeopleRuleVM.Product = [];
+				// var ProductProperty = this._oModel.getProperty("/AssignPeopleRuleVM/Product");
+				// ProductProperty = [];
 				this._oModel.setProperty("/Geography",this.getGeoLevelDropDown(geoLevel));
 				this._oModel.setProperty("/AssignPeopleRuleVM/Product",this.getProductLevelDropDown(productLevel));
 				//
@@ -380,6 +383,9 @@ sap.ui.define([
 				              	"NAME":"ALL"});				
 			}
 	    	return result;
+		},
+		handleLoadItems: function(oControlEvent) {
+			oControlEvent.getSource().getBinding("items").resume();
 		},
 		getProductLevelDropDown : function (productLevel) {
 			var result;

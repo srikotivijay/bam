@@ -301,6 +301,7 @@ sap.ui.define([
 		applyRules : function(){
 			var curr = this;
 			var applyPeopleRule = this._oi18nModel.getProperty("applypeoplerule");
+			var ruleApplySuccess = this._oi18nModel.getProperty("applypeoplerulesuccessmessage"); 
 			var notStarted = this._oi18nModel.getProperty("notstarted");
 			 // Get the Application Activity id for Apply Rules
     	    var appActivityID = DataContext.getApplicationActivityID(applyPeopleRule);
@@ -318,7 +319,7 @@ sap.ui.define([
 						merge: true,
 			        	// show success alert to the user
 					    success: function(){
-							MessageBox.alert("Rules Applied successfully.",
+							MessageBox.alert(ruleApplySuccess,
 								{
 									icon : MessageBox.Icon.SUCCESS,
 									title : "Success",

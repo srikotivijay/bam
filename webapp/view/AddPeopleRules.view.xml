@@ -66,8 +66,10 @@
 											width="500px"
 											items="{
 												path: '/AssignPeopleRuleVM/Product',
-												templateShareable : true
+												templateShareable : true,
+												suspended: true
 											}"
+											loadItems="handleLoadItems"
 											visible="{path: 'createNew', formatter: '.disableControl'}"
 									 	    valueState="{productErrorState}">
 										<core:ListItem key="{PRODUCT_CODE}" text="{PRODUCT_DESC}" additionalText="{PRODUCT_CODE}"/>

@@ -8,16 +8,15 @@
 					<HBox>
 						<Label class="boldFont" text="* To upload GMID/Country combination from a file, download the template and enter the data in Excel, save as a CSV file then browse and upload."></Label>
 					</HBox>
-					<HBox alignItems="Center">
+					<HBox alignItems="Center" wrap="Wrap" >
 						<Text id="lblSubmitGMIDFor" text="{i18n>submitGMIDFor}" wrapping="false"/>
-						<RadioButtonGroup id="rbgGMIDType" width="100%" columns="4" select="fnGridShow" selectedIndex="-1">
+						<RadioButtonGroup id="rbgGMIDType"  columns="3" select="fnGridShow" selectedIndex="-1" class="sapUiSmallMarginEnd">
 					    	<buttons>
 					        	<RadioButton id="rBtnCropProtection" text="{i18n>cropProtection}" groupName="rbgGMIDType"/>
 					        	<RadioButton id="rBtnCropProtectionDuPont" text="{i18n>cropProtectionDuPont}"/>
 					        	<RadioButton id="rBtnSeeds" text="{i18n>seeds}" groupName="rbgGMIDType"/>
 					        </buttons>
 						</RadioButtonGroup>
-						<Label class="sapUiLargeMarginEnd" text=""></Label>
 						<HBox visible="true" id="excelHBox">
 							<u:FileUploader id="excelFileUploader" width="300px" sameFilenameAllowed="false" buttonText="" fileType="CSV" placeholder="Choose a CSV file" style="Emphasized" class="sapUiSmallMarginEnd">
 							</u:FileUploader>
