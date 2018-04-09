@@ -804,30 +804,48 @@ sap.ui.define([
 				var selectedDropDown;
 				if(this._searchColumn === "DemandManager"){
 					selectedDropDown = this._oViewModelData.DEMAND_MANAGER; //AssignPeopleRuleVM.DemandManager;
+					this.getView().byId("cmbDemandManager").setValueStateText("Attribute value changed");
+					this.getView().byId("cmbDemandManager").setValueState(sap.ui.core.ValueState.Warning);
 				}
 				else if(this._searchColumn === "GlobalLeader"){
 					selectedDropDown = this._oViewModelData.GLOBAL_LEADER;
+					this.getView().byId("cmbGlobalLeader").setValueStateText("Attribute value changed");
+					this.getView().byId("cmbGlobalLeader").setValueState(sap.ui.core.ValueState.Warning);
 				}
 				else if(this._searchColumn === "MarketingDirector"){
 					selectedDropDown = this._oViewModelData.MARKETING_DIRECTOR;
+					this.getView().byId("cmbMarketingDirector").setValueStateText("Attribute value changed");
+					this.getView().byId("cmbMarketingDirector").setValueState(sap.ui.core.ValueState.Warning);
 				}
 				else if(this._searchColumn === "MarketingManager"){
 					selectedDropDown = this._oViewModelData.MARKETING_MANAGER;
+					this.getView().byId("cmbMarketingManager").setValueStateText("Attribute value changed");
+					this.getView().byId("cmbMarketingManager").setValueState(sap.ui.core.ValueState.Warning);
 				}
 				else if(this._searchColumn === "MasterPlanner"){
 					selectedDropDown = this._oViewModelData.MASTER_PLANNER;
+					this.getView().byId("cmbMasterPlanner").setValueStateText("Attribute value changed");
+					this.getView().byId("cmbMasterPlanner").setValueState(sap.ui.core.ValueState.Warning);
 				}
 				else if(this._searchColumn === "ProductManager"){
 					selectedDropDown = this._oViewModelData.PRODUCT_MANAGER;
+					this.getView().byId("cmbProductManager").setValueStateText("Attribute value changed");
+					this.getView().byId("cmbProductManager").setValueState(sap.ui.core.ValueState.Warning);
 				}
 				else if(this._searchColumn === "RegSupplyChainManager"){
 					selectedDropDown = this._oViewModelData.REGIONAL_SUPPLY_CHAIN_MANAGER;
+					this.getView().byId("cmbRegionalSupplyChainManager").setValueStateText("Attribute value changed");
+					this.getView().byId("cmbRegionalSupplyChainManager").setValueState(sap.ui.core.ValueState.Warning);
 				}
 				else if(this._searchColumn === "SupplyChainManager"){
 					selectedDropDown = this._oViewModelData.SUPPLY_CHAIN_MANAGER;
+					this.getView().byId("cmbSupplyChainManager").setValueStateText("Attribute value changed");
+					this.getView().byId("cmbSupplyChainManager").setValueState(sap.ui.core.ValueState.Warning);
 				}
 				else if(this._searchColumn === "SupplyChainPlanningSpecialist"){
 					selectedDropDown = this._oViewModelData.SUPPLY_CHAIN_PLANNING_SPECIALIST;
+					this.getView().byId("cmbSupplyChainPlanningSpecialist").setValueStateText("Attribute value changed");
+					this.getView().byId("cmbSupplyChainPlanningSpecialist").setValueState(sap.ui.core.ValueState.Warning);
 				}
 				
 				for(var j =0 ; j< selectedUser.length; j++){
