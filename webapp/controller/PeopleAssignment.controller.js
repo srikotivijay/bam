@@ -96,7 +96,7 @@ sap.ui.define([
 					}
 				}
 				oSmartTable.setIgnoredFields(ignorableColumns);
-				oSmartTable.setInitiallyVisibleFields(initiallyVisibleColumns);
+				//oSmartTable.setInitiallyVisibleFields(initiallyVisibleColumns);
 				//Analytical Table embedded into SmartTable
 				var oTable = oSmartTable.getTable(); 
 				oTable.setEnableColumnFreeze(true);
