@@ -35,20 +35,20 @@
 											<CheckBox id="chkDemandManager" name="chkDemandManager" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_DEMAND_MANAGER}" tooltip="{i18n>updateNullTooltip}"   class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
 										</FlexBox>
 									</f:FormElement>
-									<f:FormElement label="{i18n>HDR_GLOBAL_LEADER}" id="felmGlobalLeader" visible="{/showGlobalLeader}">
+									<f:FormElement label="{i18n>PRODUCT_MANAGER}" id="felmProductManager" visible="{/showProductManager}">
 										<FlexBox renderType="Bare">
-											<ComboBox id="cmbGlobalLeader" name="cmbGlobalLeader" showSecondaryValues= "true" filterSecondaryValues= "true"
-												selectedKey="{/GLOBAL_LEADER_ID}" value="{/GLOBAL_LEADER_NAME}" width="500px"
+											<ComboBox id="cmbProductManager" name="cmbProductManager" showSecondaryValues= "true" filterSecondaryValues= "true"
+												selectedKey="{/PRODUCT_MANAGER_ID}" value="{/PRODUCT_MANAGER_NAME}" width="500px"
 												items="{
-													path: '/GLOBAL_LEADER',
+													path: '/PRODUCT_MANAGER',
 													templateShareable : true}"
 												change = "onChange">
 												<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
 											</ComboBox>
-											<Button id="btnSearchGlobalLeader" icon="sap-icon://search" press="onSearch" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
-											<CheckBox id="chkGlobalLeader" name="chkGlobalLeader" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_GLOBAL_LEADER}" tooltip="{i18n>updateNullTooltip}" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
+											<Button id="btnSearchProductManager" icon="sap-icon://search" press="onSearch" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
+											<CheckBox id="chkProductManager" name="chkProductManager" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_PRODUCT_MANAGER}" tooltip="{i18n>updateNullTooltip}" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
 										</FlexBox>
-									</f:FormElement>		
+									</f:FormElement>
 									<f:FormElement label="{i18n>HDR_MARKETING_DIRECTOR}" id="felmMarketingDirector" visible="{/showMarketingDirector}">
 										<FlexBox renderType="Bare">
 											<ComboBox id="cmbMarketingDirector" name="cmbMarketingDirector" showSecondaryValues= "true" filterSecondaryValues= "true"
@@ -76,33 +76,19 @@
 											<Button id="btnSearchMarketingManager" icon="sap-icon://search" press="onSearch" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
 											<CheckBox id="chkMarketingManager" name="chkMarketingManager" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_MARKETING_MANAGER}" tooltip="{i18n>updateNullTooltip}" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
 										</FlexBox>
-									</f:FormElement>	
-									<f:FormElement label="{i18n>MASTER_PLANNER}" id="felmMasterPlanner" visible="{/showMasterPlanner}">
-										<FlexBox renderType="Bare">
-											<ComboBox id="cmbMasterPlanner" name="cmbMasterPlanner" showSecondaryValues= "true" filterSecondaryValues= "true"
-												selectedKey="{/MASTER_PLANNER_ID}" value="{/MASTER_PLANNER_NAME}" width="500px"
-												items="{
-													path: '/MASTER_PLANNER',
-													templateShareable : true}"
-												change = "onChange">
-												<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
-											</ComboBox>
-											<Button id="btnSearchMasterPlanner" icon="sap-icon://search" press="onSearch" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
-											<CheckBox id="chkMasterPlanner" name="chkMasterPlanner" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_MASTER_PLANNER}" tooltip="{i18n>updateNullTooltip}" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
-										</FlexBox>
 									</f:FormElement>
-									<f:FormElement label="{i18n>PRODUCT_MANAGER}" id="felmProductManager" visible="{/showProductManager}">
+									<f:FormElement label="{i18n>HDR_SUPPLY_CHAIN_MANAGER}" id="felmSupplyChainManager" visible="{/showSupplyChainManager}">
 										<FlexBox renderType="Bare">
-											<ComboBox id="cmbProductManager" name="cmbProductManager" showSecondaryValues= "true" filterSecondaryValues= "true"
-												selectedKey="{/PRODUCT_MANAGER_ID}" value="{/PRODUCT_MANAGER_NAME}" width="500px"
+											<ComboBox id="cmbSupplyChainManager" name="cmbSupplyChainManager" showSecondaryValues= "true" filterSecondaryValues= "true"
+												selectedKey="{/SUPPLY_CHAIN_MANAGER_ID}" value="{/SUPPLY_CHAIN_MANAGER_NAME}" width="500px"
 												items="{
-													path: '/PRODUCT_MANAGER',
+													path: '/SUPPLY_CHAIN_MANAGER',
 													templateShareable : true}"
 												change = "onChange">
 												<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
 											</ComboBox>
-											<Button id="btnSearchProductManager" icon="sap-icon://search" press="onSearch" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
-											<CheckBox id="chkProductManager" name="chkProductManager" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_PRODUCT_MANAGER}" tooltip="{i18n>updateNullTooltip}" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
+											<Button id="btnSupplyChainManager" icon="sap-icon://search" press="onSearch" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
+											<CheckBox id="chkSupplyChainManager" name="chkSupplyChainManager" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_SUPPLY_CHAIN_MANAGER}" tooltip="{i18n>updateNullTooltip}" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
 										</FlexBox>
 									</f:FormElement>
 									<f:FormElement label="{i18n>REG_SUPPLY_CHAIN_MANAGER}" id="felmRegionalSupplyChainManager" visible="{/showRegionalSupplychainManager}">
@@ -119,20 +105,6 @@
 											<CheckBox id="chkRegionalSupplyChainManager" name="chkRegionalSupplyChainManager" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_REGIONAL_SUPPLY_CHAIN_MANAGER}" tooltip="{i18n>updateNullTooltip}" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
 										</FlexBox>
 									</f:FormElement>
-									<f:FormElement label="{i18n>HDR_SUPPLY_CHAIN_MANAGER}" id="felmSupplyChainManager" visible="{/showSupplyChainManager}">
-										<FlexBox renderType="Bare">
-											<ComboBox id="cmbSupplyChainManager" name="cmbSupplyChainManager" showSecondaryValues= "true" filterSecondaryValues= "true"
-												selectedKey="{/SUPPLY_CHAIN_MANAGER_ID}" value="{/SUPPLY_CHAIN_MANAGER_NAME}" width="500px"
-												items="{
-													path: '/SUPPLY_CHAIN_MANAGER',
-													templateShareable : true}"
-												change = "onChange">
-												<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
-											</ComboBox>
-											<Button id="btnSupplyChainManager" icon="sap-icon://search" press="onSearch" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
-											<CheckBox id="chkSupplyChainManager" name="chkSupplyChainManager" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_SUPPLY_CHAIN_MANAGER}" tooltip="{i18n>updateNullTooltip}" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
-										</FlexBox>
-									</f:FormElement>	
 									<f:FormElement label="{i18n>HDR_SUPPLY_CHAIN_PLANNING_SPECIALIST}" id="felmSupplyChainPlanningSpecialist" visible="{/showSupplyChainPlanningSpecialist}">
 										<FlexBox renderType="Bare">
 											<ComboBox id="cmbSupplyChainPlanningSpecialist" name="cmbSupplyChainPlanningSpecialist" showSecondaryValues= "true" filterSecondaryValues= "true"
@@ -147,6 +119,34 @@
 											<CheckBox id="chkSupplyChainPlanningSpecialist" name="chkSupplyChainPlanningSpecialist" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_SUPPLY_CHAIN_PLANNING_SPECIALIST}" tooltip="{i18n>updateNullTooltip}" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
 										</FlexBox>
 									</f:FormElement>
+									<f:FormElement label="{i18n>MASTER_PLANNER}" id="felmMasterPlanner" visible="{/showMasterPlanner}">
+										<FlexBox renderType="Bare">
+											<ComboBox id="cmbMasterPlanner" name="cmbMasterPlanner" showSecondaryValues= "true" filterSecondaryValues= "true"
+												selectedKey="{/MASTER_PLANNER_ID}" value="{/MASTER_PLANNER_NAME}" width="500px"
+												items="{
+													path: '/MASTER_PLANNER',
+													templateShareable : true}"
+												change = "onChange">
+												<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
+											</ComboBox>
+											<Button id="btnSearchMasterPlanner" icon="sap-icon://search" press="onSearch" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
+											<CheckBox id="chkMasterPlanner" name="chkMasterPlanner" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_MASTER_PLANNER}" tooltip="{i18n>updateNullTooltip}" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
+										</FlexBox>
+									</f:FormElement>
+									<f:FormElement label="{i18n>HDR_GLOBAL_LEADER}" id="felmGlobalLeader" visible="{/showGlobalLeader}">
+										<FlexBox renderType="Bare">
+											<ComboBox id="cmbGlobalLeader" name="cmbGlobalLeader" showSecondaryValues= "true" filterSecondaryValues= "true"
+												selectedKey="{/GLOBAL_LEADER_ID}" value="{/GLOBAL_LEADER_NAME}" width="500px"
+												items="{
+													path: '/GLOBAL_LEADER',
+													templateShareable : true}"
+												change = "onChange">
+												<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
+											</ComboBox>
+											<Button id="btnSearchGlobalLeader" icon="sap-icon://search" press="onSearch" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
+											<CheckBox id="chkGlobalLeader" name="chkGlobalLeader" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_GLOBAL_LEADER}" tooltip="{i18n>updateNullTooltip}" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
+										</FlexBox>
+									</f:FormElement>		
 								</f:formElements>
 							</f:FormContainer>
 						</f:formContainers>					
