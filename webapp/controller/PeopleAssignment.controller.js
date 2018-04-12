@@ -65,7 +65,6 @@ sap.ui.define([
 						{
 							hasEditPermission = true;
 						}
-						break;
 				}
 			}
 			//
@@ -77,8 +76,8 @@ sap.ui.define([
 			}
 			else{
 				this._oModel = new sap.ui.model.json.JSONModel();
-				this.getView().setModel(this._oModel,"PeopleAssignmentVM");
 				this._oModel.setProperty("/showEditButton",hasEditPermission);
+				this.getView().setModel(this._oModel,"PeopleAssignmentVM");
 				this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
 				//remove the selection column
 				var oSmartTable = this.getView().byId("smartTblPeopleAssignment");     //Get Hold of smart table
@@ -100,8 +99,6 @@ sap.ui.define([
 				//Analytical Table embedded into SmartTable
 				var oTable = oSmartTable.getTable(); 
 				oTable.setEnableColumnFreeze(true);
-				//oSmartTable.rebindTable();
-				//oTable.getColumns();
 				if(firstTimePageLoad === false){
 					this.getOwnerComponent().getModel().refresh(true);
 				}
@@ -151,7 +148,7 @@ sap.ui.define([
                     filters : filter,
                         and : false
                     });
-            if(aFilters.length > 0 && aFilters[0].aFilters != undefined){
+            if(aFilters.length > 0 && aFilters[0].aFilters !== undefined){
             	aFilters[0].bAnd = true;
             	aFilters[0].aFilters.push(gmidFilterList);
             }

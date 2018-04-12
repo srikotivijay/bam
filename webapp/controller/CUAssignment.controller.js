@@ -29,12 +29,16 @@ sap.ui.define([
 			var maintainRule = this._oi18nModel.getProperty("Module.maintainRules");
 			var permissions = DataContext.getUserPermissions();
 			var hasAccess = false;
+			var hasEditPermission = false;
 			for(var i = 0; i < permissions.length; i++)
 			{
 				if(permissions[i].ATTRIBUTE === maintainRule)
 				{
 						hasAccess = true;
-						break;
+						if(permissions[i].ACTION === "ADD" || permissions[i].ACTION === "EDIT")
+						{
+							hasEditPermission = true;
+						}
 				}
 			}
 			//
@@ -46,8 +50,8 @@ sap.ui.define([
 			}
 			else{
 				this._oModel = new sap.ui.model.json.JSONModel();
+				this._oModel.setProperty("/showEditButton",hasEditPermission);
 				this.getView().setModel(this._oModel,"CUAssignmentVM");
-				this._oModel.setProperty("/showEditButton",true);
 				this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
 				//remove the selection column
 				var oSmartTable = this.getView().byId("smartTblCUAssignment");     //Get Hold of smart table

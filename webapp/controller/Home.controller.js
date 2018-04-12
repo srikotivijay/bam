@@ -23,6 +23,8 @@ sap.ui.define([
 				// hide the GMID Submission tile by default, if the user has no roles then we hide the tile
 				oModel.setProperty("/showGMIDSubmission",false);   
 				oModel.setProperty("/showMaintainRule",false);
+				oModel.setProperty("/showMaintainAttribute",false);
+				oModel.setProperty("/showPlantAssignment",false);
 				
 				var oi18nModel = new ResourceModel({
 	                bundleName: "bam.i18n.i18n"
@@ -31,6 +33,8 @@ sap.ui.define([
 	        	 // get the Module settings for i18n model
 	        	 var gmidSubmission = oi18nModel.getProperty("Module.gmidSubmission");
 	        	 var maintainRule = oi18nModel.getProperty("Module.maintainRules");
+	        	 var maintainAttributes = oi18nModel.getProperty("Module.maintainAttributes");
+	        	 var plantAssignment = oi18nModel.getProperty("Module.plantAssignment");
 	        	 var demandManagerAssigner = oi18nModel.getProperty("Module.demandManagerAssigner");
 	        	 var globalLeaderAssigner = oi18nModel.getProperty("Module.globalLeaderAssigner");
 	        	 var marketingDirectorAssigner = oi18nModel.getProperty("Module.marketingDirectorAssigner");
@@ -57,6 +61,29 @@ sap.ui.define([
 						break;
 					}
 				}
+				//
+				// Checking maintain Attributes
+				for(var k = 0; k < permissions.length; k++)
+				{
+					if(permissions[k].ATTRIBUTE === maintainAttributes)
+					{
+						oModel.setProperty("/showMaintainAttribute",true);
+						// break since the user may have more than one role, as long as one of the user roles has permission we can show the tile
+						break;
+					}
+				}
+				//
+				// Checking maintain Attributes
+				for(var l = 0; l < permissions.length; l++)
+				{
+					if(permissions[l].ATTRIBUTE === plantAssignment)
+					{
+						oModel.setProperty("/showPlantAssignment",true);
+						// break since the user may have more than one role, as long as one of the user roles has permission we can show the tile
+						break;
+					}
+				}
+				
 				for(var j = 0; j  < permissions.length; j++)
 				{
 					if(permissions[j].ATTRIBUTE === maintainRule ||
