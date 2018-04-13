@@ -1177,7 +1177,7 @@ sap.ui.define([
 					var strCSV = event.target.result;
 				   
 					var headerRow = ["GMID", "COUNTRY_CODE_ID", "CURRENCY_CODE_ID","IBP_RELEVANCY_CODE_ID",
-					"NETTING_DEFAULT_CODE_ID","QUADRANT_CODE_ID","CHANNEL_CODE_ID","MARKET_DEFAULT_CODE_ID"];
+					"NETTING_DEFAULT_CODE_ID","QUADRANT_CODE_ID","CHANNEL_CODE_ID","CONSENSUS_DEFAULT_CODE_ID"];
 	
 			        var allTextLines = strCSV.split(/\r\n|\n/);
 			        var excelColumnHeaders = allTextLines[0].split(",");
@@ -1226,7 +1226,8 @@ sap.ui.define([
 		                var oNettingDefault = t._oi18nModel.getProperty("eNettingDefault");
 		                var oQuadrant = t._oi18nModel.getProperty("eQuadrant");
 		                var oChannel = t._oi18nModel.getProperty("eChannel");
-		                var oMarketDefault = t._oi18nModel.getProperty("eMarketDefault");
+		                //var oMarketDefault = t._oi18nModel.getProperty("eMarketDefault");
+		                var oConsensusDefault = t._oi18nModel.getProperty("eConsensusDefault");
 		                
 			            if (excelColumnHeaders[0] !== oGMID)
 			            {
@@ -1291,9 +1292,9 @@ sap.ui.define([
 							});
 			                 validHeadersFlag = false;
 			    		}
-			    	    else if (excelColumnHeaders[7] !== oMarketDefault)
+			    	    else if (excelColumnHeaders[7] !== oConsensusDefault)
 			    		{
-			    			MessageBox.alert("Incorrect template format found. The eight column should be:  Market Default Flag",
+			    			MessageBox.alert("Incorrect template format found. The eight column should be:  Consensus Default Flag",
 							{
 								icon : MessageBox.Icon.ERROR,
 								title : "Error"
