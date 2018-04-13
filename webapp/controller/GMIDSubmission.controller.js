@@ -715,6 +715,7 @@ sap.ui.define([
             	data[i].quadrantErrorState = "None";
             	data[i].channelErrorState = "None";
             	data[i].marketDefaultErrorState = "None";
+            	data[i].consensusDefaultErrorState = "None";
             }
             this._oGMIDShipToCountryViewModel.refresh();
         },
@@ -752,7 +753,7 @@ sap.ui.define([
 	        				if(this._oSelectedGMIDType === this._oSeed){
 			        			if ((GMIDShipToCountry[i].GMID !== "") || (parseInt(GMIDShipToCountry[i].COUNTRY_CODE_ID,10) !== -1) || (parseInt(GMIDShipToCountry[i].CURRENCY_CODE_ID,10) !== -1) || (parseInt(GMIDShipToCountry[i].IBP_RELEVANCY_CODE_ID,10) !== this._defaultIBPRelevancy)
 			        		    ||	(parseInt(GMIDShipToCountry[i].NETTING_DEFAULT_CODE_ID,10) !== -1)|| (parseInt(GMIDShipToCountry[i].QUADRANT_CODE_ID,10) !== this._defaultQuadrantForSeed) 
-			        		    || (parseInt(GMIDShipToCountry[i].CHANNEL_CODE_ID,10) !== this._defaultChannelForSeed) || (parseInt(GMIDShipToCountry[i].MARKET_DEFAULT_CODE_ID,10) !== this._defaultConsensusFlag))
+			        		    || (parseInt(GMIDShipToCountry[i].CHANNEL_CODE_ID,10) !== this._defaultChannelForSeed) || (parseInt(GMIDShipToCountry[i].CONSENSUS_DEFAULT_CODE_ID,10) !== this._defaultConsensusFlag))
 			        		    {
 			        		    	isModified = true;
 			        		    	break;
@@ -762,7 +763,7 @@ sap.ui.define([
 				        	{
 			        			if ((GMIDShipToCountry[i].GMID !== "") || (parseInt(GMIDShipToCountry[i].COUNTRY_CODE_ID,10) !== -1) || (parseInt(GMIDShipToCountry[i].CURRENCY_CODE_ID,10) !== -1) || (parseInt(GMIDShipToCountry[i].IBP_RELEVANCY_CODE_ID,10) !== this._defaultIBPRelevancy)
 			        		    ||	(parseInt(GMIDShipToCountry[i].NETTING_DEFAULT_CODE_ID,10) !== -1) || (parseInt(GMIDShipToCountry[i].QUADRANT_CODE_ID,10) !== -1)	|| (parseInt(GMIDShipToCountry[i].CHANNEL_CODE_ID,10) !== -1)
-			        		    || (parseInt(GMIDShipToCountry[i].MARKET_DEFAULT_CODE_ID,10) !== this._defaultConsensusFlag))
+			        		    || (parseInt(GMIDShipToCountry[i].CONSENSUS_DEFAULT_CODE_ID,10) !== this._defaultConsensusFlag))
 			        		     {
 			        		    	isModified = true;
 			        		    	break;
