@@ -60,8 +60,8 @@ sap.ui.define([
         		"quadrantErrorState": "None",
         		"CHANNEL_CODE_ID": -1,
         		"channelErrorState": "None",
-        		"MARKET_DEFAULT_CODE_ID": -1,
-        		"marketDefaultErrorState": "None",
+        		"CONSENSUS_DEFAULT_CODE_ID": -1,
+        		"consensusDefaultErrorState": "None",
         		"SUPPLY_SYSTEM_FLAG_CODE_ID": -1,
         		"createNew" : false,
         		"isError":false
@@ -98,8 +98,9 @@ sap.ui.define([
 	    	oModel.setProperty("/GMIDShipToCountryVM/NettingDefaultFlag",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddNettingDefaultFlag")));
 	    	oModel.setProperty("/GMIDShipToCountryVM/Quadrant",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddQuadrant")));
 	    	oModel.setProperty("/GMIDShipToCountryVM/Channel",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddChannel")));
-	    	oModel.setProperty("/GMIDShipToCountryVM/MarketDefaultFlag",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddMarketDefault")));
+	    	oModel.setProperty("/GMIDShipToCountryVM/ConsensusDefaultFlag",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddConsensusDefault")));
 	    	oModel.setProperty("/GMIDShipToCountryVM/SupplySystemFlag",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddSupplySystemFlag")));
+	    	oModel.setProperty("/GMIDShipToCountryVM/MarketDefaultFlag",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddMarketDefault")));
 
 	    	// attach _onRouteMatched to be called everytime on navigation to Maintain Attributes page
 	    	// do not attach again if this is not the first time loading the page, if we attach it again performance is affected
@@ -230,8 +231,8 @@ sap.ui.define([
 	        				quadrantErrorState: "None",
 	        				CHANNEL_CODE_ID:this._defaultChannelForSeed,
 	        				channelErrorState: "None",
-	        				MARKET_DEFAULT_CODE_ID:-1,
-	        				marketDefaultErrorState: "None",
+	        				CONSENSUS_DEFAULT_CODE_ID:this._defaultConsensusFlag,
+	        				consensusDefaultErrorState: "None",
 	        				SUPPLY_SYSTEM_FLAG_CODE_ID: -1,
 	        				createNew: false,
 		    				isError: false
@@ -414,9 +415,9 @@ sap.ui.define([
             	row.channelErrorState = "Error";
             	errorsFound = true;
             }
-            if(parseInt(row.MARKET_DEFAULT_CODE_ID,10) === -1)
+            if(parseInt(row.CONSENSUS_DEFAULT_CODE_ID,10) === -1)
             {
-            	row.marketDefaultErrorState = "Error";
+            	row.consensusDefaultErrorState = "Error";
             	errorsFound = true;
             }
             if(parseInt(row.CURRENCY_CODE_ID,10) === -1)
@@ -435,7 +436,7 @@ sap.ui.define([
 	        	if(this._oSelectedGMIDType === this._oSeed){
 	        			if ((row.GMID === "") && (parseInt(row.COUNTRY_CODE_ID,10) === -1) && (parseInt(row.CURRENCY_CODE_ID,10) === -1)&& (parseInt(row.IBP_RELEVANCY_CODE_ID,10) === this._defaultIBPRelevancy)
 	        		    &&	(parseInt(row.NETTING_DEFAULT_CODE_ID,10) === -1) && (parseInt(row.QUADRANT_CODE_ID,10) === this._defaultQuadrantForSeed) 
-	        		    && (parseInt(row.CHANNEL_CODE_ID,10) === this._defaultChannelForSeed) && (parseInt(row.MARKET_DEFAULT_CODE_ID,10) === -1))
+	        		    && (parseInt(row.CHANNEL_CODE_ID,10) === this._defaultChannelForSeed) && (parseInt(row.CONSENSUS_DEFAULT_CODE_ID,10) === this._defaultConsensusFlag))
 	        		    {
 	        		    	errorsFound = false;
 	        		    	return errorsFound;
@@ -450,7 +451,7 @@ sap.ui.define([
 	        	{
 	        			if ((row.GMID === "") && (parseInt(row.COUNTRY_CODE_ID,10) === -1) && (parseInt(row.CURRENCY_CODE_ID,10) === -1) && (parseInt(row.IBP_RELEVANCY_CODE_ID,10) === this._defaultIBPRelevancy)
 	        		    &&	(parseInt(row.NETTING_DEFAULT_CODE_ID,10) === -1) && (parseInt(row.QUADRANT_CODE_ID,10) === -1)	&& (parseInt(row.CHANNEL_CODE_ID,10) === -1)
-	        		    && (parseInt(row.MARKET_DEFAULT_CODE_ID,10) === this._defaultMarketingFlagForCP))
+	        		    && (parseInt(row.CONSENSUS_DEFAULT_CODE_ID,10) === this._defaultConsensusFlag))
 	        		     {
 	        		    	errorsFound = false;
 	        		    	return errorsFound;
@@ -751,7 +752,7 @@ sap.ui.define([
 	        				if(this._oSelectedGMIDType === this._oSeed){
 			        			if ((GMIDShipToCountry[i].GMID !== "") || (parseInt(GMIDShipToCountry[i].COUNTRY_CODE_ID,10) !== -1) || (parseInt(GMIDShipToCountry[i].CURRENCY_CODE_ID,10) !== -1) || (parseInt(GMIDShipToCountry[i].IBP_RELEVANCY_CODE_ID,10) !== this._defaultIBPRelevancy)
 			        		    ||	(parseInt(GMIDShipToCountry[i].NETTING_DEFAULT_CODE_ID,10) !== -1)|| (parseInt(GMIDShipToCountry[i].QUADRANT_CODE_ID,10) !== this._defaultQuadrantForSeed) 
-			        		    || (parseInt(GMIDShipToCountry[i].CHANNEL_CODE_ID,10) !== this._defaultChannelForSeed) || (parseInt(GMIDShipToCountry[i].MARKET_DEFAULT_CODE_ID,10) !== -1))
+			        		    || (parseInt(GMIDShipToCountry[i].CHANNEL_CODE_ID,10) !== this._defaultChannelForSeed) || (parseInt(GMIDShipToCountry[i].MARKET_DEFAULT_CODE_ID,10) !== this._defaultConsensusFlag))
 			        		    {
 			        		    	isModified = true;
 			        		    	break;
@@ -761,7 +762,7 @@ sap.ui.define([
 				        	{
 			        			if ((GMIDShipToCountry[i].GMID !== "") || (parseInt(GMIDShipToCountry[i].COUNTRY_CODE_ID,10) !== -1) || (parseInt(GMIDShipToCountry[i].CURRENCY_CODE_ID,10) !== -1) || (parseInt(GMIDShipToCountry[i].IBP_RELEVANCY_CODE_ID,10) !== this._defaultIBPRelevancy)
 			        		    ||	(parseInt(GMIDShipToCountry[i].NETTING_DEFAULT_CODE_ID,10) !== -1) || (parseInt(GMIDShipToCountry[i].QUADRANT_CODE_ID,10) !== -1)	|| (parseInt(GMIDShipToCountry[i].CHANNEL_CODE_ID,10) !== -1)
-			        		    || (parseInt(GMIDShipToCountry[i].MARKET_DEFAULT_CODE_ID,10) !== this._defaultMarketingFlagForCP))
+			        		    || (parseInt(GMIDShipToCountry[i].MARKET_DEFAULT_CODE_ID,10) !== this._defaultConsensusFlag))
 			        		     {
 			        		    	isModified = true;
 			        		    	break;
@@ -901,6 +902,18 @@ sap.ui.define([
 		    	    // Get the code id for GMID Country Status
 		    	    var gmidcountrystatusID = DataContext.getGMIDCountryStatusID();
 		    	    var strSubmission = t._oi18nModel.getProperty("submission");
+		    	    var mktFlagList = t._oGMIDShipToCountryViewModel.getProperty("/GMIDShipToCountryVM/MarketDefaultFlag");
+		    	    // prepare default values for market default for saving to database
+		    	    var defaultmarketflagcodeID;
+		    	      if(t._oSelectedGMIDType === t._oSeed)
+		    	      {
+		    	      	defaultmarketflagcodeID = mktFlagList.find(function(data){return data.CODE_KEY === "4"; }).ID;
+		    	      }
+		    	      else
+		    	      {
+		    	      	// for all others  i.e. DCP/DAS this is 0
+							defaultmarketflagcodeID = mktFlagList.find(function(data){return data.CODE_KEY === "0"; }).ID;
+		    	      }
 		    	    
 		    		// loop through the rows and for each row insert data into database
 		    		// each row contains GMID Ship To combination.
@@ -917,8 +930,9 @@ sap.ui.define([
 							var nettingdefaultID = parseInt(GMIDShipToCountry[i].NETTING_DEFAULT_CODE_ID,10);
 							var quadrantID = parseInt(GMIDShipToCountry[i].QUADRANT_CODE_ID,10);
 							var channelID = parseInt(GMIDShipToCountry[i].CHANNEL_CODE_ID,10);
-							var marketdefaultID = parseInt(GMIDShipToCountry[i].MARKET_DEFAULT_CODE_ID,10);
+							var marketdefaultID = parseInt(defaultmarketflagcodeID,10);
 							var supplySystemFlag = parseInt(GMIDShipToCountry[i].SUPPLY_SYSTEM_FLAG_CODE_ID,10);
+							var consensusdefaultID = parseInt(GMIDShipToCountry[i].CONSENSUS_DEFAULT_CODE_ID,10);
 							var createdBy = loggedInUserID;
 							// create new GMIDShipToCountry object
 							var newGMID = {
@@ -935,7 +949,8 @@ sap.ui.define([
 					        	TYPE: submitType,
 					        	GMID_COUNTRY_STATUS_CODE_ID: gmidcountrystatusID,
 					        	CREATED_ON: oDate,
-					        	CREATED_BY:createdBy
+					        	CREATED_BY:createdBy,
+					        	CONSENSUS_DEFAULT_CODE_ID : consensusdefaultID
 			    			};
 			    			
 			        		t._oDataModel.create(tablePath, newGMID,
@@ -1091,8 +1106,8 @@ sap.ui.define([
 			this._defaultChannelForSeed = channelList.find(function(data){return data.CODE_KEY === "N/A"; }).ID;
 			
 	    	// get default value's code id ('0 - Crop') for crop protection for Marketing Flag field and set to global variable
-	    	var mktFlagList = this._oGMIDShipToCountryViewModel.getProperty("/GMIDShipToCountryVM/MarketDefaultFlag");
-			this._defaultMarketingFlagForCP = mktFlagList.find(function(data){return data.CODE_KEY === "0"; }).ID; 
+	    	var mktFlagList = this._oGMIDShipToCountryViewModel.getProperty("/GMIDShipToCountryVM/ConsensusDefaultFlag");
+			this._defaultConsensusFlag = mktFlagList.find(function(data){return data.CODE_KEY === "3"; }).ID; 
 			
 			// get default value's code ids for seed and crop protection for Supply System flag and set to global variable
 	    	var supplySystemFlag = this._oGMIDShipToCountryViewModel.getProperty("/GMIDShipToCountryVM/SupplySystemFlag");
@@ -1102,16 +1117,15 @@ sap.ui.define([
         // set the default property values for the passed object
         setDefaultPropertyValues : function(selectedGMIDType, obj){
         	obj.IBP_RELEVANCY_CODE_ID = this._defaultIBPRelevancy;
+        	obj.CONSENSUS_DEFAULT_CODE_ID = this._defaultConsensusFlag;
         	if(this._oSelectedGMIDType === this._oSeed){
 				obj.QUADRANT_CODE_ID = this._defaultQuadrantForSeed;
 				obj.CHANNEL_CODE_ID = this._defaultChannelForSeed;
-				obj.MARKET_DEFAULT_CODE_ID = -1;
 				obj.SUPPLY_SYSTEM_FLAG_CODE_ID = this._defaultSupplySystemFlagForSeed;
         	}
         	else{
 				obj.QUADRANT_CODE_ID = -1;
 				obj.CHANNEL_CODE_ID = -1;
-				obj.MARKET_DEFAULT_CODE_ID = this._defaultMarketingFlagForCP;
 				obj.SUPPLY_SYSTEM_FLAG_CODE_ID = this._defaultSupplySystemFlagForCP;
         	}
         	return obj;
@@ -1370,7 +1384,7 @@ sap.ui.define([
         	var nettingDefaultList = this._oGMIDShipToCountryViewModel.getProperty("/GMIDShipToCountryVM/NettingDefaultFlag");
         	var quadrantList = this._oGMIDShipToCountryViewModel.getProperty("/GMIDShipToCountryVM/Quadrant");
         	var channelList = this._oGMIDShipToCountryViewModel.getProperty("/GMIDShipToCountryVM/Channel");
-        	var marketDefaultList = this._oGMIDShipToCountryViewModel.getProperty("/GMIDShipToCountryVM/MarketDefaultFlag");
+        	var consensusDefaultList = this._oGMIDShipToCountryViewModel.getProperty("/GMIDShipToCountryVM/ConsensusDefaultFlag");
         	// row[0] is the GMID, check if more than 8 chars or not a number
         	//new RegExp(/[~`!@#$%\^&*+=()_\-\[\]\\';.,/{}|\\":<>\?]/).test(row[0]);
         	if(row[0].length > 10 || new RegExp(/[~`!@#$%\^&*+=()_\-\[\]\\';.,/{}|\\":<>\?]/).test(row[0]) || row[0].indexOf(".") !== -1)
@@ -1454,22 +1468,14 @@ sap.ui.define([
         		}
         		this._validDataFlag=true;
         	}
-        	var marketDefauObj = marketDefaultList.find(function(data){return data.LABEL === row[7].trim(); });
-        	if (marketDefauObj !== "" && marketDefauObj !== undefined)
+        	var consensusDefauObj = consensusDefaultList.find(function(data){return data.LABEL === row[7].trim(); });
+        	if (consensusDefauObj !== "" && consensusDefauObj !== undefined)
         	{
-        		row[7] = marketDefauObj.ID;
+        		row[7] = consensusDefauObj.ID;
         	}
         	else
         	{
-        		if(this._oSelectedGMIDType === this._oSeed)
-    			{
-					row[7] = -1;
-        		}
-        		else
-        		{
-        			row[7] = this._defaultMarketingFlagForCP;
-        		}
-        		this._validDataFlag=true;
+        		row[7] = this._defaultConsensusFlag;
         	}
         	return row;
         },

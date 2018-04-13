@@ -46,6 +46,7 @@ sap.ui.define([
 		    	oModel.setProperty("/CHANNEL_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddChannel")));
 		    	oModel.setProperty("/MARKET_DEFAULT_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddMarketDefault")));
 		    	oModel.setProperty("/SUPPORT_SYSTEM_FLAG_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddSupplySystemFlag")));
+		    	oModel.setProperty("/CONSENSUS_DEFAULT_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddConsensusDefault")));
 			    	
 		    	// assign VM and VM data to a global variable for the page
 				this._oGMIDShipToCountryUpdViewModel = oModel;            
@@ -90,6 +91,7 @@ sap.ui.define([
 			    oModel.setProperty("/SHOW_QUADRANT",this.checkPermission('QUADRANT'));
 			    oModel.setProperty("/SHOW_CHANNEL",this.checkPermission('CHANNEL'));
 			    oModel.setProperty("/SHOW_MARKET_DEFAULT",this.checkPermission('MARKET_DEFAULT'));
+			    oModel.setProperty("/SHOW_CONSENSUS_DEFAULT",this.checkPermission('CONSENSUS_DEFAULT'));
 			    oModel.setProperty("/SHOW_SUPPLY_SYSTEM_FLAG",this.checkPermission('SUPPLY_SYSTEM'));
 			    oModel.setProperty("/SHOW_DEMAND_ATTRIBUTE1",this.checkPermission('DEMAND_ATTRIBUTE1'));
 			    oModel.setProperty("/SHOW_DEMAND_ATTRIBUTE2",this.checkPermission('DEMAND_ATTRIBUTE2'));
@@ -116,6 +118,8 @@ sap.ui.define([
 				this.getView().byId("ddlChannel").setValueState(sap.ui.core.ValueState.None);
 				this.getView().byId("ddlMarketDefaultFlag").setValueStateText("");
 				this.getView().byId("ddlMarketDefaultFlag").setValueState(sap.ui.core.ValueState.None);
+				this.getView().byId("ddlConsensusDefaultFlag").setValueStateText("");
+				this.getView().byId("ddlConsensusDefaultFlag").setValueState(sap.ui.core.ValueState.None);
 				this.getView().byId("ddlSupportSystemFlag").setValueStateText("");
 				this.getView().byId("ddlSupportSystemFlag").setValueState(sap.ui.core.ValueState.None);
 				this.getView().byId("txtDemandAtt1").setValueStateText("");
@@ -160,6 +164,8 @@ sap.ui.define([
 			                oModel.setProperty("/CHANNEL_CODE_ID",selDataVal.CHANNEL_CODE_ID);
 			                oModel.setProperty("/MARKET_DEFAULT_CODE_ID_ORG",selDataVal.MARKET_DEFAULT_CODE_ID);
 			                oModel.setProperty("/MARKET_DEFAULT_CODE_ID",selDataVal.MARKET_DEFAULT_CODE_ID);
+			                oModel.setProperty("/CONSENSUS_DEFAULT_CODE_ID_ORG",selDataVal.CONSENSUS_DEFAULT_CODE_ID);
+			                oModel.setProperty("/CONSENSUS_DEFAULT_CODE_ID",selDataVal.CONSENSUS_DEFAULT_CODE_ID);
 			                oModel.setProperty("/SUPPLY_SYSTEM_FLAG_CODE_ID_ORG",selDataVal.SUPPLY_SYSTEM_FLAG_CODE_ID);
 			                oModel.setProperty("/SUPPLY_SYSTEM_FLAG_CODE_ID",selDataVal.SUPPLY_SYSTEM_FLAG_CODE_ID);
 			                oModel.setProperty("/DEMAND_ATTRIBUTE1_ORG",selDataVal.DEMAND_ATTRIBUTE1);
@@ -229,6 +235,7 @@ sap.ui.define([
 				|| (sourceControlName === "ddlQuadrant" && this._oViewModelData.QUADRANT_CODE_ID_ORG != this._oViewModelData.QUADRANT_CODE_ID)
 				|| (sourceControlName === "ddlChannel" && this._oViewModelData.CHANNEL_CODE_ID_ORG != this._oViewModelData.CHANNEL_CODE_ID)
 				|| (sourceControlName === "ddlMarketDefaultFlag" && this._oViewModelData.MARKET_DEFAULT_CODE_ID_ORG != this._oViewModelData.MARKET_DEFAULT_CODE_ID)
+				|| (sourceControlName === "ddlConsensusDefaultFlag" && this._oViewModelData.CONSENSUS_DEFAULT_CODE_ID_ORG != this._oViewModelData.CONSENSUS_DEFAULT_CODE_ID)
 				|| (sourceControlName === "ddlSupportSystemFlag" && this._oViewModelData.SUPPLY_SYSTEM_FLAG_CODE_ID_ORG != this._oViewModelData.SUPPLY_SYSTEM_FLAG_CODE_ID)
 				|| (sourceControlName === "txtDemandAtt1" && this._oViewModelData.DEMAND_ATTRIBUTE1_ORG != this._oViewModelData.DEMAND_ATTRIBUTE1)
 				|| (sourceControlName === "txtDemandAtt2" && this._oViewModelData.DEMAND_ATTRIBUTE2_ORG != this._oViewModelData.DEMAND_ATTRIBUTE2)
@@ -335,7 +342,8 @@ sap.ui.define([
 					        	CREATED_ON:this._oViewModelData.CREATED_ON,
 					        	LAST_UPDATED_BY: loggedInUserID,
 					        	LAST_UPDATED_ON: oDate,
-					        	COMMENTS:this._oViewModelData.COMMENTS
+					        	COMMENTS:this._oViewModelData.COMMENTS,
+					        	CONSENSUS_DEFAULT_CODE_ID: parseInt(this._oViewModelData.CONSENSUS_DEFAULT_CODE_ID,10)
 			    	};
 			    
 					this._oDataModel.update("/GMID_SHIP_TO_COUNTRY("+this._oEditAttributesID+")", updGMIDCountry,

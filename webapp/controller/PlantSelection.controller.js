@@ -113,6 +113,7 @@ sap.ui.define([
 	        									 TYPE: item.TYPE,
 	        									 GMID_COUNTRY_STATUS_CODE_ID:item.GMID_COUNTRY_STATUS_CODE_ID,
 	        									 CREATED_BY: item.CREATED_BY,
+	        									 CONSENSUS_DEFAULT_CODE_ID : item.CONSENSUS_DEFAULT_CODE_ID,
 				        						 PLANTS:[],
 				        						 errorState: "None"});
 					}
@@ -256,6 +257,7 @@ sap.ui.define([
 					var supplySystemFlagID = parseInt(GMIDShipToCountry[i].SUPPLY_SYSTEM_FLAG_CODE_ID,10);
 					var createdBy = GMIDShipToCountry[i].CREATED_BY;
 					var selectedGMIDType = GMIDShipToCountry[i].TYPE;
+					var consensusdefaultID = parseInt(GMIDShipToCountry[i].CONSENSUS_DEFAULT_CODE_ID,10); 
 					// create new GMIDShipToCountry object
 					var newGMID = {
 			        	ID: 1,
@@ -271,7 +273,8 @@ sap.ui.define([
 			        	TYPE: selectedGMIDType,
 			        	GMID_COUNTRY_STATUS_CODE_ID: gmidcountrystatusID,
 			        	CREATED_ON: oDate,
-			        	CREATED_BY:createdBy
+			        	CREATED_BY:createdBy,
+			        	CONSENSUS_DEFAULT_CODE_ID : consensusdefaultID
 	    			};
 	    			
 	    			//var maxGMIDShipFromPlantID = DataContext.getMaxID("/GMID_COUNTRY_SHIP_FROM_PLANT");

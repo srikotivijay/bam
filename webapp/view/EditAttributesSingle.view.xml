@@ -61,6 +61,13 @@
 										</Select>
 				                    </f:fields>
 				                </f:FormElement>
+				                <f:FormElement label="{i18n>consensusDefault}{i18n>mandatory}" id="felmConsensusDefaultFlag" visible="{path: '/SHOW_MARKET_DEFAULT', formatter: '.showControl'}">
+				                    <f:fields>
+				                        <Select xmlns:sap.ui.core="sap.ui.core" width="40%" id="ddlConsensusDefaultFlag" name="ddlConsensusDefaultFlag" change="onChange" items="{path: '/CONSENSUS_DEFAULT_LIST'}" selectedKey="{/CONSENSUS_DEFAULT_CODE_ID}">
+		                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
+										</Select>
+				                    </f:fields>
+				                </f:FormElement>
 				                <f:FormElement label="{i18n>supplySystemFlag}{i18n>mandatory}" id="felmSupportSystemFlag" visible="{path: '/SHOW_SUPPLY_SYSTEM_FLAG', formatter: '.showControl'}">
 				                    <f:fields>
 				                        <Select xmlns:sap.ui.core="sap.ui.core" width="40%" id="ddlSupportSystemFlag" name="ddlSupportSystemFlag" change="onChange" items="{path: '/SUPPORT_SYSTEM_FLAG_LIST'}" selectedKey="{/SUPPLY_SYSTEM_FLAG_CODE_ID}">
