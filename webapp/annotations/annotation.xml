@@ -281,6 +281,12 @@
 			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/MASTER_PLANNER">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MASTER_PLANNER}"/>
 			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/CONSENSUS_DEFAULT">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.CONSENSUS_DEFAULT}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_ATTRIBUTESType/CONSENSUS_DEFAULT_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.CONSENSUS_DEFAULT_CODE}"/>
+			</Annotations>
 			<Annotations Target="ODataService.BAMDataService.V_GMID_CROP_PROTECTIONType">
 				<Annotation Term="UI.PresentationVariant">
 					<Record Type="UI.PresentationVariantType">

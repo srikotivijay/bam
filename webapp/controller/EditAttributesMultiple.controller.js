@@ -48,6 +48,7 @@ sap.ui.define([
 	    	oModel.setProperty("/QUADRANT_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddQuadrant")));
 	    	oModel.setProperty("/CHANNEL_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddChannel")));
 	    	oModel.setProperty("/MARKET_DEFAULT_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddMarketDefault")));
+	    	oModel.setProperty("/CONSENSUS_DEFAULT_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddConsensusDefault")));
 	    	oModel.setProperty("/SUPPORT_SYSTEM_FLAG_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddSupplySystemFlag")));
 		    	
 		 	// assign VM and VM data to a global variable for the page
@@ -101,6 +102,7 @@ sap.ui.define([
 			    oModel.setProperty("/SHOW_QUADRANT",this.checkPermission('QUADRANT'));
 			    oModel.setProperty("/SHOW_CHANNEL",this.checkPermission('CHANNEL'));
 			    oModel.setProperty("/SHOW_MARKET_DEFAULT",this.checkPermission('MARKET_DEFAULT'));
+			    oModel.setProperty("/SHOW_CONSENSUS_DEFAULT",this.checkPermission('CONSENSUS_DEFAULT'));
 			    oModel.setProperty("/SHOW_SUPPLY_SYSTEM_FLAG",this.checkPermission('SUPPLY_SYSTEM'));
 			    oModel.setProperty("/SHOW_DEMAND_ATTRIBUTE1",this.checkPermission('DEMAND_ATTRIBUTE1'));
 			    oModel.setProperty("/SHOW_DEMAND_ATTRIBUTE2",this.checkPermission('DEMAND_ATTRIBUTE2'));
@@ -127,6 +129,7 @@ sap.ui.define([
 			this._oGMIDShipToCountryUpdViewModel.setProperty("/QUADRANT_CODE_ID", -1);
 			this._oGMIDShipToCountryUpdViewModel.setProperty("/CHANNEL_CODE_ID", -1);
 			this._oGMIDShipToCountryUpdViewModel.setProperty("/MARKET_DEFAULT_CODE_ID", -1);
+			this._oGMIDShipToCountryUpdViewModel.setProperty("/CONSENSUS_DEFAULT_CODE_ID", -1);
 			this._oGMIDShipToCountryUpdViewModel.setProperty("/SUPPLY_SYSTEM_FLAG_CODE_ID",  -1);
 			this._oGMIDShipToCountryUpdViewModel.setProperty("/DEMAND_ATTRIBUTE1",  undefined);
 			this._oGMIDShipToCountryUpdViewModel.setProperty("/NULLIFY_DEMAND_ATTRIBUTE1",  false);
@@ -157,6 +160,8 @@ sap.ui.define([
 			this.getView().byId("ddlChannel").setValueState(sap.ui.core.ValueState.None);
 			this.getView().byId("ddlMarketDefaultFlag").setValueStateText("");
 			this.getView().byId("ddlMarketDefaultFlag").setValueState(sap.ui.core.ValueState.None);
+			this.getView().byId("ddlConsensusDefaultFlag").setValueStateText("");
+			this.getView().byId("ddlConsensusDefaultFlag").setValueState(sap.ui.core.ValueState.None);
 			this.getView().byId("ddlSupportSystemFlag").setValueStateText("");
 			this.getView().byId("ddlSupportSystemFlag").setValueState(sap.ui.core.ValueState.None);
 			this.getView().byId("txtDemandAtt1").setValueStateText("");
@@ -311,6 +316,10 @@ sap.ui.define([
 				updatedAttributesString += oi18nModel.getProperty("marketDefault");
 				updatedAttributesString += ", ";
 			}
+			if (this.validateAttributeValueChange("ddlConsensusDefaultFlag")){
+				updatedAttributesString += oi18nModel.getProperty("consensusDefault");
+				updatedAttributesString += ", ";
+			}
 			if (this.validateAttributeValueChange("ddlSupportSystemFlag")){
 				updatedAttributesString += oi18nModel.getProperty("supplySystemFlag");
 				updatedAttributesString += ", ";
@@ -435,6 +444,9 @@ sap.ui.define([
 			}
 			if(this._oViewModelData.MARKET_DEFAULT_CODE_ID != -1){
 			   	updGMIDCountry.MARKET_DEFAULT_CODE_ID = parseInt(this._oViewModelData.MARKET_DEFAULT_CODE_ID,10);
+			}
+			if(this._oViewModelData.CONSENSUS_DEFAULT_CODE_ID != -1){
+			   	updGMIDCountry.CONSENSUS_DEFAULT_CODE_ID = parseInt(this._oViewModelData.CONSENSUS_DEFAULT_CODE_ID,10);
 			}
 			if(this._oViewModelData.SUPPLY_SYSTEM_FLAG_CODE_ID != -1){
 			   	updGMIDCountry.SUPPLY_SYSTEM_FLAG_CODE_ID = parseInt(this._oViewModelData.SUPPLY_SYSTEM_FLAG_CODE_ID,10);
