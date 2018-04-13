@@ -77,6 +77,10 @@ sap.ui.define([
 			    	this._oModel.setProperty("/showSupplyChainManager",showSupplyChainManager);
 			    	this._oModel.setProperty("/showSupplyChainPlanningSpecialist",showSupplyChainPlanningSpecialist);
 			    	this._oModel.setProperty("/Users", this.getAllUsers());
+			    	
+			    	
+			    	this._oModel.setProperty("/ProductLookupVisibility", false);
+			    	this._oModel.setProperty("/ProductDropdownWidth", "330px");
 			    	//
 			    	if (!this._busyDialog) 
 					{
@@ -124,6 +128,7 @@ sap.ui.define([
 						"supplyChainManagerErrorState" : "None",
 						"SUPPLY_CHAIN_PLANNING_SPECIALIST_ID" : -1,
 						"supplyChainPlanningSpecialistErrorState" : "None",
+						"productLookupVisibility": false,
 						"createNew" : false,
 						"isError" :false
 					});
@@ -226,7 +231,7 @@ sap.ui.define([
 		},
 		addEmptyObject : function() {
 	    	var aData  = this._oAssignPeopleRuleViewModel.getProperty("/AssignPeopleRuleVM");
-	    	var emptyObject = {createNew: true, isError: false};
+	    	var emptyObject = {createNew: true, productLookupVisibility: false, isError: false};
 	    	aData.push(emptyObject);
 	    	this._oAssignPeopleRuleViewModel.setProperty("/AssignPeopleRuleVM", aData);
 		},
@@ -284,6 +289,7 @@ sap.ui.define([
 			var productLevel = rcuModel.find(function(data) {return data.PEOPLE_RULESET_SEQ == selectedRulekey;}).PRODUCT_LEVEL;
 			// from selected value fetch the Geolevel
 			// bind the geo level dropdown based on rule
+			this._oModel.setProperty("/ProductDropdownWidth", "330px");
 			if (selectedRulekey !== "-1")
 			{
 				this._oModel.oData.AssignPeopleRuleVM.Product = [];
@@ -291,6 +297,8 @@ sap.ui.define([
 				// ProductProperty = [];
 				this._oModel.setProperty("/Geography",this.getGeoLevelDropDown(geoLevel));
 				this._oModel.setProperty("/AssignPeopleRuleVM/Product",this.getProductLevelDropDown(productLevel));
+				
+				
 				//
 				// loading people role drop downs
 				if(showDemandManager){
@@ -345,6 +353,45 @@ sap.ui.define([
 			}
 
 		},
+		onGeoChange : function (oEvent){
+			var result;
+			var sourceControl = oEvent.getSource();
+			var selectedRulekey = sourceControl.getSelectedItem().getKey();
+			var rcuModel = this._oModel.getProperty("/RuleSet");
+			var geoLevel = rcuModel.find(function(data) {return data.PEOPLE_RULESET_SEQ == selectedRulekey;}).GEO_LEVEL;
+			var productLevel = rcuModel.find(function(data) {return data.PEOPLE_RULESET_SEQ == selectedRulekey;}).PRODUCT_LEVEL;
+			
+			if(geoLevel !== null && (productLevel === "PRODUCT" || productLevel === "MATERIAL")){
+				var filterArray = [];
+				//var geoLevelFilter = new Filter("GEO_LEVEL",sap.ui.model.FilterOperator.EQ, geolevel);
+				var productLevelFilter = new Filter("PRODUCT_LEVEL",sap.ui.model.FilterOperator.EQ, productLevel);
+				filterArray.push(productLevelFilter);
+				var sortArray = [];
+				var sorter = new sap.ui.model.Sorter("PRODUCT_CODE",false);
+				sortArray.push(sorter);
+				// Get the Country dropdown list from the CODE_MASTER table
+				this._oDataModel.read("/V_GEO_GSTC_PRODUCT_ALL_LEVEL",{
+						filters: filterArray,
+						sorters: sortArray,
+						async: false,
+		                success: function(oData, oResponse){
+		                	// add Please select item on top of the list
+			                oData.results.unshift({	"LEVEL_ID":-1,
+			              							"NAME":"Select.."});
+			                // Bind the Geography data
+			                result =  oData.results;
+		                },
+		    		    error: function(){
+	    		    		MessageBox.alert("Unable to retrieve dropdown values for Product Level Please contact System Admin.",
+							{
+								icon : MessageBox.Icon.ERROR,
+								title : "Error"
+							});
+		            		result = [];
+		    			}
+		    	});				
+			}
+		},
 		getGeoLevelDropDown : function (geolevel) {
 			var result;
 			if(geolevel !== null){
@@ -389,7 +436,24 @@ sap.ui.define([
 		},
 		getProductLevelDropDown : function (productLevel) {
 			var result;
-			if (productLevel !== null )
+			var rows = this._oModel.getProperty("/AssignPeopleRuleVM");
+			for (var i = 0; i < rows.length - 1; i++){
+					var thisRow = rows[i];
+					thisRow.productLookupVisibility = false;
+				}
+			
+			if(productLevel === "PRODUCT" || productLevel === "MATERIAL"){
+				for (var i = 0; i < rows.length - 1; i++){
+					var thisRow = rows[i];
+					thisRow.productLookupVisibility = true;
+				}
+				this._oModel.setProperty("/ProductDropdownWidth", "300px");
+				this.getView().byId("btnSearchProduct");
+				result = [];
+				result.unshift({"PRODUCT_CODE":-1,
+			              		"PRODUCT_DESC":"Please select geography."});
+			}
+			else if (productLevel !== null )
 			{
 				// Create a filter & sorter array
 				var filterArray = [];
@@ -1155,6 +1219,9 @@ sap.ui.define([
 	    			}
 	    	});
 	    	return result;
+		},
+		onProductSearch : function (oEvent){
+			
 		},
 		onSearch:function(oEvent){
 			var entryToSearch = oEvent.getSource().getBindingContext().getObject();

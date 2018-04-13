@@ -53,9 +53,10 @@
 									</ComboBox>
 								</table:template>
 							</table:Column>
-							<table:Column id="clmHdrProduct" width="370px" resizable="false">
+							<table:Column id="clmHdrProduct" width="350px" resizable="false">
 								<Label text="{i18n>product}" id="lblProduct"/>
 								<table:template>
+									<HBox alignItems="Center">
 									<ComboBox
 											id="cmbProduct"
 											change ="onChange"
@@ -63,7 +64,7 @@
 											filterSecondaryValues= "true"
 											value="{PRODUCT_DESC}"
 											selectedKey="{PRODUCT_CODE}"
-											width="500px"
+											width="{/ProductDropdownWidth}"
 											items="{
 												path: '/AssignPeopleRuleVM/Product',
 												templateShareable : true,
@@ -74,6 +75,8 @@
 									 	    valueState="{productErrorState}">
 										<core:ListItem key="{PRODUCT_CODE}" text="{PRODUCT_DESC}" additionalText="{PRODUCT_CODE}"/>
 									</ComboBox>
+									<Button id="btnSearchProduct" icon="sap-icon://search" visible="{path: 'productLookupVisibility', formatter: '.enableControl'}" press="onProductSearch" class="sapUiTinyMarginEnd"/>
+									</HBox>
 								</table:template>
 							</table:Column>		
 							<table:Column id="clmHdrDemandManager" width="350px" resizable="false" visible="{/showDemandManager}">
