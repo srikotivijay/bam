@@ -750,7 +750,7 @@ sap.ui.define([
 		    		for(var i = 0; i < GMIDShipToCountry.length - 1; i++) 
 		    		{   
 		    			// handle the scenario when nothing is changed on the submission page
-	        				if(this._oSelectedGMIDType === this._oSeed){
+	        				if(this._oSelectedGMIDType === this._oSeed || this._oSelectedGMIDType === this._oCropProtectionDuPont){
 			        			if ((GMIDShipToCountry[i].GMID !== "") || (parseInt(GMIDShipToCountry[i].COUNTRY_CODE_ID,10) !== -1) || (parseInt(GMIDShipToCountry[i].CURRENCY_CODE_ID,10) !== -1) || (parseInt(GMIDShipToCountry[i].IBP_RELEVANCY_CODE_ID,10) !== this._defaultIBPRelevancy)
 			        		    ||	(parseInt(GMIDShipToCountry[i].NETTING_DEFAULT_CODE_ID,10) !== -1)|| (parseInt(GMIDShipToCountry[i].QUADRANT_CODE_ID,10) !== this._defaultQuadrantForSeed) 
 			        		    || (parseInt(GMIDShipToCountry[i].CHANNEL_CODE_ID,10) !== this._defaultChannelForSeed) || (parseInt(GMIDShipToCountry[i].CONSENSUS_DEFAULT_CODE_ID,10) !== this._defaultConsensusFlag))
@@ -1125,8 +1125,15 @@ sap.ui.define([
 				obj.SUPPLY_SYSTEM_FLAG_CODE_ID = this._defaultSupplySystemFlagForSeed;
         	}
         	else{
-				obj.QUADRANT_CODE_ID = -1;
-				obj.CHANNEL_CODE_ID = -1;
+        		if (this._oSelectedGMIDType === this._oCropProtectionDuPont)
+		    	{
+	         		obj.QUADRANT_CODE_ID = this._defaultQuadrantForSeed;
+					obj.CHANNEL_CODE_ID = this._defaultChannelForSeed;
+		    	}
+		    	else{
+		    		obj.QUADRANT_CODE_ID = -1;
+					obj.CHANNEL_CODE_ID = -1;
+		    	}
 				obj.SUPPLY_SYSTEM_FLAG_CODE_ID = this._defaultSupplySystemFlagForCP;
         	}
         	return obj;
@@ -1446,6 +1453,10 @@ sap.ui.define([
     			{
 					row[5] = this._defaultQuadrantForSeed;
         		}
+        		else if (this._oSelectedGMIDType === this._oCropProtectionDuPont)
+		    	{
+	         		row[5] = this._defaultQuadrantForSeed;
+		    	}
         		else
         		{
         			row[5] = -1;
@@ -1463,6 +1474,10 @@ sap.ui.define([
     			{
 					row[6] = this._defaultChannelForSeed;
         		}
+        		else if (this._oSelectedGMIDType === this._oCropProtectionDuPont)
+		    	{
+	         		row[6] = this._defaultChannelForSeed;
+		    	}
         		else
         		{
         			row[6] = -1;
