@@ -40,7 +40,7 @@
 								<table:template>
 									<ComboBox
 										id="cmbGeography"
-									    change ="onChange"
+									    change ="onChangeGeo"
 										showSecondaryValues= "true"
 										filterSecondaryValues= "true"
 										value="{NAME}"

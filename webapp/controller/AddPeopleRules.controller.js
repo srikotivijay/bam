@@ -81,6 +81,8 @@ sap.ui.define([
 			    	
 			    	this._oModel.setProperty("/ProductLookupVisibility", false);
 			    	this._oModel.setProperty("/ProductDropdownWidth", "330px");
+			    	
+			    	//this._oModel.setProperty("/ProductDropdownSource", "{path: {/AssignPeopleRuleVM/Product}, templateShareable : true, suspended: true}");
 			    	//
 			    	if (!this._busyDialog) 
 					{
@@ -129,6 +131,7 @@ sap.ui.define([
 						"SUPPLY_CHAIN_PLANNING_SPECIALIST_ID" : -1,
 						"supplyChainPlanningSpecialistErrorState" : "None",
 						"productLookupVisibility": false,
+						"productDropdown": [],
 						"createNew" : false,
 						"isError" :false
 					});
@@ -287,6 +290,8 @@ sap.ui.define([
 			var rcuModel = this._oModel.getProperty("/RuleSet");
 			var geoLevel = rcuModel.find(function(data) {return data.PEOPLE_RULESET_SEQ == selectedRulekey;}).GEO_LEVEL;
 			var productLevel = rcuModel.find(function(data) {return data.PEOPLE_RULESET_SEQ == selectedRulekey;}).PRODUCT_LEVEL;
+			this.geoLevel = geoLevel;
+			this.productLevel = productLevel;
 			// from selected value fetch the Geolevel
 			// bind the geo level dropdown based on rule
 			this._oModel.setProperty("/ProductDropdownWidth", "330px");
@@ -353,19 +358,27 @@ sap.ui.define([
 			}
 
 		},
-		onGeoChange : function (oEvent){
+		onChange : function(oEvent){
+			var a = 1;
+		},
+		onChangeGeo : function (oEvent){
 			var result;
 			var sourceControl = oEvent.getSource();
 			var selectedRulekey = sourceControl.getSelectedItem().getKey();
-			var rcuModel = this._oModel.getProperty("/RuleSet");
-			var geoLevel = rcuModel.find(function(data) {return data.PEOPLE_RULESET_SEQ == selectedRulekey;}).GEO_LEVEL;
-			var productLevel = rcuModel.find(function(data) {return data.PEOPLE_RULESET_SEQ == selectedRulekey;}).PRODUCT_LEVEL;
+			var index = oEvent.getSource().oParent.getIndex();
+			//var rcuModel = this._oModel.getProperty("/RuleSet");
+			//var geoLevel = rcuModel.find(function(data) {return data.PEOPLE_RULESET_SEQ == selectedRulekey;}).GEO_LEVEL;
+			//var productLevel = rcuModel.find(function(data) {return data.PEOPLE_RULESET_SEQ == selectedRulekey;}).PRODUCT_LEVEL;
 			
-			if(geoLevel !== null && (productLevel === "PRODUCT" || productLevel === "MATERIAL")){
+			if(this.geoLevel !== null && (this.productLevel === "PRODUCT" || this.productLevel === "MATERIAL")){
 				var filterArray = [];
 				//var geoLevelFilter = new Filter("GEO_LEVEL",sap.ui.model.FilterOperator.EQ, geolevel);
-				var productLevelFilter = new Filter("PRODUCT_LEVEL",sap.ui.model.FilterOperator.EQ, productLevel);
+				var productLevelFilter = new Filter("PRODUCT_LEVEL",sap.ui.model.FilterOperator.EQ, this.productLevel);
+				var geoLevelFilter = new Filter("GEO_LEVEL",sap.ui.model.FilterOperator.EQ, this.geoLevel);
+				var geoCodeFilter = new Filter("GEO_CODE",sap.ui.model.FilterOperator.EQ, selectedRulekey);
 				filterArray.push(productLevelFilter);
+				filterArray.push(geoLevelFilter);
+				filterArray.push(geoCodeFilter);
 				var sortArray = [];
 				var sorter = new sap.ui.model.Sorter("PRODUCT_CODE",false);
 				sortArray.push(sorter);
@@ -389,7 +402,10 @@ sap.ui.define([
 							});
 		            		result = [];
 		    			}
-		    	});				
+		    	});
+		    	var dataSet = this._oModel.getProperty("/AssignPeopleRuleVM");
+		    	
+		    	dataSet[index].productDropdown = result;
 			}
 		},
 		getGeoLevelDropDown : function (geolevel) {
@@ -449,9 +465,13 @@ sap.ui.define([
 				}
 				this._oModel.setProperty("/ProductDropdownWidth", "300px");
 				this.getView().byId("btnSearchProduct");
+				var oItemTemplate = new sap.ui.core.ListItem({text:"{PRODUCT_DESC}", key:"{PRODUCT_CODE}"});
+				this.getView().byId("cmbProduct").bindAggregation("items", "productDropdown", oItemTemplate);
 				result = [];
 				result.unshift({"PRODUCT_CODE":-1,
 			              		"PRODUCT_DESC":"Please select geography."});
+			    result.push({"PRODUCT_CODE":2,
+			              		"PRODUCT_DESC":"1asdf"});
 			}
 			else if (productLevel !== null )
 			{
@@ -605,7 +625,9 @@ sap.ui.define([
 			    		SUPPLY_CHAIN_MANAGER_ID : -1,
 			    		supplyChainManagerErrorState : "None",
 			    		SUPPLY_CHAIN_PLANNING_SPECIALIST_ID : -1,
-			    		supplyChainPlanningSpecialistErrorState : "None",	
+			    		supplyChainPlanningSpecialistErrorState : "None",
+			    		productLookupVisibility: (this.productLevel === "PRODUCT" || this.productLevel === "MATERIAL") ? true : false,
+						productDropdown: [],
 			    		createNew : false,
 			    		isError :false
 		    		};
