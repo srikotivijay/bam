@@ -83,7 +83,7 @@
 									</Select>
 							            </table:template>
 					        </table:Column>
-					        <table:Column id="clmHdrQuadrant" width="140px" resizable="false">
+					        <table:Column id="clmHdrQuadrant" width="120px" resizable="false">
 						        		<Label text="{i18n>quadrant}" id="lblQuadrant"/>
 						        	<table:template>
 							            		<Select xmlns:sap.ui.core="sap.ui.core" id="ddlQuadrant" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/GMIDShipToCountryVM/Quadrant', templateShareable : true}" change="onChange" valueState="{quadrantErrorState}" selectedKey="{QUADRANT_CODE_ID}">
@@ -91,7 +91,7 @@
 									</Select>
 						            </table:template>
 				        	</table:Column>
-				        	<table:Column id="clmHdrChannel" width="135px" resizable="false">
+				        	<table:Column id="clmHdrChannel" width="125px" resizable="false">
 						         <Label text="{i18n>channel}" id="lblChannel"/>
 						        <table:template>
 							            	<Select xmlns:sap.ui.core="sap.ui.core" id="ddlChannel" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/GMIDShipToCountryVM/Channel', templateShareable : true}" change="onChange" valueState="{channelErrorState}" selectedKey="{CHANNEL_CODE_ID}">
@@ -100,7 +100,15 @@
 						            </table:template>
 						        
 					        </table:Column>
-					        <table:Column id="clmHdrMarketDefault" width="100%" resizable="false">
+					        <table:Column id="clmHdrConsensusDefault" width="100%" resizable="false">
+						          <Label text="{i18n>consensusDefault}" id="lblConsensusDefault"/>
+						         <table:template>
+							            	<Select xmlns:sap.ui.core="sap.ui.core" id="ddlConsensusDefaultFlag" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/GMIDShipToCountryVM/ConsensusDefaultFlag', templateShareable : true}" change="onChange" valueState="{consensusDefaultErrorState}" selectedKey="{CONSENSUS_DEFAULT_CODE_ID}">
+	                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
+									</Select>	
+						            </table:template>
+					        </table:Column>
+					        <table:Column id="clmHdrMarketDefault" width="100%" resizable="false" visible = "false">
 						          <Label text="{i18n>marketDefault}" id="lblMarketDefault"/>
 						         <table:template>
 							            	<Select xmlns:sap.ui.core="sap.ui.core" id="ddlMarketDefaultFlag" visible="{path: 'createNew', formatter: '.disableControl'}" items="{path: '/GMIDShipToCountryVM/MarketDefaultFlag', templateShareable : true}" change="onChange" valueState="{marketDefaultErrorState}" selectedKey="{MARKET_DEFAULT_CODE_ID}">
