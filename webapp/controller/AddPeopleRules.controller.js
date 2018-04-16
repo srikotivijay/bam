@@ -135,6 +135,8 @@ sap.ui.define([
 						"createNew" : false,
 						"isError" :false
 					});
+					initData[j].productDropdown.unshift({	"PRODUCT_CODE":-1,
+              												"PRODUCT_DESC":"Please select geography.."});
 				}
 				 return initData;
 			},
@@ -365,12 +367,17 @@ sap.ui.define([
 			var result;
 			var sourceControl = oEvent.getSource();
 			var selectedRulekey = sourceControl.getSelectedItem().getKey();
-			var index = oEvent.getSource().oParent.getIndex();
+			var index = oEvent.getSource().getParent().getIndex();
 			//var rcuModel = this._oModel.getProperty("/RuleSet");
 			//var geoLevel = rcuModel.find(function(data) {return data.PEOPLE_RULESET_SEQ == selectedRulekey;}).GEO_LEVEL;
 			//var productLevel = rcuModel.find(function(data) {return data.PEOPLE_RULESET_SEQ == selectedRulekey;}).PRODUCT_LEVEL;
 			
 			if(this.geoLevel !== null && (this.productLevel === "PRODUCT" || this.productLevel === "MATERIAL")){
+				var productElement = oEvent.getSource().getParent().findElements()[2].findElements()[0];
+				//var oItemTemplate = new sap.ui.core.ListItem({text:"{PRODUCT_DESC}", key:"{PRODUCT_CODE}"});
+				//productElement.bindAggregation("items", "productDropdown", oItemTemplate);
+				productElement.setEnabled(true);
+				
 				var filterArray = [];
 				//var geoLevelFilter = new Filter("GEO_LEVEL",sap.ui.model.FilterOperator.EQ, geolevel);
 				var productLevelFilter = new Filter("PRODUCT_LEVEL",sap.ui.model.FilterOperator.EQ, this.productLevel);
@@ -389,8 +396,8 @@ sap.ui.define([
 						async: false,
 		                success: function(oData, oResponse){
 		                	// add Please select item on top of the list
-			                oData.results.unshift({	"LEVEL_ID":-1,
-			              							"NAME":"Select.."});
+			                oData.results.unshift({	"PRODUCT_CODE":-1,
+			              							"PRODUCT_DESC":"Select.."});
 			                // Bind the Geography data
 			                result =  oData.results;
 		                },
@@ -404,7 +411,6 @@ sap.ui.define([
 		    			}
 		    	});
 		    	var dataSet = this._oModel.getProperty("/AssignPeopleRuleVM");
-		    	
 		    	dataSet[index].productDropdown = result;
 			}
 		},
@@ -457,21 +463,41 @@ sap.ui.define([
 					var thisRow = rows[i];
 					thisRow.productLookupVisibility = false;
 				}
+				
+			//get starting row index position in the elements
+			var rulesTableRowElements = this.getView().byId("rulesTable").findElements();
+			var rowStart = rulesTableRowElements.findIndex(function(data){return data.getId().includes("rulesTable-rows-row0"); });
+			var oItemTemplate = new sap.ui.core.ListItem({text:"{PRODUCT_DESC}", key:"{PRODUCT_CODE}"});
+			//reset dropdown binding
+			for(var i = rowStart; i < rulesTableRowElements.length; i++){
+				var currProductDropdownElement = rulesTableRowElements[i].findElements()[2].findElements()[0];
+				currProductDropdownElement.bindAggregation("items", "/AssignPeopleRuleVM/Product", oItemTemplate);
+				currProductDropdownElement.setEnabled(true);
+			}
 			
+			// this.getView().byId("cmbProduct")
 			if(productLevel === "PRODUCT" || productLevel === "MATERIAL"){
 				for (var i = 0; i < rows.length - 1; i++){
 					var thisRow = rows[i];
 					thisRow.productLookupVisibility = true;
 				}
+				//disable the product elements until geo is selected
+				for(var i = rowStart; i < rulesTableRowElements.length; i++){
+					var currProductDropdownElement = rulesTableRowElements[i].findElements()[2].findElements()[0];
+					currProductDropdownElement.bindAggregation("items", "productDropdown", oItemTemplate);
+					currProductDropdownElement.setEnabled(false);
+				}
+				
 				this._oModel.setProperty("/ProductDropdownWidth", "300px");
-				this.getView().byId("btnSearchProduct");
-				var oItemTemplate = new sap.ui.core.ListItem({text:"{PRODUCT_DESC}", key:"{PRODUCT_CODE}"});
-				this.getView().byId("cmbProduct").bindAggregation("items", "productDropdown", oItemTemplate);
-				result = [];
-				result.unshift({"PRODUCT_CODE":-1,
-			              		"PRODUCT_DESC":"Please select geography."});
-			    result.push({"PRODUCT_CODE":2,
-			              		"PRODUCT_DESC":"1asdf"});
+				// this.getView().byId("btnSearchProduct");
+				// var oItemTemplate = new sap.ui.core.ListItem({text:"{PRODUCT_DESC}", key:"{PRODUCT_CODE}"});
+				// this.getView().byId("cmbProduct").bindAggregation("items", "productDropdown", oItemTemplate);
+				
+				// result = [];
+				// result.unshift({"PRODUCT_CODE":-1,
+			 //             		"PRODUCT_DESC":"Please select geography."});
+			 //   result.push({"PRODUCT_CODE":2,
+			 //             		"PRODUCT_DESC":"1asdf"});
 			}
 			else if (productLevel !== null )
 			{
