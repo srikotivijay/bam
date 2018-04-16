@@ -39,14 +39,14 @@ sap.ui.define([
 				this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
 				
 				 // set all the dropdowns, get the data from the code master table
-		    	oModel.setProperty("/STORED_CURRENCY_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddStoredCurrency")));
-		    	oModel.setProperty("/IBP_RELEVANCY_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddIBPRelevancyFlag")));
-		    	oModel.setProperty("/NETTING_DEFAULT_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddNettingDefaultFlag")));
-		    	oModel.setProperty("/QUADRANT_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddQuadrant")));
-		    	oModel.setProperty("/CHANNEL_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddChannel")));
-		    	oModel.setProperty("/MARKET_DEFAULT_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddMarketDefault")));
-		    	oModel.setProperty("/SUPPORT_SYSTEM_FLAG_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddSupplySystemFlag")));
-		    	oModel.setProperty("/CONSENSUS_DEFAULT_LIST",DataContext.getDropdownValues(this._oi18nModel.getProperty("ddConsensusDefault")));
+		    	oModel.setProperty("/STORED_CURRENCY_LIST",DataContext.getDropdownValuesEdit(this._oi18nModel.getProperty("ddStoredCurrency")));
+		    	oModel.setProperty("/IBP_RELEVANCY_LIST",DataContext.getDropdownValuesEdit(this._oi18nModel.getProperty("ddIBPRelevancyFlag")));
+		    	oModel.setProperty("/NETTING_DEFAULT_LIST",DataContext.getDropdownValuesEdit(this._oi18nModel.getProperty("ddNettingDefaultFlag")));
+		    	oModel.setProperty("/QUADRANT_LIST",DataContext.getDropdownValuesEdit(this._oi18nModel.getProperty("ddQuadrant")));
+		    	oModel.setProperty("/CHANNEL_LIST",DataContext.getDropdownValuesEdit(this._oi18nModel.getProperty("ddChannel")));
+		    	oModel.setProperty("/MARKET_DEFAULT_LIST",DataContext.getDropdownValuesEdit(this._oi18nModel.getProperty("ddMarketDefault")));
+		    	oModel.setProperty("/SUPPORT_SYSTEM_FLAG_LIST",DataContext.getDropdownValuesEdit(this._oi18nModel.getProperty("ddSupplySystemFlag")));
+		    	oModel.setProperty("/CONSENSUS_DEFAULT_LIST",DataContext.getDropdownValuesEdit(this._oi18nModel.getProperty("ddConsensusDefault")));
 			    	
 		    	// assign VM and VM data to a global variable for the page
 				this._oGMIDShipToCountryUpdViewModel = oModel;            

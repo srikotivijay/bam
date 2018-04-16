@@ -51,7 +51,7 @@
 										</Select>
 				                    </f:fields>
 				                </f:FormElement>
-				                <f:FormElement label="{i18n>consensusDefault}" id="felmConsensusDefaultFlag" visible="{path: '/SHOW_MARKET_DEFAULT', formatter: '.showControl'}">
+				                <f:FormElement label="{i18n>consensusDefault}" id="felmConsensusDefaultFlag" visible="{path: '/SHOW_CONSENSUS_DEFAULT', formatter: '.showControl'}">
 				                    <f:fields>
 				                        <Select xmlns:sap.ui.core="sap.ui.core" width="40%" id="ddlConsensusDefaultFlag" name="ddlConsensusDefaultFlag" change="onChange" items="{path: '/CONSENSUS_DEFAULT_LIST'}" selectedKey="{/CONSENSUS_DEFAULT_CODE_ID}">
 		                            		<sap.ui.core:ListItem key="{ID}" text="{LABEL}"/>
