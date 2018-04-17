@@ -412,6 +412,38 @@ sap.ui.define([
 	    	return result;
 		}
 		
+		function getDropdownValuesEdit(dropdownType)
+		{
+			var result;
+			// Create a filter & sorter array
+			var filterArray = [];
+			var countryFilter = new Filter("CODE_TYPE",sap.ui.model.FilterOperator.EQ,dropdownType);
+			filterArray.push(countryFilter);
+			var sortArray = [];
+			var sorter = new sap.ui.model.Sorter("LABEL",false);
+			sortArray.push(sorter);
+			// Get the Country dropdown list from the CODE_MASTER table
+			oDataModel.read("/CODE_MASTER",{
+					filters: filterArray,
+					sorters: sortArray,
+					async: false,
+	                success: function(oData, oResponse){
+		                // Bind the Country data to the GMIDShipToCountry model
+		                result =  oData.results;
+	                },
+	    		    error: function(){
+    		    		MessageBox.alert("Unable to retrieve dropdown values for " + dropdownType + " Please contact System Admin.",
+						{
+							icon : MessageBox.Icon.ERROR,
+							title : "Error"
+						});
+	            		result = [];
+	    			}
+	    	});
+	    	return result;
+		}
+		
+		
 		// get the Country List for Non Admin
 		function getNonAdminDropdownValues(dropdownType)
 		{
@@ -652,6 +684,7 @@ sap.ui.define([
 			getUserPermissions: getUserPermissions,
 			isBAMUser : isBAMUser,
 			getDropdownValues: getDropdownValues,
+			getDropdownValuesEdit : getDropdownValuesEdit,
 			getNonAdminDropdownValues : getNonAdminDropdownValues,
 			deleteStagingData: deleteStagingData,
 			getGMIDCountryStatusID: getGMIDCountryStatusID,
