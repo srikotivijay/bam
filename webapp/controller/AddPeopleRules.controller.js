@@ -1301,11 +1301,9 @@ sap.ui.define([
 			var entryToSearch = oEvent.getSource().getBindingContext().getObject();
 			var ruleSet = this._oModel.getProperty("/PEOPLE_RULESET_SEQ");
 			if(ruleSet != -1 && parseInt(entryToSearch.LEVEL_ID,10) !== -1){
-				this._selectedRow = oEvent.getSource().getBindingContext().getObject();
-				this._searchRow = entryToSearch;
-				if(oEvent.getSource().getId().indexOf("btnSearchProduct") > 0){
-					this._searchColumn = "Product";
-				}
+				this._selectedProductRowIndex = oEvent.getSource().getParent().getParent().getIndex();
+				//this._selectedRow = oEvent.getSource().getBindingContext().getObject();
+				//this._searchRow = entryToSearch;
 				
 				if(!this._Dialog){
 					this._oDialog = sap.ui.xmlfragment("bam.view.SearchProduct", this);
@@ -1505,28 +1503,20 @@ sap.ui.define([
 				aContexts.map(function(oContext) { selectedProduct.push(oContext.getObject()); });
 				var rows = this._oViewModelData.AssignPeopleRuleVM;
 				var oFilter = [];
-				var selectedDropDown;
-				if(this._searchColumn === "Product"){
-					selectedDropDown = this._oViewModelData.AssignPeopleRuleVM.Product;
-				}
+				var selectedDropDown = this._oViewModelData.AssignPeopleRuleVM[this._selectedProductRowIndex].productDropdown;
 				
 				for(var j =0 ; j< selectedProduct.length; j++){
 					if(selectedDropDown.find(function(x) {if(x.PRODUCT_CODE === selectedProduct[j].PRODUCT_CODE){return x ;}}) === undefined){
 						selectedDropDown.push({PRODUCT_CODE : selectedProduct[j].PRODUCT_CODE, PRODUCT_DESC : selectedProduct[j].PRODUCT_DESC});
 					}
 					selectedDropDown.sort(function(x, y){
-						return(x.PRODUCT_DESC > y.PRODUCT_DESC) ? 1 : -1;
+						return(x.PRODUCT_CODE > y.PRODUCT_CODE) ? 1 : -1;
 					});
 				}
-				for(var i = 0; i < rows.length; i++){
-					if(rows[i] === this._selectedRow){
-						if(this._searchColumn === "Product"){
-							rows[i].PRODUCT_CODE = selectedProduct[0].PRODUCT_CODE;
-							rows[i].PRODUCT_DESC = selectedProduct[0].PRODUCT_DESC;
-						}
-						break;
-					}
-				}
+				
+				rows[this._selectedProductRowIndex].PRODUCT_CODE = selectedProduct[0].PRODUCT_CODE;
+				rows[this._selectedProductRowIndex].PRODUCT_DESC = selectedProduct[0].PRODUCT_DESC;
+			
 			} 
 			oEvent.getSource().getBinding("items").filter();
 			this._oAssignPeopleRuleViewModel.refresh();
