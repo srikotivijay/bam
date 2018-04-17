@@ -369,12 +369,13 @@ sap.ui.define([
 			var sourceControl = oEvent.getSource();
 			var selectedRulekey = sourceControl.getSelectedItem().getKey();
 			var index = oEvent.getSource().getParent().getIndex();
+			var productElement = oEvent.getSource().getParent().findElements()[2].findElements()[0];
 			//var rcuModel = this._oModel.getProperty("/RuleSet");
 			//var geoLevel = rcuModel.find(function(data) {return data.PEOPLE_RULESET_SEQ == selectedRulekey;}).GEO_LEVEL;
 			//var productLevel = rcuModel.find(function(data) {return data.PEOPLE_RULESET_SEQ == selectedRulekey;}).PRODUCT_LEVEL;
 			
-			if(this.geoLevel !== null && (this.productLevel === "PRODUCT" || this.productLevel === "MATERIAL")){
-				var productElement = oEvent.getSource().getParent().findElements()[2].findElements()[0];
+			if(this.geoLevel !== null && selectedRulekey != -1 && (this.productLevel === "PRODUCT" || this.productLevel === "MATERIAL")){
+				
 				//var oItemTemplate = new sap.ui.core.ListItem({text:"{PRODUCT_DESC}", key:"{PRODUCT_CODE}"});
 				//productElement.bindAggregation("items", "productDropdown", oItemTemplate);
 				productElement.setEnabled(true);
@@ -413,6 +414,9 @@ sap.ui.define([
 		    	});
 		    	var dataSet = this._oModel.getProperty("/AssignPeopleRuleVM");
 		    	dataSet[index].productDropdown = result;
+			}
+			else{
+				productElement.setEnabled(false);
 			}
 		},
 		getGeoLevelDropDown : function (geolevel) {
@@ -468,7 +472,7 @@ sap.ui.define([
 			//get starting row index position in the elements
 			var rulesTableRowElements = this.getView().byId("rulesTable").findElements();
 			var rowStart = rulesTableRowElements.findIndex(function(data){return data.getId().includes("rulesTable-rows-row0"); });
-			var oItemTemplate = new sap.ui.core.ListItem({text:"{PRODUCT_DESC}", key:"{PRODUCT_CODE}"});
+			var oItemTemplate = new sap.ui.core.ListItem({text:"{PRODUCT_DESC}", key:"{PRODUCT_CODE}", additionalText:"{PRODUCT_CODE}"});
 			//reset dropdown binding
 			for(var i = rowStart; i < rulesTableRowElements.length; i++){
 				var currProductDropdownElement = rulesTableRowElements[i].findElements()[2].findElements()[0];
@@ -500,7 +504,7 @@ sap.ui.define([
 			 //   result.push({"PRODUCT_CODE":2,
 			 //             		"PRODUCT_DESC":"1asdf"});
 			}
-			else if (productLevel !== null )
+			if (productLevel !== null )
 			{
 				// Create a filter & sorter array
 				var filterArray = [];
