@@ -378,15 +378,17 @@ sap.ui.define([
 			var oItemTemplate = new sap.ui.core.ListItem({text:"{PRODUCT_DESC}", key:"{PRODUCT_CODE}", additionalText:"{PRODUCT_CODE}"});
 			//reset dropdown binding
 			for(var i = rowStart; i < rulesTableRowElements.length; i++){
-				var currProductDropdownElement = rulesTableRowElements[i].findElements()[2].findElements()[0];
-				if(useDefaultPath){
-					currProductDropdownElement.bindAggregation("items", "/AssignPeopleRuleVM/Product", oItemTemplate);
-				}
-				else if (path == null){
-					currProductDropdownElement.bindAggregation("items", "productDropdown", oItemTemplate);
-				}
-				else{
-					currProductDropdownElement.bindAggregation("items", path, oItemTemplate);
+				if(rulesTableRowElements[i].getId().includes("rows")){
+					var currProductDropdownElement = rulesTableRowElements[i].findElements()[2].findElements()[0];
+					if(useDefaultPath){
+						currProductDropdownElement.bindAggregation("items", "/AssignPeopleRuleVM/Product", oItemTemplate);
+					}
+					else if (path == null){
+						currProductDropdownElement.bindAggregation("items", "productDropdown", oItemTemplate);
+					}
+					else{
+						currProductDropdownElement.bindAggregation("items", path, oItemTemplate);
+					}
 				}
 				//currProductDropdownElement.setEnabled(true);
 			}
