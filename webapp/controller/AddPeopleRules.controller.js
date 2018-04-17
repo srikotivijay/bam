@@ -83,6 +83,8 @@ sap.ui.define([
 			    	this._oModel.setProperty("/ProductLookupVisibility", false);
 			    	this._oModel.setProperty("/ProductDropdownWidth", "330px");
 			    	
+			    	this.setProductDropdownBinding(true);
+			    	
 			    	//this._oModel.setProperty("/ProductDropdownSource", "{path: {/AssignPeopleRuleVM/Product}, templateShareable : true, suspended: true}");
 			    	//
 			    	if (!this._busyDialog) 
@@ -303,10 +305,34 @@ sap.ui.define([
 			if (selectedRulekey !== "-1")
 			{
 				this._oModel.oData.AssignPeopleRuleVM.Product = [];
+				var rows = this._oModel.getProperty("/AssignPeopleRuleVM");
+				// this.getView().byId("cmbProduct")
+				if(productLevel === "PRODUCT" || productLevel === "MATERIAL"){
+					for (var i = 0; i < rows.length - 1; i++){
+						var thisRow = rows[i];
+						thisRow.productLookupVisibility = true;
+						thisRow.productDropdownEnabled = false;
+					}
+					//disable the product elements until geo is selected
+					this.setProductDropdownBinding(false);
+					
+					this._oModel.setProperty("/ProductDropdownWidth", "300px");
+					this._oAssignPeopleRuleViewModel.refresh();
+				}
+				else{
+					for (var i = 0; i < rows.length - 1; i++){
+						var thisRow = rows[i];
+						thisRow.productLookupVisibility = false;
+						thisRow.productDropdownEnabled = true;
+					}
+					this.setProductDropdownBinding(true);
+				}
 				// var ProductProperty = this._oModel.getProperty("/AssignPeopleRuleVM/Product");
 				// ProductProperty = [];
 				this._oModel.setProperty("/Geography",this.getGeoLevelDropDown(geoLevel));
 				this._oModel.setProperty("/AssignPeopleRuleVM/Product",this.getProductLevelDropDown(productLevel));
+				
+				
 				
 				
 				//
@@ -360,11 +386,29 @@ sap.ui.define([
 				this._oModel.setProperty("/Geography",null);
 				// Adding empty row to the table
 				this.addEmptyObject();
+				this.setProductDropdownBinding(true);
 			}
 
 		},
-		onChange : function(oEvent){
-			var a = 1;
+		setProductDropdownBinding : function(useDefaultPath, path){
+			//get starting row index position in the elements
+			var rulesTableRowElements = this.getView().byId("rulesTable").findElements();
+			var rowStart = rulesTableRowElements.findIndex(function(data){return data.getId().includes("rulesTable-rows-row0"); });
+			var oItemTemplate = new sap.ui.core.ListItem({text:"{PRODUCT_DESC}", key:"{PRODUCT_CODE}", additionalText:"{PRODUCT_CODE}"});
+			//reset dropdown binding
+			for(var i = rowStart; i < rulesTableRowElements.length; i++){
+				var currProductDropdownElement = rulesTableRowElements[i].findElements()[2].findElements()[0];
+				if(useDefaultPath){
+					currProductDropdownElement.bindAggregation("items", "/AssignPeopleRuleVM/Product", oItemTemplate);
+				}
+				else if (path == null){
+					currProductDropdownElement.bindAggregation("items", "productDropdown", oItemTemplate);
+				}
+				else{
+					currProductDropdownElement.bindAggregation("items", path, oItemTemplate);
+				}
+				//currProductDropdownElement.setEnabled(true);
+			}
 		},
 		onChangeGeo : function (oEvent){
 			var result;
@@ -480,50 +524,7 @@ sap.ui.define([
 		},
 		getProductLevelDropDown : function (productLevel) {
 			var result;
-			var rows = this._oModel.getProperty("/AssignPeopleRuleVM");
-			for (var i = 0; i < rows.length - 1; i++){
-					var thisRow = rows[i];
-					thisRow.productLookupVisibility = false;
-					thisRow.productDropdownEnabled = true;
-				}
-				
-			//get starting row index position in the elements
-			var rulesTableRowElements = this.getView().byId("rulesTable").findElements();
-			var rowStart = rulesTableRowElements.findIndex(function(data){return data.getId().includes("rulesTable-rows-row0"); });
-			var oItemTemplate = new sap.ui.core.ListItem({text:"{PRODUCT_DESC}", key:"{PRODUCT_CODE}", additionalText:"{PRODUCT_CODE}"});
-			//reset dropdown binding
-			for(var i = rowStart; i < rulesTableRowElements.length; i++){
-				var currProductDropdownElement = rulesTableRowElements[i].findElements()[2].findElements()[0];
-				currProductDropdownElement.bindAggregation("items", "/AssignPeopleRuleVM/Product", oItemTemplate);
-				//currProductDropdownElement.setEnabled(true);
-			}
 			
-			// this.getView().byId("cmbProduct")
-			if(productLevel === "PRODUCT" || productLevel === "MATERIAL"){
-				for (var i = 0; i < rows.length - 1; i++){
-					var thisRow = rows[i];
-					thisRow.productLookupVisibility = true;
-					thisRow.productDropdownEnabled = false;
-				}
-				//disable the product elements until geo is selected
-				for(var i = rowStart; i < rulesTableRowElements.length; i++){
-					var currProductDropdownElement = rulesTableRowElements[i].findElements()[2].findElements()[0];
-					currProductDropdownElement.bindAggregation("items", "productDropdown", oItemTemplate);
-					//currProductDropdownElement.setEnabled(false);
-				}
-				
-				this._oModel.setProperty("/ProductDropdownWidth", "300px");
-				this._oAssignPeopleRuleViewModel.refresh();
-				// this.getView().byId("btnSearchProduct");
-				// var oItemTemplate = new sap.ui.core.ListItem({text:"{PRODUCT_DESC}", key:"{PRODUCT_CODE}"});
-				// this.getView().byId("cmbProduct").bindAggregation("items", "productDropdown", oItemTemplate);
-				
-				// result = [];
-				// result.unshift({"PRODUCT_CODE":-1,
-			 //             		"PRODUCT_DESC":"Please select geography."});
-			 //   result.push({"PRODUCT_CODE":2,
-			 //             		"PRODUCT_DESC":"1asdf"});
-			}
 			if (productLevel !== null )
 			{
 				// Create a filter & sorter array
