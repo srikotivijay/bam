@@ -1497,6 +1497,39 @@ sap.ui.define([
 			} 
 			oEvent.getSource().getBinding("items").filter();
 			this._oAssignPeopleRuleViewModel.refresh();
+		},
+		handleProductClose : function(oEvent){
+			var aContexts = oEvent.getParameter("selectedContexts");
+			if (aContexts && aContexts.length) {
+				var selectedProduct = [];
+				aContexts.map(function(oContext) { selectedProduct.push(oContext.getObject()); });
+				var rows = this._oViewModelData.AssignPeopleRuleVM;
+				var oFilter = [];
+				var selectedDropDown;
+				if(this._searchColumn === "Product"){
+					selectedDropDown = this._oViewModelData.AssignPeopleRuleVM.Product;
+				}
+				
+				for(var j =0 ; j< selectedProduct.length; j++){
+					if(selectedDropDown.find(function(x) {if(x.PRODUCT_CODE === selectedProduct[j].PRODUCT_CODE){return x ;}}) === undefined){
+						selectedDropDown.push({PRODUCT_CODE : selectedProduct[j].PRODUCT_CODE, PRODUCT_DESC : selectedProduct[j].PRODUCT_DESC});
+					}
+					selectedDropDown.sort(function(x, y){
+						return(x.PRODUCT_DESC > y.PRODUCT_DESC) ? 1 : -1;
+					});
+				}
+				for(var i = 0; i < rows.length; i++){
+					if(rows[i] === this._selectedRow){
+						if(this._searchColumn === "Product"){
+							rows[i].PRODUCT_CODE = selectedProduct[0].PRODUCT_CODE;
+							rows[i].PRODUCT_DESC = selectedProduct[0].PRODUCT_DESC;
+						}
+						break;
+					}
+				}
+			} 
+			oEvent.getSource().getBinding("items").filter();
+			this._oAssignPeopleRuleViewModel.refresh();
 		}
 	});
 	});
