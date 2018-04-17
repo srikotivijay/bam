@@ -8,7 +8,7 @@
 		confirm="handleProductClose"
 		cancel="handleProductClose"
 		items="{
-			path: '/Products'
+			path: '/AssignPeopleRuleVM/Product'
 		}" >
 		<DisplayListItem label = "{PRODUCT_CODE}" value = "{PRODUCT_DESC}"/>
 	</SelectDialog>

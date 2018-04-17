@@ -77,7 +77,6 @@ sap.ui.define([
 			    	this._oModel.setProperty("/showSupplyChainManager",showSupplyChainManager);
 			    	this._oModel.setProperty("/showSupplyChainPlanningSpecialist",showSupplyChainPlanningSpecialist);
 			    	this._oModel.setProperty("/Users", this.getAllUsers());
-			    	this._oModel.setProperty("/Products", this.getAllProducts());
 			    	
 			    	
 			    	this._oModel.setProperty("/ProductLookupVisibility", false);
@@ -541,8 +540,10 @@ sap.ui.define([
 						async: false,
 		                success: function(oData, oResponse){
 		                	// add Please select item on top of the list
-			                oData.results.unshift({	"PRODUCT_CODE":-1,
+		                	if(productLevel !== "PRODUCT" && productLevel !== "MATERIAL"){
+		                		oData.results.unshift({	"PRODUCT_CODE":-1,
 			              							"PRODUCT_DESC":"Select.."});
+		                	}
 			                // Bind the Product data 
 			                result =  oData.results;
 		                },
@@ -1291,30 +1292,6 @@ sap.ui.define([
 	                },
 	    		    error: function(){
     		    		MessageBox.alert("Unable to retrieve dropdown values for People Roles Please contact System Admin.",
-						{
-							icon : MessageBox.Icon.ERROR,
-							title : "Error"
-						});
-	            		result = [];
-	    			}
-	    	});
-	    	return result;
-		},
-		getAllProducts : function(){
-           	var result;
-			// Create a filter & sorter array
-			var sortArray = [];
-			var sorter = new sap.ui.model.Sorter("PRODUCT_CODE",false);
-			sortArray.push(sorter);
-			// Get the Product dropdown list from the V_PRODUCT_ALL_LEVEL view
-			this._oDataModel.read("/V_PRODUCT_ALL_LEVEL",{
-					sorters: sortArray,
-					async: false,
-	                success: function(oData, oResponse){
-		                result =  oData.results;
-	                },
-	    		    error: function(){
-    		    		MessageBox.alert("Unable to retrieve dropdown values for Products Please contact System Admin.",
 						{
 							icon : MessageBox.Icon.ERROR,
 							title : "Error"
