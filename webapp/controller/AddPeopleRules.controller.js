@@ -37,15 +37,10 @@ sap.ui.define([
 			onInit: function() {
 				// Get logged in user id
 				loggedInUserID = DataContext.getUserID();
-				 // define a global variable for the oData model		    
-				//var oView = this.getView();
-				//oView.setModel(this.getOwnerComponent().getModel());
 				// get resource model
 				this._oi18nModel = this.getOwnerComponent().getModel("i18n");			
-		    	//
 		    	// checking the permission
 		    	var hasAccess = this.checkPermission();
-				//	
 				if(hasAccess === false){
 					this.getRouter().getTargets().display("accessDenied", {
 						fromTarget : "peopleAssignment"
@@ -65,7 +60,6 @@ sap.ui.define([
 				    this.getView().setModel(this._oModel);	
 				    // Adding empty row to the table
 			    	this.addEmptyObject();
-			    	//
 			    	// Changing the visiblit of columns
 			    	this._oModel.setProperty("/showDemandManager", showDemandManager);
 			    	this._oModel.setProperty("/showGlobalLeader",showGlobalLeader);
@@ -84,8 +78,6 @@ sap.ui.define([
 			    	
 			    	this.setProductDropdownBinding(true);
 			    	
-			    	//this._oModel.setProperty("/ProductDropdownSource", "{path: {/AssignPeopleRuleVM/Product}, templateShareable : true, suspended: true}");
-			    	//
 			    	if (!this._busyDialog) 
 					{
 						this._busyDialog = sap.ui.xmlfragment("bam.view.BusyLoading", this);
@@ -104,7 +96,7 @@ sap.ui.define([
 					firstTimePageLoad = false;
 		    	}			
 			},
-			///
+
 			// function to create the initial rows for the table
 			addInitialObject : function(){
 				var initData = [];
@@ -139,12 +131,10 @@ sap.ui.define([
 						"createNew" : false,
 						"isError" :false
 					});
-					//initData[j].productDropdown.unshift({	"PRODUCT_CODE":-1,
-              		//										"PRODUCT_DESC":"Please select geography.."});
 				}
 				 return initData;
 			},
-			//
+			
 			// function to check the permission
 			checkPermission : function(){
 				demandManagerAssigner = this._oi18nModel.getProperty("Module.demandManagerAssigner");
@@ -221,7 +211,6 @@ sap.ui.define([
 			}
 		},
 		onHome: function(){
-			// this._oAssignRuleViewModel.refresh();
 			this.getOwnerComponent().getRouter().navTo("home");
 		},
 		getRouter : function () {
@@ -305,14 +294,13 @@ sap.ui.define([
 			{
 				this._oModel.oData.AssignPeopleRuleVM.Product = [];
 				var rows = this._oModel.getProperty("/AssignPeopleRuleVM");
-				// this.getView().byId("cmbProduct")
 				if(productLevel === "PRODUCT" || productLevel === "MATERIAL"){
 					for (var i = 0; i < rows.length - 1; i++){
 						var thisRow = rows[i];
 						thisRow.productLookupVisibility = true;
 						thisRow.productDropdownEnabled = false;
 					}
-					//disable the product elements until geo is selected
+					// disable the product elements until geo is selected
 					this.setProductDropdownBinding(false);
 					
 					this._oModel.setProperty("/ProductDropdownWidth", "300px");
@@ -326,15 +314,9 @@ sap.ui.define([
 					}
 					this.setProductDropdownBinding(true);
 				}
-				// var ProductProperty = this._oModel.getProperty("/AssignPeopleRuleVM/Product");
-				// ProductProperty = [];
 				this._oModel.setProperty("/Geography",this.getGeoLevelDropDown(geoLevel));
 				this._oModel.setProperty("/AssignPeopleRuleVM/Product",this.getProductLevelDropDown(productLevel));
 				
-				
-				
-				
-				//
 				// loading people role drop downs
 				if(showDemandManager){
 					var demandManager = this._oi18nModel.getProperty("DEMAND_MANAGER");
@@ -378,7 +360,6 @@ sap.ui.define([
 			}
 			else
 			{
-				//this.onInit();
 				this._isChanged = false;
 				var initData = this.addInitialObject();
 				this._oModel.setProperty("/AssignPeopleRuleVM",initData);
@@ -389,6 +370,7 @@ sap.ui.define([
 			}
 
 		},
+		// future proofing for defaultpath == false and path == null
 		setProductDropdownBinding : function(useDefaultPath, path){
 			//get starting row index position in the elements
 			var rulesTableRowElements = this.getView().byId("rulesTable").findElements();
@@ -414,22 +396,11 @@ sap.ui.define([
 			var sourceControl = oEvent.getSource();
 			var selectedRulekey = sourceControl.getSelectedItem().getKey();
 			var index = oEvent.getSource().getParent().getIndex();
-			var productElement = oEvent.getSource().getParent().findElements()[2].findElements()[0];
-			//var rcuModel = this._oModel.getProperty("/RuleSet");
-			//var geoLevel = rcuModel.find(function(data) {return data.PEOPLE_RULESET_SEQ == selectedRulekey;}).GEO_LEVEL;
-			//var productLevel = rcuModel.find(function(data) {return data.PEOPLE_RULESET_SEQ == selectedRulekey;}).PRODUCT_LEVEL;
 			
 			if(this.geoLevel !== null && (this.productLevel === "PRODUCT" || this.productLevel === "MATERIAL")){
 				var dataSet = this._oModel.getProperty("/AssignPeopleRuleVM")[index];
 				if(selectedRulekey != -1){
-				
-				//var oItemTemplate = new sap.ui.core.ListItem({text:"{PRODUCT_DESC}", key:"{PRODUCT_CODE}"});
-				//productElement.bindAggregation("items", "productDropdown", oItemTemplate);
-				
-				//productElement.setEnabled(true);
-				
 				var filterArray = [];
-				//var geoLevelFilter = new Filter("GEO_LEVEL",sap.ui.model.FilterOperator.EQ, geolevel);
 				var productLevelFilter = new Filter("PRODUCT_LEVEL",sap.ui.model.FilterOperator.EQ, this.productLevel);
 				var geoLevelFilter = new Filter("GEO_LEVEL",sap.ui.model.FilterOperator.EQ, this.geoLevel);
 				var geoCodeFilter = new Filter("GEO_CODE",sap.ui.model.FilterOperator.EQ, selectedRulekey);
@@ -463,8 +434,6 @@ sap.ui.define([
 		    	
 		    	dataSet.PRODUCT_CODE = -1;
 		    	dataSet.PRODUCT_DESC = "Select..";
-	    		//dataSet[this._selectedProductRowIndex].PRODUCT_CODE = selectedProduct[0].PRODUCT_CODE;
-				//dataSet[this._selectedProductRowIndex].PRODUCT_DESC = selectedProduct[0].PRODUCT_DESC;
 		    	dataSet.productDropdown = result;
 		    	dataSet.productDropdownEnabled = true;
 			}
@@ -474,7 +443,6 @@ sap.ui.define([
 		    	dataSet.productDropdown = [{"PRODUCT_CODE":-1,
   													"PRODUCT_DESC":"Please select geography.."}];
   				dataSet.productDropdownEnabled = false;
-				//productElement.setEnabled(false);
 			}
 		}
 			
@@ -533,13 +501,13 @@ sap.ui.define([
 				var sortArray = [];
 				var sorter = new sap.ui.model.Sorter("PRODUCT_DESC",false);
 				sortArray.push(sorter);
-				// Get the Country dropdown list from the CODE_MASTER table
+				// Get the Product dropdown list from the view
 				this._oDataModel.read("/V_PRODUCT_ALL_LEVEL",{
 						filters: filterArray,
 						sorters: sortArray,
 						async: false,
 		                success: function(oData, oResponse){
-		                	// add Please select item on top of the list
+		                	// add Please Select item on top of the list as long as the Ruleset is Product or Material
 		                	if(productLevel !== "PRODUCT" && productLevel !== "MATERIAL"){
 		                		oData.results.unshift({	"PRODUCT_CODE":-1,
 			              							"PRODUCT_DESC":"Select.."});
@@ -571,6 +539,7 @@ sap.ui.define([
 		enableControl : function(value){
 			return !!value;
 		},
+		// gets defaults for geography and product
 		getDefaultPropertyValues : function(){
         	var geographyList = this._oAssignPeopleRuleViewModel.getProperty("/Geography");
         	if(geographyList !== undefined){
@@ -595,7 +564,7 @@ sap.ui.define([
 			}
 			this._oAssignPeopleRuleViewModel.refresh();
         },
-		
+		// sets default for all of the dropdowns
 		setDefaultPropertyValues : function(obj){
 			if(this._geographyList !== undefined){
 				obj.LEVEL_ID = this._geographyList.LEVEL_ID;
@@ -704,7 +673,7 @@ sap.ui.define([
 			var sortArray = [];
 			var sorter = new sap.ui.model.Sorter("USER_NAME",false);
 			sortArray.push(sorter);
-			// Get the Country dropdown list from the CODE_MASTER table
+			// Get the User Role dropdown list from the view
 			this._oDataModel.read("/V_USER_BY_PEOPLE_ROLE",{
 					sorters: sortArray,
 					filters: [ 
@@ -1022,7 +991,6 @@ sap.ui.define([
             	
 		    		return isModified;
         },
-		//
 		// Submit function
 		onSubmit : function(){
 			var errorCount = 0;
@@ -1041,7 +1009,6 @@ sap.ui.define([
                     title : "Error"});
                 return;
             }
-            //
             // validation for Rule Set
             var selectedRulekey = this.getView().byId("cmbRuleSetList").getSelectedItem().getKey();
 			if (selectedRulekey === "-1"){
@@ -1050,8 +1017,7 @@ sap.ui.define([
                     title : "Invalid Input"});
                 return;
 			}
-			//
-			// Check at leat one rule is entered
+			// Check at least one rule is entered
 			if (AssignPeopleRule.length === 1 || this.chkIsModified() === false){
 				MessageBox.alert("Please enter at least one rule.", {
 					icon : MessageBox.Icon.ERROR,
@@ -1109,12 +1075,7 @@ sap.ui.define([
 							var supplychainmanagerID;
 							var supplychainplanningSpecialistID;
 							geoLevelValId = parseInt(AssignPeopleRule[i].LEVEL_ID,10);
-							// if(parseInt(AssignPeopleRule[i].LEVEL_ID,10) === 0){
-							// 	geoLevelValId = '0';
-							// }
-							// else{
-							// 	geoLevelValId = parseInt(AssignPeopleRule[i].LEVEL_ID,10);
-							// }
+
 							if (AssignPeopleRule[i].PRODUCT_CODE === 0 ) {
 								productLevelCode = '';
 							}
@@ -1205,7 +1166,7 @@ sap.ui.define([
 							});                                                                                           
                         }
 					}
-					//Show success or error message
+					// Show success or error message
 					if(errorCount === 0) {
 						var oRouter = t.getRouter();
 						// once insertion is success, navigate to homepage
@@ -1241,7 +1202,7 @@ sap.ui.define([
 		checkEmptyRows : function(row,strtype){
 			var errorsFound = false;
 			var data = this._oViewModelData.AssignPeopleRuleVM;
-			//below check needs to be performed if we have more than one row, if only one row in grid no need to check
+			// below check needs to be performed if we have more than one row, if only one row in grid no need to check
 			//	dont validate the fields if nothing is changed for the row, i.e. user does not wnat to enter any data
 			if ((data.length >= 2) && (this._isChanged === true)){
 				if ((parseInt(row.LEVEL_ID,10) === -1 || parseInt(row.LEVEL_ID,10) === 0) && 
@@ -1273,14 +1234,13 @@ sap.ui.define([
 	           	}
 			});			
 		},
-		//
 		getAllUsers : function(){
            	var result;
 			// Create a filter & sorter array
 			var sortArray = [];
 			var sorter = new sap.ui.model.Sorter("USER_NAME",false);
 			sortArray.push(sorter);
-			// Get the Country dropdown list from the CODE_MASTER table
+			// Get the User dropdown list from the table only where valid
 			this._oDataModel.read("/USER",{
 					sorters: sortArray,
 					filters: [ 
@@ -1301,14 +1261,15 @@ sap.ui.define([
 	    	});
 	    	return result;
 		},
+		// on click of the lookup button for Product
 		onProductSearch : function (oEvent){
 			var entryToSearch = oEvent.getSource().getBindingContext().getObject();
 			var ruleSet = this._oModel.getProperty("/PEOPLE_RULESET_SEQ");
 			if(ruleSet != -1 && parseInt(entryToSearch.LEVEL_ID,10) !== -1){
+				// getting the modified Product dropdown
 				this._selectedProductRowIndex = oEvent.getSource().getParent().getParent().getIndex();
-				//this._selectedRow = oEvent.getSource().getBindingContext().getObject();
-				//this._searchRow = entryToSearch;
 				
+				// the dialog for the fragment
 				if(!this._Dialog){
 					this._oDialog = sap.ui.xmlfragment("bam.view.SearchProduct", this);
 					this._oDialog.setModel(this.getView().getModel());
@@ -1332,12 +1293,14 @@ sap.ui.define([
 						});
 			}
 		},
+		// on click of the lookup button for User Roles
 		onSearch:function(oEvent){
 			var entryToSearch = oEvent.getSource().getBindingContext().getObject();
 			var ruleSet = this._oModel.getProperty("/PEOPLE_RULESET_SEQ");
 			if(ruleSet != -1 && parseInt(entryToSearch.PRODUCT_CODE,10) !== -1 && parseInt(entryToSearch.LEVEL_ID,10) !== -1){
 				this._selectedRow = oEvent.getSource().getBindingContext().getObject();
 				this._searchRow = entryToSearch;
+				// differentiating between the different user role indexes
 				if(oEvent.getSource().getId().indexOf("btnSearchDemandManger") > 0){
 					this._searchColumn = "DemandManager";
 				}
@@ -1387,6 +1350,7 @@ sap.ui.define([
 						});
 			}
 		},
+		// search function within the User fragment
 		handleSearch : function(oEvent){
 			var sValue = oEvent.getParameter("value");
 			var oFilter = [];
@@ -1399,6 +1363,7 @@ sap.ui.define([
 			var oBinding = oEvent.getSource().getBinding("items");
 			oBinding.filter([mainFilter]);
 		},
+		// search function within the Product fragment
 		handleProductSearch : function(oEvent){
 			var sValue = oEvent.getParameter("value");
 			var oFilter = [];
@@ -1411,6 +1376,7 @@ sap.ui.define([
 			var oBinding = oEvent.getSource().getBinding("items");
 			oBinding.filter([mainFilter]);
 		},
+		// confirm and cancel function within the User fragment
 		handleClose : function(oEvent){
 			var aContexts = oEvent.getParameter("selectedContexts");
 			if (aContexts && aContexts.length) {
@@ -1419,6 +1385,7 @@ sap.ui.define([
 				var rows = this._oViewModelData.AssignPeopleRuleVM;
 				var oFilter = [];
 				var selectedDropDown;
+				// differentiate which dropdown to put the selected value into
 				if(this._searchColumn === "DemandManager"){
 					selectedDropDown = this._oViewModelData.AssignPeopleRuleVM.DemandManager;
 				}
@@ -1455,6 +1422,7 @@ sap.ui.define([
 						return(x.USER_NAME > y.USER_NAME) ? 1 : -1;
 					});
 				}
+				// setting the data to the correct row
 				for(var i = 0; i < rows.length; i++){
 					if(rows[i] === this._selectedRow){
 						if(this._searchColumn === "DemandManager"){
@@ -1500,15 +1468,15 @@ sap.ui.define([
 			oEvent.getSource().getBinding("items").filter();
 			this._oAssignPeopleRuleViewModel.refresh();
 		},
+		// confirm and cancel function within the User fragment
 		handleProductClose : function(oEvent){
 			var aContexts = oEvent.getParameter("selectedContexts");
 			if (aContexts && aContexts.length) {
 				var selectedProduct = [];
 				aContexts.map(function(oContext) { selectedProduct.push(oContext.getObject()); });
 				var rows = this._oViewModelData.AssignPeopleRuleVM;
-				var oFilter = [];
 				var selectedDropDown = this._oViewModelData.AssignPeopleRuleVM[this._selectedProductRowIndex].productDropdown;
-				
+				// differentiate which dropdown to put the selected value into
 				for(var j =0 ; j< selectedProduct.length; j++){
 					if(selectedDropDown.find(function(x) {if(x.PRODUCT_CODE === selectedProduct[j].PRODUCT_CODE){return x ;}}) === undefined){
 						selectedDropDown.push({PRODUCT_CODE : selectedProduct[j].PRODUCT_CODE, PRODUCT_DESC : selectedProduct[j].PRODUCT_DESC});
@@ -1517,7 +1485,7 @@ sap.ui.define([
 						return(x.PRODUCT_CODE > y.PRODUCT_CODE) ? 1 : -1;
 					});
 				}
-				
+				// setting the data to the correct row
 				rows[this._selectedProductRowIndex].PRODUCT_CODE = selectedProduct[0].PRODUCT_CODE;
 				rows[this._selectedProductRowIndex].PRODUCT_DESC = selectedProduct[0].PRODUCT_DESC;
 			
