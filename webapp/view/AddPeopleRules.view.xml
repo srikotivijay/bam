@@ -72,6 +72,7 @@
 											}"
 											loadItems="handleLoadItems"
 											visible="{path: 'createNew', formatter: '.disableControl'}"
+											enabled="{productDropdownEnabled}"
 									 	    valueState="{productErrorState}">
 										<core:ListItem key="{PRODUCT_CODE}" text="{PRODUCT_DESC}" additionalText="{PRODUCT_CODE}"/>
 									</ComboBox>
