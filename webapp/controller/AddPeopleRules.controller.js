@@ -77,6 +77,7 @@ sap.ui.define([
 			    	this._oModel.setProperty("/showSupplyChainManager",showSupplyChainManager);
 			    	this._oModel.setProperty("/showSupplyChainPlanningSpecialist",showSupplyChainPlanningSpecialist);
 			    	this._oModel.setProperty("/Users", this.getAllUsers());
+			    	this._oModel.setProperty("/Products", this.getAllProducts());
 			    	
 			    	
 			    	this._oModel.setProperty("/ProductLookupVisibility", false);
@@ -1268,8 +1269,62 @@ sap.ui.define([
 	    	});
 	    	return result;
 		},
+		getAllProducts : function(){
+           	var result;
+			// Create a filter & sorter array
+			var sortArray = [];
+			var sorter = new sap.ui.model.Sorter("PRODUCT_CODE",false);
+			sortArray.push(sorter);
+			// Get the Product dropdown list from the V_PRODUCT_ALL_LEVEL view
+			this._oDataModel.read("/V_PRODUCT_ALL_LEVEL",{
+					sorters: sortArray,
+					async: false,
+	                success: function(oData, oResponse){
+		                result =  oData.results;
+	                },
+	    		    error: function(){
+    		    		MessageBox.alert("Unable to retrieve dropdown values for Products Please contact System Admin.",
+						{
+							icon : MessageBox.Icon.ERROR,
+							title : "Error"
+						});
+	            		result = [];
+	    			}
+	    	});
+	    	return result;
+		},
 		onProductSearch : function (oEvent){
+			var entryToSearch = oEvent.getSource().getBindingContext().getObject();
+			var ruleSet = this._oModel.getProperty("/PEOPLE_RULESET_SEQ");
+			if(ruleSet != -1 && parseInt(entryToSearch.LEVEL_ID,10) !== -1){
+				this._selectedRow = oEvent.getSource().getBindingContext().getObject();
+				this._searchRow = entryToSearch;
+				if(oEvent.getSource().getId().indexOf("btnSearchProduct") > 0){
+					this._searchColumn = "Product";
+				}
+				
+				if(!this._Dialog){
+					this._oDialog = sap.ui.xmlfragment("bam.view.SearchProduct", this);
+					this._oDialog.setModel(this.getView().getModel());
+						
+				}
+				
+				this._oDialog.setMultiSelect(false);
+				// clear the old search filter
+				this._oDialog.getBinding("items").filter([]);
+	
+				// toggle compact style
+				jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oDialog);
+				this._oDialog.open();
+			}
 			
+			else{
+				MessageBox.alert("Select Geography before searching for Products",
+						{
+							icon : MessageBox.Icon.ERROR,
+							title : "Error"
+						});
+			}
 		},
 		onSearch:function(oEvent){
 			var entryToSearch = oEvent.getSource().getBindingContext().getObject();
@@ -1331,6 +1386,18 @@ sap.ui.define([
 			var oFilter = [];
 			oFilter.push(new Filter("USER_NAME", sap.ui.model.FilterOperator.Contains, sValue));
 			oFilter.push(new Filter("USER_ID", sap.ui.model.FilterOperator.Contains, sValue));
+			 var mainFilter = new Filter({
+                	filters : oFilter,
+                	and:false
+                });
+			var oBinding = oEvent.getSource().getBinding("items");
+			oBinding.filter([mainFilter]);
+		},
+		handleProductSearch : function(oEvent){
+			var sValue = oEvent.getParameter("value");
+			var oFilter = [];
+			oFilter.push(new Filter("PRODUCT_CODE", sap.ui.model.FilterOperator.Contains, sValue));
+			oFilter.push(new Filter("PRODUCT_DESC", sap.ui.model.FilterOperator.Contains, sValue));
 			 var mainFilter = new Filter({
                 	filters : oFilter,
                 	and:false

@@ -1,0 +1,15 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<SelectDialog
+		noDataText="No Products Found"
+		title="Select Products"
+		search="handleProductSearch"
+		confirm="handleProductClose"
+		cancel="handleProductClose"
+		items="{
+			path: '/Products'
+		}" >
+		<DisplayListItem label = "{PRODUCT_CODE}" value = "{PRODUCT_DESC}"/>
+	</SelectDialog>
+</core:FragmentDefinition>
