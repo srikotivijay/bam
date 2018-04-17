@@ -10,6 +10,6 @@
 		items="{
 			path: '/AssignPeopleRuleVM/Product'
 		}" >
-		<DisplayListItem label = "{PRODUCT_CODE}" value = "{PRODUCT_DESC}"/>
+		<DisplayListItem label = "{PRODUCT_DESC}" value = "{PRODUCT_CODE}"/>
 	</SelectDialog>
 </core:FragmentDefinition>
