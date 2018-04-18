@@ -1,8 +1,10 @@
 sap.ui.define([
 		"sap/ui/core/mvc/Controller",
+		"sap/m/MessageToast",
+		"sap/m/MessageBox",
 		"bam/services/DataContext",
 		"sap/ui/model/resource/ResourceModel"
-	], function (Controller,DataContext,ResourceModel) {
+	], function (Controller,MessageToast,MessageBox,DataContext,ResourceModel) {
 		"use strict";
 		
 	var firstTimePageLoad = true;
@@ -10,6 +12,7 @@ sap.ui.define([
 	return Controller.extend("bam.controller.Home", {
 		onInit : function()
 		{
+			var hasRole = false;
 			if(DataContext.isBAMUser() === false)
 			{
 				this.getOwnerComponent().getRouter().navTo("accessDenied");
@@ -23,6 +26,11 @@ sap.ui.define([
 				// hide the GMID Submission tile by default, if the user has no roles then we hide the tile
 				oModel.setProperty("/showGMIDSubmission",false);   
 				oModel.setProperty("/showMaintainRule",false);
+				oModel.setProperty("/showMaintainAttribute",false);
+				oModel.setProperty("/showPlantAssignment",false);
+				oModel.setProperty("/showAuditReport",false);
+				
+
 				
 				var oi18nModel = new ResourceModel({
 	                bundleName: "bam.i18n.i18n"
@@ -31,6 +39,9 @@ sap.ui.define([
 	        	 // get the Module settings for i18n model
 	        	 var gmidSubmission = oi18nModel.getProperty("Module.gmidSubmission");
 	        	 var maintainRule = oi18nModel.getProperty("Module.maintainRules");
+	        	 var maintainAttributes = oi18nModel.getProperty("Module.maintainAttributes");
+	        	 var plantAssignment = oi18nModel.getProperty("Module.plantAssignment");
+	        	 var auditReport = oi18nModel.getProperty("Module.changeHistory");
 	        	 var demandManagerAssigner = oi18nModel.getProperty("Module.demandManagerAssigner");
 	        	 var globalLeaderAssigner = oi18nModel.getProperty("Module.globalLeaderAssigner");
 	        	 var marketingDirectorAssigner = oi18nModel.getProperty("Module.marketingDirectorAssigner");
@@ -53,10 +64,50 @@ sap.ui.define([
 					if(permissions[i].ATTRIBUTE === gmidSubmission && permissions[i].ACTION === actionAdd)
 					{
 						oModel.setProperty("/showGMIDSubmission",true);
+						hasRole =  true;
 						// break since the user may have more than one role, as long as one of the user roles has permission we can show the tile
 						break;
 					}
 				}
+				
+				//
+				// Checking maintain Attributes
+				for(var k = 0; k < permissions.length; k++)
+				{
+					if(permissions[k].ATTRIBUTE === maintainAttributes)
+					{
+						oModel.setProperty("/showMaintainAttribute",true);
+						hasRole =  true;
+						// break since the user may have more than one role, as long as one of the user roles has permission we can show the tile
+						break;
+					}
+				}
+				//
+				// Checking maintain Attributes
+				for(var l = 0; l < permissions.length; l++)
+				{
+					if(permissions[l].ATTRIBUTE === plantAssignment)
+					{
+						oModel.setProperty("/showPlantAssignment",true);
+						hasRole =  true;
+						// break since the user may have more than one role, as long as one of the user roles has permission we can show the tile
+						break;
+					}
+				}
+
+
+				// Checking Change History Report
+				for(var m = 0; m < permissions.length; m++)
+				{
+					if(permissions[m].ATTRIBUTE === auditReport)
+					{
+						oModel.setProperty("/showAuditReport",true);
+						hasRole =  true;
+						// break since the user may have more than one role, as long as one of the user roles has permission we can show the tile
+						break;
+					}
+				}
+				
 				for(var j = 0; j  < permissions.length; j++)
 				{
 					if(permissions[j].ATTRIBUTE === maintainRule ||
@@ -71,10 +122,21 @@ sap.ui.define([
 					  permissions[j].ATTRIBUTE === supplyChainPlanningSpecialistAssigner)
 					{
 						oModel.setProperty("/showMaintainRule",true);
+						hasRole =  true;
 						// break since the user may have more than one role, as long as one of the user roles has permission we can show the tile
 						break;
 					}
 				}
+			}
+			// If user does not have any Roles assigned then show a message to contact Admin for Role.
+			if(hasRole === false)
+			{
+				this.getOwnerComponent().getRouter().navTo("accessDenied");
+				// MessageBox.alert("Please contact System Admin.",
+				// 			{
+				// 				icon : MessageBox.Icon.ERROR,
+				// 				title : "Error"
+						//});
 			}
 		},
 		// Navigate to GMID Submission page
