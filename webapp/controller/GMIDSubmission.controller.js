@@ -1343,12 +1343,12 @@ sap.ui.define([
 							if(t._oSelectedGMIDType === t._oSeed){
 									obj["SUPPLY_SYSTEM_FLAG_CODE_ID"] = t._defaultSupplySystemFlagForSeed;
 	        				}
-	        				else if (this._oSelectedGMIDType === this._oCropProtectionDuPont) {
+	        				else if (t._oSelectedGMIDType === t._oCropProtectionDuPont) {
 	        					obj["SUPPLY_SYSTEM_FLAG_CODE_ID"] = t._defaultSupplySystemFlagForDCP;
 	        				}
 	        				else
 	        				{
-	        						obj["SUPPLY_SYSTEM_FLAG_CODE_ID"] = t._defaultSupplySystemFlagForCP;
+	        					obj["SUPPLY_SYSTEM_FLAG_CODE_ID"] = t._defaultSupplySystemFlagForCP;
 	        				}
 							
 							// push the object to our model
