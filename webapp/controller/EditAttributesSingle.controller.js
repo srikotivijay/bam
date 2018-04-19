@@ -17,8 +17,17 @@ sap.ui.define([
 			onInit : function () {
 				
 				// Get logged in user id
-				loggedInUserID = DataContext.getUserID();
-				
+			loggedInUserID = DataContext.getUserID();
+			this._oi18nModel = new ResourceModel({
+                	bundleName: "bam.i18n.i18n"
+            	});
+			 var hasEditAccess = false;
+			// checking the permission
+			 hasEditAccess = this.checkEditPermission();
+			if(hasEditAccess === false){
+				this.getOwnerComponent().getRouter().navTo("accessDenied");		
+			}
+			else{
 	    		// Create model and set it to initial data
 	    		var oModel = new sap.ui.model.json.JSONModel();
 	    		this.getView().setModel(oModel);
@@ -32,9 +41,6 @@ sap.ui.define([
 					});
 				});
 				
-				this._oi18nModel = new ResourceModel({
-                	bundleName: "bam.i18n.i18n"
-            	});
 
 				this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
 				
@@ -59,7 +65,7 @@ sap.ui.define([
 					oRouter.getRoute("editAttributesSingle").attachMatched(this._onRouteMatched, this);
 					firstTimePageLoad = false;
 				}
-				
+			}
 			},
 			getRouter : function () {
 				return sap.ui.core.UIComponent.getRouterFor(this);
@@ -77,6 +83,26 @@ sap.ui.define([
 					this._oEditAttributesID = oEvent.getParameter("arguments").editAttributesID;
 					this.setSelectedGMIDCountryVM();
 				}
+			},
+			checkEditPermission : function(){
+				var hasAccess =  false;
+					// get the Module settings for i18n model
+        		var maintainAttributes = this._oi18nModel.getProperty("Module.maintainAttributes");
+        		var actionEdit = this._oi18nModel.getProperty("Module.actionEdit");
+		    	
+		    	// getting permissions for the current logged in user
+				var permissions = DataContext.getUserPermissions();
+				// check to see if the permission list includes "EDIT" action for the MAINTAIN ATTRIBUTES Module
+				// ATTRIBUTE in this case means MODULE
+				for(var i = 0; i < permissions.length; i++)
+				{
+					if(permissions[i].ATTRIBUTE === maintainAttributes && permissions[i].ACTION === actionEdit)
+					{
+							hasAccess = true;
+							break;
+					}
+				}
+				return hasAccess;
 			},
 			showControl: function(value){
 				return !!value;
