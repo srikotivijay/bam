@@ -1113,7 +1113,9 @@ sap.ui.define([
 			// get default value's code ids for seed and crop protection for Supply System flag and set to global variable
 	    	var supplySystemFlag = this._oGMIDShipToCountryViewModel.getProperty("/GMIDShipToCountryVM/SupplySystemFlag");
 			this._defaultSupplySystemFlagForSeed = supplySystemFlag.find(function(data){return data.CODE_KEY === "RR"; }).ID; 
-			this._defaultSupplySystemFlagForCP = supplySystemFlag.find(function(data){return data.CODE_KEY === "APO"; }).ID; 
+			this._defaultSupplySystemFlagForCP = supplySystemFlag.find(function(data){return data.CODE_KEY === "APO"; }).ID;
+			this._defaultSupplySystemFlagForDCP = supplySystemFlag.find(function(data){return data.CODE_KEY === "SCM7"; }).ID;
+			
         },
         // set the default property values for the passed object
         setDefaultPropertyValues : function(selectedGMIDType, obj){
@@ -1124,18 +1126,18 @@ sap.ui.define([
 				obj.CHANNEL_CODE_ID = this._defaultChannelForSeed;
 				obj.SUPPLY_SYSTEM_FLAG_CODE_ID = this._defaultSupplySystemFlagForSeed;
         	}
-        	else{
-        		if (this._oSelectedGMIDType === this._oCropProtectionDuPont)
+        	else if (this._oSelectedGMIDType === this._oCropProtectionDuPont)
 		    	{
 	         		obj.QUADRANT_CODE_ID = this._defaultQuadrantForSeed;
 					obj.CHANNEL_CODE_ID = this._defaultChannelForSeed;
+					obj.SUPPLY_SYSTEM_FLAG_CODE_ID = this._defaultSupplySystemFlagForDCP;
 		    	}
-		    	else{
+		   else { // DAS Crop Protection
 		    		obj.QUADRANT_CODE_ID = -1;
 					obj.CHANNEL_CODE_ID = -1;
+					obj.SUPPLY_SYSTEM_FLAG_CODE_ID = this._defaultSupplySystemFlagForCP;
 		    	}
-				obj.SUPPLY_SYSTEM_FLAG_CODE_ID = this._defaultSupplySystemFlagForCP;
-        	}
+
         	return obj;
         },
         onImportFromExcel : function(e) {
@@ -1341,8 +1343,12 @@ sap.ui.define([
 							if(t._oSelectedGMIDType === t._oSeed){
 									obj["SUPPLY_SYSTEM_FLAG_CODE_ID"] = t._defaultSupplySystemFlagForSeed;
 	        				}
-	        				else{
-	        					obj["SUPPLY_SYSTEM_FLAG_CODE_ID"] = t._defaultSupplySystemFlagForCP;
+	        				else if (this._oSelectedGMIDType === this._oCropProtectionDuPont) {
+	        					obj["SUPPLY_SYSTEM_FLAG_CODE_ID"] = t._defaultSupplySystemFlagForDCP;
+	        				}
+	        				else
+	        				{
+	        						obj["SUPPLY_SYSTEM_FLAG_CODE_ID"] = t._defaultSupplySystemFlagForCP;
 	        				}
 							
 							// push the object to our model
