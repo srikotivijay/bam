@@ -175,13 +175,16 @@ sap.ui.define([
 		getRulesDropDown : function () {
 			var result;
 			// Create a filter & sorter array
-
+			var filterArray = [];
+			var validFlagFilter = new Filter("VALID_FLAG",sap.ui.model.FilterOperator.EQ,"T");
+			filterArray.push(validFlagFilter);
 			var sortArray = [];
 			var sorter = new sap.ui.model.Sorter("LABEL",false);
 			sortArray.push(sorter);
 			// Get the Country dropdown list from the CODE_MASTER table
 			this._oDataModel.read("/MST_CU_RULESET",{
 					async: false,
+					filters: filterArray,
 	                success: function(oData, oResponse){
 	                	// add Please select item on top of the list
 		                oData.results.unshift({	"CU_RULESET_SEQ":-1,
