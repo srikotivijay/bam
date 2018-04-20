@@ -127,48 +127,35 @@ sap.ui.define([
 		// check if more than or less than 1 checkbox is checked
 		var index,context,path,indexOfParentheses1,indexOfParentheses2;
 		var selectedIndicesLength = this._oSmartTable.getSelectedIndices().length;
-		if(selectedIndicesLength > 0){
-		index = this._oSmartTable.getSelectedIndices();
-		var ids = "";
-		var idArr = [];
 		
-		var performFullList = false;
-
-		for (var i = 0; i < index.length; i++)
-		{
-			context = this._oSmartTable.getContextByIndex(index[i]); 
-			if(context !== undefined){
-				path = context.getPath();
-				indexOfParentheses1 = path.indexOf("(");
-				indexOfParentheses2 = path.indexOf(")");
-				ids = path.substring(indexOfParentheses1 + 1,indexOfParentheses2);
-				idArr.push(ids);
-			}
-			else{
-				//if undefined record is hit then stop and go do the full grab
-				performFullList = true;
-				break;
-			}
-		}
-
-		if (performFullList){
-			idArr = [];
+		if(selectedIndicesLength > 0){
+			index = this._oSmartTable.getSelectedIndices();
+			var ids = "";
+			var idArr = [];
 			var editSelection = this.getAllRules();
 			for (var j = 0; j < index.length; j++)
 			{
 				context = editSelection[index[j]]; 
-				if(context !== undefined){
+				if(context.SEQ_VALID_FLAG === 'F'){
+					MessageBox.alert("You cannot edit level 170 rules.",
+					{
+						icon : MessageBox.Icon.ERROR,
+						title : "Error"
+					});
+					return;
+				}
+				else if(context !== undefined){
 					idArr.push(context.ID);
 				}
 			}
-		}
-		//
-		ids = ids.substring(0, ids.length - 1);
-			var oData = idArr;
-			//add to model
-			var oModel = new sap.ui.model.json.JSONModel(oData);
-			sap.ui.getCore().setModel(oModel);
-		this.getOwnerComponent().getRouter().navTo("editCURules");
+			
+			//
+			ids = ids.substring(0, ids.length - 1);
+				var oData = idArr;
+				//add to model
+				var oModel = new sap.ui.model.json.JSONModel(oData);
+				sap.ui.getCore().setModel(oModel);
+			this.getOwnerComponent().getRouter().navTo("editCURules");
 		}
 		else
 		{
