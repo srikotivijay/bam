@@ -29,6 +29,7 @@ sap.ui.define([
 				oModel.setProperty("/showMaintainAttribute",false);
 				oModel.setProperty("/showPlantAssignment",false);
 				oModel.setProperty("/showAuditReport",false);
+				oModel.setProperty("/showUserManagement",true);
 				
 
 				
@@ -158,6 +159,10 @@ sap.ui.define([
 		// Navigate to Maintain Rules Home page
 		onGoTomaintainRules: function(){
 			this.getOwnerComponent().getRouter().navTo("maintainRules");
+		},
+				// Navigate to Maintain Rules Home page
+		onGoToUserManagement: function(){
+			this.getOwnerComponent().getRouter().navTo("userManagement");
 		}
   	});
 });

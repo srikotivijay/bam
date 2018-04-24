@@ -207,6 +207,12 @@
 					"name": "editPeopleRules",
 					"target": "editPeopleRules"
 				}
+				,
+				{
+					"pattern": "userManagement",
+					"name": "userManagement",
+					"target": "userManagement"
+				}
 			],
 			"targets": {
 				"home": {
@@ -281,6 +287,11 @@
 				"editPeopleRules": {
 					"viewName": "EditPeopleRules",
 					"viewId": "editPeopleRules"
+				}
+				,
+				"userManagement": {
+					"viewName": "UserManagement",
+					"viewId": "userManagement"
 				}
 			}
 		}

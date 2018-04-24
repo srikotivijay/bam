@@ -19,6 +19,9 @@
 				        <tiles>
 				        	<StandardTile title="{i18n>auditReport}" visible="{/showAuditReport}" tooltip="{i18n>auditReportTooltipText}" icon="sap-icon://history" activeIcon="sap-icon://history" infoState="Success" id="tlAuditReport" class="sapUiLargeMarginEnd" press="onGoToAuditReport"/>
 				        </tiles>
+				        <tiles>
+				        	<StandardTile title="{i18n>userManagement}" visible="{/showUserManagement}" tooltip="{i18n>userManagementTooltipText}" icon="sap-icon://history" activeIcon="sap-icon://history" infoState="Success" id="tlUserManagement" class="sapUiLargeMarginEnd" press="onGoToUserManagement"/>
+				        </tiles>
 				    </TileContainer>
 				</content>
 			</Page>

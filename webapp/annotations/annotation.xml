@@ -805,10 +805,10 @@
 			</Annotations>
 			<Annotations Target="ODataService.BAMDataService.V_WEB_PEOPLE_RULESType/PRODUCT_DESCRIPTION">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRODUCT_DESCRIPTION}"/>
-			</Annotations>	
+			</Annotations>
 			<Annotations Target="ODataService.BAMDataService.V_WEB_PEOPLE_RULESType/DEMAND_MANAGER">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.DEMAND_MANAGER}"/>
-			</Annotations>			
+			</Annotations>
 			<Annotations Target="ODataService.BAMDataService.V_WEB_PEOPLE_RULESType/GLOBAL_LEADER">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.GLOBAL_LEADER}"/>
 			</Annotations>
@@ -832,7 +832,7 @@
 			</Annotations>
 			<Annotations Target="ODataService.BAMDataService.V_WEB_PEOPLE_RULESType/SUPPLY_CHAIN_PLANNING_SPECIALIST">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SUPPLY_CHAIN_PLANNING_SPECIALIST}"/>
-			</Annotations>			
+			</Annotations>
 		</Schema>
 	</edmx:DataServices>
 </edmx:Edmx>
