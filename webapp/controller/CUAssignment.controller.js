@@ -48,11 +48,17 @@ sap.ui.define([
 				this._oModel = new sap.ui.model.json.JSONModel();
 				this.getView().setModel(this._oModel,"CUAssignmentVM");
 				this._oModel.setProperty("/showEditButton",true);
+				
+				var oSmartFilterbar = this.getView().byId("smartFilterBar");
+				oSmartFilterbar.clear();
+				
 				this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
 				//remove the selection column
 				var oSmartTable = this.getView().byId("smartTblCUAssignment");     //Get Hold of smart table
 				var oTable = oSmartTable.getTable();          //Analytical Table embedded into SmartTable
 				oTable.setEnableColumnFreeze(true);
+				oSmartFilterbar.search();
+
 				//oSmartTable.rebindTable();
 				//oTable.getColumns();
 			}
