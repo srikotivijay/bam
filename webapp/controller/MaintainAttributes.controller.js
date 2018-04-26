@@ -31,7 +31,7 @@ sap.ui.define([
 	    		var oSmartTable = this.getView().byId("smartTblBAMAttributes");   
 				var oTable = oSmartTable.getTable();  
 				oTable.setEnableColumnFreeze(true);
-	    		
+	    		this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
 
 	    		this._oi18nModel = this.getOwnerComponent().getModel("i18n");
 	    		// get the Module settings for i18n model
@@ -189,22 +189,36 @@ sap.ui.define([
 					index = this._oSmartTable.getSelectedIndices();
 					var gmidids="";
 					var idArr = [];
+					var performFullList = false;
 					for (var i=0;i < index.length;i++)
 					{
-				
-					context = this._oSmartTable.getContextByIndex(index[i]); 
-					if(context != undefined){
-						path = context.getPath();
-						indexOfParentheses1 = path.indexOf("(");
-						indexOfParentheses2 = path.indexOf(")");
-						gmidids=path.substring(indexOfParentheses1 + 1,indexOfParentheses2);
-						idArr.push(gmidids);
-						//gmidids+=",";
-						// navigate to multiple edit page
+					
+						context = this._oSmartTable.getContextByIndex(index[i]); 
+						if(context != undefined){
+							path = context.getPath();
+							indexOfParentheses1 = path.indexOf("(");
+							indexOfParentheses2 = path.indexOf(")");
+							gmidids=path.substring(indexOfParentheses1 + 1,indexOfParentheses2);
+							idArr.push(gmidids);
+							//gmidids+=",";
+							// navigate to multiple edit page
 						}
-					//else{
-					//	MessageToast.show(context);
-					//}
+						else{
+							//if undefined record is hit then stop and go do the full grab
+							performFullList = true;
+							break;
+						}
+					}
+					if (performFullList){
+						idArr = [];
+						var editSelection = this.getAllRules();
+						for (var j = 0; j < index.length; j++)
+						{
+							context = editSelection[index[j]]; 
+							if(context !== undefined){
+								idArr.push(context.ID);
+							}
+						}
 					}
 					gmidids = gmidids.substring(0, gmidids.length - 1);
 					//path = context.getPath();
@@ -226,6 +240,44 @@ sap.ui.define([
 							title : "Error"
 					});
 				}
+			},
+			getAllRules : function () {
+				var result;
+				// Create a filter & sorter array
+				// filter RCU based on CU, if CU is selected
+				// show all RCU if CU is not selected
+				var filterArray = [];
+				var sortArray = [];
+				// for (var a = 0; a < this._oBindingParams.filters[0].aFilters.length; a++){
+				// 	filterArray.push(this._oBindingParams.filters[0].aFilters[a]);
+				// }
+				var aApplicationFilters = this._oSmartTable.getBinding().aApplicationFilters;
+				for (var a = 0; a < aApplicationFilters.length; a++){
+					filterArray.push(aApplicationFilters[a]);
+				}
+				var aSorters = this._oSmartTable.getBinding().aSorters;
+				for (var a = 0; a < aSorters.length; a++){
+					sortArray.push(aSorters[a]);
+				}
+				
+					// Get the Country dropdown list from the CODE_MASTER table
+					this._oDataModel.read("/V_MAINTAIN_ATTRIBUTES",{
+							filters: filterArray,
+							sorters: sortArray,
+							async: false,
+			                success: function(oData, oResponse){
+				                result =  oData.results;
+			                },
+			    		    error: function(){
+		    		    		MessageBox.alert("Unable to retreive values for edit. Please contact System Admin.",
+								{
+									icon : MessageBox.Icon.ERROR,
+									title : "Error"
+								});
+			            		result = [];
+			    			}
+			    	});
+			    	return result;
 			}
   	});
 });
