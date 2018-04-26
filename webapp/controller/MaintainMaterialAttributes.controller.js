@@ -90,18 +90,7 @@ sap.ui.define([
 			
 				// check if more than or less than 1 checkbox is checked
 				var index,context,path,indexOfParentheses1,indexOfParentheses2;
-				if(this._oSmartTable.getSelectedIndices().length === 1){
-					index = this._oSmartTable.getSelectedIndices();
-					context = this._oSmartTable.getContextByIndex(index[0]); 
-					path = context.getPath();
-					indexOfParentheses1 = path.indexOf("(");
-					indexOfParentheses2 = path.indexOf(")");
-					// navigate to single edit page
-					this.getOwnerComponent().getRouter().navTo("editMaterialAttributes",{
-						 editAttributesID : path.substring(indexOfParentheses1 + 1,indexOfParentheses2)
-					});
-				}
-				else if(this._oSmartTable.getSelectedIndices().length > 1){
+				 if(this._oSmartTable.getSelectedIndices().length > 0){
 					index = this._oSmartTable.getSelectedIndices();
 					var gmidids="";
 					var idArr = [];
@@ -137,16 +126,20 @@ sap.ui.define([
 						}
 					}
 					gmidids = gmidids.substring(0, gmidids.length - 1);
-					//path = context.getPath();
-					
+
 					var oData = idArr;
 					//add to model
 					var oModel = new sap.ui.model.json.JSONModel(oData);
 					sap.ui.getCore().setModel(oModel);
-					//indexOfParentheses1 = path.indexOf("(");
-					//indexOfParentheses2 = path.indexOf(")");
-					// navigate to multiple edit page
 					this.getOwnerComponent().getRouter().navTo("editMaterialAttributes");
+				}
+				else
+				{
+					MessageBox.alert("Please select one Material for edit.",
+							{
+								icon : MessageBox.Icon.ERROR,
+								title : "Error"
+						});
 				}
 			},
 			getAllMaterials : function () {

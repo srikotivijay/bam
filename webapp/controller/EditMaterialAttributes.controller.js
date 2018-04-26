@@ -57,6 +57,7 @@ sap.ui.define([
 				// Assigning view model for the page
 				this._oModel = new sap.ui.model.json.JSONModel();
 				this.getView().setModel(this._oModel);
+				this._oModel.setSizeLimit(20000);
 				this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
 				//
 				if (!this._busyDialog) 
@@ -197,8 +198,8 @@ sap.ui.define([
 	    			icon: sap.m.MessageBox.Icon.WARNING,
 	    			actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
 	          		onClose: function(oAction) {
-	          			var editRuleIdList = currObj._oModel.getProperty("/EDIT_ATTRIBUTES_ID_LIST");
-	        			currObj.fnCallbackSubmitConfirm(oAction, editRuleIdList);
+	          			var editMaterialIdList = currObj._oModel.getProperty("/EDIT_ATTRIBUTES_ID_LIST");
+	        			currObj.fnCallbackSubmitConfirm(oAction, editMaterialIdList);
 	            	}
 	       		});				
 			}
@@ -218,8 +219,8 @@ sap.ui.define([
 			    		LAST_UPDATED_BY: loggedInUserID,
 					    LAST_UPDATED_ON: oDate
 			    	};
-		   if (this._oViewModelData.CODE_KEY !== "-1" && this._oViewModelData.CODE_KEY !== undefined){
-					updMaterial.CODE_KEY = this._oViewModelData.CODE_KEY;
+		   if (this._oViewModelData.ID !== "-1" && this._oViewModelData.ID !== undefined){
+					updMaterial.ALERT_EXCLUSION_CODE_ID = this._oViewModelData.ID;
 					}
 			if (this._oViewModelData.BUSINESS_SEGMENT_CODE !== "-1" && this._oViewModelData.BUSINESS_SEGMENT_CODE !== undefined){
 				updMaterial.BUSINESS_SEGMENT_CODE = this._oViewModelData.BUSINESS_SEGMENT_CODE;
@@ -228,7 +229,7 @@ sap.ui.define([
 			return updMaterial;
 		},		
 		// update the rules based on user response
-		fnCallbackSubmitConfirm: function(oAction, editRuleIdList){
+		fnCallbackSubmitConfirm: function(oAction, editMaterialIdList){
 			var curr = this;
 			var successCount = 0;
 			
@@ -236,12 +237,12 @@ sap.ui.define([
 			//else do nothing
 			if (oAction === "YES") 
 			{
-				var updRule = curr.createUpdateObject();
+				var updMaterial = curr.createUpdateObject();
 				// create a batch array and push each updated GMID to it
 				var batchArray = [];
-				for(var i = 0; i < editRuleIdList.length; i++) 
+				for(var i = 0; i < editMaterialIdList.length; i++) 
 			    {
-			    	batchArray.push(this._oDataModel.createBatchOperation("MST_GMID(" + editRuleIdList[i].ID + ")", "MERGE", updRule));
+			    	batchArray.push(this._oDataModel.createBatchOperation("MST_GMID(" + editMaterialIdList[i].GMID + ")", "MERGE", updMaterial));
 			    	successCount++;
 				}
 				this._oDataModel.addBatchChangeOperations(batchArray);
@@ -260,21 +261,21 @@ sap.ui.define([
 				this._oDataModel.submitBatch(
 					function(oData,oResponse)
 					{
-						curr._oDataModel.remove("/MST_CU_RULE(" + editRuleIdList[0].ID + ")", {
+						curr._oDataModel.remove("/MST_GMID(" + editMaterialIdList[0].GMID + ")", {
 							success: function(){
 								busyDialog.close();
-								MessageBox.alert("CU for " + successCount + " Rules updated successfully.",
+								MessageBox.alert(successCount + " Materials updated successfully.",
 									{
 										icon : MessageBox.Icon.SUCCESS,
 										title : "Success",
 										onClose: function() {
-						        			curr.getOwnerComponent().getRouter().navTo("cuAssignment");
+						        			curr.getOwnerComponent().getRouter().navTo("maintainMaterialAttributes");
 						        	}
 								});
 							},
 							error: function(){
 								busyDialog.close();
-				    			MessageBox.alert("CU for " + successCount + " Rules updated successfully with errors deleting nulled Rules.",
+				    			MessageBox.alert(successCount + " Materials did not got updated.",
 								{
 									icon : MessageBox.Icon.ERROR,
 									title : "Error"
@@ -285,7 +286,7 @@ sap.ui.define([
 			    	function(oError)
 			    	{
 			    		busyDialog.close();
-		    			MessageBox.alert("Error updating attributes for Rules.",
+		    			MessageBox.alert("Error updating Material Attributes.",
 						{
 							icon : MessageBox.Icon.ERROR,
 							title : "Error"
@@ -303,7 +304,7 @@ sap.ui.define([
             		actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
             		onClose: function(oAction) {
             			if(oAction === "YES"){
-            				curr.getOwnerComponent().getRouter().navTo("cuAssignment");
+            				curr.getOwnerComponent().getRouter().navTo("maintainMaterialAttributes");
             			}
             		}
         		});
@@ -316,7 +317,7 @@ sap.ui.define([
 				window.history.go(-1);
 			} else {
 				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-				oRouter.navTo("cuAssignment", true);
+				oRouter.navTo("maintainMaterialAttributes", true);
 			}
 		},
 		validateRuleValueChange: function (sourceControlName){
