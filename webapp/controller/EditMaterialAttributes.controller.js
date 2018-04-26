@@ -68,10 +68,10 @@ sap.ui.define([
 				// default load
 				this._oModel.setProperty("/ALERT_EXCLUSION",this.getAlertExclusionDropDown());
 				this._oModel.setProperty("/BUSINESS_SEGMENT",this.getBusinessSegmentDropDown());
-				this._oModel.setProperty("/CODE_KEY","-1");
+				this._oModel.setProperty("/ID","-1");
 				this._oModel.setProperty("/LABEL","Select..");
 				this._oModel.setProperty("/BUSINESS_SEGMENT_CODE","-1");
-				this._oModel.setProperty("/BUSINESS_SEGMENT_DESV","Select..");
+				this._oModel.setProperty("/BUSINESS_SEGMENT_DESC","Select..");
 				//
 				var ddlAlertExclusion = this.getView().byId("cmbAlertExclusion");
 				ddlAlertExclusion.setValueStateText("");
@@ -127,7 +127,7 @@ sap.ui.define([
 					async: false,
 	                success: function(oData, oResponse){
 	                	// add Please select item on top of the list
-		                oData.results.unshift({	"CODE_KEY":-1,
+		                oData.results.unshift({	"ID":-1,
 		              							"LABEL":"Select..."});
 		                // Bind the Country data to the GMIDShipToCountry model
 		                result =  oData.results;

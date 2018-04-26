@@ -15,9 +15,9 @@
 				                	<ComboBox
 										id="cmbAlertExclusion"
 										name="cmbAlertExclusion"
-										showSecondaryValues= "true"
+										showSecondaryValues= "false"
 										filterSecondaryValues= "true"
-										selectedKey="{/CODE_KEY}"
+										selectedKey="{/ID}"
 										value="{/LABEL}"
 										width="500px"
 										items="{
@@ -25,7 +25,7 @@
 											templateShareable : true
 										}"
 										change = "onChange">
-										<core:ListItem key="{CODE_KEY}" text="{LABEL}" additionalText="{CODE_KEY}"/>
+										<core:ListItem key="{ID}" text="{LABEL}"/>
 									</ComboBox>
 				                </f:FormElement>
 				                <f:FormElement label="{i18n>busSegment}" id="felmbusSegment">
