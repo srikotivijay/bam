@@ -180,7 +180,7 @@ sap.ui.define([
 			// Setting local this variable in order to access it in the action confirm button
 			var t = this;
 			
-			MessageBox.confirm(("Are you sure you want to delete this GMID/Country? Doing so will result to the GMID not being submitted to BAM and your entry for this GMID on the previous page will be disregarded."), {
+			MessageBox.confirm(("Are you sure you want to delete this Material/Country? Doing so will result in the Material not being submitted to BAM and your entry for this Material on the previous page will be disregarded."), {
 	    			icon: sap.m.MessageBox.Icon.WARNING,
 	    			actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
 	          		onClose: function(oAction) {
@@ -219,14 +219,14 @@ sap.ui.define([
     	    this.resetValidation();
 			if(GMIDShipToCountry.length === 0)
 			{
-				MessageBox.alert("There are no GMID/Country combinations to submit. Please return to the homepage.", {
+				MessageBox.alert("There are no Material/Country combinations to submit. Please return to the homepage.", {
 	    			icon : MessageBox.Icon.ERROR,
 					title : "Invalid Input"
        			});
 			}
 			else if(!this.validateDuplicateRecords())
 			{
-				MessageBox.alert("Duplicate GMID/Country combination exists in the system. Please remove the entry.", {
+				MessageBox.alert("Duplicate Material/Country combination exists in the system. Please remove the entry.", {
 	    			icon : MessageBox.Icon.ERROR,
 					title : "Invalid Input"
        			});
@@ -234,7 +234,7 @@ sap.ui.define([
 			// validation to check if each GMID/Country has at least one plant selected
     	    else if (this.validatePlantSelection() === false)
 	    	{
-	    		MessageBox.alert("Please select at least one plant for each GMID/Country combination.", {
+	    		MessageBox.alert("Please select at least one plant for each Material/Country combination.", {
 	    			icon : MessageBox.Icon.ERROR,
 					title : "Invalid Input"
        			});
@@ -306,7 +306,7 @@ sap.ui.define([
                             		maxGMIDShipToID  = latestShipToCountry.ID;
                             	},
                             	error: function(){
-                            		MessageToast.show("Unable to retrieve GMID Country record's Id that was inserted.");
+                            		MessageToast.show("Unable to retrieve Material/Country record's Id that was inserted.");
                             	}
 
                             }); 
@@ -390,7 +390,7 @@ sap.ui.define([
 	    		{
 	        			var oRouter = this.getRouter();
         				// once insertion is success, navigate to homepage
-        				MessageBox.alert("You have successfully submitted " + successGMIDShipToCount + " GMID(s)",
+        				MessageBox.alert("You have successfully submitted " + successGMIDShipToCount + " Material(s)",
 							{
 								icon : MessageBox.Icon.SUCCESS,
 								title : "Success",
@@ -402,7 +402,7 @@ sap.ui.define([
 	    		} 
 	    		else 
 	    		{
-	        			MessageToast.show("Error: GMIDs were not submitted");
+	        			MessageToast.show("Error: Materials were not submitted");
 	    		}
 	    		
 	    	} // end of else validation at least one plant selected
