@@ -6,7 +6,7 @@
 				</headerContent>
 				<content>
 					<HBox>
-						<Label class="boldFont" text="* To upload GMID/Country combination from a file, download the template and enter the data in Excel, save as a CSV file then browse and upload."></Label>
+						<Label class="boldFont" text="* To upload Material/Country combination from a file, download the template and enter the data in Excel, save as a CSV file then browse and upload."></Label>
 					</HBox>
 					<HBox alignItems="Center" wrap="Wrap" >
 						<Text id="lblSubmitGMIDFor" text="{i18n>submitGMIDFor}" wrapping="false"/>
