@@ -60,7 +60,7 @@ sap.ui.define([
 				// Assigning view model for the page
 			    this._oModel = new sap.ui.model.json.JSONModel({AssignRuleVM : initData});
 			    // Create table model, set size limit to 300, add an empty row
-			    this._oModel.setSizeLimit(2000);
+			    this._oModel.setSizeLimit(20000);
 			    // define a global variable for the view model, the view model data and oData model
 			    this._oAssignRuleViewModel = this._oModel;
 			    this._oViewModelData = this._oAssignRuleViewModel.getData();

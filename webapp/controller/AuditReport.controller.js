@@ -21,8 +21,11 @@ sap.ui.define([
 	    		//remove the selection column
 	    		var oSmartTable = this.getView().byId("smartTblBAMAttributes");     //Get Hold of smart table
 				var oTable = oSmartTable.getTable();          //Analytical Table embedded into SmartTable
+				var oSmartFilterbar = this.getView().byId("smartFilterBar");
+				oSmartFilterbar.clear(); // clear the existing filters
 				oTable.setSelectionMode("None");
 				oTable.setEnableColumnFreeze(true);
+				oSmartFilterbar.search();
 				//oTable.getColumns();
 		    	
 		    	if(firstTimePageLoad)

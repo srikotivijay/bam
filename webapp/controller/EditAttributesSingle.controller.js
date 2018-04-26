@@ -215,7 +215,7 @@ sap.ui.define([
 			                oModel.setProperty("/COMMENTS",selDataVal.COMMENTS);
 		                },
 		    		    error: function(){
-		            		MessageToast.show("Unable to retrieve selected GMID/Country record.");
+		            		MessageToast.show("Unable to retrieve selected Material/Country record.");
 		    			}
 		    		});
 		    		
@@ -295,7 +295,7 @@ sap.ui.define([
 				var gmid = this._oViewModelData.GMID;
 				var country = this._oViewModelData.COUNTRY;
 				// check if user wants to update the attributes for GMID and country
-				MessageBox.confirm("Highlighted attributes will be updated for GMID " + gmid + " and country " + country + ". Continue?", {
+				MessageBox.confirm("Highlighted attributes will be updated for Material " + gmid + " and country " + country + ". Continue?", {
             		icon: sap.m.MessageBox.Icon.WARNING,
             		actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
             		onClose: function(oAction) {
@@ -377,7 +377,7 @@ sap.ui.define([
 						merge: true,
 			        	// show success alert to the user
 					    success: function(){
-							MessageBox.alert("Attributes for GMID " + updGMIDCountry.GMID + " and country " + country + " updated successfully.",
+							MessageBox.alert("Attributes for Material " + updGMIDCountry.GMID + " and country " + country + " updated successfully.",
 								{
 									icon : MessageBox.Icon.SUCCESS,
 									title : "Success",
@@ -388,7 +388,7 @@ sap.ui.define([
 						},
 						// show error alert to the user
 						error: function(oError){
-							MessageBox.alert("Error updating attributes for GMID " + updGMIDCountry.GMID + " and country " + country + ".",
+							MessageBox.alert("Error updating attributes for Material " + updGMIDCountry.GMID + " and country " + country + ".",
 								{
 									icon : MessageBox.Icon.ERROR,
 									title : "Error"

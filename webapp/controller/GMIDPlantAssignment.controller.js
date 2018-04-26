@@ -224,7 +224,7 @@ sap.ui.define([
     	    this.resetValidation();
 			if(GMIDShipToCountry.length === 0)
 			{
-				MessageBox.alert("There are no GMID/Country combinations to submit. Please return to the homepage.", {
+				MessageBox.alert("There are no Material/Country combinations to submit. Please return to the homepage.", {
 	    			icon : MessageBox.Icon.ERROR,
 					title : "Invalid Input"
        			});
@@ -239,7 +239,7 @@ sap.ui.define([
 			// validation to check if each GMID/Country has at least one plant selected
     	    else if (this.validatePlantSelection() === false)
 	    	{
-	    		MessageBox.alert("Please assign at least one plant to any GMID/Country combination.", {
+	    		MessageBox.alert("Please assign at least one plant to any Material/Country combination.", {
 	    			icon : MessageBox.Icon.ERROR,
 					title : "Invalid Input"
        			});
@@ -325,7 +325,7 @@ sap.ui.define([
 	    		{
 	        			var oRouter = this.getRouter();
         				// once insertion is success, navigate to homepage
-        				MessageBox.alert("The selected plants have been assigned to the respective GMID/Country combination.",
+        				MessageBox.alert("The selected plants have been assigned to the respective Material/Country combination.",
 							{
 								icon : MessageBox.Icon.SUCCESS,
 								title : "Success",
@@ -337,7 +337,7 @@ sap.ui.define([
 	    		} 
 	    		else 
 	    		{
-	        			MessageToast.show("Error: GMID Plants were not submitted");
+	        			MessageToast.show("Error: Material Plants were not submitted");
 	    		}
 	    	 } // end of else validation at least one plant selected
 	    	},

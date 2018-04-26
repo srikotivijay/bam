@@ -79,6 +79,8 @@ sap.ui.define([
 				this._oModel = new sap.ui.model.json.JSONModel();
 				this.getView().setModel(this._oModel,"PeopleAssignmentVM");
 				this._oModel.setProperty("/showEditButton",hasEditPermission);
+				var oSmartFilterbar = this.getView().byId("smartFilterBar");
+				oSmartFilterbar.clear(); // clear the existing filters
 				this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
 				//remove the selection column
 				var oSmartTable = this.getView().byId("smartTblPeopleAssignment");     //Get Hold of smart table
@@ -100,6 +102,7 @@ sap.ui.define([
 				//Analytical Table embedded into SmartTable
 				var oTable = oSmartTable.getTable(); 
 				oTable.setEnableColumnFreeze(true);
+				oSmartFilterbar.search();
 				//oSmartTable.rebindTable();
 				//oTable.getColumns();
 				if(firstTimePageLoad === false){

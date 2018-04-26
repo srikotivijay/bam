@@ -190,7 +190,7 @@ sap.ui.define([
 				}
 				else
 				{
-					MessageBox.alert("Please select one GMID/Country combination to proceed.",
+					MessageBox.alert("Please select one Material/Country combination to proceed.",
 						{
 							icon : MessageBox.Icon.ERROR,
 							title : "Error"

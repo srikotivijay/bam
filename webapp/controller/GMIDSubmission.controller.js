@@ -494,13 +494,13 @@ sap.ui.define([
 	                	 {
 	                		data[i].errorSummary += "\n";  
 	                	 }
-	            		 data[i].errorSummary += "Duplicate GMID/Country Combination found at row # " + (j + 1);
+	            		 data[i].errorSummary += "Duplicate Material/Country Combination found at row # " + (j + 1);
 	            		 
 	            		 if(data[j].errorSummary !== "")
 	                	 {
 	                		data[j].errorSummary += "\n";  
 	                	 }
-	            		 data[j].errorSummary += "Duplicate GMID/Country Combination found at row # " + (i + 1);
+	            		 data[j].errorSummary += "Duplicate Material/Country Combination found at row # " + (i + 1);
 	            		 
 		            	 returnValue = false;
 		            }
@@ -550,7 +550,7 @@ sap.ui.define([
 	                {
 	                	data[i].errorSummary += "\n";  
 	                }
-	                data[i].errorSummary += "No Valid Ship from Plants are available for the GMID.";
+	                data[i].errorSummary += "No Valid Ship from Plants are available for the Material.";
 	        	  } 
 	        	  else
 	        	  {
@@ -605,7 +605,7 @@ sap.ui.define([
 		                {
 		                	gmiddata[i].errorSummary += "\n";  
 		                }
-		                gmiddata[i].errorSummary += "GMID has an invalid status or does not exist in PRM system.";  
+		                gmiddata[i].errorSummary += "Material has an invalid status or does not exist in PRM system.";  
 	        	  } // end for validgmidinput if
 	        	} // end for if(data[i].GMID !== "")
 	        } // end for outer for loop
@@ -655,7 +655,7 @@ sap.ui.define([
 			                {
 			                	gmiddata[i].errorSummary += "\n";  
 			                }
-			                gmiddata[i].errorSummary += "The GMID does not belong to " + this._oSelectedGMIDType.toUpperCase();  
+			                gmiddata[i].errorSummary += "The Material does not belong to " + this._oSelectedGMIDType.toUpperCase();  
 		        	  } // end for validgmidinput if
 	        	  } // end for gmiddata[i].GMID !==
 	        } // end for outre for loop
@@ -736,7 +736,7 @@ sap.ui.define([
 		    {
 		    	countryLabel = countryList.find(function(data){return data.ID === CountryCode; }).LABEL;
 		    }
-			var GMIDCountry = "GMID : " + GMID + "\n" + "Country : " + countryLabel + "\n" + "\n";
+			var GMIDCountry = "Material : " + GMID + "\n" + "Country : " + countryLabel + "\n" + "\n";
 		         MessageBox.alert(GMIDCountry + text, {
 			     icon : MessageBox.Icon.ERROR,
 			title : "Invalid Input"
@@ -800,7 +800,7 @@ sap.ui.define([
     		// also if nothing is changed in page
     		if (GMIDShipToCountry.length === 1 || this.chkIsModified() === false)
     		{
-				MessageBox.alert("Please enter at least one GMID.", {
+				MessageBox.alert("Please enter at least one Material.", {
 	    			icon : MessageBox.Icon.ERROR,
 					title : "Invalid Input"
 	       		});
@@ -989,7 +989,7 @@ sap.ui.define([
 	        			{
 	        				var oRouter = t.getRouter();
 	        				// once insertion is success, navigate to homepage
-	        				MessageBox.alert("You have successfully submitted " + successCount + " GMID(s)",
+	        				MessageBox.alert("You have successfully submitted " + successCount + " Material(s)",
 								{
 									icon : MessageBox.Icon.SUCCESS,
 									title : "Success",
@@ -1002,7 +1002,7 @@ sap.ui.define([
 	        			{
 	        				var oRouter = t.getRouter();
 	        				// once insertion is success, navigate to homepage
-	        				MessageBox.alert("You have successfully submitted " + successCount + " GMID(s)",
+	        				MessageBox.alert("You have successfully submitted " + successCount + " Material(s)",
 								{
 									icon : MessageBox.Icon.SUCCESS,
 									title : "Success",
@@ -1015,7 +1015,7 @@ sap.ui.define([
 	        			{
 	        				var oRouter = t.getRouter();
 	        				// once insertion is success, navigate to homepage
-	        				MessageBox.alert("You have successfully submitted " + successCount + " GMID(s)",
+	        				MessageBox.alert("You have successfully submitted " + successCount + " Material(s)",
 								{
 									icon : MessageBox.Icon.SUCCESS,
 									title : "Success",
@@ -1033,7 +1033,7 @@ sap.ui.define([
 		    		}
 		    		else 
 		    		{
-	        			MessageBox.alert("Error: All GMID's are not submitted successfully. Please contact System Admin.",
+	        			MessageBox.alert("Error: All Material's are not submitted successfully. Please contact System Admin.",
 							{
 								icon : MessageBox.Icon.ERROR,
 								title : "Error"
@@ -1079,7 +1079,7 @@ sap.ui.define([
 		                {
 		        			data[i].errorSummary += "\n";  
 		                }
-		            	data[i].errorSummary += "GMID/Country Combination already exists in the system.";
+		            	data[i].errorSummary += "Material/Country Combination already exists in the system.";
 		            }
 		            else
 		            {
@@ -1233,7 +1233,7 @@ sap.ui.define([
 		                
 			            if (excelColumnHeaders[0] !== oGMID)
 			            {
-			                MessageBox.alert("Incorrect template format found. The first column should be: GMID",
+			                MessageBox.alert("Incorrect template format found. The first column should be: Material",
 							{
 								icon : MessageBox.Icon.ERROR,
 								title : "Error"
