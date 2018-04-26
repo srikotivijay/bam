@@ -211,7 +211,7 @@ sap.ui.define([
 					}
 					if (performFullList){
 						idArr = [];
-						var editSelection = this.getAllRules();
+						var editSelection = this.getAllMaterials();
 						for (var j = 0; j < index.length; j++)
 						{
 							context = editSelection[index[j]]; 
@@ -241,16 +241,11 @@ sap.ui.define([
 					});
 				}
 			},
-			getAllRules : function () {
+			getAllMaterials : function () {
 				var result;
 				// Create a filter & sorter array
-				// filter RCU based on CU, if CU is selected
-				// show all RCU if CU is not selected
 				var filterArray = [];
 				var sortArray = [];
-				// for (var a = 0; a < this._oBindingParams.filters[0].aFilters.length; a++){
-				// 	filterArray.push(this._oBindingParams.filters[0].aFilters[a]);
-				// }
 				var aApplicationFilters = this._oSmartTable.getBinding().aApplicationFilters;
 				for (var a = 0; a < aApplicationFilters.length; a++){
 					filterArray.push(aApplicationFilters[a]);
