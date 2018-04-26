@@ -1,0 +1,35 @@
+<core:View xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns:smartFilterBar="sap.ui.comp.smartfilterbar" xmlns:smartTable="sap.ui.comp.smarttable" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" controllerName="bam.controller.MaintainMaterialAttributes" height="100%">
+	<App id="maintainMaterialAttributes">
+		<pages>
+			<Page title="{i18n>title}">
+				<headerContent>
+					<Button id="btnHome" icon="sap-icon://home" tooltip="{i18n>home}" press="onHome"/>
+				</headerContent>
+				 
+				<!-- use this to make the table occupy the available screen height -->
+				<VBox fitContainer="true">
+					
+					<smartTable:SmartTable id="smartTblMaterialAttributes" beforeRebindTable="onBeforeRebindTable" entitySet="V_MAINTAIN_MATERIAL_ATTRIBUTES" tableType="Table" useExportToExcel="true" useVariantManagement="true" showFullScreenButton="true" 
+					useTablePersonalisation="true" header="GMID Country Attributes" showRowCount="true" enableAutoBinding="true" app:useSmartField="true" class="sapUiResponsiveContentPadding" ignoreFromPersonalisation="ID"
+					initiallyVisibleFields="GMID,GMID_SHORTTEXT,TRADE_PRODUCT_CODE,TRADE_PRODUCT_DESC,PLAN_PRODUCT_CODE,PLAN_PRODUCT_DESC,PROFIT_CENTER_CODE,PROFIT_CENTER_DESC,PERFORMANCE_CENTER_CODE,PERFORMANCE_CENTER_DESC,VALUE_CENTER_CODE,VALUE_CENTER_DESC,SPECIFIED_MATERIAL_CODE,SPECIFIED_MATERIAL_DESC
+							,MASTER_SALES_SPEC_CODE,MASTER_SALES_SPEC_DESC,PLATFORM_DESC,FAMILY_DESC,PORTFOLIO_DESC,CROP_MOLECULE_DESC,SUBCROP_MOLECULE_DESC
+							,BUSINESS_SEGMENT_CODE,BUSINESS_SEGMENT_DESC,ALERT_EXCLUSION_FLAG_CODE,ALERT_EXCLUSION_FLAG,MATERIAL_TYPE
+							,BASE_UOM,TREATMENT,PACKAGE_TYPE,TRAIT,INV_TYPE,MATERIAL_CLASS,BGT_DESC,LOCAL_UOM,PRIMARY_UOM
+							,MATERIAL_STATE,SUPPLY_GROUP,PR_PRODUCT">
+						<!-- layout data used to make the table growing but the filter bar fixed -->
+						<smartTable:layoutData>
+								<FlexItemData growFactor="1" baseSize="0%"/>
+						</smartTable:layoutData>
+					<smartTable:customToolbar> 
+		                <OverflowToolbar design="Transparent"> 
+		                        <ToolbarSpacer/> 
+								<Button id="btnEdit" text="{i18n>edit}" press="onEdit" icon="sap-icon://edit" activeIcon="sap-icon://edit"/> 
+		               </OverflowToolbar> 
+			       </smartTable:customToolbar>
+					</smartTable:SmartTable>
+				<items/>
+				</VBox>
+			</Page>
+		</pages>
+	</App>
+</core:View>
