@@ -833,6 +833,25 @@
 			<Annotations Target="ODataService.BAMDataService.V_WEB_PEOPLE_RULESType/SUPPLY_CHAIN_PLANNING_SPECIALIST">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SUPPLY_CHAIN_PLANNING_SPECIALIST}"/>
 			</Annotations>
+			<ComplexType Name="V_WEB_USERSType"></ComplexType>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_USERSType">
+				<Annotation Term="UI.PresentationVariant">
+					<Record Type="UI.PresentationVariantType">
+						<PropertyValue Property="SortOrder"/>
+						<PropertyValue Property="GroupBy">
+							<Collection>
+								<PropertyPath>USER_ID<Annotation Term="Common.Label" String="{@i18n&gt;cuSubcuAssignment}"/>
+									<Annotation Term="Common.RecursiveHierarchy"/>
+								</PropertyPath>
+							</Collection>
+						</PropertyValue>
+						<PropertyValue Property="TotalBy"/>
+						<PropertyValue Property="Total"/>
+						<PropertyValue Property="Visualizations"/>
+						<PropertyValue Property="RequestAtLeast"/>
+					</Record>
+				</Annotation>
+			</Annotations>
 		</Schema>
 	</edmx:DataServices>
 </edmx:Edmx>
