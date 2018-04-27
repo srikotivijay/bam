@@ -16,6 +16,26 @@ sap.ui.define([
 				filterBoolean = true;
 				// Get logged in user id
 			    loggedInUserID = DataContext.getUserID();
+			    this._oi18nModel = this.getOwnerComponent().getModel("i18n");
+			    var maintainMaterialAttributes = this._oi18nModel.getProperty("Module.maintainMaterialAttributes");
+				var permissions = DataContext.getUserPermissions();
+				var hasAccess = false;
+				for(var j = 0; j < permissions.length; j++)
+				{
+					if(permissions[j].ATTRIBUTE === maintainMaterialAttributes)
+					{
+						hasAccess = true;
+						break;
+					}
+				}
+				
+				if(hasAccess === false){
+					this.getRouter().getTargets().display("accessDenied", {
+						fromTarget : "maintainMaterialAttributes"
+					});	
+				}
+				else
+				{
 				 // define a global variable for the oData model		    
 		    	var oView = this.getView();
 		    	oView.setModel(this.getOwnerComponent().getModel());
@@ -28,9 +48,6 @@ sap.ui.define([
 				oTable.setEnableColumnFreeze(true);
 	    		this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
 
-	    		this._oi18nModel = this.getOwnerComponent().getModel("i18n");
-	    	
-		    	
 		    	if(firstTimePageLoad)
 		    	{
 		    		//attach _onRouteMatched to be called everytime on navigation to Maintain Attributes page
@@ -42,6 +59,7 @@ sap.ui.define([
 		    		oSmartTable = this.byId("smartTblMaterialAttributes");
 		    		oSmartTable.rebindTable();
 		    	}
+			}
 			},
 			// applying default userid filters before binding
 			onBeforeRebindTable : function(oEvent) {
