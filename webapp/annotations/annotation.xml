@@ -805,10 +805,10 @@
 			</Annotations>
 			<Annotations Target="ODataService.BAMDataService.V_WEB_PEOPLE_RULESType/PRODUCT_DESCRIPTION">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRODUCT_DESCRIPTION}"/>
-			</Annotations>	
+			</Annotations>
 			<Annotations Target="ODataService.BAMDataService.V_WEB_PEOPLE_RULESType/DEMAND_MANAGER">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.DEMAND_MANAGER}"/>
-			</Annotations>			
+			</Annotations>
 			<Annotations Target="ODataService.BAMDataService.V_WEB_PEOPLE_RULESType/GLOBAL_LEADER">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.GLOBAL_LEADER}"/>
 			</Annotations>
@@ -832,7 +832,121 @@
 			</Annotations>
 			<Annotations Target="ODataService.BAMDataService.V_WEB_PEOPLE_RULESType/SUPPLY_CHAIN_PLANNING_SPECIALIST">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SUPPLY_CHAIN_PLANNING_SPECIALIST}"/>
-			</Annotations>			
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/ALERT_EXCLUSION_FLAG">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.ALERT_EXCLUSION_FLAG}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/ALERT_EXCLUSION_FLAG_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.ALERT_EXCLUSION_FLAG_CODE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/BASE_UOM">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.BASE_UOM}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/BGT_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.BGT_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/BUSINESS_SEGMENT_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.BUSINESS_SEGMENT_CODE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/BUSINESS_SEGMENT_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.BUSINESS_SEGMENT_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/CROP_MOLECULE_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.CROP_MOLECULE_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/FAMILY_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.FAMILY_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/GMID">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.GMID}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/GMID_SHORTTEXT">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.GMID_SHORTTEXT}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/INV_TYPE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.INV_TYPE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/LOCAL_UOM">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.LOCAL_UOM}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/MASTER_SALES_SPEC_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MASTER_SALES_SPEC_CODE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/MASTER_SALES_SPEC_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MASTER_SALES_SPEC_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/MATERIAL_CLASS">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MATERIAL_CLASS}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/MATERIAL_STATE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MATERIAL_STATE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/MATERIAL_TYPE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MATERIAL_TYPE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/PACKAGE_TYPE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PACKAGE_TYPE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/PERFORMANCE_CENTER_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PERFORMANCE_CENTER_CODE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/PERFORMANCE_CENTER_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PERFORMANCE_CENTER_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/PLAN_PRODUCT_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PLAN_PRODUCT_CODE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/PLAN_PRODUCT_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PLAN_PRODUCT_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/PLATFORM_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PLATFORM_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/PORTFOLIO_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PORTFOLIO_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/PRIMARY_UOM">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIMARY_UOM}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/PROFIT_CENTER_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PROFIT_CENTER_CODE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/PROFIT_CENTER_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PROFIT_CENTER_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/PR_PRODUCT">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PR_PRODUCT}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/SPECIFIED_MATERIAL_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SPECIFIED_MATERIAL_CODE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/SPECIFIED_MATERIAL_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SPECIFIED_MATERIAL_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/SUBCROP_MOLECULE_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SUBCROP_MOLECULE_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/SUPPLY_GROUP">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SUPPLY_GROUP}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/TRADE_PRODUCT_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.TRADE_PRODUCT_CODE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/TRADE_PRODUCT_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.TRADE_PRODUCT_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/TRAIT">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.TRAIT}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/TREATMENT">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.TREATMENT}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/VALUE_CENTER_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.VALUE_CENTER_CODE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_MAINTAIN_MATERIAL_ATTRIBUTESType/VALUE_CENTER_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.VALUE_CENTER_DESC}"/>
+			</Annotations>
 		</Schema>
 	</edmx:DataServices>
 </edmx:Edmx>
