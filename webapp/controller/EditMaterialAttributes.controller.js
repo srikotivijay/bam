@@ -242,7 +242,7 @@ sap.ui.define([
 				var batchArray = [];
 				for(var i = 0; i < editMaterialIdList.length; i++) 
 			    {
-			    	batchArray.push(this._oDataModel.createBatchOperation("MST_GMID(" + editMaterialIdList[i].GMID + ")", "MERGE", updMaterial));
+			    	batchArray.push(this._oDataModel.createBatchOperation("MST_GMID(" + editMaterialIdList[i].ID + ")", "MERGE", updMaterial));
 			    	successCount++;
 				}
 				this._oDataModel.addBatchChangeOperations(batchArray);
@@ -261,26 +261,14 @@ sap.ui.define([
 				this._oDataModel.submitBatch(
 					function(oData,oResponse)
 					{
-						curr._oDataModel.remove("/MST_GMID(" + editMaterialIdList[0].GMID + ")", {
-							success: function(){
-								busyDialog.close();
-								MessageBox.alert(successCount + " Materials updated successfully.",
-									{
-										icon : MessageBox.Icon.SUCCESS,
-										title : "Success",
-										onClose: function() {
-						        			curr.getOwnerComponent().getRouter().navTo("maintainMaterialAttributes");
-						        	}
-								});
-							},
-							error: function(){
-								busyDialog.close();
-				    			MessageBox.alert(successCount + " Materials did not got updated.",
-								{
-									icon : MessageBox.Icon.ERROR,
-									title : "Error"
-								});
-							}
+						busyDialog.close();
+						MessageBox.alert(successCount + " Materials updated successfully.",
+							{
+								icon : MessageBox.Icon.SUCCESS,
+								title : "Success",
+								onClose: function() {
+									curr.getOwnerComponent().getRouter().navTo("maintainMaterialAttributes");
+						        }
 						});
 			    	},
 			    	function(oError)
@@ -336,12 +324,14 @@ sap.ui.define([
 			// get the crop protection and seeds value from i18n file
 	    	var oi18nModel = this.getView().getModel("i18n");
 			var updatedAttributesString = "";
-			if (this.validateRuleValueChange("cmbCU") || this.validateRuleValueChange("chkCU1")){
-				updatedAttributesString += oi18nModel.getProperty("cu");
+			// || this.validateRuleValueChange("chkCU1")
+			if (this.validateRuleValueChange("cmbAlertExclusion") ){
+				updatedAttributesString += oi18nModel.getProperty("AlertExclusion");
 				updatedAttributesString += ", ";
 			}
-			if (this.validateRuleValueChange("cmbSubCU")|| this.validateRuleValueChange("chkSubCU1")){
-				updatedAttributesString += oi18nModel.getProperty("subCU");
+			// || this.validateRuleValueChange("chkSubCU1")
+			if (this.validateRuleValueChange("cmbBusSegment")){
+				updatedAttributesString += oi18nModel.getProperty("BusinessSegment");
 				updatedAttributesString += ", ";
 			}
 			return updatedAttributesString.substring(0, updatedAttributesString.length - 2);
