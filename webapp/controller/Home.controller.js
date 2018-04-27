@@ -158,6 +158,10 @@ sap.ui.define([
 		// Navigate to Maintain Rules Home page
 		onGoTomaintainRules: function(){
 			this.getOwnerComponent().getRouter().navTo("maintainRules");
+		},
+		// Navigate to User Role Management
+		onGoToUserManagement: function(){
+			this.getOwnerComponent().getRouter().navTo("userManagement");
 		}
   	});
 });
