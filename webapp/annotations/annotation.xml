@@ -832,7 +832,82 @@
 			</Annotations>
 			<Annotations Target="ODataService.BAMDataService.V_WEB_PEOPLE_RULESType/SUPPLY_CHAIN_PLANNING_SPECIALIST">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SUPPLY_CHAIN_PLANNING_SPECIALIST}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_USER_ROLESType">
+				<Annotation Term="UI.PresentationVariant">
+					<Record Type="UI.PresentationVariantType">
+						<PropertyValue Property="SortOrder">
+							<Collection>
+								<Record Type="Common.SortOrderType">
+									<PropertyValue Property="Property" PropertyPath="USER_ID"/>
+								</Record>
+								<Record Type="Common.SortOrderType">
+									<PropertyValue Property="Property" PropertyPath="USER_NAME"/>
+								</Record>
+							</Collection>
+						</PropertyValue>
+						<PropertyValue Property="GroupBy"/>
+						<PropertyValue Property="TotalBy"/>
+						<PropertyValue Property="Total"/>
+						<PropertyValue Property="Visualizations"/>
+						<PropertyValue Property="RequestAtLeast"/>
+					</Record>
+				</Annotation>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_USER_ROLESType/USER_ID">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.USER_ID}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_USER_ROLESType/USER_NAME">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.USER_NAME}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_USER_ROLESType/EMAIL">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.EMAIL}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_USER_ROLESType/ADMIN">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.ADMIN}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_USER_ROLESType/DEMAND_MANAGER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.DEMAND_MANAGER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_USER_ROLESType/SUPPLY_MANAGER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SUPPLY_MANAGER}"/>
+			</Annotations>	
+			<Annotations Target="ODataService.BAMDataService.V_WEB_USER_ROLESType/MARKETING_MANAGER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MARKETING_MANAGER}"/>
 			</Annotations>			
+			<Annotations Target="ODataService.BAMDataService.V_WEB_USER_ROLESType/BUSINESS_USER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.BUSINESS_USER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_USER_ROLESType/CU_ASSIGNER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.CU_ASSIGNER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_USER_ROLESType/DEMAND_MANAGER_ASSIGNER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.DEMAND_MANAGER_ASSIGNER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_USER_ROLESType/GLOBAL_LEADER_ASSIGNER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.GLOBAL_LEADER_ASSIGNER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_USER_ROLESType/MARKETING_DIRECTOR_ASSIGNER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MARKETING_DIRECTOR_ASSIGNER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_USER_ROLESType/MARKETING_MANAGER_ASSIGNER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MARKETING_MANAGER_ASSIGNER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_USER_ROLESType/MASTER_PLANNER_ASSIGNER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MASTER_PLANNER_ASSIGNER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_USER_ROLESType/PRODUCT_MANAGER_ASSIGNER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRODUCT_MANAGER_ASSIGNER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_USER_ROLESType/REG_SUPPLY_CHAIN_MANAGER_ASSIGNER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.REG_SUPPLY_CHAIN_MANAGER_ASSIGNER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_USER_ROLESType/SUPPLY_CHAIN_MANAGER_ASSIGNER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SUPPLY_CHAIN_MANAGER_ASSIGNER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_USER_ROLESType/SUPPLY_CHAIN_PLANNING_SPECIALIST_ASSIGNER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SUPPLY_CHAIN_PLANNING_SPECIALIST_ASSIGNER}"/>
+			</Annotations>
 		</Schema>
 	</edmx:DataServices>
 </edmx:Edmx>
