@@ -8,7 +8,7 @@
 				 
 				<!-- use this to make the table occupy the available screen height -->
 				<VBox fitContainer="true">
-					<smartTable:SmartTable smartFilterId = "smartFilterBar" id="smartTblUserManagement" beforeRebindTable="onBeforeRebindTable" entitySet="V_WEB_USERS" tableType="TreeTable" useExportToExcel="true" useVariantManagement="true" showFullScreenButton="true" 
+					<smartTable:SmartTable smartFilterId = "smartFilterBar" id="smartTblUserManagement" beforeRebindTable="onBeforeRebindTable" entitySet="V_WEB_USER_ROLES" tableType="Table" useExportToExcel="true" useVariantManagement="true" showFullScreenButton="true" 
 					useTablePersonalisation="true" header="User Management" showRowCount="true" enableAutoBinding="true" app:useSmartField="true" class="sapUiResponsiveContentPadding" ignoreFromPersonalisation="ID"
 					initiallyVisibleFields="USER_ID,USER_NAME,EMAIL,ROLE">
 						<!-- layout data used to make the table growing but the filter bar fixed -->
