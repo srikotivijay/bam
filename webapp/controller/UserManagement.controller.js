@@ -26,17 +26,17 @@ sap.ui.define([
 			this._oi18nModel = this.getOwnerComponent().getModel("i18n");
 			//
 			// checking the permission
-			var maintainRule = this._oi18nModel.getProperty("Module.maintainRules");
+			var userManagement = this._oi18nModel.getProperty("Module.userManagement");
 			var permissions = DataContext.getUserPermissions();
-			var hasAccess = true;
-			// for(var i = 0; i < permissions.length; i++)
-			// {
-			// 	if(permissions[i].ATTRIBUTE === maintainRule)
-			// 	{
-			// 			hasAccess = true;
-			// 			break;
-			// 	}
-			// }
+			var hasAccess = false;
+			for(var i = 0; i < permissions.length; i++)
+			{
+				if(permissions[i].ATTRIBUTE === userManagement)
+				{
+						hasAccess = true;
+						break;
+				}
+			}
 			//
 			// if the user does not have access then redirect to accessdenied page
 			if(hasAccess === false){

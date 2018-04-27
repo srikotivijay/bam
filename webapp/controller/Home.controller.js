@@ -29,6 +29,7 @@ sap.ui.define([
 				oModel.setProperty("/showMaintainAttribute",false);
 				oModel.setProperty("/showPlantAssignment",false);
 				oModel.setProperty("/showAuditReport",false);
+				oModel.setProperty("/showUserManagement",false);
 				
 
 				
@@ -51,7 +52,7 @@ sap.ui.define([
 	        	 var regulatorSupplyChainManagerAssigner = oi18nModel.getProperty("Module.regulatorSupplyChainManagerAssigner");
 	        	 var supplyChainManagerAssigner = oi18nModel.getProperty("Module.supplyChainManagerAssigner");
 	        	 var supplyChainPlanningSpecialistAssigner = oi18nModel.getProperty("Module.supplyChainPlanningSpecialistAssigner");
-	        	 
+	        	 var userManagement = oi18nModel.getProperty("Module.userManagement");
 	        	 var actionAdd = oi18nModel.getProperty("Module.actionAdd");
 	        	 
 				
@@ -102,6 +103,18 @@ sap.ui.define([
 					if(permissions[m].ATTRIBUTE === auditReport)
 					{
 						oModel.setProperty("/showAuditReport",true);
+						hasRole =  true;
+						// break since the user may have more than one role, as long as one of the user roles has permission we can show the tile
+						break;
+					}
+				}
+				
+				// Checking User Management
+				for(var m = 0; m < permissions.length; m++)
+				{
+					if(permissions[m].ATTRIBUTE === userManagement)
+					{
+						oModel.setProperty("/showUserManagement",true);
 						hasRole =  true;
 						// break since the user may have more than one role, as long as one of the user roles has permission we can show the tile
 						break;
