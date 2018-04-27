@@ -86,7 +86,7 @@ sap.ui.define([
 				
 					//
 				// Checking maintain Attributes
-				for(var d = 0; permissions.length; d++)
+				for(var d = 0; d < permissions.length; d++)
 				{
 					if(permissions[d].ATTRIBUTE === maintainMaterialAttributes)
 					{
