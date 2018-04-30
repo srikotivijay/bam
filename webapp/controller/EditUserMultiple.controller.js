@@ -169,55 +169,55 @@ sap.ui.define([
 			var curr = this;
 			var successUpdate = true;
 			var successCount = 0;
-			var updGMIDCountry = curr.createUpdateObject();
+			var insertRoleOps = curr.createUpdateObject(editUserIDList);
 			// //if user confirmed to update the attributes, prepare the object and update the attributes for the GMID and country
 			// //else do nothing
 			if (oAction === "YES") 
 			{
-			// 	// create a batch array and push each updated GMID to it
-			// 	var batchArray = [];
-			// 	for(var i = 0; i < editUserIDList.length; i++) 
-			//     {
-			//     	batchArray.push(this._oDataModel.createBatchOperation("GMID_SHIP_TO_COUNTRY(" + editUserIDList[i].ID + ")", "MERGE", updGMIDCountry));
-			//     	successCount++;
-			// 	}
-			// 	this._oDataModel.addBatchChangeOperations(batchArray);
+				// create a batch array and push each updated GMID to it
+				var batchArray = [];
+				for(var i = 0; i < editUserIDList.length; i++) 
+			    {
+			    	batchArray.push(this._oDataModel.createBatchOperation("USER_ROLE_ASSIGNMENT_STG", "POST", insertRoleOps));
+			    	successCount++;
+				}
+				this._oDataModel.addBatchChangeOperations(batchArray);
 				
-			// 	// creating busy dialog lazily
-			// 	if (!this._busyDialog) 
-			// 	{
-			// 		this._busyDialog = sap.ui.xmlfragment("bam.view.BusyLoading", this);
-			// 		this.getView().addDependent(this._dialog);
-			// 	}
+				// creating busy dialog lazily
+				if (!this._busyDialog) 
+				{
+					this._busyDialog = sap.ui.xmlfragment("bam.view.BusyLoading", this);
+					this.getView().addDependent(this._dialog);
+				}
 				
-			// 	// setting to a local variable since we are closing it in an oData success function that has no access to global variables.
-			// 	var busyDialog = this._busyDialog;
-			// 	busyDialog.open();
+				// setting to a local variable since we are closing it in an oData success function that has no access to global variables.
+				var busyDialog = this._busyDialog;
+				busyDialog.open();
 				
-			// 	// submit the batch update command
-			// 	this._oDataModel.submitBatch(
-			// 		function(oData,oResponse)
-			// 		{
-			// 			busyDialog.close();
-			// 			MessageBox.alert("Attributes for " + successCount + " Material/Country combinations updated successfully.",
-			// 				{
-			// 					icon : MessageBox.Icon.SUCCESS,
-			// 					title : "Success",
-			// 					onClose: function() {
+				// submit the batch update command
+				this._oDataModel.submitBatch(
+					function(oData,oResponse)
+					{
+						busyDialog.close();
+						MessageBox.alert("Roles for " + successCount + " users submitted successfully.",
+							{
+								icon : MessageBox.Icon.SUCCESS,
+								title : "Success",
+								onClose: function() {
 				        			curr.getOwnerComponent().getRouter().navTo("userManagement");
-			// 	        	}
-			// 			});
-			//     	},
-			//     	function(oError)
-			//     	{
-			//     		busyDialog.close();
-		 //   			MessageBox.alert("Error updating attributes for Material/Country combinations.",
-			// 			{
-			// 				icon : MessageBox.Icon.ERROR,
-			// 				title : "Error"
-			// 			});
-			//     	}
-			//     );
+				        	}
+						});
+			    	},
+			    	function(oError)
+			    	{
+			    		busyDialog.close();
+		    			MessageBox.alert("Error updating attributes for Material/Country combinations.",
+						{
+							icon : MessageBox.Icon.ERROR,
+							title : "Error"
+						});
+			     	}
+			     );
 
 				
 			}
@@ -230,24 +230,42 @@ sap.ui.define([
 				var addedRoleList = this.getView().byId("ddlAddRole").getSelectedKeys();
 				for(var j = 0; j < addedRoleList.length; j++){
 					var addedRole = {
-						USER_ID : userIdList[i],
+						ID : 1,
+						USER_ID : userIdList[i].ID,
 						ROLE_CODE_ID : addedRoleList[j],
-						IS_ADDED : "T",
+						IS_ADDED : 'T',
+						MODIFIED_ON : oDate,
 						MODIFIED_BY : loggedInUserID,
-						MODIFIED_ON : oDate
+						RUN_SPROC : 'F'
 					};
+					// this._oDataModel.create("/USER_ROLE_ASSIGNMENT_STG", addedRole,
+			  //      		{
+					//         	success: function(){
+					//     		},
+					//     		error: function(){
+					// 			}
+			  //      		});
 					UpdatedUserList.push(addedRole);
 				}
 				//
 				var removedRoleList = this.getView().byId("ddlRemoveRole").getSelectedKeys();
 				for(var k = 0; k < removedRoleList.length; k++){
 					var removedRole = {
-						USER_ID : removedRoleList[i],
+						ID : 1,
+						USER_ID : removedRoleList[i].ID,
 						ROLE_CODE_ID : removedRoleList[k],
-						IS_ADDED : "F",
+						IS_ADDED : 'F',
+						MODIFIED_ON : oDate,
 						MODIFIED_BY : loggedInUserID,
-						MODIFIED_ON : oDate
+						RUN_SPROC : 'F'
 					};
+					// this._oDataModel.create("/USER_ROLE_ASSIGNMENT_STG", removedRole,
+			  //      		{
+					//         	success: function(){
+					//     		},
+					//     		error: function(){
+					// 			}
+			  //      		});
 					UpdatedUserList.push(removedRole);
 				}
 			}    	
