@@ -211,6 +211,11 @@
 					"pattern": "userManagement",
 					"name": "userManagement",
 					"target": "userManagement"
+				},
+				{
+					"pattern": "editUserMultiple/",
+					"name": "editUserMultiple",
+					"target": "editUserMultiple"
 				}
 			],
 			"targets": {
@@ -290,6 +295,10 @@
 				"userManagement": {
 					"viewName": "UserManagement",
 					"viewId": "userManagement"
+				},
+				"editUserMultiple": {
+					"viewName": "EditUserMultiple",
+					"viewId": "editUserMultiple"
 				}
 			}
 		}

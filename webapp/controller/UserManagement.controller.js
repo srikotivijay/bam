@@ -29,12 +29,15 @@ sap.ui.define([
 			var userManagement = this._oi18nModel.getProperty("Module.userManagement");
 			var permissions = DataContext.getUserPermissions();
 			var hasAccess = false;
+			var hasEditPermission = false;
 			for(var i = 0; i < permissions.length; i++)
 			{
 				if(permissions[i].ATTRIBUTE === userManagement)
 				{
 						hasAccess = true;
-						break;
+						if(permissions[i].ACTION === "ADD" || permissions[i].ACTION === "EDIT"){
+							hasEditPermission = true;
+						}
 				}
 			}
 			//
@@ -47,7 +50,8 @@ sap.ui.define([
 			else{
 				this._oModel = new sap.ui.model.json.JSONModel();
 				this.getView().setModel(this._oModel,"UserManagementVM");
-				this._oModel.setProperty("/showEditButton",true);
+				this._oModel.setProperty("/showEditButton",hasEditPermission);
+				//
 				this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
 				//remove the selection column
 				var oSmartTable = this.getView().byId("smartTblUserManagement");     //Get Hold of smart table
@@ -116,6 +120,102 @@ sap.ui.define([
 				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 				oRouter.navTo("maintainRules", true);
 			}
+		},
+		// function to navigate to edit page
+		onEdit : function(){
+			//
+			this._oSmartTable = this.getView().byId("smartTblUserManagement").getTable();
+			// check if more than or less than 1 checkbox is checked
+			var index,context,path,indexOfParentheses1,indexOfParentheses2;
+			var selectedIndicesLength = this._oSmartTable.getSelectedIndices().length;
+			if(selectedIndicesLength > 0){
+				index = this._oSmartTable.getSelectedIndices();
+				var ids = "";
+				var idArr = [];
+				var performFullList = false;
+	
+				for (var i = 0; i < index.length; i++)
+				{
+					context = this._oSmartTable.getContextByIndex(index[i]); 
+					if(context !== undefined){
+						path = context.getPath();
+						indexOfParentheses1 = path.indexOf("(");
+						indexOfParentheses2 = path.indexOf(")");
+						ids = path.substring(indexOfParentheses1 + 1,indexOfParentheses2);
+						idArr.push(ids);
+					}
+					else{
+						//if undefined record is hit then stop and go do the full grab
+						performFullList = true;
+						break;
+					}
+				}
+				//
+				if (performFullList){
+					idArr = [];
+					var editSelection = this.getAllUsers();
+					for (var j = 0; j < index.length; j++)
+					{
+						context = editSelection[index[j]]; 
+						if(context !== undefined){
+							idArr.push(context.ID);
+						}
+					}
+				}
+				//
+				ids = ids.substring(0, ids.length - 1);
+				var oSelectedUser = idArr;
+				//add to model
+				var oModel = new sap.ui.model.json.JSONModel(oSelectedUser);
+				sap.ui.getCore().setModel(oModel);
+				if(selectedIndicesLength === 1){
+					this.getOwnerComponent().getRouter().navTo("editPeopleRules");
+				} 
+				else{
+					this.getOwnerComponent().getRouter().navTo("editUserMultiple");
+				}
+			}
+			else
+			{
+				MessageBox.alert("Please select one user record for edit.",
+					{
+						icon : MessageBox.Icon.ERROR,
+						title : "Error"
+					});
+			}
+		},
+		// function to get all the users
+		getAllUsers : function () {
+			var result;
+			// Creating the array
+			var filterArray = [];
+			var sortArray = [];
+			var aApplicationFilters = this._oSmartTable.getBinding().aApplicationFilters;
+			for (var a = 0; a < aApplicationFilters.length; a++){
+				filterArray.push(aApplicationFilters[a]);
+			}
+			// sorting
+			var aSorters = this._oSmartTable.getBinding().aSorters;
+			for (var i  = 0; i < aSorters.length; i++){
+				sortArray.push(aSorters[i]);
+			}
+			this._oDataModel.read("/V_WEB_USER_ROLES",{
+				filters: filterArray,
+				sorters: sortArray,
+				async: false,
+		        success: function(oData, oResponse){
+					result =  oData.results;
+				},
+				error: function(){
+					MessageBox.alert("Unable to retreive values for edit. Please contact System Admin.",
+					{
+						icon : MessageBox.Icon.ERROR,
+						title : "Error"
+					});
+					result = [];
+				}
+			});
+			return result;
 		}
   	});
 });

@@ -1,0 +1,44 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:html="http://www.w3.org/1999/xhtml" controllerName="bam.controller.EditUserMultiple">
+	<App id ="editUserMultiple">
+		<pages>
+			<Page title="{i18n>title}" showNavButton="true" navButtonPress="onNavBack">
+				<content>
+					<Text id="lblSelectedUserText" text="{i18n>editUserText}" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom pageHeaderFont boldFont"/>
+					<Text id="lblGMIDCountryCount" text="{/USER_COUNT}" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom pageHeaderFont boldFont"/>	
+					<f:Form editable="true" id="formEditUserMultiple">
+						<f:formContainers>
+							<f:FormContainer title="{i18n>editUserFormHeading}" id="fConEditUser">
+								<f:formElements>
+									<f:FormElement label="{i18n>addRoleLabel}" id="felmaddRole">
+										<f:fields>
+											<MultiComboBox width="500px" items="{path: '/ADD_ROLE_LIST'}">
+												<core:Item key="{ID}" text="{LABEL}" />
+											</MultiComboBox>
+										</f:fields>
+									</f:FormElement>
+									<f:FormElement label="{i18n>removeRoleLabel}" id="felmRemoveRole">
+										<f:fields>
+											<MultiComboBox width="500px" items="{path: '/REMOVE_ROLE_LIST'}">
+												<core:Item key="{ID}" text="{LABEL}" />
+											</MultiComboBox>
+										</f:fields>
+									</f:FormElement>
+								</f:formElements>
+							</f:FormContainer>
+						</f:formContainers>
+						<f:layout>
+				        	<f:ResponsiveGridLayout id="fResGridEditAttributes"/>
+				    	</f:layout>
+					</f:Form>
+					<Toolbar width="100%" id="tbrSubmit">
+						<content>
+					        <ToolbarSpacer id="tbrSpSubmit"/>
+							<Button text="{i18n>submit}" width="100px" id="btnSubmit" press="onSubmit"/>
+					        <Button text="{i18n>cancel}" width="100px" id="btnCancel" press="onCancel" class="sapUiLargeMarginEnd"/>
+				    	</content>
+					</Toolbar>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>
