@@ -2,17 +2,18 @@ sap.ui.define([
 		"sap/ui/core/mvc/Controller",
 		"sap/m/MessageToast",
 		"sap/m/MessageBox",
+		"sap/ui/core/routing/History",
 		"bam/services/DataContext",
 		"sap/ui/model/resource/ResourceModel"
-	], function (Controller,MessageToast,MessageBox,DataContext,ResourceModel) {
+	], function (Controller,MessageToast,MessageBox,History,DataContext,ResourceModel) {
 		"use strict";
 		
 	var firstTimePageLoad = true;
-
+	var hasRole = false;
 	return Controller.extend("bam.controller.Home", {
+		
 		onInit : function()
 		{
-			var hasRole = false;
 			if(DataContext.isBAMUser() === false)
 			{
 				this.getOwnerComponent().getRouter().navTo("accessDenied");
@@ -141,15 +142,11 @@ sap.ui.define([
 					}
 				}
 			}
+		},
+		onAfterRendering : function(){
 			// If user does not have any Roles assigned then show a message to contact Admin for Role.
-			if(hasRole === false)
-			{
-				this.getOwnerComponent().getRouter().navTo("accessDenied");
-				// MessageBox.alert("Please contact System Admin.",
-				// 			{
-				// 				icon : MessageBox.Icon.ERROR,
-				// 				title : "Error"
-						//});
+			if(hasRole === false){
+				this.getRouter().getTargets().display("accessDenied",{fromTarget:"home"});
 			}
 		},
 		// Navigate to GMID Submission page
@@ -175,6 +172,9 @@ sap.ui.define([
 		// Navigate to User Role Management
 		onGoToUserManagement: function(){
 			this.getOwnerComponent().getRouter().navTo("userManagement");
+		},
+		getRouter : function () {
+			return sap.ui.core.UIComponent.getRouterFor(this);
 		}
   	});
 });
