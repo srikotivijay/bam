@@ -1,0 +1,66 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:html="http://www.w3.org/1999/xhtml" controllerName="bam.controller.EditMaterialAttributes">
+	<App id="editCURules">
+		<pages>
+			<Page title="{i18n>title}" 
+				showNavButton="true"
+				navButtonPress="onNavBack">
+				<content>
+				<Text id="lblMaterial" text="{i18n>materialedit}" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom pageHeaderFont boldFont"/>	
+				<Text id="lblMaterialCount" text="{/MATERIAL_COUNT}" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom pageHeaderFont boldFont"/>
+				<f:Form editable="true" id="formEditAttributeSingle">
+				    <f:formContainers>
+				        <f:FormContainer title="{i18n>editMaterialAttributes}" id="fConEditMaterialAttributes">
+				            <f:formElements>
+				                <f:FormElement label="{i18n>alertexclusion}" id="felmALERT">
+				                	<ComboBox
+										id="cmbAlertExclusion"
+										name="cmbAlertExclusion"
+										showSecondaryValues= "false"
+										filterSecondaryValues= "true"
+										selectedKey="{/ID}"
+										value="{/LABEL}"
+										width="500px"
+										items="{
+											path: '/ALERT_EXCLUSION',
+											templateShareable : true
+										}"
+										change = "onChange">
+										<core:ListItem key="{ID}" text="{LABEL}"/>
+									</ComboBox>
+				                </f:FormElement>
+				                <f:FormElement label="{i18n>busSegment}" id="felmbusSegment">
+				                    <ComboBox
+										id="cmbBusSegment"
+										name="cmbBusSegment"
+										showSecondaryValues= "true"
+										filterSecondaryValues= "true"
+										selectedKey="{/BUSINESS_SEGMENT_CODE}"
+										value="{/BUSINESS_SEGMENT_DESC}"
+										width="500px"
+										items="{
+											path: '/BUSINESS_SEGMENT',
+											templateShareable : true
+										}"
+										change = "onChange">
+									<core:ListItem key="{BUSINESS_SEGMENT_CODE}" text="{BUSINESS_SEGMENT_DESC}" additionalText="{BUSINESS_SEGMENT_CODE}"/>
+								</ComboBox>
+			                </f:FormElement>
+				            </f:formElements>
+				        </f:FormContainer>
+				    </f:formContainers>
+				    <f:layout>
+				        <f:ResponsiveGridLayout id="fResGridEditAttributes"/>
+				    </f:layout>
+				</f:Form>
+				<Toolbar width="100%" id="tbrSubmit">
+				     <content>
+				        <ToolbarSpacer id="tbrSpSubmit"/>
+						<Button text="{i18n>submit}" width="100px" id="btnSubmit" press="onSubmit"/>
+				        <Button text="{i18n>cancel}" width="100px" id="btnCancel" press="onCancel" class="sapUiLargeMarginEnd"/>
+				     </content>
+					</Toolbar>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

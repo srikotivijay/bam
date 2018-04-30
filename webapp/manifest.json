@@ -208,6 +208,16 @@
 					"target": "editPeopleRules"
 				},
 				{
+					"pattern": "maintainMaterialAttributes",
+					"name": "maintainMaterialAttributes",
+					"target": "maintainMaterialAttributes"
+				},
+				{
+					"pattern": "editMaterialAttributes",
+					"name": "editMaterialAttributes",
+					"target": "editMaterialAttributes"
+				},
+				{
 					"pattern": "userManagement",
 					"name": "userManagement",
 					"target": "userManagement"
@@ -291,6 +301,14 @@
 				"editPeopleRules": {
 					"viewName": "EditPeopleRules",
 					"viewId": "editPeopleRules"
+				},
+				"maintainMaterialAttributes": {
+					"viewName": "MaintainMaterialAttributes",
+					"viewId": "maintainMaterialAttributes"
+				},
+				"editMaterialAttributes": {
+					"viewName": "EditMaterialAttributes",
+					"viewId": "editMaterialAttributes"
 				},
 				"userManagement": {
 					"viewName": "UserManagement",

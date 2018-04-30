@@ -30,8 +30,8 @@ sap.ui.define([
 				oModel.setProperty("/showMaintainAttribute",false);
 				oModel.setProperty("/showPlantAssignment",false);
 				oModel.setProperty("/showAuditReport",false);
+				oModel.setProperty("/showMaintainMaterialAttributes",false);
 				oModel.setProperty("/showUserManagement",false);
-				
 
 				
 				var oi18nModel = new ResourceModel({
@@ -53,7 +53,8 @@ sap.ui.define([
 	        	 var regulatorSupplyChainManagerAssigner = oi18nModel.getProperty("Module.regulatorSupplyChainManagerAssigner");
 	        	 var supplyChainManagerAssigner = oi18nModel.getProperty("Module.supplyChainManagerAssigner");
 	        	 var supplyChainPlanningSpecialistAssigner = oi18nModel.getProperty("Module.supplyChainPlanningSpecialistAssigner");
-	        	 var userManagement = oi18nModel.getProperty("Module.userManagement");
+	        	 var maintainMaterialAttributes = oi18nModel.getProperty("Module.maintainMaterialAttributes");
+ 	        	 var userManagement = oi18nModel.getProperty("Module.userManagement");
 	        	 var actionAdd = oi18nModel.getProperty("Module.actionAdd");
 	        	 
 				
@@ -84,6 +85,20 @@ sap.ui.define([
 						break;
 					}
 				}
+				
+					//
+				// Checking maintain Attributes
+				for(var d = 0; d < permissions.length; d++)
+				{
+					if(permissions[d].ATTRIBUTE === maintainMaterialAttributes)
+					{
+						oModel.setProperty("/showMaintainMaterialAttributes",true);
+						hasRole =  true;
+						// break since the user may have more than one role, as long as one of the user roles has permission we can show the tile
+						break;
+					}
+				}
+				
 				//
 				// Checking maintain Attributes
 				for(var l = 0; l < permissions.length; l++)
@@ -168,6 +183,10 @@ sap.ui.define([
 		// Navigate to Maintain Rules Home page
 		onGoTomaintainRules: function(){
 			this.getOwnerComponent().getRouter().navTo("maintainRules");
+		},
+		// Navigate to Maintain Material Attributes Home page
+		onGoToMaintainMaterialAttributes: function(){
+			this.getOwnerComponent().getRouter().navTo("maintainMaterialAttributes");
 		},
 		// Navigate to User Role Management
 		onGoToUserManagement: function(){

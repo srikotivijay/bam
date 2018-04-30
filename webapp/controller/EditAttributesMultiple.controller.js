@@ -371,7 +371,7 @@ sap.ui.define([
 			// check if there are any changes to be updated
 			if (updatedAttributesList !== ""){
 				// check if user wants to update the attributes for GMID and country
-				MessageBox.confirm((updatedAttributesList + " attributes will be updated for " + curr._oViewModelData.GMID_COUNTRY_COUNT + " GMID/Country combinations. Continue?"), {
+				MessageBox.confirm((updatedAttributesList + " attributes will be updated for " + curr._oViewModelData.GMID_COUNTRY_COUNT + " Material/Country combinations. Continue?"), {
 	    			icon: sap.m.MessageBox.Icon.WARNING,
 	    			actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
 	          		onClose: function(oAction) {

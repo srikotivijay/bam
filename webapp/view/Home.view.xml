@@ -10,6 +10,9 @@
 				        <tiles>
 				        	<StandardTile title="{i18n>maintainAttributes}" visible="{/showMaintainAttribute}" tooltip="{i18n>maintainAttributesTooltipText}" icon="sap-icon://user-edit" activeIcon="sap-icon://user-edit" infoState="Success" id="tlMaintainAttributes" class="sapUiLargeMarginEnd" press="onGoToMaintainAttributes"/>
 				        </tiles>
+				        <tiles>
+				        	<StandardTile title="{i18n>maintainMaterialAttributes}" visible="{/showMaintainMaterialAttributes}" tooltip="{i18n>maintainMaterialAttributesTooltipText}" icon="sap-icon://user-edit" activeIcon="sap-icon://user-edit" infoState="Success" id="tlMaintainMaterialAttributes" class="sapUiLargeMarginEnd" press="onGoToMaintainMaterialAttributes"/>
+				        </tiles>
 				         <tiles>
 				        	<StandardTile title="{i18n>plantAssignment}" visible="{/showPlantAssignment}" tooltip="{i18n>plantAssignmentTooltipText}" icon="sap-icon://add-activity" activeIcon="sap-icon://add-activity" infoState="Success" id="tlPlantAssignment" class="sapUiLargeMarginEnd" press="onGoToPlantAssignment"/>
 				        </tiles>
