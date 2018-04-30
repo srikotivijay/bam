@@ -11,14 +11,14 @@
 								<f:formElements>
 									<f:FormElement label="{i18n>addRoleLabel}" id="felmaddRole">
 										<f:fields>
-											<MultiComboBox width="500px" items="{path: '/ADD_ROLE_LIST'}">
+											<MultiComboBox id="ddlAddRole" width="500px" items="{path: '/ADD_ROLE_LIST'}">
 												<core:Item key="{ID}" text="{LABEL}" />
 											</MultiComboBox>
 										</f:fields>
 									</f:FormElement>
 									<f:FormElement label="{i18n>removeRoleLabel}" id="felmRemoveRole">
 										<f:fields>
-											<MultiComboBox width="500px" items="{path: '/REMOVE_ROLE_LIST'}">
+											<MultiComboBox id="ddlRemoveRole" width="500px" items="{path: '/REMOVE_ROLE_LIST'}">
 												<core:Item key="{ID}" text="{LABEL}" />
 											</MultiComboBox>
 										</f:fields>
