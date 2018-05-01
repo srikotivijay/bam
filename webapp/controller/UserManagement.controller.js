@@ -169,7 +169,7 @@ sap.ui.define([
 				var oModel = new sap.ui.model.json.JSONModel(oSelectedUser);
 				sap.ui.getCore().setModel(oModel);
 				if(selectedIndicesLength === 1){
-					this.getOwnerComponent().getRouter().navTo("editPeopleRules");
+					this.getOwnerComponent().getRouter().navTo("editUserSingle");
 				} 
 				else{
 					this.getOwnerComponent().getRouter().navTo("editUserMultiple");

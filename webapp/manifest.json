@@ -226,6 +226,11 @@
 					"pattern": "editUserMultiple/",
 					"name": "editUserMultiple",
 					"target": "editUserMultiple"
+				},
+				{
+					"pattern": "editUserSingle",
+					"name": "editUserSingle",
+					"target": "editUserSingle"
 				}
 			],
 			"targets": {
@@ -317,6 +322,10 @@
 				"editUserMultiple": {
 					"viewName": "EditUserMultiple",
 					"viewId": "editUserMultiple"
+				},
+				"editUserSingle": {
+					"viewName": "EditUserSingle",
+					"viewId": "editUserSingle"
 				}
 			}
 		}
