@@ -26,21 +26,46 @@ sap.ui.define([
 	    	this._oi18nModel = new ResourceModel({
                 bundleName: "bam.i18n.i18n"
             });
-            //
-            this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
-            // Loading Dropdown
-            var roleList = DataContext.getDropdownValues(this._oi18nModel.getProperty("ddRole"));
-            oModel.setProperty("/ADD_ROLE_LIST",roleList);
-            oModel.setProperty("/REMOVE_ROLE_LIST",roleList);
-            //
-            // assign VM and VM data to a global variable for the page
-			this._oUserUpdViewModel = oModel;            
-			this._oViewModelData = this._oUserUpdViewModel.getData();
-			//
-			if(firstTimePageLoad){
-				var oRouter = this.getRouter();
-				oRouter.getRoute("editUserMultiple").attachMatched(this._onRouteMatched, this);
-				firstTimePageLoad = false;
+            
+            // checking the permission
+			var userManagement = this._oi18nModel.getProperty("Module.userManagement");
+			var permissions = DataContext.getUserPermissions();
+			var hasAccess = false;
+			var hasEditPermission = false;
+			for(var i = 0; i < permissions.length; i++)
+			{
+				if(permissions[i].ATTRIBUTE === userManagement)
+				{
+						hasAccess = true;
+						if(permissions[i].ACTION === "ADD" || permissions[i].ACTION === "EDIT"){
+							hasEditPermission = true;
+						}
+				}
+			}
+			if(hasAccess === false || hasEditPermission === false){
+				this.getRouter().getTargets().display("accessDenied", {
+					fromTarget : "cuAssignment"
+				});					
+			}
+			else{
+				 //
+	            this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
+	            // Loading Dropdown
+	            var roleList = DataContext.getDropdownValues(this._oi18nModel.getProperty("ddRole"));
+	            //remove "Select"
+	            roleList.splice(0,1);
+	            oModel.setProperty("/ADD_ROLE_LIST",roleList);
+	            oModel.setProperty("/REMOVE_ROLE_LIST",roleList);
+	            //
+	            // assign VM and VM data to a global variable for the page
+				this._oUserUpdViewModel = oModel;            
+				this._oViewModelData = this._oUserUpdViewModel.getData();
+				//
+				if(firstTimePageLoad){
+					var oRouter = this.getRouter();
+					oRouter.getRoute("editUserMultiple").attachMatched(this._onRouteMatched, this);
+					firstTimePageLoad = false;
+				}
 			}
 		},
 		getRouter : function () {
