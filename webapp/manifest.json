@@ -226,6 +226,11 @@
 					"pattern": "editUserMultiple/",
 					"name": "editUserMultiple",
 					"target": "editUserMultiple"
+				},
+				{
+					"pattern": "addUserRoles",
+					"name": "addUserRoles",
+					"target": "addUserRoles"
 				}
 			],
 			"targets": {
@@ -317,6 +322,10 @@
 				"editUserMultiple": {
 					"viewName": "EditUserMultiple",
 					"viewId": "editUserMultiple"
+				},
+				"addUserRoles": {
+					"viewName": "AddUserRoles",
+					"viewId": "addUserRoles"
 				}
 			}
 		}

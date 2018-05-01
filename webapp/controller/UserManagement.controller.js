@@ -50,7 +50,7 @@ sap.ui.define([
 			else{
 				this._oModel = new sap.ui.model.json.JSONModel();
 				this.getView().setModel(this._oModel,"UserManagementVM");
-				this._oModel.setProperty("/showEditButton",false/*hasEditPermission*/);
+				this._oModel.setProperty("/showEditButton",hasEditPermission);
 				//
 				this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
 				//remove the selection column
@@ -121,6 +121,10 @@ sap.ui.define([
 				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 				oRouter.navTo("maintainRules", true);
 			}
+		},
+		// function to navigate to add roles page
+		onAdd : function(){
+			this.getOwnerComponent().getRouter().navTo("addUserRoles");
 		},
 		// function to navigate to edit page
 		onEdit : function(){

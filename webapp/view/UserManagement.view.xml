@@ -18,6 +18,7 @@
 					<smartTable:customToolbar> 
 		                <OverflowToolbar design="Transparent"> 
 		                        <ToolbarSpacer/> 
+		                        <Button id="btnAdd"  visible="{UserManagementVM>/showEditButton}" text="{i18n>addRoleLabel}" press="onAdd" icon="sap-icon://add" activeIcon="sap-icon://add"/>
 		                        <Button id="btnEdit" visible="{UserManagementVM>/showEditButton}" text="{i18n>editUsers}" press="onEdit" icon="sap-icon://edit" activeIcon="sap-icon://edit"/>
 		                        <!-- <Button id="btnClearFilter" text="Clear" width="100px"  press="onClearFilter" icon="sap-icon://clear-filter" activeIcon="sap-icon://clear-filter"  /> -->
 		               </OverflowToolbar> 
