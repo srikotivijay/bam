@@ -57,7 +57,6 @@ sap.ui.define([
 				var oSmartTable = this.getView().byId("smartTblUserManagement");     //Get Hold of smart table
 				var oTable = oSmartTable.getTable();          //Analytical Table embedded into SmartTable
 				oTable.setEnableColumnFreeze(true);
-				oTable.setSelectionMode("None");
 				//oSmartTable.rebindTable();
 				//oTable.getColumns();
 			}
@@ -74,7 +73,7 @@ sap.ui.define([
 				//This is a bandaid for resetting the Checkboxes on the grid, we could not find a method that directly unsets the checkboxes
 				//Instead we can unset and set the checkbox
 				oTable.setSelectionMode("None");
-				//oTable.setSelectionMode("MultiToggle");
+				oTable.setSelectionMode("MultiToggle");
 			}	
 				
 		},
@@ -146,7 +145,7 @@ sap.ui.define([
 						path = context.getPath();
 						indexOfParentheses1 = path.indexOf("(");
 						indexOfParentheses2 = path.indexOf(")");
-						ids = path.substring(indexOfParentheses1 + 1,indexOfParentheses2);
+						ids = path.substring(indexOfParentheses1 + 2,indexOfParentheses2 - 1);
 						idArr.push(ids);
 					}
 					else{
