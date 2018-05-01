@@ -61,6 +61,10 @@ sap.ui.define([
 		    	var globalModel = core.getModel();
 		    	globalIds = globalModel.getData();  
 				this.setUserDefaultVM(globalIds);
+				
+				//whenever navigating to page clear the selected items list
+				this.getView().byId("ddlAddRole").setSelectedItems([]);
+				this.getView().byId("ddlRemoveRole").setSelectedItems([]);
 			}
 		},
 		//set the page to initial state
@@ -169,13 +173,64 @@ sap.ui.define([
 			var curr = this;
 			var successUpdate = true;
 			var successCount = 0;
-			var insertRoleOps = curr.createUpdateObject(editUserIDList);
+			
 			// //if user confirmed to update the attributes, prepare the object and update the attributes for the GMID and country
 			// //else do nothing
 			if (oAction === "YES") 
 			{
+				// creating busy dialog lazily
+				if (!this._busyDialog) 
+				{
+					this._busyDialog = sap.ui.xmlfragment("bam.view.BusyLoading", this);
+					this.getView().addDependent(this._dialog);
+				}
+				// setting to a local variable since we are closing it in an oData success function that has no access to global variables.
+				var busyDialog = this._busyDialog;
+				busyDialog.open();
+				
+				var insertRoleOps = curr.createUpdateObject(editUserIDList);
+				var sprocTriggerObj = {
+						ID : 1,
+						USER_ID : 'NONE',
+						ROLE_CODE_ID : '1',
+						IS_ADDED : 'F',
+						MODIFIED_ON : new Date(),
+						MODIFIED_BY : loggedInUserID,
+						RUN_SPROC : 'T'
+					};
+				this._oDataModel.create("/USER_ROLE_ASSIGNMENT_STG", sprocTriggerObj,
+	        		{
+			        	success: function(){
+			        		busyDialog.close();
+			        		if(!insertRoleOps.Errors){
+									MessageBox.alert("Roles for " + editUserIDList.length + " users submitted successfully.",
+										{
+											icon : MessageBox.Icon.SUCCESS,
+											title : "Success",
+											onClose: function() {
+							        			curr.getOwnerComponent().getRouter().navTo("userManagement");
+							        	}
+									});
+							}
+							else{
+								MessageBox.alert("Error updating " + insertRoleOps.ErrorCount + " user roles.",
+									{
+										icon : MessageBox.Icon.ERROR,
+										title : "Error"
+									});
+							}
+			    		},
+			    		error: function(){
+			    			busyDialog.close();
+			    			MessageBox.alert("Error updating " + editUserIDList.length + " user roles.",
+									{
+										icon : MessageBox.Icon.ERROR,
+										title : "Error"
+									});
+						}
+	        		});
 				// create a batch array and push each updated GMID to it
-				var batchArray = [];
+				/*var batchArray = [];
 				for(var i = 0; i < editUserIDList.length; i++) 
 			    {
 			    	batchArray.push(this._oDataModel.createBatchOperation("USER_ROLE_ASSIGNMENT_STG", "POST", insertRoleOps));
@@ -217,7 +272,7 @@ sap.ui.define([
 							title : "Error"
 						});
 			     	}
-			     );
+			     );*/
 
 				
 			}
@@ -226,6 +281,10 @@ sap.ui.define([
 			// Create current timestamp
 			var oDate = new Date();
 			var UpdatedUserList = [];
+			var insertSuccessCount = 0;
+			var insertErrorCount = 0;
+			var removeSuccessCount = 0;
+			var removeErrorCount = 0;
 			for(var i = 0; i < userIdList.length; i++){
 				var addedRoleList = this.getView().byId("ddlAddRole").getSelectedKeys();
 				for(var j = 0; j < addedRoleList.length; j++){
@@ -238,13 +297,15 @@ sap.ui.define([
 						MODIFIED_BY : loggedInUserID,
 						RUN_SPROC : 'F'
 					};
-					// this._oDataModel.create("/USER_ROLE_ASSIGNMENT_STG", addedRole,
-			  //      		{
-					//         	success: function(){
-					//     		},
-					//     		error: function(){
-					// 			}
-			  //      		});
+					this._oDataModel.create("/USER_ROLE_ASSIGNMENT_STG", addedRole,
+			        		{
+					        	success: function(){
+					        		insertSuccessCount++;
+					    		},
+					    		error: function(){
+					    			insertErrorCount++;
+								}
+			        		});
 					UpdatedUserList.push(addedRole);
 				}
 				//
@@ -252,25 +313,32 @@ sap.ui.define([
 				for(var k = 0; k < removedRoleList.length; k++){
 					var removedRole = {
 						ID : 1,
-						USER_ID : removedRoleList[i].ID,
+						USER_ID : userIdList[i].ID,
 						ROLE_CODE_ID : removedRoleList[k],
 						IS_ADDED : 'F',
 						MODIFIED_ON : oDate,
 						MODIFIED_BY : loggedInUserID,
 						RUN_SPROC : 'F'
 					};
-					// this._oDataModel.create("/USER_ROLE_ASSIGNMENT_STG", removedRole,
-			  //      		{
-					//         	success: function(){
-					//     		},
-					//     		error: function(){
-					// 			}
-			  //      		});
+					this._oDataModel.create("/USER_ROLE_ASSIGNMENT_STG", removedRole,
+			        		{
+					        	success: function(){
+					        		removeSuccessCount++;
+					    		},
+					    		error: function(){
+					    			removeErrorCount++;
+								}
+			        		});
 					UpdatedUserList.push(removedRole);
 				}
 			}    	
 			//return the object of updated attributes
-			return UpdatedUserList;
+			var TempUpdate = {
+				UpdatedUserList: UpdatedUserList,
+				Errors: (removeErrorCount + insertErrorCount > 0 ) ? true : false,
+				ErrorCount: removeErrorCount + insertErrorCount
+			};
+			return TempUpdate;
 		}
 	});
 
