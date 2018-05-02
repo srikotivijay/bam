@@ -159,6 +159,7 @@ sap.ui.define([
 	        	roleKeyArray.push(userRoles[i].ROLE_CODE_ID);
 	        }
 	        this.getView().byId("ddlRole").setSelectedKeys(roleKeyArray);
+	        this._oUserUpdViewModel.setProperty("/SELECTED_ROLES", this.getView().byId("ddlRole").getSelectedKeys());
 			//this._oUserUpdViewModel.setProperty("/EDIT_USER_ID_LIST",initData);
 			//this._oUserUpdViewModel.setProperty("/USER_COUNT",editUserIDs.length);
 		},
@@ -178,9 +179,9 @@ sap.ui.define([
 		onCancel: function(){
 			var curr = this;
 			//get the list of updated attributes
-			var updatedUserList = curr.getUpdatedUsers();
+			var hasRuleChanged = curr.checkRoleChange();
 			// check if there are any changes to be updated
-			if (updatedUserList !== ""){
+			if (hasRuleChanged){
 				// check if user wants to update the attributes for GMID and country
 				MessageBox.confirm("Are you sure you want to cancel your changes and navigate back to the previous page?", {
 	            	icon: sap.m.MessageBox.Icon.WARNING,
@@ -197,19 +198,22 @@ sap.ui.define([
 			}
 		},
 		//get the list of updated attributes in string format
-		getUpdatedUsers: function(){
-			// get the crop protection and seeds value from i18n file
-	  //  	var oi18nModel = this.getView().getModel("i18n");
-			// var updatedUserString = "";
-			// if (this.validateUserValueChange("ddlAddRole")){
-			// 	updatedUserString += oi18nModel.getProperty("ddRole");
-			// 	updatedUserString += ", ";
-			// }
-			// if (this.validateUserValueChange("ddlRemoveRole")){
-			// 	updatedUserString += oi18nModel.getProperty("ddRole");
-			// 	updatedUserString += ", ";
-			// }
-			// return updatedUserString.substring(0, updatedUserString.length - 2);
+		checkRoleChange: function(){
+			var existingRoles = this._oUserUpdViewModel.getProperty("/SELECTED_ROLES");
+			var selectedRoles = this.getView().byId("ddlRole").getSelectedKeys();
+			// check any of the existing rules remved
+			for(var i = 0; i < existingRoles.length; i++){
+				if(selectedRoles.includes(existingRoles[i]) === false){
+					return true;
+				}
+			}
+			// check any new role added
+			for(var j = 0; j < selectedRoles.length; j++){
+				if(existingRoles.includes(selectedRoles[j]) === false){
+					return true;
+				}
+			}
+			return false;
 		},
 		//validate if the value of various attributes has been updated
 		validateUserValueChange: function (sourceControlName){
@@ -222,21 +226,21 @@ sap.ui.define([
 			// }
 		},
 		//click of submit button
-		/*onSubmit: function(){
+		onSubmit: function(){
 			var curr = this;
 			//get the list of updated attributes
-			var updatedUserList = curr.getUpdatedUsers();
+			var hasRoleChanged = curr.checkRoleChange();
 			// check if there are any changes to be updated
-			if (updatedUserList !== ""){
-				// check if user wants to update the attributes for GMID and country
-				MessageBox.confirm(("Roles will be updated for " + curr._oViewModelData.USER_COUNT + " users. Continue?"), {
-	    			icon: sap.m.MessageBox.Icon.WARNING,
-	    			actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
-	          		onClose: function(oAction) {
-	          			var editUserIDList = curr._oViewModelData.EDIT_USER_ID_LIST;
-	        			curr.fnCallbackSubmitConfirm(oAction, editUserIDList);
-	            	}
-	       		});
+			if (hasRoleChanged){
+				// // check if user wants to update the attributes for GMID and country
+				// MessageBox.confirm(("Roles will be updated for " + curr._oViewModelData.USER_COUNT + " users. Continue?"), {
+	   // 			icon: sap.m.MessageBox.Icon.WARNING,
+	   // 			actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+	   //       		onClose: function(oAction) {
+	   //       			var editUserIDList = curr._oViewModelData.EDIT_USER_ID_LIST;
+	   //     			curr.fnCallbackSubmitConfirm(oAction, editUserIDList);
+	   //         	}
+	   //    		});
 			}
 			else{
 				// check if user wants to update the attributes for GMID and country
@@ -245,7 +249,7 @@ sap.ui.define([
 					title : "Error"
 	       		});
 			}
-		},
+		}/*
 		// update the attributes based on user response
 		fnCallbackSubmitConfirm: function(oAction, editUserIDList){
 			var curr = this;
