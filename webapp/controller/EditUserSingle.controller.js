@@ -44,7 +44,7 @@ sap.ui.define([
 			}
 			if(hasAccess === false || hasEditPermission === false){
 				this.getRouter().getTargets().display("accessDenied", {
-					fromTarget : "cuAssignment"
+					fromTarget : "editUserSingle"
 				});					
 			}
 			else{
