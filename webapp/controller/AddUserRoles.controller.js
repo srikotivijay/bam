@@ -107,42 +107,19 @@ sap.ui.define([
 				//var sorter = new sap.ui.model.Sorter("NAME",false);
 				//sortArray.push(sorter);
 				
-				// Get the User list
+				// first step - to see if the user exists or not
 					this._oDataModel.read("/USER",{
 							filters: filterArray,
 							async: false,
 			                success: function(oData, oResponse){
-			                	if(oData.results.length === 1){
-			                		/////
-			                		this._oDataModel.read("/V_WEB_USER_ROLES",{
-											async: false,
-											filters: filterArray,
-							                success: function(oData, oResponse){
-							                	MessageBox.alert("Success.",
-												{
-													icon : MessageBox.Icon.ERROR,
-													title : "Error"
-												});
-							                },
-							    		    error: function(){
-						    		    		MessageBox.alert("Unable to retrieve dropdown values for Rule Set Please contact System Admin.",
-												{
-													icon : MessageBox.Icon.ERROR,
-													title : "Error"
-												});
-							            		result = [];
-							    			}
-							    	});
-			                		////
-			                	}
-			                	else{
-			                		//throw error saying user was not found
-			                		MessageBox.alert("User not found. Please contact System Admin.",
+			                	// If user does not exist
+			                	if(oData.results.length === 0){
+			                	MessageBox.alert("User not found. Please contact System Admin.",
 								{
 									icon : MessageBox.Icon.ERROR,
 									title : "Error"
 								});
-			                		}
+			                	}
 			                		 result =  oData.results;
 			                },
 			    		    error: function(){
@@ -154,6 +131,31 @@ sap.ui.define([
 			            		result = [];
 			    			}
 			    	});
+			    	// if the user exists then we need to check the view to see if he has a role
+			    	if(result.length === 1){
+			    	this._oDataModel.read("/V_WEB_USER_ROLES",{
+							filters: filterArray,
+							async: false,
+			                success: function(oData, oResponse){
+			                		// if the user exists then we need to check the view to see if he has a role (in progress)
+			                	MessageBox.alert("This user already has role privledges in BAM. Would you like to navigate to the Edit page?",
+								{
+									icon : MessageBox.Icon.ERROR,
+									title : "Error"
+								});
+			                		 result =  oData.results;
+			                },
+			                // this portion is currently not being hit for some reason (used U591647 as an example, who is in USER but is not in V_WEB_USER_ROLES)
+			    		    error: function(){
+		    		    		MessageBox.alert("This user exists but does not have role privledges within BAM.",
+								{
+									icon : MessageBox.Icon.ERROR,
+									title : "Error"
+								});
+			            		result = oData.results;;
+			    			}
+			    	});	
+			    	}
 			    	return result;
 		}
   	});
