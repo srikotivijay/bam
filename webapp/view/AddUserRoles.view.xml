@@ -12,11 +12,11 @@
 				    <f:formContainers>
 				        <f:FormContainer title="{i18n>addUserRoles}" id="fConAddUserRoles">
 				            <f:formElements>
-				                <f:FormElement label="{i18n>userId}" id="felmUserID" visible="{path: '/SHOW_DEMAND_ATTRIBUTE1', formatter: '.showControl'}">
+				                <f:FormElement label="{i18n>userId}" id="felmUserID" visible="{path: '/USER_ID', formatter: '.showControl'}">
 				                    <f:fields>
-				                    	<Input id="txtUserID" name="txtUserID" maxLength = "50" value="{/DEMAND_ATTRIBUTE1}"/>
+				                    	<Input id="txtUserID" name="txtUserID" maxLength = "50" value="{/USER_ID}"/>
 					                 </f:fields>
-					                 	<Button id="btnSearchProduct" icon="sap-icon://search" width="100px" visible="{path: 'productLookupVisibility', formatter: '.enableControl'}" press="onSearch"/>
+					                 	<Button id="btnSearchUsers" icon="sap-icon://search" width="100px" visible="{path: 'productLookupVisibility', formatter: '.enableControl'}" press="onSearch"/>
 				                </f:FormElement>
 				            </f:formElements>
 				        </f:FormContainer>

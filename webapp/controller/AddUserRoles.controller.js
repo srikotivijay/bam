@@ -32,7 +32,7 @@ sap.ui.define([
 			this._oi18nModel = this.getOwnerComponent().getModel("i18n");
 			
 			//
-			this._oEditMaterialAttributesViewModel = new sap.ui.model.json.JSONModel();
+			this._oAddUserRolesViewModel = new sap.ui.model.json.JSONModel();
 			// checking the permission
 			var maintainMaterialAttributes = this._oi18nModel.getProperty("Module.userManagement");
 			var permissions = DataContext.getUserPermissions();
@@ -94,6 +94,67 @@ sap.ui.define([
 			//	var oSmartTable = this.byId("smartTblBAMAttributes");
 				//oSmartTable.exit();
 				this.getOwnerComponent().getRouter().navTo("home");
-			}
+			},
+			
+		onSearch: function (oEvent) {
+				var result;
+				// Create a filter & sorter array
+				var filterArray = [];
+				var userID = this._oModel.getProperty("/USER_ID");
+				var userFilter = new Filter("USER_ID",sap.ui.model.FilterOperator.EQ,userID);
+				filterArray.push(userFilter);
+				var sortArray = [];
+				//var sorter = new sap.ui.model.Sorter("NAME",false);
+				//sortArray.push(sorter);
+				
+				// Get the User list
+					this._oDataModel.read("/USER",{
+							filters: filterArray,
+							async: false,
+			                success: function(oData, oResponse){
+			                	if(oData.results.length === 1){
+			                		/////
+			                		this._oDataModel.read("/V_WEB_USER_ROLES",{
+											async: false,
+											filters: filterArray,
+							                success: function(oData, oResponse){
+							                	MessageBox.alert("Success.",
+												{
+													icon : MessageBox.Icon.ERROR,
+													title : "Error"
+												});
+							                },
+							    		    error: function(){
+						    		    		MessageBox.alert("Unable to retrieve dropdown values for Rule Set Please contact System Admin.",
+												{
+													icon : MessageBox.Icon.ERROR,
+													title : "Error"
+												});
+							            		result = [];
+							    			}
+							    	});
+			                		////
+			                	}
+			                	else{
+			                		//throw error saying user was not found
+			                		MessageBox.alert("User not found. Please contact System Admin.",
+								{
+									icon : MessageBox.Icon.ERROR,
+									title : "Error"
+								});
+			                		}
+			                		 result =  oData.results;
+			                },
+			    		    error: function(){
+		    		    		MessageBox.alert("Unable to retreive values. Please contact System Admin.",
+								{
+									icon : MessageBox.Icon.ERROR,
+									title : "Error"
+								});
+			            		result = [];
+			    			}
+			    	});
+			    	return result;
+		}
   	});
 });
