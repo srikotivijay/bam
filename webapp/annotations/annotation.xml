@@ -987,7 +987,7 @@
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SUPPLY_MANAGER}"/>
 			</Annotations>	
 			<Annotations Target="ODataService.BAMDataService.V_WEB_USER_ROLESType/MARKETING_MANAGER">
-				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MARKETING_MANAGER}"/>
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRODUCT_MANAGER}"/>
 			</Annotations>			
 			<Annotations Target="ODataService.BAMDataService.V_WEB_USER_ROLESType/BUSINESS_USER">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.BUSINESS_USER}"/>
