@@ -14,7 +14,7 @@ sap.ui.define([
 	var loggedInUserID;
 	var firstTimePageLoad = true;
 	var globalIds;
-	return Controller.extend("bam.controller.EditUserMultiple", {
+	return Controller.extend("bam.controller.EditUserSingle", {
 		//
 		onInit : function () {
 			// Get logged in user id
@@ -54,8 +54,7 @@ sap.ui.define([
 	            var roleList = DataContext.getDropdownValues(this._oi18nModel.getProperty("ddRole"));
 	            //remove "Select"
 	            roleList.splice(0,1);
-	            oModel.setProperty("/ADD_ROLE_LIST",roleList);
-	            oModel.setProperty("/REMOVE_ROLE_LIST",roleList);
+	            oModel.setProperty("/ROLE_LIST",roleList);
 	            //
 	            // assign VM and VM data to a global variable for the page
 				this._oUserUpdViewModel = oModel;            
@@ -63,7 +62,7 @@ sap.ui.define([
 				//
 				if(firstTimePageLoad){
 					var oRouter = this.getRouter();
-					oRouter.getRoute("editUserMultiple").attachMatched(this._onRouteMatched, this);
+					oRouter.getRoute("editUserSingle").attachMatched(this._onRouteMatched, this);
 					firstTimePageLoad = false;
 				}
 			}
@@ -80,6 +79,7 @@ sap.ui.define([
 			}
 			else
 			{
+	    		//this.setPageToInitialState();
 				//get current list of ids from model
 		    	var core = sap.ui.getCore();
 		    	var globalModel = core.getModel();
@@ -87,9 +87,15 @@ sap.ui.define([
 				this.setUserDefaultVM(globalIds);
 				
 				//whenever navigating to page clear the selected items list
-				this.getView().byId("ddlAddRole").setSelectedItems([]);
-				this.getView().byId("ddlRemoveRole").setSelectedItems([]);
+				//this.getView().byId("ddlRole").setSelectedItems([]);
+				// this.getView().byId("ddlRemoveRole").setSelectedItems([]);
 			}
+		},
+		//set the page to initial state
+		//clear the value state and value state text for all controls
+		setPageToInitialState: function(){
+			// this.getView().byId("ddlAddRole").setValueStateText("");
+			// this.getView().byId("ddlAddRole").setValueState(sap.ui.core.ValueState.None);
 		},
 		// set the default view model for multiple GMID Country combinations' edit page
 		setUserDefaultVM: function(editUserIDs){
@@ -99,8 +105,53 @@ sap.ui.define([
 	    			ID:editUserIDs[i]
 	    		});
 			}
-			this._oUserUpdViewModel.setProperty("/EDIT_USER_ID_LIST",initData);
-			this._oUserUpdViewModel.setProperty("/USER_COUNT",editUserIDs.length);
+			//
+			this._oUserUpdViewModel.setProperty("/USERID", initData[0].ID);
+			var filterArray=[];
+            // Creating and adding the filter
+            var gmidFilter = new Filter("USER_ID",sap.ui.model.FilterOperator.EQ,initData[0].ID);
+            filterArray.push(gmidFilter);
+            
+            var userDetails;
+            var userRoles;
+			//query for additional data
+			this._oDataModel.read("/USER",
+			{
+                            	filters: filterArray,
+                            	async: false,
+                            	success: function(oData, oResponse){
+                            		userDetails  = oData.results.pop();
+                            		//maxGMIDShipToID  = latestShipToCountry.ID;
+                            	},
+                            	error: function(){
+                            		MessageToast.show("Unable to retrieve user details.");
+                            	}
+			});
+			
+			
+	        this._oUserUpdViewModel.setProperty("/USERNAME", userDetails.USER_NAME);
+	        this._oUserUpdViewModel.setProperty("/EMAIL", userDetails.EMAIL);
+	        
+	        //query for role data
+			this._oDataModel.read("/USER_ROLE",
+			{
+                filters: filterArray,
+                async: false,
+                success: function(oData, oResponse){
+					userRoles  = oData.results;
+                },
+                error: function(){
+					MessageToast.show("Unable to retrieve user details.");
+				}
+			});
+	        
+	        var roleKeyArray = [];
+	        for(var i = 0; i < userRoles.length; i++){
+	        	roleKeyArray.push(userRoles[i].ROLE_CODE_ID);
+	        }
+	        this.getView().byId("ddlRole").setSelectedKeys(roleKeyArray);
+	        this._oUserUpdViewModel.setProperty("/SELECTED_ROLES", this.getView().byId("ddlRole").getSelectedKeys());
+			this._oUserUpdViewModel.setProperty("/EDIT_USER_ID",initData[0].ID);
 		},
 		//navigate back from edit page
 		onNavBack: function () {
@@ -118,9 +169,9 @@ sap.ui.define([
 		onCancel: function(){
 			var curr = this;
 			//get the list of updated attributes
-			var updatedUserList = curr.getUpdatedUsers();
+			var hasRuleChanged = curr.checkRoleChange();
 			// check if there are any changes to be updated
-			if (updatedUserList !== ""){
+			if (hasRuleChanged){
 				// check if user wants to update the attributes for GMID and country
 				MessageBox.confirm("Are you sure you want to cancel your changes and navigate back to the previous page?", {
 	            	icon: sap.m.MessageBox.Icon.WARNING,
@@ -137,53 +188,37 @@ sap.ui.define([
 			}
 		},
 		//get the list of updated attributes in string format
-		getUpdatedUsers: function(){
-			// get the crop protection and seeds value from i18n file
-	    	var oi18nModel = this.getView().getModel("i18n");
-			var updatedUserString = "";
-			if (this.validateUserValueChange("ddlAddRole")){
-				updatedUserString += oi18nModel.getProperty("ddRole");
-				updatedUserString += ", ";
+		checkRoleChange: function(){
+			var existingRoles = this._oUserUpdViewModel.getProperty("/SELECTED_ROLES");
+			var selectedRoles = this.getView().byId("ddlRole").getSelectedKeys();
+			// check any of the existing rules remved
+			for(var i = 0; i < existingRoles.length; i++){
+				if(selectedRoles.includes(existingRoles[i]) === false){
+					return true;
+				}
 			}
-			if (this.validateUserValueChange("ddlRemoveRole")){
-				updatedUserString += oi18nModel.getProperty("ddRole");
-				updatedUserString += ", ";
+			// check any new role added
+			for(var j = 0; j < selectedRoles.length; j++){
+				if(existingRoles.includes(selectedRoles[j]) === false){
+					return true;
+				}
 			}
-			return updatedUserString.substring(0, updatedUserString.length - 2);
-		},
-		//validate if the value of various attributes has been updated
-		validateUserValueChange: function (sourceControlName){
-			var type = sourceControlName.substring(0,3);
-			if((type === "ddl" && this.getView().byId(sourceControlName).getSelectedKeys().length > 0) || (type === "txt" && this.getView().byId(sourceControlName).getValue().trim() !== "")){
-				return true;
-			}
-			else{
-				return false;
-			}
+			return false;
 		},
 		//click of submit button
 		onSubmit: function(){
 			var curr = this;
 			//get the list of updated attributes
-			var updatedUserList = curr.getUpdatedUsers();
+			var hasRoleChanged = curr.checkRoleChange();
 			// check if there are any changes to be updated
-			if (updatedUserList !== ""){
-				var duplicateRoles  = this.validateDuplicateRoles();
-				if(duplicateRoles !== ""){
-					// check if user wants to update the attributes for GMID and country
-					MessageBox.alert(duplicateRoles + " role(s) selected for both add and remove", {
-		    			icon : MessageBox.Icon.ERROR,
-						title : "Error"
-		       		});	
-		       		return;
-				}
-				// check if user wants to update the attributes for GMID and country
-				MessageBox.confirm(("Roles will be updated for " + curr._oViewModelData.USER_COUNT + " users. Continue?"), {
+			if (hasRoleChanged){
+				// // check if user wants to update the attributes for GMID and country
+				MessageBox.confirm(("Role(s) will be updated for the selected user. Continue?"), {
 	    			icon: sap.m.MessageBox.Icon.WARNING,
 	    			actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
 	          		onClose: function(oAction) {
-	          			var editUserIDList = curr._oViewModelData.EDIT_USER_ID_LIST;
-	        			curr.fnCallbackSubmitConfirm(oAction, editUserIDList);
+	          			var selectedUserID = curr._oViewModelData.EDIT_USER_ID;
+	        			curr.fnCallbackSubmitConfirm(oAction, selectedUserID);
 	            	}
 	       		});
 			}
@@ -196,7 +231,7 @@ sap.ui.define([
 			}
 		},
 		// update the attributes based on user response
-		fnCallbackSubmitConfirm: function(oAction, editUserIDList){
+		fnCallbackSubmitConfirm: function(oAction, selectedUserID){
 			var curr = this;
 			// //if user confirmed to update the attributes, prepare the object and update the attributes for the GMID and country
 			// //else do nothing
@@ -206,13 +241,13 @@ sap.ui.define([
 				if (!this._busyDialog) 
 				{
 					this._busyDialog = sap.ui.xmlfragment("bam.view.BusyLoading", this);
-					this.getView().addDependent(this._dialog);
+					this.getView().addDependent(this._busyDialog);
 				}
 				// setting to a local variable since we are closing it in an oData success function that has no access to global variables.
 				var busyDialog = this._busyDialog;
 				busyDialog.open();
 				
-				var insertRoleOps = curr.createUpdateObject(editUserIDList);
+				var insertRoleOps = curr.createUpdateObject(selectedUserID);
 				var sprocTriggerObj = {
 						ID : 1,
 						USER_ID : 'NONE',
@@ -227,7 +262,7 @@ sap.ui.define([
 			        	success: function(){
 			        		busyDialog.close();
 			        		if(!insertRoleOps.Errors){
-									MessageBox.alert("Roles for " + editUserIDList.length + " users submitted successfully.",
+									MessageBox.alert("Roles submitted successfully.",
 										{
 											icon : MessageBox.Icon.SUCCESS,
 											title : "Success",
@@ -246,7 +281,7 @@ sap.ui.define([
 			    		},
 			    		error: function(){
 			    			busyDialog.close();
-			    			MessageBox.alert("Error updating " + editUserIDList.length + " user roles.",
+			    			MessageBox.alert("Error updating user roles.",
 									{
 										icon : MessageBox.Icon.ERROR,
 										title : "Error"
@@ -255,7 +290,7 @@ sap.ui.define([
 	        		});
 			}
 		},
-		createUpdateObject: function(userIdList){
+		createUpdateObject: function(userId){
 			// Create current timestamp
 			var oDate = new Date();
 			var UpdatedUserList = [];
@@ -263,36 +298,36 @@ sap.ui.define([
 			var insertErrorCount = 0;
 			var removeSuccessCount = 0;
 			var removeErrorCount = 0;
-			for(var i = 0; i < userIdList.length; i++){
-				var addedRoleList = this.getView().byId("ddlAddRole").getSelectedKeys();
-				for(var j = 0; j < addedRoleList.length; j++){
-					var addedRole = {
-						ID : 1,
-						USER_ID : userIdList[i].ID,
-						ROLE_CODE_ID : addedRoleList[j],
-						IS_ADDED : 'T',
-						MODIFIED_ON : oDate,
-						MODIFIED_BY : loggedInUserID,
-						RUN_SPROC : 'F'
-					};
-					this._oDataModel.create("/USER_ROLE_ASSIGNMENT_STG", addedRole,
-			        		{
-					        	success: function(){
-					        		insertSuccessCount++;
-					    		},
-					    		error: function(){
-					    			insertErrorCount++;
-								}
-			        		});
+			var addedRoleList = this.getView().byId("ddlRole").getSelectedKeys();
+			for(var j = 0; j < addedRoleList.length; j++){
+				var addedRole = {
+					ID : 1,
+					USER_ID : userId,
+					ROLE_CODE_ID : addedRoleList[j],
+					IS_ADDED : 'T',
+					MODIFIED_ON : oDate,
+					MODIFIED_BY : loggedInUserID,
+					RUN_SPROC : 'F'
+				};
+				this._oDataModel.create("/USER_ROLE_ASSIGNMENT_STG", addedRole,
+					{
+						success: function(){
+							insertSuccessCount++;
+						},
+						error: function(){
+							insertErrorCount++;
+						}
+					});
 					UpdatedUserList.push(addedRole);
-				}
+			}
 				//
-				var removedRoleList = this.getView().byId("ddlRemoveRole").getSelectedKeys();
-				for(var k = 0; k < removedRoleList.length; k++){
+			var removedRoleList = this.getView().byId("ddlRole").getEnabledItems();
+			for(var k = 0; k < removedRoleList.length; k++){
+				if(addedRoleList.includes(removedRoleList[k].getKey()) === false){
 					var removedRole = {
 						ID : 1,
-						USER_ID : userIdList[i].ID,
-						ROLE_CODE_ID : removedRoleList[k],
+						USER_ID : userId,
+						ROLE_CODE_ID : removedRoleList[k].getKey(),
 						IS_ADDED : 'F',
 						MODIFIED_ON : oDate,
 						MODIFIED_BY : loggedInUserID,
@@ -307,9 +342,9 @@ sap.ui.define([
 					    			removeErrorCount++;
 								}
 			        		});
-					UpdatedUserList.push(removedRole);
+					UpdatedUserList.push(removedRole);					
 				}
-			}    	
+			}
 			//return the object of updated attributes
 			var TempUpdate = {
 				UpdatedUserList: UpdatedUserList,
@@ -317,25 +352,6 @@ sap.ui.define([
 				ErrorCount: removeErrorCount + insertErrorCount
 			};
 			return TempUpdate;
-		},
-		//
-		validateDuplicateRoles : function(){
-			var addedRoleList = this.getView().byId("ddlAddRole").getSelectedItems();
-			var removedRoleList = this.getView().byId("ddlRemoveRole").getSelectedItems();
-			var duplicateRoles = "";
-			for(var i = 0; i < addedRoleList.length; i++){
-				for(var j = 0; j < removedRoleList.length; j++){
-					if(addedRoleList[i].getText() === removedRoleList[j].getText()){
-						duplicateRoles = duplicateRoles + addedRoleList[i].getText() + ", ";
-					}
-				}
-			}
-			if(duplicateRoles.length > 0){
-				return duplicateRoles.substring(0, duplicateRoles.length - 2);
-			}
-			else{
-				return duplicateRoles;
-			}
 		}
 	});
 
