@@ -112,6 +112,7 @@ sap.ui.define([
 				
 				var userFilter = new Filter("USER_ID",sap.ui.model.FilterOperator.EQ,userID.toUpperCase());
 				filterArray.push(userFilter);
+				var curr = this;
 				// first step - to see if the user exists or not
 					this._oDataModel.read("/V_USER",{
 							filters: filterArray,
@@ -126,23 +127,27 @@ sap.ui.define([
 									});
 			                	}
 			                	else{
-			                		if(oData.results[0].IS_BAM_USER === "F"){
-			                			MessageBox.alert("This user exists but does not have role privileges within BAM.",
-											{
-												icon : MessageBox.Icon.ERROR,
-												title : "Error"
-										});
-			                		}
-			                		else{
-			                			MessageBox.alert("This user already has role privledges in BAM. Would you like to navigate to the Edit page?",
-											{
-												icon : MessageBox.Icon.ERROR,
-												title : "Error"
-										});
-			                		}
 			                		var oModel = new sap.ui.model.json.JSONModel([userID.toUpperCase()]);
 									sap.ui.getCore().setModel(oModel);
-									this.getOwnerComponent().getRouter().navTo("editUserSingle");
+			                		if(oData.results[0].IS_BAM_USER === "F"){
+			                			MessageBox.confirm("This user exists but does not have role privileges within BAM.", {
+						            		icon: sap.m.MessageBox.Icon.WARNING,
+						            		actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+						            		onClose: function(oAction) {
+												curr.getOwnerComponent().getRouter().navTo("editUserSingle");
+						            		}
+						        		});
+			                		}
+			                		else{
+			                			MessageBox.confirm("This user already has role privledges in BAM. Would you like to navigate to the Edit page?", {
+						            		icon: sap.m.MessageBox.Icon.WARNING,
+						            		actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+						            		onClose: function(oAction) {
+												curr.getOwnerComponent().getRouter().navTo("editUserSingle");
+						            		}
+						        		});
+			                		}
+
 			                	}
 			                },
 			    		    error: function(){
