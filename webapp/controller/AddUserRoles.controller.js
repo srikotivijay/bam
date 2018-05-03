@@ -96,31 +96,51 @@ sap.ui.define([
 				this.getOwnerComponent().getRouter().navTo("home");
 			},
 			
-		onSearch: function (oEvent) {
+		onSearch: function () {
+			var userID = this._oModel.getProperty("/USER_ID");
+			if(userID === undefined || userID.length === 0){
+				MessageBox.alert("Enter User Id to search.",
+					{
+						icon : MessageBox.Icon.ERROR,
+						title : "Error"
+				});
+				return;
+			}
 				var result;
 				// Create a filter & sorter array
 				var filterArray = [];
-				var userID = this._oModel.getProperty("/USER_ID");
+				
 				var userFilter = new Filter("USER_ID",sap.ui.model.FilterOperator.EQ,userID);
 				filterArray.push(userFilter);
-				var sortArray = [];
-				//var sorter = new sap.ui.model.Sorter("NAME",false);
-				//sortArray.push(sorter);
-				
 				// first step - to see if the user exists or not
-					this._oDataModel.read("/USER",{
+					this._oDataModel.read("/V_USER",{
 							filters: filterArray,
 							async: false,
 			                success: function(oData, oResponse){
 			                	// If user does not exist
 			                	if(oData.results.length === 0){
-			                	MessageBox.alert("User not found. Please contact System Admin.",
-								{
-									icon : MessageBox.Icon.ERROR,
-									title : "Error"
-								});
+			                		MessageBox.alert("User not found. Please contact System Admin.",
+									{
+										icon : MessageBox.Icon.ERROR,
+										title : "Error"
+									});
 			                	}
-			                		 result =  oData.results;
+			                	else{
+			                		if(oData.results[0].IS_BAM_USER === "F"){
+			                			MessageBox.alert("This user exists but does not have role privileges within BAM.",
+											{
+												icon : MessageBox.Icon.ERROR,
+												title : "Error"
+										});
+			                		}
+			                		else{
+			                			MessageBox.alert("This user already has role privledges in BAM. Would you like to navigate to the Edit page?",
+											{
+												icon : MessageBox.Icon.ERROR,
+												title : "Error"
+										});
+			                		}
+			                	}
 			                },
 			    		    error: function(){
 		    		    		MessageBox.alert("Unable to retreive values. Please contact System Admin.",
@@ -128,35 +148,11 @@ sap.ui.define([
 									icon : MessageBox.Icon.ERROR,
 									title : "Error"
 								});
-			            		result = [];
 			    			}
 			    	});
-			    	// if the user exists then we need to check the view to see if he has a role
-			    	if(result.length === 1){
-			    	this._oDataModel.read("/V_WEB_USER_ROLES",{
-							filters: filterArray,
-							async: false,
-			                success: function(oData, oResponse){
-			                		// if the user exists then we need to check the view to see if he has a role (in progress)
-			                	MessageBox.alert("This user already has role privledges in BAM. Would you like to navigate to the Edit page?",
-								{
-									icon : MessageBox.Icon.ERROR,
-									title : "Error"
-								});
-			                		 result =  oData.results;
-			                },
-			                // this portion is currently not being hit for some reason (used U591647 as an example, who is in USER but is not in V_WEB_USER_ROLES)
-			    		    error: function(){
-		    		    		MessageBox.alert("This user exists but does not have role privledges within BAM.",
-								{
-									icon : MessageBox.Icon.ERROR,
-									title : "Error"
-								});
-			            		result = oData.results;;
-			    			}
-			    	});	
-			    	}
-			    	return result;
+		},
+		onTextSubmit: function(){
+			return this.onSearch();
 		}
   	});
 });
