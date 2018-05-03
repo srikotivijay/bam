@@ -328,13 +328,13 @@
 					"viewName": "EditUserMultiple",
 					"viewId": "editUserMultiple"
 				},
-				"addUserRoles": {
-					"viewName": "AddUserRoles",
-					"viewId": "addUserRoles
-				},
 				"editUserSingle": {
 					"viewName": "EditUserSingle",
 					"viewId": "editUserSingle"
+				},
+				"addUserRoles": {
+					"viewName": "AddUserRoles",
+					"viewId": "addUserRoles"
 				}
 			}
 		}
