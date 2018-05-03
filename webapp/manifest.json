@@ -228,15 +228,14 @@
 					"target": "editUserMultiple"
 				},
 				{
-<<<<<<< HEAD
 					"pattern": "addUserRoles",
 					"name": "addUserRoles",
 					"target": "addUserRoles"
-=======
+				},
+				{
 					"pattern": "editUserSingle",
 					"name": "editUserSingle",
 					"target": "editUserSingle"
->>>>>>> 70ba858cfce0915aa7a516e8acc21d1f24b1ed26
 				}
 			],
 			"targets": {
@@ -329,15 +328,13 @@
 					"viewName": "EditUserMultiple",
 					"viewId": "editUserMultiple"
 				},
-<<<<<<< HEAD
 				"addUserRoles": {
 					"viewName": "AddUserRoles",
-					"viewId": "addUserRoles"
-=======
+					"viewId": "addUserRoles
+				},
 				"editUserSingle": {
 					"viewName": "EditUserSingle",
 					"viewId": "editUserSingle"
->>>>>>> 70ba858cfce0915aa7a516e8acc21d1f24b1ed26
 				}
 			}
 		}
