@@ -110,7 +110,7 @@ sap.ui.define([
 				// Create a filter & sorter array
 				var filterArray = [];
 				
-				var userFilter = new Filter("USER_ID",sap.ui.model.FilterOperator.EQ,userID);
+				var userFilter = new Filter("USER_ID",sap.ui.model.FilterOperator.EQ,userID.toUpperCase());
 				filterArray.push(userFilter);
 				// first step - to see if the user exists or not
 					this._oDataModel.read("/V_USER",{
@@ -140,6 +140,9 @@ sap.ui.define([
 												title : "Error"
 										});
 			                		}
+			                		var oModel = new sap.ui.model.json.JSONModel([userID.toUpperCase()]);
+									sap.ui.getCore().setModel(oModel);
+									this.getOwnerComponent().getRouter().navTo("editUserSingle");
 			                	}
 			                },
 			    		    error: function(){
