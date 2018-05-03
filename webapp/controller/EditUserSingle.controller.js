@@ -131,7 +131,8 @@ sap.ui.define([
 			
 	        this._oUserUpdViewModel.setProperty("/USERNAME", userDetails.USER_NAME);
 	        this._oUserUpdViewModel.setProperty("/EMAIL", userDetails.EMAIL);
-	        
+	        var validFlagFilter = new Filter("VALID_FLAG",sap.ui.model.FilterOperator.EQ,"T");
+            filterArray.push(validFlagFilter);
 	        //query for role data
 			this._oDataModel.read("/USER_ROLE",
 			{
@@ -279,7 +280,7 @@ sap.ui.define([
 									});
 							}
 			    		},
-			    		error: function(){
+			    		error: function(err){
 			    			busyDialog.close();
 			    			MessageBox.alert("Error updating user roles.",
 									{
