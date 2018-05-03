@@ -134,7 +134,9 @@ sap.ui.define([
 						            		icon: sap.m.MessageBox.Icon.WARNING,
 						            		actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
 						            		onClose: function(oAction) {
-												curr.getOwnerComponent().getRouter().navTo("editUserSingle");
+												if(oAction === "YES"){
+						            				curr.getOwnerComponent().getRouter().navTo("editUserSingle");
+						            			}
 						            		}
 						        		});
 			                		}
@@ -143,7 +145,9 @@ sap.ui.define([
 						            		icon: sap.m.MessageBox.Icon.WARNING,
 						            		actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
 						            		onClose: function(oAction) {
-												curr.getOwnerComponent().getRouter().navTo("editUserSingle");
+						            			if(oAction === "YES"){
+						            				curr.getOwnerComponent().getRouter().navTo("editUserSingle");
+						            			}
 						            		}
 						        		});
 			                		}
