@@ -1,16 +1,11 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:html="http://www.w3.org/1999/xhtml" controllerName="bam.controller.MaintainRules">
 	<App id="maintainRules">
 		<pages>
-			<Page title="{i18n>title}" showNavButton="true" navButtonPress="onNavBack">
+			<Page id="maintainRulePage" title="{i18n>title}" showNavButton="true" navButtonPress="onNavBack" enableScrolling="false" class="marginBoxContent">
 				<content>
-					<TileContainer id="tlCntRuleHome">
-				        <tiles>
-				        	<StandardTile title="{i18n>cuSubcuAssignment}" tooltip="{i18n>cuSubcuTooltipText}" icon="sap-icon://user-edit" activeIcon="sap-icon://user-edit" infoState="Success" id="tlCuSubcuAssignment" class="sapUiLargeMarginEnd"  press="onGoToCuSubCuAssignment" visible="{/showCURule}"/>
-				        </tiles>
-				        <tiles>
-				        	<StandardTile title="{i18n>peopleAssignment}" tooltip="{i18n>peopleTooltipText}" icon="sap-icon://user-edit" activeIcon="sap-icon://user-edit" infoState="Success" id="tlpeopleAssignment"  class="sapUiLargeMarginEnd" press="onGoToPeopleAssignment" visible="{/showPeopleAssigner}"/>
-				        </tiles>
-				    </TileContainer>
+					<TileContainer id="tlCntRuleHome" height="100%" width="100%" allowAdd="true" tiles="{path: '/ruleTiles'}">
+						 <StandardTile title="{title}" tooltip="{toolTipText}" icon="{icon}" activeIcon="{icon}" infoState="Success" class="sapUiLargeMarginEnd"  press="onGoToCuSubCuAssignment"/>
+					</TileContainer>
 				</content>
 			</Page>
 		</pages>
