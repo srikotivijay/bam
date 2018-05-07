@@ -227,7 +227,7 @@ sap.ui.define([
 			        	success: function(){
 			        		busyDialog.close();
 			        		if(!insertRoleOps.Errors){
-									MessageBox.alert("Roles for " + editUserIDList.length + " users submitted successfully.",
+									MessageBox.alert("User roles for " + editUserIDList.length + " users updated successfully.",
 										{
 											icon : MessageBox.Icon.SUCCESS,
 											title : "Success",
