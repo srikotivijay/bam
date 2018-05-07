@@ -118,8 +118,12 @@ sap.ui.define([
 				window.history.go(-1);
 			} else {
 				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-				oRouter.navTo("maintainRules", true);
+				oRouter.navTo("home", true);
 			}
+		},
+		// function to navigate to add roles page
+		onAdd : function(){
+			this.getOwnerComponent().getRouter().navTo("addUserRoles");
 		},
 		// function to navigate to edit page
 		onEdit : function(){

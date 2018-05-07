@@ -1,0 +1,37 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:html="http://www.w3.org/1999/xhtml" controllerName="bam.controller.AddUserRoles">
+	<App id="addUserRoles">
+		<pages>
+			<Page title="{i18n>title}" 
+			showNavButton="true" 
+			navButtonPress="onNavBack">
+				<headerContent>
+					<Button id="btnHome" icon="sap-icon://home" tooltip="{i18n>home}" press="onHome"/>
+				</headerContent>
+				<content>
+					<f:Form editable="true" id="formAddUserRoles">
+				    <f:formContainers>
+				        <f:FormContainer title="{i18n>addUserRoles}" id="fConAddUserRoles">
+				            <f:formElements>
+				                <f:FormElement label="{i18n>userId}" id="felmUserID">
+				                    <f:fields>
+				                    	<Input id="txtUserID" name="txtUserID" maxLength = "50" value="{/USER_ID}" submit="onTextSubmit"/>
+					                 </f:fields>
+					                 	<Button id="btnSearchUsers" icon="sap-icon://search" width="100px" press="onSearch"/>
+				                </f:FormElement>
+				            </f:formElements>
+				        </f:FormContainer>
+				    </f:formContainers>
+				    <f:layout>
+				        <f:ResponsiveGridLayout id="fResGridEditAttributes"/>
+				    </f:layout>
+				</f:Form>
+				<Toolbar width="100%" id="tbrSubmit">
+				     <content>
+				        <ToolbarSpacer id="tbrSpSubmit"/>
+				     </content>
+					</Toolbar>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

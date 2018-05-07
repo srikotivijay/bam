@@ -161,7 +161,7 @@ sap.ui.define([
 			onHome: function(){
 			//	var oSmartTable = this.byId("smartTblBAMAttributes");
 				//oSmartTable.exit();
-				this.getOwnerComponent().getRouter().navTo("home");
+				this.getOwnerComponent().getRouter().navTo("home"); 
 			},
 			onFieldChange: function(source){
 				var a = source;

@@ -228,6 +228,11 @@
 					"target": "editUserMultiple"
 				},
 				{
+					"pattern": "addUserRoles",
+					"name": "addUserRoles",
+					"target": "addUserRoles"
+				},
+				{
 					"pattern": "editUserSingle",
 					"name": "editUserSingle",
 					"target": "editUserSingle"
@@ -326,6 +331,10 @@
 				"editUserSingle": {
 					"viewName": "EditUserSingle",
 					"viewId": "editUserSingle"
+				},
+				"addUserRoles": {
+					"viewName": "AddUserRoles",
+					"viewId": "addUserRoles"
 				}
 			}
 		}
