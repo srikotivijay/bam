@@ -81,21 +81,6 @@
 											<CheckBox id="chkMarketingManager" name="chkMarketingManager" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_MARKETING_MANAGER}" tooltip="{i18n>updateNullTooltip}" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
 										</FlexBox>
 									</f:FormElement>
-									<!--Portfolio Supply Chain Manager -->
-									<f:FormElement label="{i18n>HDR_SUPPLY_CHAIN_MANAGER}" id="felmSupplyChainManager" visible="{/showSupplyChainManager}">
-										<FlexBox renderType="Bare">
-											<ComboBox id="cmbSupplyChainManager" name="cmbSupplyChainManager" showSecondaryValues= "true" filterSecondaryValues= "true"
-												selectedKey="{/SUPPLY_CHAIN_MANAGER_ID}" value="{/SUPPLY_CHAIN_MANAGER_NAME}" width="500px"
-												items="{
-													path: '/SUPPLY_CHAIN_MANAGER',
-													templateShareable : true}"
-												change = "onChange">
-												<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
-											</ComboBox>
-											<Button id="btnSupplyChainManager" icon="sap-icon://search" press="onSearch" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
-											<CheckBox id="chkSupplyChainManager" name="chkSupplyChainManager" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_SUPPLY_CHAIN_MANAGER}" tooltip="{i18n>updateNullTooltip}" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
-										</FlexBox>
-									</f:FormElement>
 									<!--Regional Supply Chain Manager -->
 									<f:FormElement label="{i18n>REG_SUPPLY_CHAIN_MANAGER}" id="felmRegionalSupplyChainManager" visible="{/showRegionalSupplychainManager}">
 										<FlexBox renderType="Bare">
@@ -111,19 +96,19 @@
 											<CheckBox id="chkRegionalSupplyChainManager" name="chkRegionalSupplyChainManager" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_REGIONAL_SUPPLY_CHAIN_MANAGER}" tooltip="{i18n>updateNullTooltip}" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
 										</FlexBox>
 									</f:FormElement>
-									<!--Master Scheduler -->
-									<f:FormElement label="{i18n>HDR_SUPPLY_CHAIN_PLANNING_SPECIALIST}" id="felmSupplyChainPlanningSpecialist" visible="{/showSupplyChainPlanningSpecialist}">
+									<!--Portfolio Supply Chain Manager -->
+									<f:FormElement label="{i18n>HDR_SUPPLY_CHAIN_MANAGER}" id="felmSupplyChainManager" visible="{/showSupplyChainManager}">
 										<FlexBox renderType="Bare">
-											<ComboBox id="cmbSupplyChainPlanningSpecialist" name="cmbSupplyChainPlanningSpecialist" showSecondaryValues= "true" filterSecondaryValues= "true"
-												selectedKey="{/SUPPLY_CHAIN_PLANNING_SPECIALIST_ID}" value="{/SUPPLY_CHAIN_PLANNING_SPECIALIST_NAME}" width="500px"
+											<ComboBox id="cmbSupplyChainManager" name="cmbSupplyChainManager" showSecondaryValues= "true" filterSecondaryValues= "true"
+												selectedKey="{/SUPPLY_CHAIN_MANAGER_ID}" value="{/SUPPLY_CHAIN_MANAGER_NAME}" width="500px"
 												items="{
-													path: '/SUPPLY_CHAIN_PLANNING_SPECIALIST',
+													path: '/SUPPLY_CHAIN_MANAGER',
 													templateShareable : true}"
 												change = "onChange">
 												<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
 											</ComboBox>
-											<Button id="btnSupplyChainPlanningSpecialist" icon="sap-icon://search" press="onSearch" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
-											<CheckBox id="chkSupplyChainPlanningSpecialist" name="chkSupplyChainPlanningSpecialist" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_SUPPLY_CHAIN_PLANNING_SPECIALIST}" tooltip="{i18n>updateNullTooltip}" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
+											<Button id="btnSupplyChainManager" icon="sap-icon://search" press="onSearch" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
+											<CheckBox id="chkSupplyChainManager" name="chkSupplyChainManager" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_SUPPLY_CHAIN_MANAGER}" tooltip="{i18n>updateNullTooltip}" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
 										</FlexBox>
 									</f:FormElement>
 									<!--Master Planner -->
@@ -139,6 +124,21 @@
 											</ComboBox>
 											<Button id="btnSearchMasterPlanner" icon="sap-icon://search" press="onSearch" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
 											<CheckBox id="chkMasterPlanner" name="chkMasterPlanner" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_MASTER_PLANNER}" tooltip="{i18n>updateNullTooltip}" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
+										</FlexBox>
+									</f:FormElement>
+									<!--Master Scheduler -->
+									<f:FormElement label="{i18n>HDR_SUPPLY_CHAIN_PLANNING_SPECIALIST}" id="felmSupplyChainPlanningSpecialist" visible="{/showSupplyChainPlanningSpecialist}">
+										<FlexBox renderType="Bare">
+											<ComboBox id="cmbSupplyChainPlanningSpecialist" name="cmbSupplyChainPlanningSpecialist" showSecondaryValues= "true" filterSecondaryValues= "true"
+												selectedKey="{/SUPPLY_CHAIN_PLANNING_SPECIALIST_ID}" value="{/SUPPLY_CHAIN_PLANNING_SPECIALIST_NAME}" width="500px"
+												items="{
+													path: '/SUPPLY_CHAIN_PLANNING_SPECIALIST',
+													templateShareable : true}"
+												change = "onChange">
+												<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
+											</ComboBox>
+											<Button id="btnSupplyChainPlanningSpecialist" icon="sap-icon://search" press="onSearch" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
+											<CheckBox id="chkSupplyChainPlanningSpecialist" name="chkSupplyChainPlanningSpecialist" text="{i18n>updateNull}" select="onChecked" selected="{/NULLIFY_SUPPLY_CHAIN_PLANNING_SPECIALIST}" tooltip="{i18n>updateNullTooltip}" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
 										</FlexBox>
 									</f:FormElement>
 									<!--Global portfolio leader -->

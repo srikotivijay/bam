@@ -176,30 +176,6 @@
 									</HBox>
 								</table:template>
 							</table:Column>
-							<!--Portfolio Supply chain manager -->
-							<table:Column id="clmHdrSupplyChainManager" width="350px" resizable="false" visible="{/showSupplyChainManager}">
-								<Label text="{i18n>HDR_SUPPLY_CHAIN_MANAGER}" id="lblSupplyChainManager"/>
-								<table:template>
-									<HBox alignItems="Center">
-									<ComboBox
-											id="cmbSupplyChainManager"
-											showSecondaryValues= "true"
-											filterSecondaryValues= "true"
-											value="{SUPPLY_CHAIN_MANAGER_NAME}"
-											selectedKey="{SUPPLY_CHAIN_MANAGER_ID}"
-											width="300px"
-											items="{
-												path: '/AssignPeopleRuleVM/SupplyChainManager',
-												templateShareable : true
-											}"
-											visible="{path: 'createNew', formatter: '.disableControl'}"
-											valueState="{supplyChainManagerErrorState}">
-										<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
-									</ComboBox>
-									<Button id="btnSupplyChainManager" icon="sap-icon://search" visible="{path: 'createNew', formatter: '.disableControl'}" press="onSearch" class="sapUiTinyMarginEnd"/>
-									</HBox>
-								</table:template>
-							</table:Column>	
 							<!--Regional Supply chain manager -->
 							<table:Column id="clmHdrRegionalSupplyChainManager" width="350px" resizable="false" visible="{/showRegionalSupplychainManager}">
 								<Label text="{i18n>REG_SUPPLY_CHAIN_MANAGER}" id="lblRegionalSupplyChainManager"/>
@@ -224,27 +200,27 @@
 									</HBox>
 								</table:template>
 							</table:Column>	
-							<!--Master scheduler -->
-							<table:Column id="clmHdrSupplyChainPlanningSpecialist" width="350px" resizable="false" visible="{/showSupplyChainPlanningSpecialist}">
-								<Label text="{i18n>HDR_SUPPLY_CHAIN_PLANNING_SPECIALIST}" id="lblSupplyChainPlanningSpecialist"/>
+							<!--Portfolio Supply chain manager -->
+							<table:Column id="clmHdrSupplyChainManager" width="350px" resizable="false" visible="{/showSupplyChainManager}">
+								<Label text="{i18n>HDR_SUPPLY_CHAIN_MANAGER}" id="lblSupplyChainManager"/>
 								<table:template>
 									<HBox alignItems="Center">
 									<ComboBox
-											id="cmbSupplyChainPlanningSpecialist"
+											id="cmbSupplyChainManager"
 											showSecondaryValues= "true"
 											filterSecondaryValues= "true"
-											value="{SUPPLY_CHAIN_PLANNING_SPECIALIST_NAME}"
-											selectedKey="{SUPPLY_CHAIN_PLANNING_SPECIALIST_ID}"
+											value="{SUPPLY_CHAIN_MANAGER_NAME}"
+											selectedKey="{SUPPLY_CHAIN_MANAGER_ID}"
 											width="300px"
 											items="{
-												path: '/AssignPeopleRuleVM/SupplyChainPlanningSpecialist',
+												path: '/AssignPeopleRuleVM/SupplyChainManager',
 												templateShareable : true
 											}"
 											visible="{path: 'createNew', formatter: '.disableControl'}"
-											valueState="{supplyChainPlanningSpecialistErrorState}">
+											valueState="{supplyChainManagerErrorState}">
 										<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
 									</ComboBox>
-									<Button id="btnSupplyChainPlanningSpecialist" icon="sap-icon://search" visible="{path: 'createNew', formatter: '.disableControl'}" press="onSearch" class="sapUiTinyMarginEnd"/>
+									<Button id="btnSupplyChainManager" icon="sap-icon://search" visible="{path: 'createNew', formatter: '.disableControl'}" press="onSearch" class="sapUiTinyMarginEnd"/>
 									</HBox>
 								</table:template>
 							</table:Column>	
@@ -272,6 +248,30 @@
 									</HBox>
 								</table:template>
 							</table:Column>
+							<!--Master scheduler -->
+							<table:Column id="clmHdrSupplyChainPlanningSpecialist" width="350px" resizable="false" visible="{/showSupplyChainPlanningSpecialist}">
+								<Label text="{i18n>HDR_SUPPLY_CHAIN_PLANNING_SPECIALIST}" id="lblSupplyChainPlanningSpecialist"/>
+								<table:template>
+									<HBox alignItems="Center">
+									<ComboBox
+											id="cmbSupplyChainPlanningSpecialist"
+											showSecondaryValues= "true"
+											filterSecondaryValues= "true"
+											value="{SUPPLY_CHAIN_PLANNING_SPECIALIST_NAME}"
+											selectedKey="{SUPPLY_CHAIN_PLANNING_SPECIALIST_ID}"
+											width="300px"
+											items="{
+												path: '/AssignPeopleRuleVM/SupplyChainPlanningSpecialist',
+												templateShareable : true
+											}"
+											visible="{path: 'createNew', formatter: '.disableControl'}"
+											valueState="{supplyChainPlanningSpecialistErrorState}">
+										<core:ListItem key="{USER_ID}" text="{USER_NAME}" additionalText="{USER_ID}"/>
+									</ComboBox>
+									<Button id="btnSupplyChainPlanningSpecialist" icon="sap-icon://search" visible="{path: 'createNew', formatter: '.disableControl'}" press="onSearch" class="sapUiTinyMarginEnd"/>
+									</HBox>
+								</table:template>
+							</table:Column>	
 							<!--Global Portfolio Leader -->
 							<table:Column id="clmHdrGlobalLeader" width="350px" resizable="false" visible="{/showGlobalLeader}">
 								<Label text="{i18n>HDR_GLOBAL_LEADER}" id="lblGlobalLeader"/>
