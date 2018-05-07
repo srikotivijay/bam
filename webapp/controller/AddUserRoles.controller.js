@@ -120,7 +120,7 @@ sap.ui.define([
 			                success: function(oData, oResponse){
 			                	// If user does not exist
 			                	if(oData.results.length === 0){
-			                		MessageBox.alert("User not found. Please contact System Admin.",
+			                		MessageBox.alert("User not found. Please contact system admin.",
 									{
 										icon : MessageBox.Icon.ERROR,
 										title : "Error"
@@ -130,7 +130,7 @@ sap.ui.define([
 			                		var oModel = new sap.ui.model.json.JSONModel([userID.toUpperCase()]);
 									sap.ui.getCore().setModel(oModel);
 			                		if(oData.results[0].IS_BAM_USER === "F"){
-			                			MessageBox.confirm("This user exists but does not have role privileges within BAM.", {
+			                			MessageBox.confirm("User found. Do you want to assign roles to the selected user?", {
 						            		icon: sap.m.MessageBox.Icon.WARNING,
 						            		actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
 						            		onClose: function(oAction) {
@@ -155,7 +155,7 @@ sap.ui.define([
 			                	}
 			                },
 			    		    error: function(){
-		    		    		MessageBox.alert("Unable to retreive values. Please contact System Admin.",
+		    		    		MessageBox.alert("Unable to retreive values. Please contact system admin.",
 								{
 									icon : MessageBox.Icon.ERROR,
 									title : "Error"
