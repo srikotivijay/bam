@@ -11,9 +11,6 @@
 				        	<StandardTile title="{i18n>maintainAttributes}" visible="{/showMaintainAttribute}" tooltip="{i18n>maintainAttributesTooltipText}" icon="sap-icon://user-edit" activeIcon="sap-icon://user-edit" infoState="Success" id="tlMaintainAttributes" class="sapUiLargeMarginEnd" press="onGoToMaintainAttributes"/>
 				        </tiles>
 				        <tiles>
-				        	<StandardTile title="{i18n>maintainMaterialAttributes}" visible="{/showMaintainMaterialAttributes}" tooltip="{i18n>maintainMaterialAttributesTooltipText}" icon="sap-icon://user-edit" activeIcon="sap-icon://user-edit" infoState="Success" id="tlMaintainMaterialAttributes" class="sapUiLargeMarginEnd" press="onGoToMaintainMaterialAttributes"/>
-				        </tiles>
-				         <tiles>
 				        	<StandardTile title="{i18n>plantAssignment}" visible="{/showPlantAssignment}" tooltip="{i18n>plantAssignmentTooltipText}" icon="sap-icon://add-activity" activeIcon="sap-icon://add-activity" infoState="Success" id="tlPlantAssignment" class="sapUiLargeMarginEnd" press="onGoToPlantAssignment"/>
 				        </tiles>
 				        <tiles>
@@ -21,6 +18,9 @@
 				        </tiles>
 				        <tiles>
 				        	<StandardTile title="{i18n>auditReport}" visible="{/showAuditReport}" tooltip="{i18n>auditReportTooltipText}" icon="sap-icon://history" activeIcon="sap-icon://history" infoState="Success" id="tlAuditReport" class="sapUiLargeMarginEnd" press="onGoToAuditReport"/>
+				        </tiles>
+				        <tiles>
+				        	<StandardTile title="{i18n>maintainMaterialAttributes}" visible="{/showMaintainMaterialAttributes}" tooltip="{i18n>maintainMaterialAttributesTooltipText}" icon="sap-icon://user-edit" activeIcon="sap-icon://user-edit" infoState="Success" id="tlMaintainMaterialAttributes" class="sapUiLargeMarginEnd" press="onGoToMaintainMaterialAttributes"/>
 				        </tiles>
 				        <tiles>
 				        	<StandardTile title="{i18n>userManagement}" visible="{/showUserManagement}" tooltip="{i18n>userManagementTooltipText}" icon="sap-icon://history" activeIcon="sap-icon://history" infoState="Success" id="tlUserManagement" class="sapUiLargeMarginEnd" press="onGoToUserManagement"/>
