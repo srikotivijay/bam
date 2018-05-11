@@ -70,7 +70,7 @@ sap.ui.define([
 			    	this._oModel.setProperty("/showRegionalSupplychainManager",showRegionalSupplychainManager);
 			    	this._oModel.setProperty("/showSupplyChainManager",showSupplyChainManager);
 			    	this._oModel.setProperty("/showSupplyChainPlanningSpecialist",showSupplyChainPlanningSpecialist);
-			    	this._oModel.setProperty("/Users", this.getAllUsers());
+			    	this.getAllUsers();
 			    	
 			    	
 			    	this._oModel.setProperty("/ProductLookupVisibility", false);
@@ -1324,15 +1324,18 @@ sap.ui.define([
 			var sortArray = [];
 			var sorter = new sap.ui.model.Sorter("USER_NAME",false);
 			sortArray.push(sorter);
+			var curr = this;
 			// Get the User dropdown list from the table only where valid
 			this._oDataModel.read("/USER",{
 					sorters: sortArray,
 					filters: [ 
 								new Filter("VALID_FLAG", FilterOperator.EQ, "T")
 							],
-					async: false,
+					async: true,
 	                success: function(oData, oResponse){
 		                result =  oData.results;
+		                curr._oModel.setProperty("/Users", result);
+		                curr._busyDialog.close();
 	                },
 	    		    error: function(){
     		    		MessageBox.alert("Unable to retrieve dropdown values for People Roles Please contact System Admin.",
@@ -1425,6 +1428,9 @@ sap.ui.define([
 				// toggle compact style
 				jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oDialog);
 				this._oDialog.open();
+				if(this._oModel.getProperty("/Users") == undefined){
+					this._busyDialog.open();
+				}
 			}
 			else{
 				MessageBox.alert("Select Geography and Product before searching the user",

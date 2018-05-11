@@ -84,7 +84,7 @@ sap.ui.define([
 				this._oModel.setProperty("/showRegionalSupplychainManager",showRegionalSupplychainManager);
 				this._oModel.setProperty("/showSupplyChainManager",showSupplyChainManager);
 				this._oModel.setProperty("/showSupplyChainPlanningSpecialist",showSupplyChainPlanningSpecialist);
-				this._oModel.setProperty("/Users", this.getAllUsers());
+				this.getAllUsers();
 				//
 				// Load dropdown
 				this.loadDropDowns();
@@ -794,6 +794,9 @@ sap.ui.define([
 			// toggle compact style
 			jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oDialog);
 			this._oDialog.open();
+			if(this._oModel.getProperty("/Users") == undefined){
+				this._busyDialog.open();
+			}
 		},
 		handleSearch : function(oEvent){
 			var sValue = oEvent.getParameter("value");
@@ -916,6 +919,7 @@ sap.ui.define([
 			// Create a filter & sorter array
 			var sortArray = [];
 			var sorter = new sap.ui.model.Sorter("USER_NAME",false);
+			var curr = this;
 			sortArray.push(sorter);
 			// Get the Country dropdown list from the CODE_MASTER table
 			this._oDataModel.read("/USER",{
@@ -923,9 +927,11 @@ sap.ui.define([
 					filters: [ 
 								new Filter("VALID_FLAG", FilterOperator.EQ, "T")
 							],
-					async: false,
+					async: true,
 	                success: function(oData, oResponse){
 		                result =  oData.results;
+		                curr._oModel.setProperty("/Users", result);
+		                curr._busyDialog.close();
 	                },
 	    		    error: function(){
     		    		MessageBox.alert("Unable to retrieve dropdown values for People Roles Please contact System Admin.",
