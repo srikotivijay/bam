@@ -201,7 +201,15 @@ sap.ui.define([
 			// //click of submit button
 		onSubmit: function(){
 			var currObj = this;
-			var updatedCodes = currObj.getUpdatedCodes();	
+			// check if the values are selected from combobox
+			if (this._oViewModelData.RCU_CODE === "" || this._oViewModelData.SUBRCU_CODE === "")
+			{
+				MessageBox.alert('Please select the values from the dropdownlist',{
+                	icon : MessageBox.Icon.ERROR,
+                    title : "Error"});
+                return;
+			}
+			var updatedCodes = currObj.getUpdatedCodes();
 			if (updatedCodes !== ""){
 				var ruleCount = this._oModel.getProperty("/RULE_COUNT");
 				// check if user wants to update the attributes for GMID and country

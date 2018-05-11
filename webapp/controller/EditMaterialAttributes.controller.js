@@ -190,6 +190,14 @@ sap.ui.define([
 			// //click of submit button
 		onSubmit: function(){
 			var currObj = this;
+				// check if the values are selected from combobox
+			if (this._oViewModelData.ID === "" || this._oViewModelData.BUSINESS_SEGMENT_CODE === "")
+			{
+				MessageBox.alert('Please select the values from the dropdownlist',{
+                	icon : MessageBox.Icon.ERROR,
+                    title : "Error"});
+                return;
+			}
 			var updatedCodes = currObj.getUpdatedCodes();	
 			if (updatedCodes !== ""){
 				var ruleCount = this._oModel.getProperty("/MATERIAL_COUNT");

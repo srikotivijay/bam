@@ -556,6 +556,53 @@ sap.ui.define([
 	        }
 	        return returnValue;
         },
+        // function to check the invalid entries 
+        validateInvalidEntries :function(){
+        	var returnValue = true;
+	        var selectedRulekey = this.getView().byId("cmbRuleSetList").getSelectedItem().getKey();
+	        if (selectedRulekey !== "-1")
+	        {
+	        	var data = this._oViewModelData.AssignRuleVM;
+		        for(var i = 0; i < data.length - 1; i++) 
+		        {
+			        if(this.checkForInvalidFields(data[i]))
+		            	{
+		            		data[i].isError = true;
+		            		if(data[i].errorSummary !== "")
+			                {
+			                	data[i].errorSummary += "\n";  
+			                }
+			            	data[i].errorSummary += "Please select the values from the dropdownlist for fields highlighted in red.";
+			            	returnValue = false;
+		            	}
+		        }
+	        }
+	        return returnValue;
+        },
+        // This functions takes one row and check each field to see if it is filled in, if not -> highlight in red
+        checkForInvalidFields: function (row) {
+        	var errorsFound = false;
+            if(row.LEVEL_ID === "")
+            {
+            	row.geographyErrorState = "Error";
+            	errorsFound = true;
+            }
+            if(row.PRODUCT_CODE === "")
+            {
+            	row.productErrorState = "Error";
+            	errorsFound = true;
+            }
+            //
+            if(row.RCU_CODE === ""){
+				row.cuErrorState = "Error";
+				errorsFound = true;
+            }
+            if(row.SUB_RCU_CODE === ""){
+				row.subcuErrorState = "Error";
+				errorsFound = true;
+            }
+            return errorsFound;
+        },
         // This functions takes one row and check each field to see if it is filled in, if not -> highlight in red
         checkForEmptyFields: function (row) {
         	var errorsFound = false;
@@ -706,6 +753,11 @@ sap.ui.define([
 	        	}
 		        // check for duplicate entries on the page
 	        	if (t.validateDuplicateEntries() === false)
+	        	{
+	        		t._oAssignRuleViewModel.setProperty("/ErrorOnPage",true);
+	        	}
+	        	// check for Invalid  entries on the page
+	        	if (t.validateInvalidEntries() === false)
 	        	{
 	        		t._oAssignRuleViewModel.setProperty("/ErrorOnPage",true);
 	        	}

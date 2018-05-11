@@ -350,6 +350,19 @@ sap.ui.define([
 		},
 		onSubmit : function(){
 			var currObj = this;
+			// check if the values are selected from combobox
+			if (this._oViewModelData.DEMAND_MANAGER_ID === "" || this._oViewModelData.GLOBAL_LEADER_ID === "" ||
+			    this._oViewModelData.MARKETING_DIRECTOR_ID === "" || this._oViewModelData.MARKETING_MANAGER_ID === "" ||
+			    this._oViewModelData.MASTER_PLANNER_ID === "" || this._oViewModelData.PRODUCT_MANAGER_ID === "" ||
+			    this._oViewModelData.REGIONAL_SUPPLY_CHAIN_MANAGER_ID === "" || this._oViewModelData.SUPPLY_CHAIN_MANAGER_ID === "" ||
+			    this._oViewModelData.SUPPLY_CHAIN_PLANNING_SPECIALIST_ID === "" 
+			)
+			{
+				MessageBox.alert('Please select the values from the dropdownlist',{
+                	icon : MessageBox.Icon.ERROR,
+                    title : "Error"});
+                return;
+			}
 			var updatedCodes = currObj.getUpdatedCodes();
 				if (updatedCodes !== ""){
 					var ruleCount = this._oModel.getProperty("/RULE_COUNT");
