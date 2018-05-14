@@ -14,16 +14,16 @@
 				        	<StandardTile title="{i18n>plantAssignment}" visible="{/showPlantAssignment}" tooltip="{i18n>plantAssignmentTooltipText}" icon="sap-icon://add-activity" activeIcon="sap-icon://add-activity" infoState="Success" id="tlPlantAssignment" class="sapUiLargeMarginEnd" press="onGoToPlantAssignment"/>
 				        </tiles>
 				        <tiles>
-				        	<StandardTile title="{i18n>maintainRules}" visible="{/showMaintainRule}" tooltip="{i18n>maintainRulesTooltipText}" icon="sap-icon://user-edit" activeIcon="sap-icon://user-edit" infoState="Success" id="tlMaintainRules" class="sapUiLargeMarginEnd" press="onGoTomaintainRules"/>
+				        	<StandardTile title="{i18n>maintainRules}" visible="{/showMaintainRule}" tooltip="{i18n>maintainRulesTooltipText}" icon="sap-icon://request" activeIcon="sap-icon://request" infoState="Success" id="tlMaintainRules" class="sapUiLargeMarginEnd" press="onGoTomaintainRules"/>
 				        </tiles>
 				        <tiles>
 				        	<StandardTile title="{i18n>auditReport}" visible="{/showAuditReport}" tooltip="{i18n>auditReportTooltipText}" icon="sap-icon://history" activeIcon="sap-icon://history" infoState="Success" id="tlAuditReport" class="sapUiLargeMarginEnd" press="onGoToAuditReport"/>
 				        </tiles>
 				        <tiles>
-				        	<StandardTile title="{i18n>maintainMaterialAttributes}" visible="{/showMaintainMaterialAttributes}" tooltip="{i18n>maintainMaterialAttributesTooltipText}" icon="sap-icon://user-edit" activeIcon="sap-icon://user-edit" infoState="Success" id="tlMaintainMaterialAttributes" class="sapUiLargeMarginEnd" press="onGoToMaintainMaterialAttributes"/>
+				        	<StandardTile title="{i18n>maintainMaterialAttributes}" visible="{/showMaintainMaterialAttributes}" tooltip="{i18n>maintainMaterialAttributesTooltipText}" icon="sap-icon://task" activeIcon="sap-icon://task" infoState="Success" id="tlMaintainMaterialAttributes" class="sapUiLargeMarginEnd" press="onGoToMaintainMaterialAttributes"/>
 				        </tiles>
 				        <tiles>
-				        	<StandardTile title="{i18n>userManagement}" visible="{/showUserManagement}" tooltip="{i18n>userManagementTooltipText}" icon="sap-icon://history" activeIcon="sap-icon://history" infoState="Success" id="tlUserManagement" class="sapUiLargeMarginEnd" press="onGoToUserManagement"/>
+				        	<StandardTile title="{i18n>userManagement}" visible="{/showUserManagement}" tooltip="{i18n>userManagementTooltipText}" icon="sap-icon://company-view" activeIcon="sap-icon://company-view" infoState="Success" id="tlUserManagement" class="sapUiLargeMarginEnd" press="onGoToUserManagement"/>
 				        </tiles>
 				    </TileContainer>
 				</content>
