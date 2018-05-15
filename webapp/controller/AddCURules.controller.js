@@ -209,6 +209,8 @@ sap.ui.define([
 			var filterArray = [];
 			var geoLevelFilter = new Filter("GEO_LEVEL",sap.ui.model.FilterOperator.EQ,geolevel);
 			filterArray.push(geoLevelFilter);
+			var geoValidFlagFilter = new Filter("VALID_FLAG",sap.ui.model.FilterOperator.EQ,"T");
+			filterArray.push(geoValidFlagFilter);
 			var sortArray = [];
 			var sorter = new sap.ui.model.Sorter("NAME",false);
 			sortArray.push(sorter);
