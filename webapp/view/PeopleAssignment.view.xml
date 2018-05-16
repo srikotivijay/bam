@@ -20,7 +20,7 @@
 					</smartFilterBar:SmartFilterBar>
 					<smartTable:SmartTable smartFilterId = "smartFilterBar" id="smartTblPeopleAssignment" beforeRebindTable="onBeforeRebindTable" entitySet="V_WEB_PEOPLE_RULES" tableType="Table" useExportToExcel="true" useVariantManagement="true" showFullScreenButton="true" 
 					useTablePersonalisation="true" header="People Rules" showRowCount="true" enableAutoBinding="true" app:useSmartField="true" class="sapUiResponsiveContentPadding" ignoreFromPersonalisation="ID"
-					initiallyVisibleFields="PEOPLE_RULESET_DESCRIPTION,GEOGRAPHY,PRODUCT_DESCRIPTION,DEMAND_MANAGER,PRODUCT_MANAGER,MARKETING_DIRECTOR,MARKETING_MANAGER,REG_SUPPLY_CHAIN_MANAGER,SUPPLY_CHAIN_MANAGER,MASTER_PLANNER,SUPPLY_CHAIN_PLANNING_SPECIALIST,GLOBAL_LEADER">
+					initiallyVisibleFields="PEOPLE_RULESET_DESCRIPTION,GEOGRAPHY,PRODUCT_DESCRIPTION,DEMAND_MANAGER,PRODUCT_MANAGER,MARKETING_DIRECTOR,MARKETING_MANAGER,REG_SUPPLY_CHAIN_MANAGER,SUPPLY_CHAIN_MANAGER,MASTER_PLANNER,SUPPLY_CHAIN_PLANNING_SPECIALIST,GLOBAL_LEADER,OBSOLETE">
 						<!-- layout data used to make the table growing but the filter bar fixed -->
 						<smartTable:layoutData>
 								<FlexItemData growFactor="1" baseSize="0%"/>
