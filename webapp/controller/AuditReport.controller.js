@@ -17,7 +17,7 @@ sap.ui.define([
 				 // define a global variable for the oData model		    
 		    	var oView = this.getView();
 		    	oView.setModel(this.getOwnerComponent().getModel());
-	    		
+
 	    		//remove the selection column
 	    		var oSmartTable = this.getView().byId("smartTblBAMAttributes");     //Get Hold of smart table
 				var oTable = oSmartTable.getTable();          //Analytical Table embedded into SmartTable
@@ -26,7 +26,12 @@ sap.ui.define([
 				oTable.setSelectionMode("None");
 				oTable.setEnableColumnFreeze(true);
 				oSmartFilterbar.search();
-				//oTable.getColumns();
+				
+				this._oModel = new sap.ui.model.json.JSONModel();
+				this.getView().setModel(this._oModel,"AuditVM");
+			    // define a global variable for the view model, the view model data and oData model
+			    this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
+			    this._oModel.setProperty("/ChangeAttributes",this.getChangeAttributeDropDown());
 		    	
 		    	if(firstTimePageLoad)
 		    	{
@@ -63,6 +68,38 @@ sap.ui.define([
 			},
 			onBeforeRebindTable: function(){
 				this.getOwnerComponent().getModel().refresh(true);
-			}
+			},
+			smartFilterSearch: function(oEvent){
+				
+			},
+			getChangeAttributeDropDown : function () {
+			var result;
+			// Create a filter & sorter array
+			var filterArray = [];
+			var moduleFilter = new Filter("MODULE_CODE_KEY",sap.ui.model.FilterOperator.EQ,"CHANGE_HISTORY");
+			filterArray.push(moduleFilter);
+			var sortArray = [];
+			var sorter = new sap.ui.model.Sorter("ATTRIBUTE_LABEL",false);
+			sortArray.push(sorter);
+			// Get the Country dropdown list from the CODE_MASTER table
+			this._oDataModel.read("/V_CHANGE_ATTRIBUTE_MODULE_MAPPING",{
+					filters: filterArray,
+					sorters: sortArray,
+					async: false,
+	                success: function(oData, oResponse){
+		                // Bind the Geography data
+		                result =  oData.results;
+	                },
+	    		    error: function(){
+    		    		MessageBox.alert("Unable to retrieve dropdown values for Geo Level Please contact System Admin.",
+						{
+							icon : MessageBox.Icon.ERROR,
+							title : "Error"
+						});
+	            		result = [];
+	    			}
+	    	});
+	    	return result;
+		},
   	});
 });

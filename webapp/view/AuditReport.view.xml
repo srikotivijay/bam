@@ -1,4 +1,4 @@
-<core:View xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns:smartFilterBar="sap.ui.comp.smartfilterbar" xmlns:smartTable="sap.ui.comp.smarttable" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" controllerName="bam.controller.AuditReport" height="100%">
+<core:View xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:smartFilterBar="sap.ui.comp.smartfilterbar" xmlns:smartTable="sap.ui.comp.smarttable" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" controllerName="bam.controller.AuditReport" height="100%">
 	<App id="auditReport">
 		<pages>
 			<Page title="{i18n>title}">
@@ -7,7 +7,7 @@
 				</headerContent>
 				<!-- use this to make the table occupy the available screen height -->
 				<VBox fitContainer="true">
-					<smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="V_AUDIT_REPORT">
+					<smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="V_AUDIT_REPORT" search="smartFilterSearch">
 						<smartFilterBar:controlConfiguration>
 								<smartFilterBar:ControlConfiguration key="GMID" visibleInAdvancedArea="true">
 								</smartFilterBar:ControlConfiguration>
@@ -19,6 +19,26 @@
 								</smartFilterBar:ControlConfiguration>
 						</smartFilterBar:controlConfiguration>
 					</smartFilterBar:SmartFilterBar>
+					<HBox class="sapUiSmallMarginBegin">
+						<Text id="lblGMID" text="{i18n>changedAttributes}" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom "/>
+						<ComboBox
+							class="sapUiSmallMarginBegin"
+							id="cmbAttr"
+							name="cmbAttr"
+							showSecondaryValues= "false"
+							filterSecondaryValues= "true"
+							value="A"
+							selectedKey="A"
+							width="200px"
+							items="{
+								path: 'ChangeAttributes',
+								templateShareable : true
+							}"
+							change = "onChange">
+							<core:ListItem key="{ATTRIBUTE_CODE_KEY}" text="{ATTRIBUTE_LABEL}"/>
+						</ComboBox>
+						<Button text="{i18n>submit}" width="100px" id="btnSubmit" press="onSubmit"/>
+					</HBox>   	
 					<smartTable:SmartTable smartFilterId="smartFilterBar" id="smartTblBAMAttributes" entitySet="V_AUDIT_REPORT" tableType="Table" showFullScreenButton="true" 
 					useTablePersonalisation="true" header="Change History Report" showRowCount="true" enableAutoBinding="true" app:useSmartField="true" class="sapUiResponsiveContentPadding" ignoreFromPersonalisation="ID" useVariantManagement="false" beforeRebindTable="onBeforeRebindTable"
 					initiallyVisibleFields="GMID,GMID_SHORTTEXT,COUNTRY,OPERATION_BY,OPERATION_ON,IBP_RELEVANCY,NETTING_DEFAULT,MARKET_DEFAULT,MARKETING_ATTRIBUTE1,MARKETING_ATTRIBUTE2,DEMAND_ATTRIBUTE1,DEMAND_ATTRIBUTE2">
