@@ -13,7 +13,20 @@
 								</smartFilterBar:ControlConfiguration>
 								<smartFilterBar:ControlConfiguration key="COUNTRY" visibleInAdvancedArea="true">
 								</smartFilterBar:ControlConfiguration>
-								<smartFilterBar:ControlConfiguration key="OPERATION_ON" visibleInAdvancedArea="true">
+								<smartFilterBar:ControlConfiguration 
+								key="OPERATION_ON" 
+								visibleInAdvancedArea="true"
+								filterType="single"
+								controlType="date">
+									<smartFilterBar:customControl>
+									<DateRangeSelection
+										id="DTP1"
+										value="{
+										path:'/dateValue', 
+										type:'sap.ui.model.type.DateTime', 
+										formatOptions: { style: 'medium', strictParsing: true}}"
+										placeholder="Select a Date Range..."/>	
+									</smartFilterBar:customControl>
 								</smartFilterBar:ControlConfiguration>
 								<smartFilterBar:ControlConfiguration key="OPERATION_BY" visibleInAdvancedArea="true">
 								</smartFilterBar:ControlConfiguration>
