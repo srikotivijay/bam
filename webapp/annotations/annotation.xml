@@ -785,6 +785,141 @@
 			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/VALUE_CENTER_CODE">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.VALUE_CENTER_CODE}"/>
 			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_GMID_COUNTRY_STATUS_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_GMID_COUNTRY_STATUS_CODE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_GMID_COUNTRY_STATUS">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_GMID_COUNTRY_STATUS}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_CURRENCY_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_CURRENCY_CODE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_CURRENCY_DESCRIPTION">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_CURRENCY_DESCRIPTION}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_IBP_RELEVANCY_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_IBP_RELEVANCY_CODE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_IBP_RELEVANCY">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_IBP_RELEVANCY}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_NETTING_DEFAULT_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_NETTING_DEFAULT_CODE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_NETTING_DEFAULT">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_NETTING_DEFAULT}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_QUADRANT_CODE_ID">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_QUADRANT_CODE_ID}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_QUADRANT">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_QUADRANT}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_CHANNEL_CODE_ID">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_CHANNEL_CODE_ID}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_CHANNEL">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_CHANNEL}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_MARKET_DEFAULT_CODE_ID">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_MARKET_DEFAULT_CODE_ID}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_MARKET_DEFAULT">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_MARKET_DEFAULT}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_SUPPLY_SYSTEM_FLAG_CODE_ID">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_SUPPLY_SYSTEM_FLAG_CODE_ID}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_SUPPLY_SYSTEM_FLAG">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_SUPPLY_SYSTEM_FLAG}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_FINANCE_SYSTEM_FLAG">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_FINANCE_SYSTEM_FLAG}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_DEMAND_ATTRIBUTE1">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_DEMAND_ATTRIBUTE1}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_DEMAND_ATTRIBUTE2">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_DEMAND_ATTRIBUTE2}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_MARKETING_ATTRIBUTE1">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_MARKETING_ATTRIBUTE1}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_MARKETING_ATTRIBUTE2">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_MARKETING_ATTRIBUTE2}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_SUPPLY_ATTRIBUTE1">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_SUPPLY_ATTRIBUTE1}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_SUPPLY_ATTRIBUTE2">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_SUPPLY_ATTRIBUTE2}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_RCU_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_RCU_CODE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_SUB_RCU_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_SUB_RCU_CODE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_TRADE_AREA_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_TRADE_AREA_CODE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_TRADE_AREA_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_TRADE_AREA_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_SUB_RCU_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_SUB_RCU_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_RCU_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_RCU_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_DEMAND_MANAGER_ID">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_DEMAND_MANAGER_ID}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_DEMAND_MANAGER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_DEMAND_MANAGER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_GLOBAL_BUSINESS_LEADER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_GLOBAL_BUSINESS_LEADER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_SUPPLY_CHAIN_PLANNING_SPECIALIST">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_SUPPLY_CHAIN_PLANNING_SPECIALIST}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_MARKETING_SPECIALIST_ID">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_MARKETING_SPECIALIST_ID}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_MARKETING_SPECIALIST">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_MARKETING_SPECIALIST}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_GLOBAL_SUPPLY_CHAIN_MANAGER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_GLOBAL_SUPPLY_CHAIN_MANAGER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_REG_SUPPLY_CHAIN_MANAGER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_REG_SUPPLY_CHAIN_MANAGER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_MARKETING_MANAGER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_MARKETING_MANAGER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_MARKETING_DIRECTOR">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_MARKETING_DIRECTOR}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_CONS_DEFAULT_FLAG">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_CONS_DEFAULT_FLAG}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_IBP_STATUS">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_IBP_STATUS}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_GLOBAL_BUSINESS_LEADER_ID">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_GLOBAL_BUSINESS_LEADER_ID}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_SUPPLY_CHAIN_PLANNING_SPECIALIST_ID">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_SUPPLY_CHAIN_PLANNING_SPECIALIST_ID}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_GLOBAL_SUPPLY_CHAIN_MANAGER_ID">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_GLOBAL_SUPPLY_CHAIN_MANAGER_ID}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_AUDIT_REPORTType/PRIOR_REG_SUPPLY_CHAIN_MANAGER_ID">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_REG_SUPPLY_CHAIN_MANAGER_ID}"/>
+			</Annotations>
 			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_RULESType/CU_RULESET_DESCRIPTION">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.CU_RULESET_DESCRIPTION}"/>
 			</Annotations>
