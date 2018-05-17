@@ -26,16 +26,15 @@
 							id="cmbAttr"
 							name="cmbAttr"
 							showSecondaryValues= "false"
-							filterSecondaryValues= "true"
-							value="A"
-							selectedKey="A"
 							width="200px"
+							value = "{AuditVM>/SelectedItem}"
+							selectedKey = "{AuditVM>/SelectedKey}"
 							items="{
-								path: 'ChangeAttributes',
+								path: 'AuditVM>/ChangeAttributes',
 								templateShareable : true
 							}"
 							change = "onChange">
-							<core:ListItem key="{ATTRIBUTE_CODE_KEY}" text="{ATTRIBUTE_LABEL}"/>
+							<core:ListItem key="{AuditVM>ATTRIBUTE_CODE_KEY}" text="{AuditVM>ATTRIBUTE_LABEL}"/>
 						</ComboBox>
 						<Button text="{i18n>submit}" width="100px" id="btnSubmit" press="onSubmit"/>
 					</HBox>   	
