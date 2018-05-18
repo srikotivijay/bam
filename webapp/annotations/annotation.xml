@@ -1022,6 +1022,12 @@
 			<Annotations Target="ODataService.BAMDataService.V_WEB_USER_ROLESType/SUPPLY_CHAIN_PLANNING_SPECIALIST_ASSIGNER">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SUPPLY_CHAIN_PLANNING_SPECIALIST_ASSIGNER}"/>
 			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOG/OPERATION">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.OPERATION}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOG/RULE_TYPE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.RULE_TYPE}"/>
+			</Annotations>
 		</Schema>
 	</edmx:DataServices>
 </edmx:Edmx>

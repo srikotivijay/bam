@@ -9,9 +9,23 @@ sap.ui.define([
 		"sap/ui/model/Sorter"
 	], function (Controller,MessageToast,MessageBox,DataContext,History,ResourceModel,Filter,Sorter) {
 		"use strict";
+	var loggedInUserID;
 	var firstTimePageLoad = true;
 	return Controller.extend("bam.controller.RuleReport", {
 			onInit : function () {
+				
+				// Get logged in user id
+			    loggedInUserID = DataContext.getUserID();
+				 // define a global variable for the oData model		    
+		    	var oView = this.getView();
+		    	oView.setModel(this.getOwnerComponent().getModel());
+	    		
+	    		//remove the selection column
+	    		var oSmartTable = this.getView().byId("smartTblRuleReport");     //Get Hold of smart table
+				var oTable = oSmartTable.getTable();          //Analytical Table embedded into SmartTable
+				oTable.setSelectionMode("None");
+				oTable.setEnableColumnFreeze(true);
+				
 		    	if(firstTimePageLoad)
 		    	{
 		    		//attach _onRouteMatched to be called everytime on navigation to Maintain Attributes page
