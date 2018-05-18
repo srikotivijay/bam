@@ -29,7 +29,7 @@ sap.ui.define([
 				oModel.setProperty("/showMaintainRule",false);
 				oModel.setProperty("/showMaintainAttribute",false);
 				oModel.setProperty("/showPlantAssignment",false);
-				oModel.setProperty("/showAuditReport",false);
+				oModel.setProperty("/showReport",false);
 				oModel.setProperty("/showMaintainMaterialAttributes",false);
 				oModel.setProperty("/showUserManagement",false);
 
@@ -43,7 +43,7 @@ sap.ui.define([
 	        	 var maintainRule = oi18nModel.getProperty("Module.maintainRules");
 	        	 var maintainAttributes = oi18nModel.getProperty("Module.maintainAttributes");
 	        	 var plantAssignment = oi18nModel.getProperty("Module.plantAssignment");
-	        	 var auditReport = oi18nModel.getProperty("Module.changeHistory");
+	        	 var report = oi18nModel.getProperty("Module.report");
 	        	 var demandManagerAssigner = oi18nModel.getProperty("Module.demandManagerAssigner");
 	        	 var globalLeaderAssigner = oi18nModel.getProperty("Module.globalLeaderAssigner");
 	        	 var marketingDirectorAssigner = oi18nModel.getProperty("Module.marketingDirectorAssigner");
@@ -116,9 +116,9 @@ sap.ui.define([
 				// Checking Change History Report
 				for(var m = 0; m < permissions.length; m++)
 				{
-					if(permissions[m].ATTRIBUTE === auditReport)
+					if(permissions[m].ATTRIBUTE === report)
 					{
-						oModel.setProperty("/showAuditReport",true);
+						oModel.setProperty("/showReport",true);
 						hasRole =  true;
 						// break since the user may have more than one role, as long as one of the user roles has permission we can show the tile
 						break;
@@ -177,8 +177,8 @@ sap.ui.define([
 			this.getOwnerComponent().getRouter().navTo("gmidPlant");
 		},
 		// Navigate to Maintain Attributes page
-		onGoToAuditReport: function(){
-			this.getOwnerComponent().getRouter().navTo("auditReport");
+		onGoToReports: function(){
+			this.getOwnerComponent().getRouter().navTo("reports");
 		},
 		// Navigate to Maintain Rules Home page
 		onGoTomaintainRules: function(){

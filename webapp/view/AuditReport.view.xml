@@ -1,7 +1,7 @@
 <core:View xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns:smartFilterBar="sap.ui.comp.smartfilterbar" xmlns:smartTable="sap.ui.comp.smarttable" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" controllerName="bam.controller.AuditReport" height="100%">
 	<App id="auditReport">
 		<pages>
-			<Page title="{i18n>title}">
+			<Page title="{i18n>title}" showNavButton="true" navButtonPress="onNavBack" enableScrolling="false" class="marginBoxContent">
 				<headerContent>
 					<Button id="btnHome" icon="sap-icon://home" tooltip="{i18n>home}" press="onHome"/>
 				</headerContent>

@@ -236,7 +236,18 @@
 					"pattern": "editUserSingle",
 					"name": "editUserSingle",
 					"target": "editUserSingle"
+				},
+				{
+					"pattern": "reports",
+					"name": "reports",
+					"target": "reports"
+				},
+				{
+					"pattern": "ruleReport",
+					"name": "ruleReport",
+					"target": "ruleReport"
 				}
+				
 			],
 			"targets": {
 				"home": {
@@ -335,7 +346,16 @@
 				"addUserRoles": {
 					"viewName": "AddUserRoles",
 					"viewId": "addUserRoles"
+				},
+				"reports": {
+					"viewName": "Reports",
+					"viewId": "reports"
+				},
+				"ruleReport": {
+					"viewName": "RuleReport",
+					"viewId": "ruleReport"
 				}
+				
 			}
 		}
 	}

@@ -9,31 +9,14 @@ sap.ui.define([
 		"sap/ui/model/Sorter"
 	], function (Controller,MessageToast,MessageBox,DataContext,History,ResourceModel,Filter,Sorter) {
 		"use strict";
-	var loggedInUserID;
 	var firstTimePageLoad = true;
-	return Controller.extend("bam.controller.AuditReport", {
+	return Controller.extend("bam.controller.RuleReport", {
 			onInit : function () {
-				// Get logged in user id
-			    loggedInUserID = DataContext.getUserID();
-				 // define a global variable for the oData model		    
-		    	var oView = this.getView();
-		    	oView.setModel(this.getOwnerComponent().getModel());
-	    		
-	    		//remove the selection column
-	    		var oSmartTable = this.getView().byId("smartTblBAMAttributes");     //Get Hold of smart table
-				var oTable = oSmartTable.getTable();          //Analytical Table embedded into SmartTable
-				var oSmartFilterbar = this.getView().byId("smartFilterBar");
-				oSmartFilterbar.clear(); // clear the existing filters
-				oTable.setSelectionMode("None");
-				oTable.setEnableColumnFreeze(true);
-				oSmartFilterbar.search();
-				//oTable.getColumns();
-		    	
 		    	if(firstTimePageLoad)
 		    	{
 		    		//attach _onRouteMatched to be called everytime on navigation to Maintain Attributes page
 		    		var oRouter = this.getRouter();
-					oRouter.getRoute("auditReport").attachMatched(this._onRouteMatched, this);
+					oRouter.getRoute("ruleReport").attachMatched(this._onRouteMatched, this);
 		    	}
 			},
 			getRouter : function () {

@@ -1,0 +1,23 @@
+<core:View xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns:smartFilterBar="sap.ui.comp.smartfilterbar" xmlns:smartTable="sap.ui.comp.smarttable" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" controllerName="bam.controller.RuleReport" height="100%">
+	<App id="ruleReport">
+		<pages>
+			<Page title="{i18n>title}" showNavButton="true" navButtonPress="onNavBack" enableScrolling="false" class="marginBoxContent">
+				<headerContent>
+					<Button id="btnHome" icon="sap-icon://home" tooltip="{i18n>home}" press="onHome"/>
+				</headerContent>
+				<!-- use this to make the table occupy the available screen height -->
+				<VBox fitContainer="true">
+					<smartTable:SmartTable smartFilterId="smartFilterBar" id="smartTblBAMAttributes" entitySet="V_WEB_CU_PEOPLE_RULE_LOG" tableType="Table" showFullScreenButton="true" 
+					useTablePersonalisation="true" header="Rule Report" showRowCount="true" enableAutoBinding="true" app:useSmartField="true" class="sapUiResponsiveContentPadding" ignoreFromPersonalisation="ID" useVariantManagement="false" beforeRebindTable="onBeforeRebindTable"
+					initiallyVisibleFields="OPERATION,OPERATION_ON,OPERATION_BY,CU_RULESET_SEQ,GEO_LEVEL_VAL_ID,PRODUCT_LEVEL_VAL_CODE,RCU_CODE,SUB_RCU_CODE,PRIOR_RCU_CODE,PRIOR_SUB_RCU_CODE">
+						<!-- layout data used to make the table growing but the filter bar fixed -->
+						<smartTable:layoutData>
+								<FlexItemData growFactor="1" baseSize="0%"/>
+						</smartTable:layoutData>
+					</smartTable:SmartTable>
+				<items/>
+				</VBox>
+			</Page>
+		</pages>
+	</App>
+</core:View>
