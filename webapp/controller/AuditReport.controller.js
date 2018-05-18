@@ -90,10 +90,11 @@ sap.ui.define([
 						attributeColumns.push(attributes[i].MAPPED_ATTRIBUTE_NAME);
 					}
 					var initiallyVisibleColumns = beginInitialColumns + "," + attributeColumns.join() + "," + endInitialColumns;
-		    		var oSmartTable = this.getView().byId("smartTblBAMAttributes");     //Get Hold of smart table
+		    		//var oSmartTable = this.getView().byId("smartTblBAMAttributes");     //Get Hold of smart table
 		    		//var fields = this._oModel.setProperty("InitiallyVisibleFields", initiallyVisibleColumns);
 		    		//fields = initiallyVisibleColumns;
-					oSmartTable.setInitiallyVisibleFields(initiallyVisibleColumns);
+					//oSmartTable.setInitiallyVisibleFields(initiallyVisibleColumns);
+					this.showHideColumns(initiallyVisibleColumns);
 					// this.getView().byId("smartTblBAMAttributes").getTable().getColumns()[30].setVisible(true);
 					// oSmartTable.rerender();
 					// var oTable = oSmartTable.getTable();
@@ -155,6 +156,21 @@ sap.ui.define([
 		    			}
 		    	});
 		    	return result;
+			},
+			showHideColumns: function(visibleFields){
+				var oSmartTable = this.getView().byId("smartTblBAMAttributes");     //Get Hold of smart table
+				var tableId = oSmartTable.getId() + "-";
+				var columns = oSmartTable.getTable().getColumns();
+				var visibleFieldCollection = visibleFields.split(",");
+				for(var i = 0; i < columns.length; i++){
+					var columnName = columns[i].getId().replace(tableId,"");
+					if(visibleFieldCollection.indexOf(columnName) >= 0){
+						columns[i].setVisible(true);
+					}
+					else{
+						columns[i].setVisible(false);
+					}
+				}
 			}
   	});
 });
