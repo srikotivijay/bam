@@ -9,7 +9,7 @@
 				<VBox fitContainer="true">
 					<smartTable:SmartTable smartFilterId="smartFilterBar" id="smartTblRuleReport" entitySet="V_WEB_CU_PEOPLE_RULE_LOG" tableType="Table" showFullScreenButton="true" 
 					useTablePersonalisation="true" header="Rule Report" showRowCount="true" enableAutoBinding="true" app:useSmartField="true" class="sapUiResponsiveContentPadding" ignoreFromPersonalisation="ID" useVariantManagement="false" beforeRebindTable="onBeforeRebindTable"
-					initiallyVisibleFields="RULE_TYPE,OPERATION,OPERATION_ON,OPERATION_BY,CU_RULESET_SEQ,GEO_LEVEL_VAL_ID,PRODUCT_LEVEL_VAL_CODE,RCU_CODE,SUB_RCU_CODE,PRIOR_RCU_CODE,PRIOR_SUB_RCU_CODE">
+					initiallyVisibleFields="SOURCE,OPERATION,OPERATION_ON,OPERATION_BY,CU_RULESET_SEQ,GEO_LEVEL_VAL_ID,PRODUCT_LEVEL_VAL_CODE,RCU_CODE,SUB_RCU_CODE,PRIOR_RCU_CODE,PRIOR_SUB_RCU_CODE">
 						<!-- layout data used to make the table growing but the filter bar fixed -->
 						<smartTable:layoutData>
 								<FlexItemData growFactor="1" baseSize="0%"/>
