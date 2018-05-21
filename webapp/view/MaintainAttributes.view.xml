@@ -11,7 +11,7 @@
 					
 					<smartTable:SmartTable id="smartTblBAMAttributes" beforeRebindTable="onBeforeRebindTable" entitySet="V_MAINTAIN_ATTRIBUTES" tableType="Table" useExportToExcel="true" useVariantManagement="true" showFullScreenButton="true" 
 					useTablePersonalisation="true" header="Material Country Attributes" showRowCount="true" enableAutoBinding="true" app:useSmartField="true" class="sapUiResponsiveContentPadding" ignoreFromPersonalisation="ID"
-					initiallyVisibleFields="GMID,GMID_SHORTTEXT,COUNTRY,RCU_DESC,SUB_RCU_DESC,BRAND_NAME,DEMAND_MANAGER,MARKETING_SPECIALIST,GMID_COUNTRY_STATUS,REQUESTED_DATE">
+					initiallyVisibleFields="GMID,GMID_SHORTTEXT,COUNTRY,COUNTRY_CODE,RCU_DESC,SUB_RCU_DESC,BRAND_NAME,DEMAND_MANAGER,MARKETING_SPECIALIST,GMID_COUNTRY_STATUS,REQUESTED_DATE">
 						<!-- layout data used to make the table growing but the filter bar fixed -->
 						<smartTable:layoutData>
 								<FlexItemData growFactor="1" baseSize="0%"/>
