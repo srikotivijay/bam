@@ -47,6 +47,9 @@ sap.ui.define([
 		    		var oRouter = this.getRouter();
 					oRouter.getRoute("auditReport").attachMatched(this._onRouteMatched, this);
 		    	}
+		    	else{
+		    		this.setSmartTablePersonalization(false);
+		    	}
 			},
 			getRouter : function () {
 				return sap.ui.core.UIComponent.getRouterFor(this);
@@ -101,7 +104,6 @@ sap.ui.define([
 		            else{
 		            	aFilters.push(gmidFilterList);
 		            }
-					
 				}
 
 			},
@@ -117,25 +119,19 @@ sap.ui.define([
 				filter = [];
 				dateFilter = [];
 				
-				try{
-					var fromDate = this.getView().byId("DPF")._getSelectedDate();
+				var fromDate = this._oModel.getProperty("/DateTimeFrom");
+				if(fromDate != undefined){
 					var fromDateFilter = new Filter("OPERATION_ON",sap.ui.model.FilterOperator.GE, fromDate);
 					dateFilter.push(fromDateFilter);
 				}
-				catch (err){
-					
-				}
 				
-				try{
-					var toDate = this.getView().byId("DPT")._getSelectedDate();
+				var toDate = this._oModel.getProperty("/DateTimeTo");
+				if(toDate != undefined){
 					toDate.setHours(toDate.getHours() + 23);
 					toDate.setMinutes(toDate.getMinutes() + 59);
 					toDate.setSeconds(toDate.getSeconds() + 59);
 					var toDateFilter = new Filter("OPERATION_ON",sap.ui.model.FilterOperator.LE, toDate);
 					dateFilter.push(toDateFilter);
-				}
-				catch (err){
-					
 				}
 				
 				
@@ -150,7 +146,7 @@ sap.ui.define([
 					var attributeColumns = [];
 					for(var i = 0; i < attributes.length; i++){
 						attributeColumns.push(attributes[i].MAPPED_ATTRIBUTE_NAME);
-						if(attributes[i].MAPPED_ATTRIBUTE_NAME.includes("PRIOR") && attributes[i].MAPPED_ATTRIBUTE_NAME.includes("ID")){
+						if(attributes[i].MAPPED_ATTRIBUTE_NAME.includes("PRIOR")){
 							var changeFilter = new Filter(attributes[i].MAPPED_ATTRIBUTE_NAME,sap.ui.model.FilterOperator.NE, "NO CHANGE");
 							filter.push(changeFilter);
 						}
