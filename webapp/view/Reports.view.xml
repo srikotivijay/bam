@@ -1,0 +1,18 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:html="http://www.w3.org/1999/xhtml" controllerName="bam.controller.Reports">
+	<App id="reports">
+		<pages>
+			<Page title="{i18n>title}" showNavButton="true" navButtonPress="onNavBack" enableScrolling="false" class="marginBoxContent">
+				<content>
+					<TileContainer allowAdd="true" id="tlCntHome" height="100%" width="100%">
+				      <tiles>
+				        	<StandardTile title="{i18n>auditReport}" tooltip="{i18n>auditReportTooltipText}" icon="sap-icon://history" activeIcon="sap-icon://history" infoState="Success" id="tlAuditReport" class="sapUiLargeMarginEnd" press="onGoToAuditReport"/>
+				        </tiles>
+				        <tiles>
+				        	<StandardTile title="{i18n>ruleReport}" tooltip="{i18n>ruleReportTooltipText}" icon="sap-icon://user-edit" activeIcon="sap-icon://user-edit" infoState="Success" id="tlRuleReport" class="sapUiLargeMarginEnd" press="onGoToRuleReport"/>
+				        </tiles>
+				    </TileContainer>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

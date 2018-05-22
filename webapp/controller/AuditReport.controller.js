@@ -3,10 +3,11 @@ sap.ui.define([
 		"sap/m/MessageToast",
 		"sap/m/MessageBox",
 		"bam/services/DataContext",
+		"sap/ui/core/routing/History",
 		"sap/ui/model/resource/ResourceModel",
 		"sap/ui/model/Filter",
 		"sap/ui/model/Sorter"
-	], function (Controller,MessageToast,MessageBox,DataContext,ResourceModel,Filter,Sorter) {
+	], function (Controller,MessageToast,MessageBox,DataContext,History,ResourceModel,Filter,Sorter) {
 		"use strict";
 	var loggedInUserID;
 	var firstTimePageLoad = true;
@@ -77,7 +78,22 @@ sap.ui.define([
 			onHome: function(){
 				this.getOwnerComponent().getRouter().navTo("home");
 			},
+<<<<<<< HEAD
 			onBeforeRebindTable: function(oEvent){
+=======
+			onNavBack: function () {
+			var oHistory = History.getInstance();
+			var sPreviousHash = oHistory.getPreviousHash();
+	
+			if (sPreviousHash !== undefined) {
+				window.history.go(-1);
+			} else {
+				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+				oRouter.navTo("home", true);
+			}
+		},
+			onBeforeRebindTable: function(){
+>>>>>>> 3747c8e9ee608235385c51886be25ad20091e689
 				this.getOwnerComponent().getModel().refresh(true);
 				
 				this._oBindingParams = oEvent.getParameter("bindingParams");

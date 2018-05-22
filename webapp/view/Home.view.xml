@@ -17,7 +17,7 @@
 				        	<StandardTile title="{i18n>maintainRules}" visible="{/showMaintainRule}" tooltip="{i18n>maintainRulesTooltipText}" icon="sap-icon://request" activeIcon="sap-icon://request" infoState="Success" id="tlMaintainRules" class="sapUiLargeMarginEnd" press="onGoTomaintainRules"/>
 				        </tiles>
 				        <tiles>
-				        	<StandardTile title="{i18n>auditReport}" visible="{/showAuditReport}" tooltip="{i18n>auditReportTooltipText}" icon="sap-icon://history" activeIcon="sap-icon://history" infoState="Success" id="tlAuditReport" class="sapUiLargeMarginEnd" press="onGoToAuditReport"/>
+				        	<StandardTile title="{i18n>Report}" visible="{/showReport}" tooltip="{i18n>ReportTooltipText}" icon="sap-icon://history" activeIcon="sap-icon://history" infoState="Success" id="tlReport" class="sapUiLargeMarginEnd" press="onGoToReports"/>
 				        </tiles>
 				        <tiles>
 				        	<StandardTile title="{i18n>maintainMaterialAttributes}" visible="{/showMaintainMaterialAttributes}" tooltip="{i18n>maintainMaterialAttributesTooltipText}" icon="sap-icon://task" activeIcon="sap-icon://task" infoState="Success" id="tlMaintainMaterialAttributes" class="sapUiLargeMarginEnd" press="onGoToMaintainMaterialAttributes"/>
