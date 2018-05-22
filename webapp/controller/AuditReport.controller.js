@@ -234,10 +234,14 @@ sap.ui.define([
 				filterArray.push(environmentFilter);
 				var tableFilter = new Filter("VIEW_NAME",sap.ui.model.FilterOperator.EQ,tableName);
 				filterArray.push(tableFilter);
+				var sortArray = [];
+				var sorter = new sap.ui.model.Sorter("POSITION",false);
+				sortArray.push(sorter);
 				var result = [];
 				// Get the Country dropdown list from the CODE_MASTER table
 				this._oDataModel.read("/VIEW_COLUMNS",{
 						filters: filterArray,
+						sorters: sortArray,
 						async: false,
 		                success: function(oData, oResponse){
 			                // Bind the Geography data
