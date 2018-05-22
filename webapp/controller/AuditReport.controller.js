@@ -78,9 +78,6 @@ sap.ui.define([
 			onHome: function(){
 				this.getOwnerComponent().getRouter().navTo("home");
 			},
-<<<<<<< HEAD
-			onBeforeRebindTable: function(oEvent){
-=======
 			onNavBack: function () {
 			var oHistory = History.getInstance();
 			var sPreviousHash = oHistory.getPreviousHash();
@@ -92,8 +89,7 @@ sap.ui.define([
 				oRouter.navTo("home", true);
 			}
 		},
-			onBeforeRebindTable: function(){
->>>>>>> 3747c8e9ee608235385c51886be25ad20091e689
+			onBeforeRebindTable: function(oEvent){
 				this.getOwnerComponent().getModel().refresh(true);
 				
 				this._oBindingParams = oEvent.getParameter("bindingParams");
