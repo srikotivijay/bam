@@ -136,13 +136,8 @@ sap.ui.define([
 				
 				
 				if(changeAttributeList.length > 0){
-					for(var i = 0; i < changeAttributeList.length; i++){
-						var attrFilter = new Filter("CHANGE_ATTRIBUTE_ID",sap.ui.model.FilterOperator.EQ, changeAttributeList[i]);
-						filterArray.push(attrFilter);
-						var modFilter = new Filter("MODULE_ID",sap.ui.model.FilterOperator.EQ, this._moduleId);
-						filterArray.push(modFilter);
-					}
-					var attributes = this.getAttributeMapping(filterArray);
+
+					var attributes = this.getAttributeMapping(changeAttributeList);
 					var attributeColumns = [];
 					for(var i = 0; i < attributes.length; i++){
 						attributeColumns.push(attributes[i].MAPPED_ATTRIBUTE_NAME);
@@ -207,11 +202,23 @@ sap.ui.define([
 		    	}
 		    	return result;
 			},
-			getAttributeMapping : function (filterArray) {
-				var result;
-				// Get the Country dropdown list from the CODE_MASTER table
-				this._oDataModel.read("/CHANGE_ATTRIBUTE_MAPPING",{
+			getAttributeMapping : function (changeAttributeList) {
+				
+				var fullAttributeList = [];
+				var sortArray = [];
+				var sorter = new sap.ui.model.Sorter("ORDER",false);
+				sortArray.push(sorter);
+				for(var i = 0; i < changeAttributeList.length; i++){
+					var filterArray = [];
+					var attrFilter = new Filter("CHANGE_ATTRIBUTE_ID",sap.ui.model.FilterOperator.EQ, changeAttributeList[i]);
+					filterArray.push(attrFilter);
+					var modFilter = new Filter("MODULE_ID",sap.ui.model.FilterOperator.EQ, this._moduleId);
+					filterArray.push(modFilter);
+				
+					var result = [];
+					this._oDataModel.read("/CHANGE_ATTRIBUTE_MAPPING",{
 						filters: filterArray,
+						sorters: sortArray,
 						async: false,
 		                success: function(oData, oResponse){
 			                // Bind the Geography data
@@ -225,8 +232,17 @@ sap.ui.define([
 							});
 		            		result = [];
 		    			}
-		    	});
-		    	return result;
+		    		});
+		    		
+		    		for(var c = 0; c < result.length; c++){
+		    			fullAttributeList.push(result[c]);
+		    		}
+				}
+				
+				
+				
+				// Get the Country dropdown list from the CODE_MASTER table
+		    	return fullAttributeList;
 			},
 			getTableColumns : function (tableName) {
 				var filterArray = [];
