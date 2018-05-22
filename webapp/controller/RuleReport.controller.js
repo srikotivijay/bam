@@ -11,6 +11,8 @@ sap.ui.define([
 		"use strict";
 	var loggedInUserID;
 	var firstTimePageLoad = true;
+	var dateFilter = [];
+	var filter = [];
 	return Controller.extend("bam.controller.RuleReport", {
 			onInit : function () {
 				
@@ -70,8 +72,47 @@ sap.ui.define([
 				oRouter.navTo("home", true);
 			}
 		},
-			onBeforeRebindTable: function(){
+			onBeforeRebindTable: function(oEvent){
 				this.getOwnerComponent().getModel().refresh(true);
+				
+				this._oBindingParams = oEvent.getParameter("bindingParams");
+	            // setting up filters
+	            var aFilters = this._oBindingParams.filters;
+            	
+				if(dateFilter.length > 0){
+	            	var dateFilters = new Filter ({
+		                filters : dateFilter,
+		                    bAnd : true
+	                });
+	                aFilters.push(dateFilters);
+				}
+			},
+			smartFilterSearch: function(oEvent){
+				var filterArray = [];
+				filter = [];
+				dateFilter = [];
+				
+				try{
+					var fromDate = this.getView().byId("DPF")._getSelectedDate();
+					var fromDateFilter = new Filter("OPERATION_ON",sap.ui.model.FilterOperator.GE, fromDate);
+					dateFilter.push(fromDateFilter);
+				}
+				catch (err){
+					
+				}
+				
+				try{
+					var toDate = this.getView().byId("DPT")._getSelectedDate();
+					toDate.setHours(toDate.getHours() + 23);
+					toDate.setMinutes(toDate.getMinutes() + 59);
+					toDate.setSeconds(toDate.getSeconds() + 59);
+					var toDateFilter = new Filter("OPERATION_ON",sap.ui.model.FilterOperator.LE, toDate);
+					dateFilter.push(toDateFilter);
+				}
+				catch (err){
+					
+				}
+				
 			}
   	});
 });
