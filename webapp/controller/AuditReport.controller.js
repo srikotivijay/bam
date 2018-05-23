@@ -101,7 +101,13 @@ sap.ui.define([
 		                filters : dateFilter,
 		                    bAnd : true
 	                });
-	                aFilters.push(dateFilters);
+	                if(aFilters.length > 0 && aFilters[0].aFilters != undefined){
+		            	aFilters[0].bAnd = true;
+		            	aFilters[0].aFilters.push(dateFilters);
+		            }
+		            else{
+		            	aFilters.push(dateFilters);
+		            }
 				}
 				
 				if(filter.length > 0){
