@@ -985,10 +985,10 @@
 			</Annotations>
 			<Annotations Target="ODataService.BAMDataService.V_WEB_USER_ROLESType/SUPPLY_MANAGER">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SUPPLY_MANAGER}"/>
-			</Annotations>	
+			</Annotations>
 			<Annotations Target="ODataService.BAMDataService.V_WEB_USER_ROLESType/MARKETING_MANAGER">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRODUCT_MANAGER}"/>
-			</Annotations>			
+			</Annotations>
 			<Annotations Target="ODataService.BAMDataService.V_WEB_USER_ROLESType/BUSINESS_USER">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.BUSINESS_USER}"/>
 			</Annotations>
@@ -1035,6 +1035,7 @@
 								</Record>
 								<Record Type="Common.SortOrderType">
 									<PropertyValue Property="Property" PropertyPath="OPERATION_ON"/>
+									<PropertyValue Property="Descending" Bool="true"/>
 								</Record>
 							</Collection>
 						</PropertyValue>
@@ -1064,11 +1065,11 @@
 			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/OPERATION">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.OPERATION}"/>
 			</Annotations>
-			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/CHANGED_ON">
-				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.CHANGED_ON}"/>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/OPERATION_ON">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.OPERATION_ON}"/>
 			</Annotations>
-			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/CHANGED_BY">
-				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.CHANGED_BY}"/>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/OPERATION_BY">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.OPERATION_BY}"/>
 			</Annotations>
 			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/GMID">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.GMID}"/>

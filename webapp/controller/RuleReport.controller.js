@@ -14,7 +14,7 @@ sap.ui.define([
 	var dateFilter = [];
 	var filter = [];
 	var beginInitialColumns = "GMID,GMID_DESC,SHIP_TO_COUNTRY,RULE_TYPE,OPERATION,RULE_SET_DESCRIPTION,GEO_LEVEL_DESC,PRODUCT_CODE,PRODUCT_DESCRIPTION";
-	var endInitialColumns = "CHANGED_BY,CHANGED_ON";
+	var endInitialColumns = "OPERATION_BY,OPERATION_ON";
 	return Controller.extend("bam.controller.RuleReport", {
 			onInit : function () {
 				
@@ -146,7 +146,7 @@ sap.ui.define([
 				
 				var fromDate = this._oModel.getProperty("/DateTimeFrom");
 				if(fromDate !== undefined && fromDate !== null){
-					var fromDateFilter = new Filter("CHANGED_ON",sap.ui.model.FilterOperator.GE, fromDate);
+					var fromDateFilter = new Filter("OPERATION_ON",sap.ui.model.FilterOperator.GE, fromDate);
 					dateFilter.push(fromDateFilter);
 				}
 				
@@ -155,7 +155,7 @@ sap.ui.define([
 					toDate.setHours(toDate.getHours() + 23);
 					toDate.setMinutes(toDate.getMinutes() + 59);
 					toDate.setSeconds(toDate.getSeconds() + 59);
-					var toDateFilter = new Filter("CHANGED_ON",sap.ui.model.FilterOperator.LE, toDate);
+					var toDateFilter = new Filter("OPERATION_ON",sap.ui.model.FilterOperator.LE, toDate);
 					dateFilter.push(toDateFilter);
 				}
 				this.filterReport();
