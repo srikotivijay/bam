@@ -13,7 +13,7 @@ sap.ui.define([
 	var firstTimePageLoad = true;
 	var dateFilter = [];
 	var filter = [];
-	var beginInitialColumns = "GMID,GMID_DESC,SHIP_TO_COUNTRY,RULE_TYPE,OPERATION,RULE_SET_DESCRIPTION,GEO_LEVEL_DESC,PRODUCT_CODE,PRODUCT_DESCRIPTION";
+	var beginInitialColumns = "GMID,GMID_DESC,SHIP_TO_COUNTRY,RULE_TYPE,OPERATION,RULE_SET_DESCRIPTION,GEO_LEVEL_DESC,PRODUCT_DESCRIPTION";
 	var endInitialColumns = "OPERATION_BY,OPERATION_ON";
 	return Controller.extend("bam.controller.RuleReport", {
 			onInit : function () {

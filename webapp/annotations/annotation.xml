@@ -1028,7 +1028,7 @@
 						<PropertyValue Property="SortOrder">
 							<Collection>
 								<Record Type="Common.SortOrderType">
-									<PropertyValue Property="Property" PropertyPath="RULE_SET_ID"/>
+									<PropertyValue Property="Property" PropertyPath="RULE_SET_DESCRIPTION"/>
 								</Record>
 								<Record Type="Common.SortOrderType">
 									<PropertyValue Property="Property" PropertyPath="OPERATION"/>
