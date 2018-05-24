@@ -13,7 +13,6 @@ sap.ui.define([
 	var firstTimePageLoad = true;
 	var dateFilter = [];
 	var filter = [];
-	var requesteByFilter = [];
 	var beginInitialColumns = "GMID,GMID_DESC,SHIP_TO_COUNTRY";
 	var endInitialColumns = "CHANGED_BY,CHANGED_ON";
 	return Controller.extend("bam.controller.RuleReport", {
@@ -110,6 +109,21 @@ sap.ui.define([
 	               }
 				}
 				
+				var userFilters = [];
+               userFilters.push(new Filter("REQUESTED_BY",sap.ui.model.FilterOperator.EQ, loggedInUserID));
+               var userFilter = new Filter ({
+                                    filters : userFilters,
+                                    bAnd : true
+                                });
+               if(aFilters.length > 0 && aFilters[0].aFilters !== undefined)
+               {
+                    aFilters[0].bAnd = true;
+                    aFilters[0].aFilters.push(userFilter);
+                }
+                else{
+                    aFilters.push(userFilter);
+                }
+				
 				if(filter.length > 0){
 	            	var gmidFilterList = new Filter ({
 	                    filters : filter,
@@ -145,10 +159,7 @@ sap.ui.define([
 					dateFilter.push(toDateFilter);
 				}
 				this.filterReport();
-				//
-				// adding the user filter
-				dateFilter.push(new Filter("REQUESTED_BY",sap.ui.model.FilterOperator.EQ, loggedInUserID));
-				
+
 				if(changeAttributeList.length > 0){
 					var attributes = this.getAttributeMapping(changeAttributeList);
 					var attributeColumns = [];
