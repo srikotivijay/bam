@@ -131,17 +131,17 @@ sap.ui.define([
 				var changeAttributeList = this.getView().byId("cmbAttr").getSelectedKeys();
 				
 				var fromDate = this._oModel.getProperty("/DateTimeFrom");
-				if(fromDate !== undefined){
-					var fromDateFilter = new Filter("OPERATION_ON",sap.ui.model.FilterOperator.GE, fromDate);
+				if(fromDate !== undefined && fromDate !== null){
+					var fromDateFilter = new Filter("CHANGED_ON",sap.ui.model.FilterOperator.GE, fromDate);
 					dateFilter.push(fromDateFilter);
 				}
 				
 				var toDate = this._oModel.getProperty("/DateTimeTo");
-				if(toDate !== undefined){
+				if(toDate !== undefined && toDate !== null){
 					toDate.setHours(toDate.getHours() + 23);
 					toDate.setMinutes(toDate.getMinutes() + 59);
 					toDate.setSeconds(toDate.getSeconds() + 59);
-					var toDateFilter = new Filter("OPERATION_ON",sap.ui.model.FilterOperator.LE, toDate);
+					var toDateFilter = new Filter("CHANGED_ON",sap.ui.model.FilterOperator.LE, toDate);
 					dateFilter.push(toDateFilter);
 				}
 				this.filterReport();
