@@ -559,6 +559,10 @@
 								<Record Type="Common.SortOrderType">
 									<PropertyValue Property="Property" PropertyPath="COUNTRY"/>
 								</Record>
+								<Record Type="Common.SortOrderType">
+									<PropertyValue Property="Property" PropertyPath="OPERATION_ON"/>
+									<PropertyValue Property="Descending" Bool="true"/>
+								</Record>
 							</Collection>
 						</PropertyValue>
 						<PropertyValue Property="GroupBy"/>
@@ -1261,7 +1265,7 @@
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.RULE_TYPE}"/>
 			</Annotations>
 			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/OPERATION">
-				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.OPERATION}"/>
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.RULE_OPERATION}"/>
 			</Annotations>
 			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/OPERATION_ON">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.OPERATION_ON}"/>
@@ -1291,7 +1295,7 @@
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRODUCT_CODE}"/>
 			</Annotations>
 			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/PRODUCT_DESCRIPTION">
-				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRODUCT_DESCRIPTION}"/>
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRODUCT_DESCRIPTION_RULE}"/>
 			</Annotations>
 			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/RCU">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.RCU}"/>
