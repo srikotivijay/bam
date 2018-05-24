@@ -1022,11 +1022,143 @@
 			<Annotations Target="ODataService.BAMDataService.V_WEB_USER_ROLESType/SUPPLY_CHAIN_PLANNING_SPECIALIST_ASSIGNER">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SUPPLY_CHAIN_PLANNING_SPECIALIST_ASSIGNER}"/>
 			</Annotations>
-			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOG/OPERATION">
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType">
+				<Annotation Term="UI.PresentationVariant">
+					<Record Type="UI.PresentationVariantType">
+						<PropertyValue Property="SortOrder">
+							<Collection>
+								<Record Type="Common.SortOrderType">
+									<PropertyValue Property="Property" PropertyPath="RULE_SET_ID"/>
+								</Record>
+								<Record Type="Common.SortOrderType">
+									<PropertyValue Property="Property" PropertyPath="OPERATION"/>
+								</Record>
+								<Record Type="Common.SortOrderType">
+									<PropertyValue Property="Property" PropertyPath="OPERATION_ON"/>
+								</Record>
+							</Collection>
+						</PropertyValue>
+						<PropertyValue Property="GroupBy"/>
+						<PropertyValue Property="TotalBy"/>
+						<PropertyValue Property="Total"/>
+						<PropertyValue Property="Visualizations"/>
+						<PropertyValue Property="RequestAtLeast"/>
+					</Record>
+				</Annotation>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/RULE_LOG_ID">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.RULE_LOG_ID}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/REQUESTED_BY">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.REQUESTED_BY}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/RULE_SET_ID">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.RULE_SET_ID}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/RULE_SET_DESCRIPTION">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.RULE_SET_DESCRIPTION}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/RULE_TYPE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.RULE_TYPE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/OPERATION">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.OPERATION}"/>
 			</Annotations>
-			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOG/RULE_TYPE">
-				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.RULE_TYPE}"/>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/CHANGED_ON">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.CHANGED_ON}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/CHANGED_BY">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.CHANGED_BY}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/GMID">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.GMID}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/GMID_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.GMID_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/COUNTRY_CODE_ID">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.COUNTRY_CODE_ID}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/SHIP_TO_COUNTRY">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SHIP_TO_COUNTRY}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/GEO_LEVEL_VAL_ID">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.GEO_LEVEL_VAL_ID}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/GEO_LEVEL_DESC">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.GEO_LEVEL_DESC}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/PRODUCT_CODE">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRODUCT_CODE}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/PRODUCT_DESCRIPTION">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRODUCT_DESCRIPTION}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/RCU">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.RCU}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/PRIOR_RCU">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_RCU}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/SUB_RCU">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SUB_RCU}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/PRIOR_SUB_RCU">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_SUB_RCU}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/MARKETING_MANAGER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MARKETING_MANAGER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/PRIOR_MARKETING_MANAGER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_MARKETING_MANAGER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/MARKETING_DIRECTOR">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MARKETING_DIRECTOR}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/PRIOR_MARKETING_DIRECTOR">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_MARKETING_DIRECTOR}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/DEMAND_MANAGER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.DEMAND_MANAGER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/PRIOR_DEMAND_MANAGER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_DEMAND_MANAGER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/GLOBAL_BUSINESS_LEADER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.GLOBAL_BUSINESS_LEADER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/PRIOR_GLOBAL_BUSINESS_LEADER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_GLOBAL_BUSINESS_LEADER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/SUPPLY_CHAIN_PLANNING_SPECIALIST">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SUPPLY_CHAIN_PLANNING_SPECIALIST}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/PRIOR_SUPPLY_CHAIN_PLANNING_SPECIALIST">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_SUPPLY_CHAIN_PLANNING_SPECIALIST}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/MARKETING_SPECIALIST">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MARKETING_SPECIALIST}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/PRIOR_MARKETING_SPECIALIST">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_MARKETING_SPECIALIST}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/GLOBAL_SUPPLY_CHAIN_MANAGER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.GLOBAL_SUPPLY_CHAIN_MANAGER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/PRIOR_GLOBAL_SUPPLY_CHAIN_MANAGER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_GLOBAL_SUPPLY_CHAIN_MANAGER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/REG_SUPPLY_CHAIN_MANAGER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.REG_SUPPLY_CHAIN_MANAGER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/PRIOR_REG_SUPPLY_CHAIN_MANAGER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_REG_SUPPLY_CHAIN_MANAGER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/MASTER_PLANNER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.MASTER_PLANNER}"/>
+			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_PEOPLE_RULE_LOGType/PRIOR_MASTER_PLANNER">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.PRIOR_MASTER_PLANNER}"/>
 			</Annotations>
 		</Schema>
 	</edmx:DataServices>
