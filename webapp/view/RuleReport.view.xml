@@ -9,7 +9,11 @@
 				<VBox fitContainer="true">
 					<smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="V_WEB_CU_PEOPLE_RULE_LOG" search="smartFilterSearch">
 						<smartFilterBar:controlConfiguration>
-								<smartFilterBar:ControlConfiguration key="SOURCE" index="1" visibleInAdvancedArea="true">
+								<smartFilterBar:ControlConfiguration key="GMID" index="1" visibleInAdvancedArea="true" mandatory="mandatory">
+								</smartFilterBar:ControlConfiguration>	
+								<smartFilterBar:ControlConfiguration key="COUNTRY_CODE_ID" index="2" visibleInAdvancedArea="true" mandatory="mandatory">
+								</smartFilterBar:ControlConfiguration>								
+								<smartFilterBar:ControlConfiguration key="RULE_TYPE" index="3" visibleInAdvancedArea="true">
 								</smartFilterBar:ControlConfiguration>
 								<smartFilterBar:ControlConfiguration 
 									key="FROM_DATE"
@@ -17,7 +21,7 @@
 									visibleInAdvancedArea="true"
 									filterType="single"
 									controlType="date"
-									index="2" >
+									index="4" >
 										<smartFilterBar:customControl>
 											<DatePicker
 												id="DPF"
@@ -33,7 +37,7 @@
 									visibleInAdvancedArea="true"
 									filterType="single"
 									controlType="date"
-									index="3">
+									index="5">
 										<smartFilterBar:customControl>
 											<DatePicker
 												id="DPT"
@@ -43,11 +47,20 @@
 												class="sapUiSmallMarginBottom"/>
 										</smartFilterBar:customControl>
 									</smartFilterBar:ControlConfiguration>
+								<smartFilterBar:ControlConfiguration key="CHANGED_BY" index="6" visibleInAdvancedArea="true">
+								</smartFilterBar:ControlConfiguration>
+								<smartFilterBar:ControlConfiguration key="ATT_CHANGE" label="CHANGE ATTRIBUTES" index="7" visibleInAdvancedArea="true">
+									<smartFilterBar:customControl>
+										<MultiComboBox id="cmbAttr" width="200px" items="{path: 'AuditVM>/ChangeAttributes'}">
+												<core:Item key="{AuditVM>CHANGE_ATTRIBUTE_ID}" text="{AuditVM>ATTRIBUTE_LABEL}"/>
+										</MultiComboBox>
+									</smartFilterBar:customControl>
+								</smartFilterBar:ControlConfiguration>								
 						</smartFilterBar:controlConfiguration>
 					</smartFilterBar:SmartFilterBar>
 					<smartTable:SmartTable smartFilterId="smartFilterBar" id="smartTblRuleReport" entitySet="V_WEB_CU_PEOPLE_RULE_LOG" tableType="Table" showFullScreenButton="true" 
-					useTablePersonalisation="true" header="Rule Report" showRowCount="true" enableAutoBinding="true" app:useSmartField="true" class="sapUiResponsiveContentPadding" ignoreFromPersonalisation="ID" useVariantManagement="false" beforeRebindTable="onBeforeRebindTable"
-					initiallyVisibleFields="SOURCE,PEOPLE_RULESET_SEQ,PEOPLE_RULE_ID,OPERATION,OPERATION_ON,OPERATION_BY,CU_RULESET_SEQ,PRODUCT_LEVEL_VAL_CODE,GEO_LEVEL_VAL_ID,RCU_CODE,PRIOR_RCU_CODE,SUB_RCU_CODE,PRIOR_SUB_RCU_CODE">
+					useTablePersonalisation="true" header="Rule Report" showRowCount="true" enableAutoBinding="false" app:useSmartField="true" class="sapUiResponsiveContentPadding" ignoreFromPersonalisation="ID" useVariantManagement="false" beforeRebindTable="onBeforeRebindTable"
+					initiallyVisibleFields="RULE_TYPE,GMID,GMID_DESC,SHIP_TO_COUNTRY,RULE_SET_ID,RULE_SET_DESCRIPTION,OPERATION,CHANGED_BY,CHANGED_ON,GEO_LEVEL_DESC,PRODUCT_CODE,PRODUCT_DESCRIPTION,RCU,PRIOR_RCU,SUB_RCU,PRIOR_SUB_RCU,MARKETING_MANAGER,PRIOR_MARKETING_MANAGER,MARKETING_DIRECTOR,PRIOR_MARKETING_DIRECTOR,DEMAND_MANAGER,PRIOR_DEMAND_MANAGER,GLOBAL_BUSINESS_LEADER,PRIOR_GLOBAL_BUSINESS_LEADER,SUPPLY_CHAIN_PLANNING_SPECIALIST,PRIOR_SUPPLY_CHAIN_PLANNING_SPECIALIST,MARKETING_SPECIALIST,PRIOR_MARKETING_SPECIALIST,GLOBAL_SUPPLY_CHAIN_MANAGER,PRIOR_GLOBAL_SUPPLY_CHAIN_MANAGER,REG_SUPPLY_CHAIN_MANAGER,PRIOR_REG_SUPPLY_CHAIN_MANAGER,MASTER_PLANNER,PRIOR_MASTER_PLANNER">
 						<!-- layout data used to make the table growing but the filter bar fixed -->
 						<smartTable:layoutData>
 								<FlexItemData growFactor="1" baseSize="0%"/>
