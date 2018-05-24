@@ -89,33 +89,33 @@ sap.ui.define([
 			}
 		},
 			onBeforeRebindTable: function(oEvent){
-				this.getOwnerComponent().getModel().refresh(true);
+				// this.getOwnerComponent().getModel().refresh(true);
 				
-				this._oBindingParams = oEvent.getParameter("bindingParams");
-	            // setting up filters
-	            var aFilters = this._oBindingParams.filters;
+				// this._oBindingParams = oEvent.getParameter("bindingParams");
+	   //         // setting up filters
+	   //         var aFilters = this._oBindingParams.filters;
             	
-				if(dateFilter.length > 0){
-	            	var dateFilters = new Filter ({
-		                filters : dateFilter,
-		                    bAnd : true
-	                });
-	                aFilters.push(dateFilters);
-				}
+				// if(dateFilter.length > 0){
+	   //         	var dateFilters = new Filter ({
+		  //              filters : dateFilter,
+		  //                  bAnd : true
+	   //             });
+	   //             aFilters.push(dateFilters);
+				// }
 				
-				if(filter.length > 0){
-	            	var gmidFilterList = new Filter ({
-	                    filters : filter,
-	                        bAnd : false
-	                    });
-		            if(aFilters.length > 0 && aFilters[0].aFilters !== undefined){
-		            	aFilters[0].bAnd = true;
-		            	aFilters[0].aFilters.push(gmidFilterList);
-		            }
-		            else{
-		            	aFilters.push(gmidFilterList);
-		            }
-				}
+				// if(filter.length > 0){
+	   //         	var gmidFilterList = new Filter ({
+	   //                 filters : filter,
+	   //                     bAnd : false
+	   //                 });
+		  //          if(aFilters.length > 0 && aFilters[0].aFilters !== undefined){
+		  //          	aFilters[0].bAnd = true;
+		  //          	aFilters[0].aFilters.push(gmidFilterList);
+		  //          }
+		  //          else{
+		  //          	aFilters.push(gmidFilterList);
+		  //          }
+				// }
 			},
 			smartFilterSearch: function(oEvent){
 				var filterArray = [];
@@ -137,6 +137,7 @@ sap.ui.define([
 					var toDateFilter = new Filter("OPERATION_ON",sap.ui.model.FilterOperator.LE, toDate);
 					dateFilter.push(toDateFilter);
 				}
+				this.filterReport();
 				if(changeAttributeList.length > 0){
 					var attributes = this.getAttributeMapping(changeAttributeList);
 					var attributeColumns = [];
@@ -355,6 +356,45 @@ sap.ui.define([
 		    	});
 		    	result.splice(result.findIndex(function(ele){ return ele === "ID";}),1);
 		    	return result;
-			}
+			}, 
+			filterReport : function(){
+				// getting the filters
+				var aFilters = this.getView().byId("smartFilterBar").getFilterData();
+				var gmid = aFilters.GMID;
+				var gmidValue; 
+				if(gmid !== undefined){
+					gmidValue = gmid.ranges[0].value1;
+				}
+				var country = aFilters.SHIP_TO_COUNTRY;
+				var countryValue ;
+				if(country !== undefined){
+					countryValue = country.ranges[0].value1;
+				}
+				var operationByValue = "";
+				var sourceValue = "";
+				var updAppActivity = {
+					ID:1,
+    	    		GMID: gmidValue,
+    	    		SHIP_TO_COUNTRY : countryValue,
+    	    		OPERATION_BY : operationByValue,
+    	    		RULE_TYPE : sourceValue,
+    	    		REQUESTED_BY : loggedInUserID
+				};
+				this._oDataModel.create("/MATERIAL_RULE_HISTORY", updAppActivity,
+	        		{
+			        	success: function(){
+			        		return true;
+			    		},
+			    		error: function(err){
+			    		
+			    			MessageBox.alert("Error while selecting the rule history",
+									{
+										icon : MessageBox.Icon.ERROR,
+										title : "Error"
+									});
+							return false;		
+						}
+	        		});
+		}
   	});
 });

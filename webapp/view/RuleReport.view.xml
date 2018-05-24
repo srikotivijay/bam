@@ -12,7 +12,7 @@
 								<smartFilterBar:ControlConfiguration key="GMID" index="1" visibleInAdvancedArea="true" mandatory="mandatory"
 								label="MATERIAL ID">
 								</smartFilterBar:ControlConfiguration>	
-								<smartFilterBar:ControlConfiguration key="COUNTRY_CODE_ID" index="2" visibleInAdvancedArea="true" mandatory="mandatory"
+								<smartFilterBar:ControlConfiguration key="SHIP_TO_COUNTRY" index="2" visibleInAdvancedArea="true" mandatory="mandatory"
 								label="COUNTRY">
 								</smartFilterBar:ControlConfiguration>								
 								<smartFilterBar:ControlConfiguration key="RULE_TYPE" index="3" visibleInAdvancedArea="true">
@@ -23,7 +23,7 @@
 									visibleInAdvancedArea="true"
 									filterType="single"
 									controlType="date"
-									index="4" >
+									index="2" >
 										<smartFilterBar:customControl>
 											<DatePicker
 												id="DPF"
@@ -39,7 +39,7 @@
 									visibleInAdvancedArea="true"
 									filterType="single"
 									controlType="date"
-									index="5">
+									index="3">
 										<smartFilterBar:customControl>
 											<DatePicker
 												id="DPT"
@@ -51,7 +51,7 @@
 									</smartFilterBar:ControlConfiguration>
 								<smartFilterBar:ControlConfiguration key="CHANGED_BY" index="6" visibleInAdvancedArea="true">
 								</smartFilterBar:ControlConfiguration>
-								<smartFilterBar:ControlConfiguration key="ATT_CHANGE" label="CHANGE ATTRIBUTES" index="7" visibleInAdvancedArea="true">
+								<smartFilterBar:ControlConfiguration key="ATT_CHANGE" label="CHANGE ATTRIBUTES" index="1" visibleInAdvancedArea="true">
 									<smartFilterBar:customControl>
 										<MultiComboBox id="cmbAttr" width="200px" items="{path: 'RuleAuditVM>/ChangeAttributes'}">
 												<core:Item key="{RuleAuditVM>CHANGE_ATTRIBUTE_ID}" text="{RuleAuditVM>ATTRIBUTE_LABEL}"/>
