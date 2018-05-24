@@ -13,6 +13,7 @@ sap.ui.define([
 	var firstTimePageLoad = true;
 	var dateFilter = [];
 	var filter = [];
+	var requesteByFilter = [];
 	var beginInitialColumns = "GMID,GMID_DESC,SHIP_TO_COUNTRY";
 	var endInitialColumns = "CHANGED_BY,CHANGED_ON";
 	return Controller.extend("bam.controller.RuleReport", {
@@ -89,33 +90,39 @@ sap.ui.define([
 			}
 		},
 			onBeforeRebindTable: function(oEvent){
-				// this.getOwnerComponent().getModel().refresh(true);
+
+				this.getOwnerComponent().getModel().refresh(true);
 				
-				// this._oBindingParams = oEvent.getParameter("bindingParams");
-	   //         // setting up filters
-	   //         var aFilters = this._oBindingParams.filters;
-            	
-				// if(dateFilter.length > 0){
-	   //         	var dateFilters = new Filter ({
-		  //              filters : dateFilter,
-		  //                  bAnd : true
-	   //             });
-	   //             aFilters.push(dateFilters);
-				// }
+				this._oBindingParams = oEvent.getParameter("bindingParams");
+	            // setting up filters
+	            var aFilters = this._oBindingParams.filters;
+				if(dateFilter.length > 0){
+	            	var dateFilters = new Filter ({
+		                filters : dateFilter,
+		                    bAnd : true
+	                });
+	               if(aFilters.length > 0 && aFilters[0].aFilters !== undefined){
+	               		aFilters[0].bAnd = true;
+	               		aFilters[0].aFilters.push(dateFilters);
+	               }
+	               else{
+	               		aFilters.push(dateFilters);
+	               }
+				}
 				
-				// if(filter.length > 0){
-	   //         	var gmidFilterList = new Filter ({
-	   //                 filters : filter,
-	   //                     bAnd : false
-	   //                 });
-		  //          if(aFilters.length > 0 && aFilters[0].aFilters !== undefined){
-		  //          	aFilters[0].bAnd = true;
-		  //          	aFilters[0].aFilters.push(gmidFilterList);
-		  //          }
-		  //          else{
-		  //          	aFilters.push(gmidFilterList);
-		  //          }
-				// }
+				if(filter.length > 0){
+	            	var gmidFilterList = new Filter ({
+	                    filters : filter,
+	                        bAnd : false
+	                    });
+		            if(aFilters.length > 0 && aFilters[0].aFilters !== undefined){
+		            	aFilters[0].bAnd = true;
+		            	aFilters[0].aFilters.push(gmidFilterList);
+		            }
+		            else{
+		            	aFilters.push(gmidFilterList);
+		            }
+				}
 			},
 			smartFilterSearch: function(oEvent){
 				var filterArray = [];
@@ -138,6 +145,10 @@ sap.ui.define([
 					dateFilter.push(toDateFilter);
 				}
 				this.filterReport();
+				//
+				// adding the user filter
+				dateFilter.push(new Filter("REQUESTED_BY",sap.ui.model.FilterOperator.EQ, loggedInUserID));
+				
 				if(changeAttributeList.length > 0){
 					var attributes = this.getAttributeMapping(changeAttributeList);
 					var attributeColumns = [];
