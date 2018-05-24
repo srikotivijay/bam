@@ -261,78 +261,78 @@ sap.ui.define([
 				return result;
 			},
 			showHideColumns: function(visibleFields){
-				// var oSmartTable = this.getView().byId("smartTblRuleReport");     //Get Hold of smart table
-				// var tableId = oSmartTable.getId() + "-";
-				// var columns = oSmartTable.getTable().getColumns();
+				var oSmartTable = this.getView().byId("smartTblRuleReport");     //Get Hold of smart table
+				var tableId = oSmartTable.getId() + "-";
+				var columns = oSmartTable.getTable().getColumns();
 				
-				// var table = this._oSmartTable.getTable();
-				// var visibleFieldCollection = visibleFields.split(",");
+				var table = this._oSmartTable.getTable();
+				var visibleFieldCollection = visibleFields.split(",");
 
-				// this.setSmartTablePersonalization(false);
-				// //remove and insert for proper order then set visible
-				// for(var i = 0; i < visibleFieldCollection.length; i++){
-				// 	var controlData = this._oSmartTable._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.controlData.columns.columnsItems.find(function(ele){ return ele.columnKey === visibleFieldCollection[i];}); 	// eslint-disable-line
-				// 	if(controlData !== undefined){
-				// 		controlData.visible = true;
-				// 		controlData.index = i;
-				// 	}
-				// 	var alreadyKnownPersistentData = this._oSmartTable._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.alreadyKnownPersistentData.columns.columnsItems.find(function(ele){ return ele.columnKey === visibleFieldCollection[i];}); 	// eslint-disable-line
-				// 	if(alreadyKnownPersistentData !== undefined){
-				// 		alreadyKnownPersistentData.visible = true;
-				// 		alreadyKnownPersistentData.index = i;
-				// 	}
-				// 	var alreadyKnownRuntimeData = this._oSmartTable._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.alreadyKnownRuntimeData.columns.columnsItems.find(function(ele){ return ele.columnKey === visibleFieldCollection[i];}); 	// eslint-disable-line
-				// 	if(alreadyKnownRuntimeData !== undefined){
-				// 		alreadyKnownRuntimeData.visible = true;
-				// 		alreadyKnownRuntimeData.index = i;
-				// 	}
-				// 	var controlDataBase = this._oSmartTable._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.controlDataBase.columns.columnsItems.find(function(ele){ return ele.columnKey === visibleFieldCollection[i];}); 	// eslint-disable-line
-				// 	if(controlDataBase !== undefined){
-				// 		controlDataBase.visible = true;
-				// 		controlDataBase.index = i;
-				// 	}
-				// 	var column = columns.find(function(ele){ return ele.getId().replace(tableId,"") === visibleFieldCollection[i];});
-				// 	if(column !== undefined){
-				// 		table.removeColumn(column);
-				// 		//var c_column = column.setVisible(true);
-				// 		table.insertColumn(column, i);
-				// 		column.setVisible(true);
-				// 	}
-				// }
+				this.setSmartTablePersonalization(false);
+				//remove and insert for proper order then set visible
+				for(var i = 0; i < visibleFieldCollection.length; i++){
+					var controlData = this._oSmartTable._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.controlData.columns.columnsItems.find(function(ele){ return ele.columnKey === visibleFieldCollection[i];}); 	// eslint-disable-line
+					if(controlData !== undefined){
+						controlData.visible = true;
+						controlData.index = i;
+					}
+					var alreadyKnownPersistentData = this._oSmartTable._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.alreadyKnownPersistentData.columns.columnsItems.find(function(ele){ return ele.columnKey === visibleFieldCollection[i];}); 	// eslint-disable-line
+					if(alreadyKnownPersistentData !== undefined){
+						alreadyKnownPersistentData.visible = true;
+						alreadyKnownPersistentData.index = i;
+					}
+					var alreadyKnownRuntimeData = this._oSmartTable._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.alreadyKnownRuntimeData.columns.columnsItems.find(function(ele){ return ele.columnKey === visibleFieldCollection[i];}); 	// eslint-disable-line
+					if(alreadyKnownRuntimeData !== undefined){
+						alreadyKnownRuntimeData.visible = true;
+						alreadyKnownRuntimeData.index = i;
+					}
+					var controlDataBase = this._oSmartTable._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.controlDataBase.columns.columnsItems.find(function(ele){ return ele.columnKey === visibleFieldCollection[i];}); 	// eslint-disable-line
+					if(controlDataBase !== undefined){
+						controlDataBase.visible = true;
+						controlDataBase.index = i;
+					}
+					var column = columns.find(function(ele){ return ele.getId().replace(tableId,"") === visibleFieldCollection[i];});
+					if(column !== undefined){
+						table.removeColumn(column);
+						//var c_column = column.setVisible(true);
+						table.insertColumn(column, i);
+						column.setVisible(true);
+					}
+				}
 			},
 			setSmartTablePersonalization: function(visible){
-				// var columns = this._oSmartTable.getTable().getColumns();
-				// for(var i = 0; i < columns.length; i++){ columns[i].setVisible(visible);}
-				// var controlData = this._oSmartTable._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.controlData.columns.columnsItems; 	// eslint-disable-line
-				// for(var i = 0; i < controlData.length; i++){
-				// 	var current = controlData[i];
-				// 	current.visible = visible;
-				// 	current.index = visible ? i : -1;
-				// }
-				// var alreadyKnownPersistentData = this._oSmartTable._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.alreadyKnownPersistentData.columns.columnsItems; 	// eslint-disable-line
-				// for(var i = 0; i < alreadyKnownPersistentData.length; i++){
-				// 	var current = alreadyKnownPersistentData[i];
-				// 	current.visible = visible;
-				// 	current.index = visible ? i : -1;
-				// }
-				// var alreadyKnownRuntimeData = this._oSmartTable._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.alreadyKnownRuntimeData.columns.columnsItems; 	// eslint-disable-line
-				// for(var i = 0; i < alreadyKnownRuntimeData.length; i++){
-				// 	var current = alreadyKnownRuntimeData[i];
-				// 	current.visible = visible;
-				// 	current.index = visible ? i : -1;
-				// }
-				// var controlDataBase = this._oSmartTable._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.controlDataBase.columns.columnsItems; 	// eslint-disable-line
-				// for(var i = 0; i < controlDataBase.length; i++){
-				// 	var current = controlDataBase[i];
-				// 	current.visible = visible;
-				// 	current.index = visible ? i : -1;
-				// }
+				var columns = this._oSmartTable.getTable().getColumns();
+				for(var i = 0; i < columns.length; i++){ columns[i].setVisible(visible);}
+				var controlData = this._oSmartTable._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.controlData.columns.columnsItems; 	// eslint-disable-line
+				for(var i = 0; i < controlData.length; i++){
+					var current = controlData[i];
+					current.visible = visible;
+					current.index = visible ? i : -1;
+				}
+				var alreadyKnownPersistentData = this._oSmartTable._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.alreadyKnownPersistentData.columns.columnsItems; 	// eslint-disable-line
+				for(var i = 0; i < alreadyKnownPersistentData.length; i++){
+					var current = alreadyKnownPersistentData[i];
+					current.visible = visible;
+					current.index = visible ? i : -1;
+				}
+				var alreadyKnownRuntimeData = this._oSmartTable._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.alreadyKnownRuntimeData.columns.columnsItems; 	// eslint-disable-line
+				for(var i = 0; i < alreadyKnownRuntimeData.length; i++){
+					var current = alreadyKnownRuntimeData[i];
+					current.visible = visible;
+					current.index = visible ? i : -1;
+				}
+				var controlDataBase = this._oSmartTable._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.controlDataBase.columns.columnsItems; 	// eslint-disable-line
+				for(var i = 0; i < controlDataBase.length; i++){
+					var current = controlDataBase[i];
+					current.visible = visible;
+					current.index = visible ? i : -1;
+				}
 			},
 			tableInitialised: function(){
-				// var allColumns = this._oSmartTable.getTable().getColumns();
-				// for(var i = 0; i < allColumns.length; i++){ allColumns[i].setVisible(false);}
+				var allColumns = this._oSmartTable.getTable().getColumns();
+				for(var i = 0; i < allColumns.length; i++){ allColumns[i].setVisible(false);}
 			
-				// this.setSmartTablePersonalization(false);
+				this.setSmartTablePersonalization(false);
 			},
 			getTableColumns : function (tableName) {
 				var filterArray = [];
