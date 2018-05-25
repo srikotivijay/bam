@@ -8,13 +8,45 @@
 				 
 				<!-- use this to make the table occupy the available screen height -->
 				<VBox fitContainer="true">
-					<smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="V_WEB_PEOPLE_RULES">
+					<smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="V_WEB_PEOPLE_RULES"  search="filterSearch" initialise="filterInitialised">
 						<smartFilterBar:controlConfiguration>
-							<smartFilterBar:ControlConfiguration key="PEOPLE_RULESET_DESCRIPTION" visibleInAdvancedArea="true">
+							<smartFilterBar:ControlConfiguration key="RULESETS" label="RULESET" index="0" visibleInAdvancedArea="true">
+								<smartFilterBar:customControl>
+									<ComboBox
+											id="cmbRuleSetList"
+											showSecondaryValues= "true"
+											filterSecondaryValues= "true"
+											change="onChangeRuleSet"
+											selectedKey="{PeopleAssignmentVM>/SELECTED_PEOPLE_RULESET_SEQ}"
+											width="800px"
+											items="{
+												path: 'PeopleAssignmentVM>/RuleSet'
+											}">
+										<core:ListItem key="{PeopleAssignmentVM>PEOPLE_RULESET_SEQ}" text="{parts: ['PeopleAssignmentVM>NAME','PeopleAssignmentVM>DESCRIPTION'], formatter: '.formatText'}" additionalText="{PeopleAssignmentVM>PEOPLE_RULESET_SEQ}"/>
+									</ComboBox>
+								</smartFilterBar:customControl>
 							</smartFilterBar:ControlConfiguration>
-							<smartFilterBar:ControlConfiguration key="GEOGRAPHY" visibleInAdvancedArea="true">
+							<smartFilterBar:ControlConfiguration key="GEO" label="GEOGRAPHY" index="1" visibleInAdvancedArea="true">
+								<smartFilterBar:customControl>
+									<ComboBox
+											id="cmbGeo"
+											showSecondaryValues= "true"
+											filterSecondaryValues= "true"
+											change="onChangeGeo"
+											value="{PeopleAssignmentVM>/SELECTED_GEO_NAME}"
+											selectedKey="{PeopleAssignmentVM>/SELECTED_GEO_LEVEL}"
+											width="800px"
+											items="{
+												path: 'PeopleAssignmentVM>/GeographySet'
+											}">
+										<core:ListItem key="{PeopleAssignmentVM>GEO_LEVEL}" text="{PeopleAssignmentVM>NAME}" additionalText="{PeopleAssignmentVM>GEO_LEVEL}"/>
+									</ComboBox>
+								</smartFilterBar:customControl>
 							</smartFilterBar:ControlConfiguration>
-							<smartFilterBar:ControlConfiguration key="PRODUCT_DESCRIPTION" visibleInAdvancedArea="true">
+							<smartFilterBar:ControlConfiguration key="FUZZY" label="FUZZY SEARCH" visibleInAdvancedArea="true">
+								<smartFilterBar:customControl>
+									<Input id="fuzzy" name="fuzzy" maxLength = "50" liveChange="onChange" valueLiveUpdate="true" width="48.5%" value="{PeopleAssignmentVM>/FUZZY}"/>
+								</smartFilterBar:customControl>
 							</smartFilterBar:ControlConfiguration>
 						</smartFilterBar:controlConfiguration>
 					</smartFilterBar:SmartFilterBar>

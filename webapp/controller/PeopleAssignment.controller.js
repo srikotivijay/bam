@@ -23,6 +23,8 @@ sap.ui.define([
 	var supplyChainManagerAssigner;
     var supplyChainPlanningSpecialistAssigner;
     var filter = [];
+    var dropdownFilters = [];
+    var fuzzyFilters = [];
 	return Controller.extend("bam.controller.PeopleAssignment", {
 		onInit : function () {
 			// Get logged in user id
@@ -77,6 +79,10 @@ sap.ui.define([
 			}
 			else{
 				this._oModel = new sap.ui.model.json.JSONModel();
+				this._oModel.setSizeLimit(20000);
+				fuzzyFilters = [];
+				dropdownFilters = [];
+				this.getView().byId("__component0---peopleAssignment--smartFilterBar-btnGo").attachPress(this.onWorkflowPress, this);
 				this.getView().setModel(this._oModel,"PeopleAssignmentVM");
 				this._oModel.setProperty("/showEditButton",hasEditPermission);
 				var oSmartFilterbar = this.getView().byId("smartFilterBar");
@@ -97,6 +103,9 @@ sap.ui.define([
 						filter.push(new Filter(permissions[j].ATTRIBUTE.replace("_ASSIGNER",""),sap.ui.model.FilterOperator.NE,""));
 					}
 				}
+				
+				this._oModel.setProperty("/GeographySet",this.getGeoWithLevels());
+				this._oModel.setProperty("/RuleSet",this.getRulesDropDown());
 				oSmartTable.setIgnoredFields(ignorableColumns);
 				//oSmartTable.setInitiallyVisibleFields(initiallyVisibleColumns);
 				//Analytical Table embedded into SmartTable
@@ -149,10 +158,46 @@ sap.ui.define([
             this._oBindingParams = oEvent.getParameter("bindingParams");
             // setting up filters
             var aFilters = this._oBindingParams.filters;
-
-             var gmidFilterList = new Filter ({
+            if(aFilters.length === 0 || aFilters[0].aFilters == undefined){
+	            	var dFitler = new Filter ({
+                    	filters : [],
+                        bAnd : true
+                    });
+                    aFilters.push(dFitler);
+            }
+			
+			if(fuzzyFilters.length > 0){
+				var fuzzyFilter = new Filter ({
+                    filters : fuzzyFilters,
+                        bAnd : false
+                    });
+	            if(aFilters.length > 0 && aFilters[0].aFilters != undefined){
+	            	aFilters[0].bAnd = true;
+	            	aFilters[0].aFilters.push(fuzzyFilter);
+	            }
+	            else{
+	            	aFilters.push(fuzzyFilter);
+	            }
+			}
+             
+			if(dropdownFilters.length > 0){
+				var ruleGeoFilters = new Filter ({
+                    filters : dropdownFilters,
+                        bAnd : true
+                    });
+	            if(aFilters.length > 0 && aFilters[0].aFilters != undefined){
+	            	aFilters[0].bAnd = true;
+	            	aFilters[0].aFilters.push(ruleGeoFilters);
+	            }
+	            else{
+	            	aFilters.push(ruleGeoFilters);
+	            }
+				
+			}
+            
+            var gmidFilterList = new Filter ({
                     filters : filter,
-                        and : false
+                        bAnd : false
                     });
             if(aFilters.length > 0 && aFilters[0].aFilters != undefined){
             	aFilters[0].bAnd = true;
@@ -168,7 +213,42 @@ sap.ui.define([
             aSorters.push(RuleSetSorter);
             aSorters.push(geoSorter);
         },
-
+		// filterInitialised: function(){
+		// 	var curr = this; 
+		// 	//sap.ui.getCore().byId("__component0---peopleAssignment--smartFilterBar-btnGo").attachPress(function(){});
+		// },
+		clickGo: function(){
+			
+		},
+		filterSearch: function(){
+			dropdownFilters = [];
+			fuzzyFilters = [];
+			var geoName = this._oModel.getProperty("/SELECTED_GEO_NAME");
+			var geoLevel = this._oModel.getProperty("/SELECTED_GEO_LEVEL");
+			var rulesetLevel = this._oModel.getProperty("/SELECTED_PEOPLE_RULESET_SEQ");
+			var fuzzyText = this._oModel.getProperty("/FUZZY");
+			if(geoName != undefined && geoName !== ""){
+				dropdownFilters.push(new Filter("GEOGRAPHY",sap.ui.model.FilterOperator.EQ,geoName));
+			}
+			if(geoLevel != undefined && geoLevel !== ""){
+				dropdownFilters.push(new Filter("GEO_LEVEL",sap.ui.model.FilterOperator.EQ,geoLevel));
+			}
+			if(rulesetLevel != undefined && rulesetLevel !== ""){
+				dropdownFilters.push(new Filter("RULESET_SEQ",sap.ui.model.FilterOperator.EQ,rulesetLevel));
+			}
+			if(fuzzyText != undefined && fuzzyText !== ""){
+				fuzzyText = fuzzyText.toUpperCase();
+				fuzzyFilters.push(new Filter("PRODUCT_DESCRIPTION",sap.ui.model.FilterOperator.Contains,fuzzyText));
+				fuzzyFilters.push(new Filter("DEMAND_MANAGER",sap.ui.model.FilterOperator.Contains,fuzzyText));
+				fuzzyFilters.push(new Filter("PRODUCT_MANAGER",sap.ui.model.FilterOperator.Contains,fuzzyText));
+				fuzzyFilters.push(new Filter("SUPPLY_CHAIN_MANAGER",sap.ui.model.FilterOperator.Contains,fuzzyText));
+				fuzzyFilters.push(new Filter("REG_SUPPLY_CHAIN_MANAGER",sap.ui.model.FilterOperator.Contains,fuzzyText));
+				fuzzyFilters.push(new Filter("MARKETING_DIRECTOR",sap.ui.model.FilterOperator.Contains,fuzzyText));
+				fuzzyFilters.push(new Filter("MARKETING_MANAGER",sap.ui.model.FilterOperator.Contains,fuzzyText));
+				fuzzyFilters.push(new Filter("MASTER_PLANNER",sap.ui.model.FilterOperator.Contains,fuzzyText));
+				fuzzyFilters.push(new Filter("SUPPLY_CHAIN_PLANNING_SPECIALIST",sap.ui.model.FilterOperator.Contains,fuzzyText));
+			}
+		},
 		//navigate back from rules page
 		onNavBack: function () {
 			var oHistory = History.getInstance();
@@ -340,6 +420,82 @@ sap.ui.define([
 							});
 						}
 			        });
-  		}
+  		},
+  		getGeoWithLevels: function(){
+  				var result;
+			// Create a filter & sorter array
+			// filter RCU based on CU, if CU is selected
+			// show all RCU if CU is not selected
+			var filterArray = [];
+			var sortArray = [];
+			
+			var levelArray = ["GEO_LEVEL4","GEO_LEVEL5","GEO_LEVEL6"];
+			for (var a = 0; a < levelArray.length; a++){
+				filterArray.push(new Filter("GEO_LEVEL",sap.ui.model.FilterOperator.EQ,levelArray[a]));
+			}
+			filterArray.push(new Filter("VALID_FLAG",sap.ui.model.FilterOperator.EQ,'T'));
+			// var aSorters = this._oSmartTable.getBinding().aSorters;
+			// for (var a = 0; a < aSorters.length; a++){
+			// 	sortArray.push(aSorters[a]);
+			// }
+			
+			var sortArray = [];
+			var sorter = new sap.ui.model.Sorter("GEO_LEVEL",false);
+			sortArray.push(sorter);
+			//Get the Country dropdown list from the CODE_MASTER table
+			this._oDataModel.read("/V_GEO_ALL_LEVEL",{
+					filters: filterArray,
+					sorters: sortArray,
+					async: false,
+	                success: function(oData, oResponse){
+	                	// add Please select item on top of the list
+		                // oData.results.unshift({	"SUB_RCU_CODE":-1,
+		              		// 					"SUB_RCU_DESC":"Select.."});
+		                // Bind the SUB RCU  data
+		                result =  oData.results;
+	                },
+	    		    error: function(){
+    		    		MessageBox.alert("Unable to retreive values for edit. Please contact System Admin.",
+						{
+							icon : MessageBox.Icon.ERROR,
+							title : "Error"
+						});
+	            		result = [];
+	    			}
+	    	});
+	    	return result;
+  		},
+  		getRulesDropDown : function () {
+			var result;
+			var filterArray = [];
+			var validFlag = "T";
+			var validFlagFilter = new Filter("VALID_FLAG",sap.ui.model.FilterOperator.EQ,validFlag);
+			filterArray.push(validFlagFilter);
+			var sortArray = [];
+			var sorter = new sap.ui.model.Sorter("PEOPLE_RULESET_SEQ",false);
+			sortArray.push(sorter);
+			// Get the Country dropdown list from the CODE_MASTER table
+			this._oDataModel.read("/MST_PEOPLE_RULESET",{
+					async: false,
+					filters: filterArray,
+					sorters: sortArray,
+	                success: function(oData, oResponse){
+	                	// // add Please select item on top of the list
+		                // oData.results.unshift({	"PEOPLE_RULESET_SEQ":-1,
+		              		// 					"NAME":"Please Select a Rule Set"});
+		                // Bind the CU RuleSet data
+		                result =  oData.results;
+	                },
+	    		    error: function(error){
+    		    		MessageBox.alert("Unable to retrieve dropdown values for Rule Set Please contact System Admin.",
+						{
+							icon : MessageBox.Icon.ERROR,
+							title : "Error"
+						});
+	            		result = [];
+	    			}
+	    	});
+	    	return result;
+		}
   	});
 });
