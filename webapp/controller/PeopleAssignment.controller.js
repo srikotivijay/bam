@@ -90,6 +90,7 @@ sap.ui.define([
 				this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
 				//remove the selection column
 				var oSmartTable = this.getView().byId("smartTblPeopleAssignment");     //Get Hold of smart table
+				this._oSmartTable = this.getView().byId("smartTblPeopleAssignment");
 				//         
 				filter = [];
 				for(var j = 0; j < permissions.length; j++){
@@ -149,7 +150,18 @@ sap.ui.define([
 		},
 		// navigate back to the homepage
 		onHome: function(){
+			// DataContext.clearPersFilter(this._oSmartTable._oPersController.oModels.$sapuicomppersonalizationBaseController); // eslint-disable-line
+			this.clearPersFilter();
 			this.getOwnerComponent().getRouter().navTo("home");
+		},
+		clearPersFilter: function(){
+			this._oSmartTable._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.alreadyKnownPersistentData.filter.filterItems = []; // eslint-disable-line
+			this._oSmartTable._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.controlData.filter.filterItems = []; // eslint-disable-line
+			this._oSmartTable._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.alreadyKnownRuntimeData.filter.filterItems = []; // eslint-disable-line
+			this._oSmartTable._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.controlDataBase.filter.filterItems = []; // eslint-disable-line
+		},
+		onExit: function(){
+			
 		},
 		onBeforeRebindTable: function(oEvent) {
             // refresh the odata model, this will force a refresh of the smart table UI
@@ -158,7 +170,7 @@ sap.ui.define([
             this._oBindingParams = oEvent.getParameter("bindingParams");
             // setting up filters
             var aFilters = this._oBindingParams.filters;
-            if(aFilters.length === 0 || aFilters[0].aFilters == undefined){
+            if(aFilters.length === 0){
 	            	var dFitler = new Filter ({
                     	filters : [],
                         bAnd : true
@@ -260,6 +272,8 @@ sap.ui.define([
 				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 				oRouter.navTo("maintainRules", true);
 			}
+			// DataContext.clearPersFilter(this._oSmartTable._oPersController.oModels.$sapuicomppersonalizationBaseController); // eslint-disable-line
+			this.clearPersFilter();
 		},
 		// open the new page to add rule/ruleset
 		onAdd: function(){
