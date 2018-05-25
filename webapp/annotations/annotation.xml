@@ -1228,18 +1228,7 @@
 				<Annotation Term="UI.PresentationVariant">
 					<Record Type="UI.PresentationVariantType">
 						<PropertyValue Property="SortOrder">
-							<Collection>
-								<Record Type="Common.SortOrderType">
-									<PropertyValue Property="Property" PropertyPath="RULE_SET_DESCRIPTION"/>
-								</Record>
-								<Record Type="Common.SortOrderType">
-									<PropertyValue Property="Property" PropertyPath="OPERATION"/>
-								</Record>
-								<Record Type="Common.SortOrderType">
-									<PropertyValue Property="Property" PropertyPath="OPERATION_ON"/>
-									<PropertyValue Property="Descending" Bool="true"/>
-								</Record>
-							</Collection>
+							<Collection></Collection>
 						</PropertyValue>
 						<PropertyValue Property="GroupBy"/>
 						<PropertyValue Property="TotalBy"/>

@@ -93,6 +93,16 @@ sap.ui.define([
 				this.getOwnerComponent().getModel().refresh(true);
 				
 				this._oBindingParams = oEvent.getParameter("bindingParams");
+				//
+				// sorting 
+				if (this._oBindingParams.sorter === undefined || this._oBindingParams.sorter.length === 0){
+					this._oBindingParams.sorter.push(new sap.ui.model.Sorter("GMID", false));
+					this._oBindingParams.sorter.push(new sap.ui.model.Sorter("SHIP_TO_COUNTRY", false));
+					this._oBindingParams.sorter.push(new sap.ui.model.Sorter("RULE_TYPE", false));
+					this._oBindingParams.sorter.push(new sap.ui.model.Sorter("RULE_SET_ID", true));
+					this._oBindingParams.sorter.push(new sap.ui.model.Sorter("OPERATION", false));
+					this._oBindingParams.sorter.push(new sap.ui.model.Sorter("OPERATION_ON", true));
+				}				
 	            // setting up filters
 	            var aFilters = this._oBindingParams.filters;
 				if(dateFilter.length > 0){
@@ -137,6 +147,7 @@ sap.ui.define([
 		            	aFilters.push(gmidFilterList);
 		            }
 				}
+				
 			},
 			smartFilterSearch: function(oEvent){
 				var filterArray = [];
