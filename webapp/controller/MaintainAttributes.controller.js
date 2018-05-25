@@ -69,15 +69,15 @@ sap.ui.define([
 				
 				// refresh the odata model, this will force a refresh of the smart table UI
 				this.getOwnerComponent().getModel().refresh(true);
-				
+				//Get bindinParams Object, which includes filters
+				this._oBindingParams = oEvent.getParameter("bindingParams");
 				if(filterBoolean){
 					// Need to chcek the logged in user id in the following attributes
 					// DEMAND_MANAGER_ID,GLOBAL_BUSINESS_LEADER_ID,SUPPLY_CHAIN_PLANNING_SPECIALIST_ID,
 					// GLOBAL_SUPPLY_CHAIN_MANAGER_ID,MARKETING_SPECIALIST_ID,
 					// REG_SUPPLY_CHAIN_MANAGER_ID,REQUESTED_BY,LAST_UPDATED_BY
 					
-				//Get bindinParams Object, which includes filters
-				this._oBindingParams = oEvent.getParameter("bindingParams");
+				
 			   // Create the aFilters array
 				var aFilters = this._oBindingParams.filters;
 				var demandmanagerFilter = new Filter("DEMAND_MANAGER_ID",sap.ui.model.FilterOperator.EQ,loggedInUserID);
@@ -105,14 +105,13 @@ sap.ui.define([
 	           aFilters.push(gmidFilterList);
 				
 				}
-				
-	        	// setting up sorters
-				var aSorters = this._oBindingParams.sorter;
-				var GMIDSorter = new Sorter("GMID",false);
-				var CountrySorter = new Sorter("COUNTRY",false);
-				aSorters.push(GMIDSorter);
-				aSorters.push(CountrySorter);
-				
+				//
+				// setting up sorters
+				if (this._oBindingParams.sorter === undefined || this._oBindingParams.sorter.length === 0){
+					this._oBindingParams.sorter.push(new sap.ui.model.Sorter("IBP_STATUS", true));
+					this._oBindingParams.sorter.push(new sap.ui.model.Sorter("GMID", false));
+				}	
+	        	
 			},
 			// clearing the default userid filters
 			onClearFilter: function(oEvent){

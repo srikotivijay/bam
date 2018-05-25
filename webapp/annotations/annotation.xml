@@ -30,14 +30,7 @@
 				<Annotation Term="UI.PresentationVariant">
 					<Record Type="UI.PresentationVariantType">
 						<PropertyValue Property="SortOrder">
-							<Collection>
-								<Record Type="Common.SortOrderType">
-									<PropertyValue Property="Property" PropertyPath="GMID"/>
-								</Record>
-								<Record Type="Common.SortOrderType">
-									<PropertyValue Property="Property" PropertyPath="COUNTRY"/>
-								</Record>
-							</Collection>
+							<Collection></Collection>
 						</PropertyValue>
 						<PropertyValue Property="GroupBy"/>
 						<PropertyValue Property="TotalBy"/>
@@ -1228,7 +1221,7 @@
 				<Annotation Term="UI.PresentationVariant">
 					<Record Type="UI.PresentationVariantType">
 						<PropertyValue Property="SortOrder">
-							<Collection></Collection>
+							<Collection/>
 						</PropertyValue>
 						<PropertyValue Property="GroupBy"/>
 						<PropertyValue Property="TotalBy"/>
