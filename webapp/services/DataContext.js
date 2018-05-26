@@ -647,6 +647,13 @@ sap.ui.define([
 			return result;
 		}
 
+		function clearPersFilter(model) {
+			model.oData.alreadyKnownPersistentData.filter = [];
+			model.oData.controlData.filter = [];
+			model.oData.alreadyKnownRuntimeData.filter = [];
+			model.oData.controlDataBase.filter = [];
+		}
+		
 		function getApplicationActivityID(jobName)
 		{
            // create filter based on App job name
