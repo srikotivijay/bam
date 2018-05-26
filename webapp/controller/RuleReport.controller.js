@@ -189,6 +189,8 @@ sap.ui.define([
 					this.showHideColumns(selectedAttributeColumns);
 				}
 				else{
+					var initialisedColumns = this._oSmartTable.getInitiallyVisibleFields();
+					this.showHideColumns(initialisedColumns);
 					this.setSmartTablePersonalization(true);
 				}
 			},
