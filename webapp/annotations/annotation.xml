@@ -992,6 +992,9 @@
 			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_RULESType/SCU_DESCRIPTION">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.SCU_DESCRIPTION}"/>
 			</Annotations>
+			<Annotations Target="ODataService.BAMDataService.V_WEB_CU_RULESType/GEO_LEVEL">
+				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.GEO_LEVEL_NAME}"/>
+			</Annotations>
 			<Annotations Target="ODataService.BAMDataService.V_WEB_PEOPLE_RULESType/PEOPLE_RULESET_DESCRIPTION">
 				<Annotation Term="Common.Label" String="{@i18n&gt;Annotation.DESCRIPTION}"/>
 			</Annotations>
