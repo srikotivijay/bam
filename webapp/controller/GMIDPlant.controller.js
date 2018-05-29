@@ -31,6 +31,7 @@ sap.ui.define([
 	    		
 	    		// add column freeze to table
 	    		var oSmartTable = this.getView().byId("smartTblBAMAttributes");   
+	    		this.oSmartTable = oSmartTable;
 				var oTable = oSmartTable.getTable();  
 				oTable.setEnableColumnFreeze(true);
             	
@@ -156,6 +157,7 @@ sap.ui.define([
 			},
 			// navigate back to the homepage
 			onHome: function(){
+				DataContext.clearPersFilter(this._oSmartTable,this._oBindingParams);
 				this.getOwnerComponent().getRouter().navTo("home");
 			},
 			// navigate to edit attribute page on click of edit

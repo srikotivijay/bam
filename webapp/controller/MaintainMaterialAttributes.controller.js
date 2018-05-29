@@ -44,6 +44,7 @@ sap.ui.define([
 
 	    		// add column freeze to table
 	    		var oSmartTable = this.getView().byId("smartTblMaterialAttributes");   
+	    		this._oSmartTable = oSmartTable;
 				var oTable = oSmartTable.getTable();  
 				oTable.setEnableColumnFreeze(true);
 	    		this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
@@ -99,6 +100,7 @@ sap.ui.define([
 			onHome: function(){
 			//	var oSmartTable = this.byId("smartTblBAMAttributes");
 				//oSmartTable.exit();
+				DataContext.clearPersFilter(this._oSmartTable,this._oBindingParams);
 				this.getOwnerComponent().getRouter().navTo("home");
 			},
 			// navigate to edit attribute page on click of edit

@@ -55,6 +55,7 @@ sap.ui.define([
 				this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
 				//remove the selection column
 				var oSmartTable = this.getView().byId("smartTblUserManagement");     //Get Hold of smart table
+				this._oSmartTable = oSmartTable;
 				var oTable = oSmartTable.getTable();          //Analytical Table embedded into SmartTable
 				oTable.setEnableColumnFreeze(true);
 				//oSmartTable.rebindTable();
@@ -94,13 +95,14 @@ sap.ui.define([
 		},
 		// navigate back to the homepage
 		onHome: function(){
+			DataContext.clearPersFilter(this._oSmartTable,this._oBindingParams);
 			this.getOwnerComponent().getRouter().navTo("home");
 		},
 		onBeforeRebindTable: function(oEvent) {
                 // refresh the odata model, this will force a refresh of the smart table UI
                 // this.getOwnerComponent().getModel().refresh(true);
                 //                 //Get bindinParams Object, which includes filters
-                // this._oBindingParams = oEvent.getParameter("bindingParams");
+                this._oBindingParams = oEvent.getParameter("bindingParams");
                 //                 // setting up sorters
                 // var aSorters = this._oBindingParams.sorter;
                 // var GMIDSorter = new Sorter("CU_RULESET_DESCRIPTION",false);
@@ -113,7 +115,7 @@ sap.ui.define([
 		onNavBack: function () {
 			var oHistory = History.getInstance();
 			var sPreviousHash = oHistory.getPreviousHash();
-	
+			DataContext.clearPersFilter(this._oSmartTable,this._oBindingParams);
 			if (sPreviousHash !== undefined) {
 				window.history.go(-1);
 			} else {

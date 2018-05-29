@@ -76,12 +76,13 @@ sap.ui.define([
 			},
 			// navigate back to the homepage
 			onHome: function(){
+				DataContext.clearPersFilter(this._oSmartTable,this._oBindingParams);
 				this.getOwnerComponent().getRouter().navTo("home");
 			},
 			onNavBack: function () {
 			var oHistory = History.getInstance();
 			var sPreviousHash = oHistory.getPreviousHash();
-	
+			DataContext.clearPersFilter(this._oSmartTable,this._oBindingParams);
 			if (sPreviousHash !== undefined) {
 				window.history.go(-1);
 			} else {

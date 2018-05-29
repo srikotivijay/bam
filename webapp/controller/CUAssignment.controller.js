@@ -53,6 +53,7 @@ sap.ui.define([
 				this._oDataModel = new sap.ui.model.odata.ODataModel("/ODataService/BAMDataService.xsodata/", true);
 				//remove the selection column
 				var oSmartTable = this.getView().byId("smartTblCUAssignment");     //Get Hold of smart table
+				this._oSmartTable = oSmartTable;
 				var oTable = oSmartTable.getTable();          //Analytical Table embedded into SmartTable
 				oTable.setEnableColumnFreeze(true);
 				oSmartFilterbar.search();
@@ -93,6 +94,7 @@ sap.ui.define([
 		},
 		// navigate back to the homepage
 		onHome: function(){
+			DataContext.clearPersFilter(this._oSmartTable,this._oBindingParams);
 			this.getOwnerComponent().getRouter().navTo("home");
 		},
 		onBeforeRebindTable: function(oEvent) {
@@ -112,7 +114,7 @@ sap.ui.define([
 		onNavBack: function () {
 			var oHistory = History.getInstance();
 			var sPreviousHash = oHistory.getPreviousHash();
-	
+			DataContext.clearPersFilter(this._oSmartTable,this._oBindingParams);
 			if (sPreviousHash !== undefined) {
 				window.history.go(-1);
 			} else {

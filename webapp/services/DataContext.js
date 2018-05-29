@@ -647,11 +647,13 @@ sap.ui.define([
 			return result;
 		}
 
-		function clearPersFilter(model) {
-			model.oData.alreadyKnownPersistentData.filter = [];
-			model.oData.controlData.filter = [];
-			model.oData.alreadyKnownRuntimeData.filter = [];
-			model.oData.controlDataBase.filter = [];
+		function clearPersFilter(table, bindinParams) {
+			table._oCurrentVariant.filter.filterItems = [];
+			bindinParams.filters = [];
+			table._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.alreadyKnownPersistentData.filter.filterItems = []; // eslint-disable-line
+			table._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.controlData.filter.filterItems = []; // eslint-disable-line
+			table._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.alreadyKnownRuntimeData.filter.filterItems = []; // eslint-disable-line
+			table._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.controlDataBase.filter.filterItems = []; // eslint-disable-line
 		}
 		
 		function getApplicationActivityID(jobName)
@@ -699,7 +701,8 @@ sap.ui.define([
 			getrulesFromDB : getrulesFromDB,
 			getApplicationActivityID : getApplicationActivityID,
 			getPeopleRulesFromDB : getPeopleRulesFromDB,
-			getViewByFilter : getViewByFilter
+			getViewByFilter : getViewByFilter,
+			clearPersFilter: clearPersFilter
 		};
 	
 		return exports;
