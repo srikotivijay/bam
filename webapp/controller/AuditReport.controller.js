@@ -15,7 +15,7 @@ sap.ui.define([
 	var dateFilter = [];
 	var beginInitialColumns = "GMID,GMID_SHORTTEXT,COUNTRY";
 	var endInitialColumns = "OPERATION_BY,OPERATION_ON";
-	var initiallyVisibleCols = "BGT_DESC,BRAND_NAME,CHANNEL,CHANNEL_CODE,CONS_DEFAULT_FLAG,COUNTRY,COUNTRY_CODE,CURRENCY_CODE,CURRENCY_DESCRIPTION,DEMAND_ATTRIBUTE1,DEMAND_ATTRIBUTE2,DEMAND_MANAGER,DEMAND_MANAGER_ID,FINANCE_SYSTEM_FLAG,GLOBAL_BUSINESS_LEADER,GLOBAL_BUSINESS_LEADER_ID,GLOBAL_SUPPLY_CHAIN_MANAGER,GLOBAL_SUPPLY_CHAIN_MANAGER_ID,GMID,GMID_COUNTRY_STATUS,GMID_COUNTRY_STATUS_CODE,GMID_SHORTTEXT,IBP_RELEVANCY,IBP_RELEVANCY_CODE,IBP_STATUS,LAST_UPDATED_BY,LAST_UPDATED_DATE,LOCAL_UOM,MARKETING_ATTRIBUTE1,MARKETING_ATTRIBUTE2,MARKETING_DIRECTOR,MARKETING_MANAGER,MARKETING_SPECIALIST,MARKETING_SPECIALIST_ID,MARKET_DEFAULT,MARKET_DEFAULT_CODE,MASTER_SALES_SPEC_DESC,MATERIAL_STATUS,NETTING_DEFAULT,NETTING_DEFAULT_CODE,OPERATION,OPERATION_BY,OPERATION_ON,PACKAGE_TYPE,PERFORMANCE_CENTER_DESC,PLAN_PRODUCT_DESC,PRIOR_CHANNEL,PRIOR_CHANNEL_CODE_ID,PRIOR_CONS_DEFAULT_FLAG,PRIOR_CURRENCY_CODE,PRIOR_CURRENCY_DESCRIPTION,PRIOR_DEMAND_ATTRIBUTE1,PRIOR_DEMAND_ATTRIBUTE2,PRIOR_DEMAND_MANAGER,PRIOR_DEMAND_MANAGER_ID,PRIOR_FINANCE_SYSTEM_FLAG,PRIOR_GLOBAL_BUSINESS_LEADER,PRIOR_GLOBAL_BUSINESS_LEADER_ID,PRIOR_GLOBAL_SUPPLY_CHAIN_MANAGER,PRIOR_GLOBAL_SUPPLY_CHAIN_MANAGER_ID,PRIOR_GMID_COUNTRY_STATUS,PRIOR_GMID_COUNTRY_STATUS_CODE,PRIOR_IBP_RELEVANCY,PRIOR_IBP_RELEVANCY_CODE,PRIOR_IBP_STATUS,PRIOR_MARKETING_ATTRIBUTE1,PRIOR_MARKETING_ATTRIBUTE2,PRIOR_MARKETING_DIRECTOR,PRIOR_MARKETING_MANAGER,PRIOR_MARKETING_SPECIALIST,PRIOR_MARKETING_SPECIALIST_ID,PRIOR_MARKET_DEFAULT,PRIOR_MARKET_DEFAULT_CODE_ID,PRIOR_NETTING_DEFAULT,PRIOR_NETTING_DEFAULT_CODE,PRIOR_QUADRANT,PRIOR_QUADRANT_CODE_ID,PRIOR_RCU_CODE,PRIOR_RCU_DESC,PRIOR_REG_SUPPLY_CHAIN_MANAGER,PRIOR_REG_SUPPLY_CHAIN_MANAGER_ID,PRIOR_SUB_RCU_CODE,PRIOR_SUB_RCU_DESC,PRIOR_SUPPLY_ATTRIBUTE1,PRIOR_SUPPLY_ATTRIBUTE2,PRIOR_SUPPLY_CHAIN_PLANNING_SPECIALIST,PRIOR_SUPPLY_CHAIN_PLANNING_SPECIALIST_ID,PRIOR_SUPPLY_SYSTEM_FLAG,PRIOR_SUPPLY_SYSTEM_FLAG_CODE_ID,PRIOR_TRADE_AREA_CODE,PRIOR_TRADE_AREA_DESC,PROFIT_CENTER_DESC,QUADRANT,QUADRANT_CODE,RCU_CODE,RCU_DESC,REG_SUPPLY_CHAIN_MANAGER,REG_SUPPLY_CHAIN_MANAGER_ID,REQUESTED_BY,REQUESTED_DATE,SPECIFIED_MATERIAL_DESC,STORED_CURRENCY,SUB_RCU_CODE,SUB_RCU_DESC,SUPPLY_ATTRIBUTE1,SUPPLY_ATTRIBUTE2,SUPPLY_CHAIN_PLANNING_SPECIALIST,SUPPLY_CHAIN_PLANNING_SPECIALIST_ID,SUPPLY_SYSTEM_FLAG,SUPPLY_SYSTEM_FLAG_CODE,TRADE_AREA_CODE,TRADE_AREA_DESC,TRADE_PRODUCT_CODE,TRADE_PRODUCT_DESC,TREATMENT,VALUE_CENTER_CODE,VALUE_CENTER_DESC";
+	var initiallyVisibleCols = "BGT_DESC,BRAND_NAME,CHANNEL,CHANNEL_CODE,CONS_DEFAULT_FLAG,COUNTRY,COUNTRY_CODE,CURRENCY_CODE,CURRENCY_DESCRIPTION,	DEMAND_ATTRIBUTE1,DEMAND_ATTRIBUTE2,DEMAND_MANAGER,DEMAND_MANAGER_ID,FINANCE_SYSTEM_FLAG,	GLOBAL_BUSINESS_LEADER,GLOBAL_BUSINESS_LEADER_ID,GLOBAL_SUPPLY_CHAIN_MANAGER,GLOBAL_SUPPLY_CHAIN_MANAGER_ID,	GMID,GMID_COUNTRY_STATUS,GMID_COUNTRY_STATUS_CODE,GMID_SHORTTEXT,IBP_RELEVANCY,IBP_RELEVANCY_CODE,IBP_STATUS,	LAST_UPDATED_BY,LAST_UPDATED_DATE,LOCAL_UOM,MARKETING_ATTRIBUTE1,MARKETING_ATTRIBUTE2,MARKETING_DIRECTOR,MARKETING_MANAGER,	MARKETING_SPECIALIST,MARKETING_SPECIALIST_ID,MARKET_DEFAULT,MARKET_DEFAULT_CODE,MASTER_SALES_SPEC_DESC,MATERIAL_STATUS,NETTING_DEFAULT,	NETTING_DEFAULT_CODE,OPERATION,OPERATION_BY,OPERATION_ON,PACKAGE_TYPE,PERFORMANCE_CENTER_DESC,PLAN_PRODUCT_DESC,PRIOR_CHANNEL,	PRIOR_CHANNEL_CODE_ID,PRIOR_CONS_DEFAULT_FLAG,PRIOR_CURRENCY_CODE,PRIOR_CURRENCY_DESCRIPTION,PRIOR_DEMAND_ATTRIBUTE1,	PRIOR_DEMAND_ATTRIBUTE2,PRIOR_DEMAND_MANAGER,PRIOR_DEMAND_MANAGER_ID,PRIOR_FINANCE_SYSTEM_FLAG,PRIOR_GLOBAL_BUSINESS_LEADER,	PRIOR_GLOBAL_BUSINESS_LEADER_ID,PRIOR_GLOBAL_SUPPLY_CHAIN_MANAGER,PRIOR_GLOBAL_SUPPLY_CHAIN_MANAGER_ID,PRIOR_GMID_COUNTRY_STATUS,	PRIOR_GMID_COUNTRY_STATUS_CODE,PRIOR_IBP_RELEVANCY,PRIOR_IBP_RELEVANCY_CODE,PRIOR_IBP_STATUS,PRIOR_MARKETING_ATTRIBUTE1,	PRIOR_MARKETING_ATTRIBUTE2,PRIOR_MARKETING_DIRECTOR,PRIOR_MARKETING_MANAGER,PRIOR_MARKETING_SPECIALIST,PRIOR_MARKETING_SPECIALIST_ID,	PRIOR_MARKET_DEFAULT,PRIOR_MARKET_DEFAULT_CODE_ID,PRIOR_NETTING_DEFAULT,PRIOR_NETTING_DEFAULT_CODE,PRIOR_QUADRANT,PRIOR_QUADRANT_CODE_ID,	PRIOR_RCU_CODE,PRIOR_RCU_DESC,PRIOR_REG_SUPPLY_CHAIN_MANAGER,PRIOR_REG_SUPPLY_CHAIN_MANAGER_ID,PRIOR_SUB_RCU_CODE,PRIOR_SUB_RCU_DESC,	PRIOR_SUPPLY_ATTRIBUTE1,PRIOR_SUPPLY_ATTRIBUTE2,PRIOR_SUPPLY_CHAIN_PLANNING_SPECIALIST,PRIOR_SUPPLY_CHAIN_PLANNING_SPECIALIST_ID,PRIOR_SUPPLY_SYSTEM_FLAG,	PRIOR_SUPPLY_SYSTEM_FLAG_CODE_ID,PRIOR_TRADE_AREA_CODE,PRIOR_TRADE_AREA_DESC,PROFIT_CENTER_DESC,QUADRANT,QUADRANT_CODE,RCU_CODE,RCU_DESC,	REG_SUPPLY_CHAIN_MANAGER,REG_SUPPLY_CHAIN_MANAGER_ID,REQUESTED_BY,REQUESTED_DATE,SPECIFIED_MATERIAL_DESC,STORED_CURRENCY,SUB_RCU_CODE,	SUB_RCU_DESC,SUPPLY_ATTRIBUTE1,SUPPLY_ATTRIBUTE2,SUPPLY_CHAIN_PLANNING_SPECIALIST,SUPPLY_CHAIN_PLANNING_SPECIALIST_ID,SUPPLY_SYSTEM_FLAG,	SUPPLY_SYSTEM_FLAG_CODE,TRADE_AREA_CODE,TRADE_AREA_DESC,TRADE_PRODUCT_CODE,TRADE_PRODUCT_DESC,TREATMENT,VALUE_CENTER_CODE,VALUE_CENTER_DESC";
 	return Controller.extend("bam.controller.AuditReport", {
 			onInit : function () {
 				// Get logged in user id
@@ -388,6 +388,140 @@ sap.ui.define([
 					}
 				}
 				return result;
-			}
+			},
+			adjustTableColumnWidth : function(tableName, columnList){
+  			var oSmartTable = this.getView().byId(tableName); 
+  			var tableColumns = oSmartTable.getTable().getColumns();
+  			var tableId = oSmartTable.getId();
+  			for(var i = 0; i < tableColumns.length; i++){
+  				for(var j = 0; j < columnList.length; j++){
+  					if(tableColumns[i].getId() === tableId + "-" + columnList[j].columnName){
+  						tableColumns[i].setWidth(columnList[j].width);
+  						break;
+  					}
+  				}
+  			}
+  		},
+  			onDataRecieved : function(){
+				var columnList=[];
+				columnList.push({columnName : "GMID", width : "10em"});
+				columnList.push({columnName : "GMID_SHORTTEXT", width : "20em"});
+				columnList.push({columnName : "COUNTRY", width : "15em"});
+				columnList.push({columnName : "COUNTRY_CODE", width : "10em"});
+				columnList.push({columnName : "BGT_DESC", width : "15em"});
+				columnList.push({columnName : "BRAND_NAME", width : "15em"});
+				columnList.push({columnName : "CHANNEL", width : "15em"});
+				columnList.push({columnName : "CHANNEL_CODE", width : "15em"});
+				columnList.push({columnName : "CONS_DEFAULT_FLAG", width : "15em"});
+				columnList.push({columnName : "CURRENCY_CODE", width : "10em"});
+				columnList.push({columnName : "CURRENCY_DESCRIPTION", width : "15em"});
+				columnList.push({columnName : "DEMAND_ATTRIBUTE1", width : "15em"});
+				columnList.push({columnName : "DEMAND_ATTRIBUTE2", width : "15em"});
+				columnList.push({columnName : "DEMAND_MANAGER", width : "10em"});
+				columnList.push({columnName : "DEMAND_MANAGER_ID", width : "10em"});
+				columnList.push({columnName : "FINANCE_SYSTEM_FLAG", width : "15em"});
+				columnList.push({columnName : "GLOBAL_BUSINESS_LEADER", width : "10em"});
+				columnList.push({columnName : "GLOBAL_BUSINESS_LEADER_ID", width : "10em"});
+				columnList.push({columnName : "GLOBAL_SUPPLY_CHAIN_MANAGER", width : "15em"});
+				columnList.push({columnName : "GLOBAL_SUPPLY_CHAIN_MANAGER_ID", width : "10em"});
+				columnList.push({columnName : "GMID_COUNTRY_STATUS", width : "15em"});
+				columnList.push({columnName : "GMID_COUNTRY_STATUS_CODE", width : "10em"});
+				columnList.push({columnName : "IBP_RELEVANCY", width : "15em"});
+				columnList.push({columnName : "IBP_RELEVANCY_CODE", width : "10em"});
+				columnList.push({columnName : "IBP_STATUS", width : "10em"});
+				columnList.push({columnName : "LAST_UPDATED_BY", width : "15em"});
+				columnList.push({columnName : "LAST_UPDATED_DATE", width : "15em"});
+				columnList.push({columnName : "LOCAL_UOM", width : "15em"});
+				columnList.push({columnName : "MARKETING_ATTRIBUTE1", width : "15em"});
+				columnList.push({columnName : "MARKETING_ATTRIBUTE2", width : "15em"});
+				columnList.push({columnName : "MARKETING_DIRECTOR", width : "15em"});
+				columnList.push({columnName : "MARKETING_MANAGER", width : "15em"});
+				columnList.push({columnName : "MARKETING_SPECIALIST", width : "15em"});
+				columnList.push({columnName : "MARKETING_SPECIALIST_ID", width : "15em"});
+				columnList.push({columnName : "MARKET_DEFAULT", width : "15em"});
+				columnList.push({columnName : "MARKET_DEFAULT_CODE", width : "10em"});
+				columnList.push({columnName : "MASTER_SALES_SPEC_DESC", width : "15em"});
+				columnList.push({columnName : "MATERIAL_STATUS", width : "15em"});
+				columnList.push({columnName : "NETTING_DEFAULT", width : "15em"});
+				columnList.push({columnName : "NETTING_DEFAULT_CODE", width : "15em"});
+				columnList.push({columnName : "OPERATION", width : "15em"});
+				columnList.push({columnName : "PACKAGE_TYPE", width : "15em"});
+				columnList.push({columnName : "PERFORMANCE_CENTER_DESC", width : "15em"});
+				columnList.push({columnName : "PLAN_PRODUCT_DESC", width : "15em"});
+				columnList.push({columnName : "PRIOR_CHANNEL", width : "15em"});
+				columnList.push({columnName : "PRIOR_CHANNEL_CODE_ID", width : "15em"});
+				columnList.push({columnName : "PRIOR_CONS_DEFAULT_FLAG", width : "15em"});
+				columnList.push({columnName : "PRIOR_CURRENCY_CODE", width : "10em"});
+				columnList.push({columnName : "PRIOR_CURRENCY_DESCRIPTION", width : "15em"});
+				columnList.push({columnName : "PRIOR_DEMAND_ATTRIBUTE1", width : "15em"});
+				columnList.push({columnName : "PRIOR_DEMAND_ATTRIBUTE2", width : "15em"});
+				columnList.push({columnName : "PRIOR_DEMAND_MANAGER", width : "15em"});
+				columnList.push({columnName : "PRIOR_DEMAND_MANAGER_ID", width : "15em"});
+				columnList.push({columnName : "PRIOR_FINANCE_SYSTEM_FLAG", width : "15em"});
+				columnList.push({columnName : "PRIOR_GLOBAL_BUSINESS_LEADER", width : "15em"});
+				columnList.push({columnName : "PRIOR_GLOBAL_BUSINESS_LEADER_ID", width : "15em"});
+				columnList.push({columnName : "PRIOR_GLOBAL_SUPPLY_CHAIN_MANAGER", width : "15em"});
+				columnList.push({columnName : "PRIOR_GLOBAL_SUPPLY_CHAIN_MANAGER_ID", width : "15em"});
+				columnList.push({columnName : "PRIOR_GMID_COUNTRY_STATUS", width : "15em"});
+				columnList.push({columnName : "PRIOR_GMID_COUNTRY_STATUS_CODE", width : "10em"});
+				columnList.push({columnName : "PRIOR_IBP_RELEVANCY", width : "15em"});
+				columnList.push({columnName : "PRIOR_IBP_RELEVANCY_CODE", width : "10em"});
+				columnList.push({columnName : "PRIOR_IBP_STATUS", width : "15em"});
+				columnList.push({columnName : "PRIOR_MARKETING_ATTRIBUTE1", width : "15em"});
+				columnList.push({columnName : "PRIOR_MARKETING_ATTRIBUTE2", width : "15em"});
+				columnList.push({columnName : "PRIOR_MARKETING_DIRECTOR", width : "15em"});
+				columnList.push({columnName : "PRIOR_MARKETING_MANAGER", width : "15em"});
+				columnList.push({columnName : "PRIOR_MARKETING_SPECIALIST", width : "15em"});
+				columnList.push({columnName : "PRIOR_MARKETING_SPECIALIST_ID", width : "15em"});
+				columnList.push({columnName : "PRIOR_MARKET_DEFAULT", width : "15em"});
+				columnList.push({columnName : "PRIOR_MARKET_DEFAULT_CODE_ID", width : "15em"});
+				columnList.push({columnName : "PRIOR_NETTING_DEFAULT", width : "15em"});
+				columnList.push({columnName : "PRIOR_NETTING_DEFAULT_CODE", width : "10em"});
+				columnList.push({columnName : "PRIOR_QUADRANT", width : "15em"});
+				columnList.push({columnName : "PRIOR_QUADRANT_CODE_ID", width : "15em"});
+				columnList.push({columnName : "PRIOR_RCU_CODE", width : "10em"});
+				columnList.push({columnName : "PRIOR_RCU_DESC", width : "15em"});
+				columnList.push({columnName : "PRIOR_REG_SUPPLY_CHAIN_MANAGER", width : "15em"});
+				columnList.push({columnName : "PRIOR_REG_SUPPLY_CHAIN_MANAGER_ID", width : "15em"});
+				columnList.push({columnName : "PRIOR_SUB_RCU_CODE", width : "10em"});
+				columnList.push({columnName : "PRIOR_SUB_RCU_DESC", width : "15em"});
+				columnList.push({columnName : "PRIOR_SUPPLY_ATTRIBUTE1", width : "15em"});
+				columnList.push({columnName : "PRIOR_SUPPLY_ATTRIBUTE2", width : "15em"});
+				columnList.push({columnName : "PRIOR_SUPPLY_CHAIN_PLANNING_SPECIALIST", width : "15em"});
+				columnList.push({columnName : "PRIOR_SUPPLY_CHAIN_PLANNING_SPECIALIST_ID", width : "15em"});
+				columnList.push({columnName : "PRIOR_SUPPLY_SYSTEM_FLAG", width : "15em"});
+				columnList.push({columnName : "PRIOR_SUPPLY_SYSTEM_FLAG_CODE_ID", width : "15em"});
+				columnList.push({columnName : "PRIOR_TRADE_AREA_CODE", width : "10em"});
+				columnList.push({columnName : "PRIOR_TRADE_AREA_DESC", width : "15em"});
+				columnList.push({columnName : "PROFIT_CENTER_DESC", width : "15em"});
+				columnList.push({columnName : "QUADRANT", width : "15em"});
+				columnList.push({columnName : "QUADRANT_CODE", width : "10em"});
+				columnList.push({columnName : "RCU_CODE", width : "10em"});
+				columnList.push({columnName : "RCU_DESC", width : "15em"});
+				columnList.push({columnName : "REG_SUPPLY_CHAIN_MANAGER", width : "15em"});
+				columnList.push({columnName : "REG_SUPPLY_CHAIN_MANAGER_ID", width : "15em"});
+				columnList.push({columnName : "REQUESTED_BY", width : "15em"});
+				columnList.push({columnName : "REQUESTED_DATE", width : "15em"});
+				columnList.push({columnName : "SPECIFIED_MATERIAL_DESC", width : "15em"});
+				columnList.push({columnName : "STORED_CURRENCY", width : "15em"});
+				columnList.push({columnName : "SUB_RCU_CODE", width : "15em"});
+				columnList.push({columnName : "SUB_RCU_DESC", width : "15em"});
+				columnList.push({columnName : "SUPPLY_ATTRIBUTE1", width : "15em"});
+				columnList.push({columnName : "SUPPLY_ATTRIBUTE2", width : "15em"});
+				columnList.push({columnName : "SUPPLY_CHAIN_PLANNING_SPECIALIST", width : "15em"});
+				columnList.push({columnName : "SUPPLY_CHAIN_PLANNING_SPECIALIST_ID", width : "15em"});
+				columnList.push({columnName : "SUPPLY_SYSTEM_FLAG", width : "15em"});
+				columnList.push({columnName : "SUPPLY_SYSTEM_FLAG_CODE", width : "10em"});
+				columnList.push({columnName : "TRADE_AREA_CODE", width : "10em"});
+				columnList.push({columnName : "TRADE_AREA_DESC", width : "15em"});
+				columnList.push({columnName : "TRADE_PRODUCT_CODE", width : "10em"});
+				columnList.push({columnName : "TRADE_PRODUCT_DESC", width : "15em"});
+				columnList.push({columnName : "TREATMENT", width : "15em"});
+				columnList.push({columnName : "VALUE_CENTER_CODE", width : "10em"});
+				columnList.push({columnName : "VALUE_CENTER_DESC", width : "15em"});
+				columnList.push({columnName : "OPERATION_BY", width : "15em"});
+				columnList.push({columnName : "OPERATION_ON", width : "15em"});
+				this.adjustTableColumnWidth("smartTblBAMAttributes",columnList);  			
+  		}
   	});
 });

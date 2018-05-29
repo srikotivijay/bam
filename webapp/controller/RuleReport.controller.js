@@ -430,6 +430,57 @@ sap.ui.define([
 							return false;		
 						}
 	        		});
-		}
+		},
+		adjustTableColumnWidth : function(tableName, columnList){
+  			var oSmartTable = this.getView().byId(tableName); 
+  			var tableColumns = oSmartTable.getTable().getColumns();
+  			var tableId = oSmartTable.getId();
+  			for(var i = 0; i < tableColumns.length; i++){
+  				for(var j = 0; j < columnList.length; j++){
+  					if(tableColumns[i].getId() === tableId + "-" + columnList[j].columnName){
+  						tableColumns[i].setWidth(columnList[j].width);
+  						break;
+  					}
+  				}
+  			}
+  		},
+  			onDataRecieved : function(){
+				var columnList=[];
+				columnList.push({columnName : "GMID", width : "10em"});
+				columnList.push({columnName : "GMID_DESC", width : "20em"});
+				columnList.push({columnName : "COUNTRY", width : "15em"});
+				columnList.push({columnName : "COUNTRY_CODE", width : "10em"});
+				columnList.push({columnName : "RULE_TYPE", width : "10em"});
+				columnList.push({columnName : "RULE_SET_DESCRIPTION", width : "20em"});
+				columnList.push({columnName : "GEO_LEVEL_DESC", width : "20em"});
+				columnList.push({columnName : "PRODUCT_CODE", width : "15em"});
+				columnList.push({columnName : "PRODUCT_DESCRIPTION", width : "20em"});
+				columnList.push({columnName : "RCU", width : "15em"});
+				columnList.push({columnName : "PRIOR_RCU", width : "15em"});
+				columnList.push({columnName : "SUB_RCU", width : "15em"});
+				columnList.push({columnName : "PRIOR_SUB_RCU", width : "15em"});
+				columnList.push({columnName : "MARKETING_MANAGER", width : "15em"});
+				columnList.push({columnName : "PRIOR_MARKETING_MANAGER", width : "15em"});
+				columnList.push({columnName : "MARKETING_DIRECTOR", width : "15em"});
+				columnList.push({columnName : "PRIOR_MARKETING_DIRECTOR", width : "15em"});
+				columnList.push({columnName : "DEMAND_MANAGER", width : "15em"});
+				columnList.push({columnName : "PRIOR_DEMAND_MANAGER", width : "15em"});
+				columnList.push({columnName : "GLOBAL_BUSINESS_LEADER", width : "15em"});
+				columnList.push({columnName : "PRIOR_GLOBAL_BUSINESS_LEADER", width : "15em"});
+				columnList.push({columnName : "SUPPLY_CHAIN_PLANNING_SPECIALIST", width : "15em"});
+				columnList.push({columnName : "PRIOR_SUPPLY_CHAIN_PLANNING_SPECIALIST", width : "15em"});
+				columnList.push({columnName : "MARKETING_SPECIALIST", width : "15em"});
+				columnList.push({columnName : "PRIOR_MARKETING_SPECIALIST", width : "15em"});
+				columnList.push({columnName : "GLOBAL_SUPPLY_CHAIN_MANAGER", width : "15em"});
+				columnList.push({columnName : "PRIOR_GLOBAL_SUPPLY_CHAIN_MANAGER", width : "15em"});
+				columnList.push({columnName : "REG_SUPPLY_CHAIN_MANAGER", width : "15em"});
+				columnList.push({columnName : "PRIOR_REG_SUPPLY_CHAIN_MANAGER", width : "15em"});
+				columnList.push({columnName : "MASTER_PLANNER", width : "15em"});
+				columnList.push({columnName : "PRIOR_MASTER_PLANNER", width : "15em"});
+				columnList.push({columnName : "OPERATION_BY", width : "15em"});
+				columnList.push({columnName : "OPERATION_ON", width : "15em"});
+				columnList.push({columnName : "OPERATION", width : "15em"});
+				this.adjustTableColumnWidth("smartTblRuleReport",columnList);  			
+  		}
   	});
 });
