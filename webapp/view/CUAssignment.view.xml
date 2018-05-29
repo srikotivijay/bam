@@ -18,7 +18,8 @@
 				</smartFilterBar:SmartFilterBar>
 					<smartTable:SmartTable smartFilterId = "smartFilterBar" id="smartTblCUAssignment" beforeRebindTable="onBeforeRebindTable" entitySet="V_WEB_CU_RULES" tableType="Table" useExportToExcel="true" useVariantManagement="true" showFullScreenButton="true" 
 					useTablePersonalisation="true" header="CU and Sub CU Rules" showRowCount="true" enableAutoBinding="true" app:useSmartField="true" class="sapUiResponsiveContentPadding" ignoreFromPersonalisation="ID"
-					initiallyVisibleFields="CU_RULESET_DESCRIPTION,GEOGRAPHY,PRODUCT_DESCRIPTION,CU_DESCRIPTION,SCU_DESCRIPTION,OBSOLETE">
+					initiallyVisibleFields="CU_RULESET_DESCRIPTION,GEOGRAPHY,PRODUCT_DESCRIPTION,CU_DESCRIPTION,SCU_DESCRIPTION,OBSOLETE"
+					dataReceived =  "onDataRecieved">
 						<!-- layout data used to make the table growing but the filter bar fixed -->
 						<smartTable:layoutData>
 								<FlexItemData growFactor="1" baseSize="0%"/>

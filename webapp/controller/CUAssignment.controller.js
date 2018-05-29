@@ -266,6 +266,29 @@ sap.ui.define([
 							});
 						}
 			        });
+  		},
+  		adjustTableColumnWidth : function(tableName, columnList){
+  			var oSmartTable = this.getView().byId(tableName); 
+  			var tableColumns = oSmartTable.getTable().getColumns();
+  			var tableId = oSmartTable.getId();
+  			for(var i = 0; i < tableColumns.length; i++){
+  				for(var j = 0; j < columnList.length; j++){
+  					if(tableColumns[i].getId() === tableId + "-" + columnList[j].columnName){
+  						tableColumns[i].setWidth(columnList[j].width);
+  						break;
+  					}
+  				}
+  			}
+  		},
+  		onDataRecieved : function(){
+				var columnList=[];
+				columnList.push({columnName : "CU_RULESET_DESCRIPTION", width : "20em"});
+				columnList.push({columnName : "GEOGRAPHY", width : "15em"});
+				columnList.push({columnName : "PRODUCT_DESCRIPTION", width : "15em"});
+				columnList.push({columnName : "CU_DESCRIPTION", width : "15em"});
+				columnList.push({columnName : "SCU_DESCRIPTION", width : "15em"});
+				columnList.push({columnName : "OBSOLETE", width : "5em"});
+				this.adjustTableColumnWidth("smartTblCUAssignment",columnList);  			
   		}
   	});
 });
