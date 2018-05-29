@@ -264,8 +264,8 @@ sap.ui.define([
 		},
 	    // Below function will show the grid when radio button is selected
 		fnGridShow : function(evt){
-	    	var oSelectedIndex = evt.getParameter("selectedIndex");  
-	    	var oRadioButtonSrc = evt.getSource().getAggregation("buttons");  
+	    	var oSelectedIndex = this.getView().byId("rbgGMIDType").getSelectedIndex();
+	    	var oRadioButtonSrc = this.getView().byId("rbgGMIDType").getButtons();
 	    	this._oSelectedGMIDType = oRadioButtonSrc[oSelectedIndex].getText();
 	    	this._oSeed = this._oi18nModel.getProperty("seeds");
 	    	this._oCropProtectionDASType  = this._oi18nModel.getProperty("cropProtectionDASType");
@@ -355,6 +355,7 @@ sap.ui.define([
 				btnSubmit.setVisible(false);
  				btnContinue.setVisible(true);
 			}
+			this.fnGridShow();
 			
 		},
 		// This function loops through all the rows on the form and checks each input to see if it is filled in
@@ -1115,6 +1116,7 @@ sap.ui.define([
 			this._defaultSupplySystemFlagForSeed = supplySystemFlag.find(function(data){return data.CODE_KEY === "RR"; }).ID; 
 			this._defaultSupplySystemFlagForCP = supplySystemFlag.find(function(data){return data.CODE_KEY === "APO"; }).ID;
 			this._defaultSupplySystemFlagForDCP = supplySystemFlag.find(function(data){return data.CODE_KEY === "SCM7"; }).ID;
+			this._defaultSupplySystemFlagForNonAPOCP = supplySystemFlag.find(function(data){return data.CODE_KEY === "N/A"; }).ID;
 			
         },
         // set the default property values for the passed object
@@ -1135,7 +1137,14 @@ sap.ui.define([
 		   else { // DAS Crop Protection
 		    		obj.QUADRANT_CODE_ID = -1;
 					obj.CHANNEL_CODE_ID = -1;
-					obj.SUPPLY_SYSTEM_FLAG_CODE_ID = this._defaultSupplySystemFlagForCP;
+					
+					if(checkedNoPlant){
+						obj.SUPPLY_SYSTEM_FLAG_CODE_ID = this._defaultSupplySystemFlagForNonAPOCP;
+					}
+					else{
+						obj.SUPPLY_SYSTEM_FLAG_CODE_ID = this._defaultSupplySystemFlagForCP;
+					}
+					
 		    	}
 
         	return obj;
@@ -1348,7 +1357,12 @@ sap.ui.define([
 	        				}
 	        				else
 	        				{
-	        					obj["SUPPLY_SYSTEM_FLAG_CODE_ID"] = t._defaultSupplySystemFlagForCP;
+	        					if(checkedNoPlant){
+	        							obj["SUPPLY_SYSTEM_FLAG_CODE_ID"] = t._defaultSupplySystemFlagForNonAPOCP;
+	        					}
+	        					else{
+	        							obj["SUPPLY_SYSTEM_FLAG_CODE_ID"] = t._defaultSupplySystemFlagForCP;
+	        					}
 	        				}
 							
 							// push the object to our model
