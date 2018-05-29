@@ -25,6 +25,7 @@ sap.ui.define([
     var filter = [];
     var dropdownFilters = [];
     var fuzzyFilters = [];
+    var initFlag = false;
 	return Controller.extend("bam.controller.PeopleAssignment", {
 		onInit : function () {
 			// Get logged in user id
@@ -155,6 +156,8 @@ sap.ui.define([
 			this.getOwnerComponent().getRouter().navTo("home");
 		},
 		clearPersFilter: function(){
+			this._oSmartTable._oCurrentVariant.filter.filterItems = [];
+			this._oBindingParams.filters = [];
 			this._oSmartTable._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.alreadyKnownPersistentData.filter.filterItems = []; // eslint-disable-line
 			this._oSmartTable._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.controlData.filter.filterItems = []; // eslint-disable-line
 			this._oSmartTable._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.alreadyKnownRuntimeData.filter.filterItems = []; // eslint-disable-line
@@ -165,18 +168,23 @@ sap.ui.define([
 		},
 		onBeforeRebindTable: function(oEvent) {
             // refresh the odata model, this will force a refresh of the smart table UI
-            this.getOwnerComponent().getModel().refresh(true);
+            
             //Get bindinParams Object, which includes filters
             this._oBindingParams = oEvent.getParameter("bindingParams");
             // setting up filters
             var aFilters = this._oBindingParams.filters;
-            if(aFilters.length === 0){
-	            	var dFitler = new Filter ({
-                    	filters : [],
+            var prevFilters = [];
+            
+           
+            while (aFilters.length > 0){
+            	prevFilters.push(aFilters.pop());
+            }
+            
+			var dFitler = new Filter ({
+                    	filters : prevFilters,
                         bAnd : true
                     });
-                    aFilters.push(dFitler);
-            }
+			aFilters.push(dFitler);
 			
 			if(fuzzyFilters.length > 0){
 				var fuzzyFilter = new Filter ({
@@ -224,6 +232,8 @@ sap.ui.define([
             var geoSorter = new Sorter("GEOGRAPHY",false);
             aSorters.push(RuleSetSorter);
             aSorters.push(geoSorter);
+            
+            this.getOwnerComponent().getModel().refresh(true);
         },
 		// filterInitialised: function(){
 		// 	var curr = this; 
@@ -264,7 +274,8 @@ sap.ui.define([
 		//navigate back from rules page
 		onNavBack: function () {
 			var oHistory = History.getInstance();
-			var sPreviousHash = oHistory.getPreviousHash();
+			var sPreviousHash = undefined;
+			// var sPreviousHash = oHistory.getPreviousHash();
 	
 			if (sPreviousHash !== undefined) {
 				window.history.go(-1);
