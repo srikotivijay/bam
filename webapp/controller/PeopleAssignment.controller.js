@@ -501,6 +501,36 @@ sap.ui.define([
 	    			}
 	    	});
 	    	return result;
-		}
+		},
+		adjustTableColumnWidth : function(tableName, columnList){
+  			var oSmartTable = this.getView().byId(tableName); 
+  			var tableColumns = oSmartTable.getTable().getColumns();
+  			var tableId = oSmartTable.getId();
+  			for(var i = 0; i < tableColumns.length; i++){
+  				for(var j = 0; j < columnList.length; j++){
+  					if(tableColumns[i].getId() === tableId + "-" + columnList[j].columnName){
+  						tableColumns[i].setWidth(columnList[j].width);
+  						break;
+  					}
+  				}
+  			}
+  		},
+  		onDataRecieved : function(){
+				var columnList=[];
+				columnList.push({columnName : "PEOPLE_RULESET_DESCRIPTION", width : "20em"});
+				columnList.push({columnName : "GEOGRAPHY", width : "15em"});
+				columnList.push({columnName : "PRODUCT_DESCRIPTION", width : "15em"});
+				columnList.push({columnName : "DEMAND_MANAGER", width : "15em"});
+				columnList.push({columnName : "PRODUCT_MANAGER", width : "15em"});
+				columnList.push({columnName : "MARKETING_DIRECTOR", width : "15em"});
+				columnList.push({columnName : "MARKETING_MANAGER", width : "15em"});
+				columnList.push({columnName : "REG_SUPPLY_CHAIN_MANAGER", width : "15em"});
+				columnList.push({columnName : "SUPPLY_CHAIN_MANAGER", width : "15em"});
+				columnList.push({columnName : "MASTER_PLANNER", width : "15em"});
+				columnList.push({columnName : "SUPPLY_CHAIN_PLANNING_SPECIALIST", width : "15em"});
+				columnList.push({columnName : "GLOBAL_LEADER", width : "15em"});
+				columnList.push({columnName : "OBSOLETE", width : "5em"});
+				this.adjustTableColumnWidth("smartTblPeopleAssignment",columnList);  			
+  		}
   	});
 });

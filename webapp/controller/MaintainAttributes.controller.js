@@ -274,6 +274,34 @@ sap.ui.define([
 			    			}
 			    	});
 			    	return result;
-			}
+			},
+			adjustTableColumnWidth : function(tableName, columnList){
+  			var oSmartTable = this.getView().byId(tableName); 
+  			var tableColumns = oSmartTable.getTable().getColumns();
+  			var tableId = oSmartTable.getId();
+  			for(var i = 0; i < tableColumns.length; i++){
+  				for(var j = 0; j < columnList.length; j++){
+  					if(tableColumns[i].getId() === tableId + "-" + columnList[j].columnName){
+  						tableColumns[i].setWidth(columnList[j].width);
+  						break;
+  					}
+  				}
+  			}
+  		},
+  		onDataRecieved : function(){
+				var columnList=[];
+				columnList.push({columnName : "GMID", width : "10em"});
+				columnList.push({columnName : "GMID_SHORTTEXT", width : "20em"});
+				columnList.push({columnName : "COUNTRY", width : "15em"});
+				columnList.push({columnName : "COUNTRY_CODE", width : "5em"});
+				columnList.push({columnName : "RCU_DESC", width : "15em"});
+				columnList.push({columnName : "SUB_RCU_DESC", width : "15em"});
+				columnList.push({columnName : "BRAND_NAME", width : "15em"});
+				columnList.push({columnName : "DEMAND_MANAGER", width : "15em"});
+				columnList.push({columnName : "MARKETING_SPECIALIST", width : "15em"});
+				columnList.push({columnName : "GMID_COUNTRY_STATUS", width : "10em"});
+				columnList.push({columnName : "REQUESTED_DATE", width : "15em"});
+				this.adjustTableColumnWidth("smartTblBAMAttributes",columnList);  			
+  		}
   	});
 });

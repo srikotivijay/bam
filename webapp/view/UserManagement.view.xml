@@ -10,7 +10,8 @@
 				<VBox fitContainer="true">
 					<smartTable:SmartTable smartFilterId = "smartFilterBar" id="smartTblUserManagement" beforeRebindTable="onBeforeRebindTable" entitySet="V_WEB_USER_ROLES" tableType="Table" useExportToExcel="true" useVariantManagement="true" showFullScreenButton="true" 
 					useTablePersonalisation="true" header="User Management" showRowCount="true" enableAutoBinding="true" app:useSmartField="true" class="sapUiResponsiveContentPadding" ignoreFromPersonalisation="ID"
-					initiallyVisibleFields="USER_ID,USER_NAME,EMAIL,ROLE,ADMIN,DEMAND_MANAGER,MARKETING_MANAGER,SUPPLY_MANAGER,BUSINESS_USER,CU_ASSIGNER,DEMAND_MANAGER_ASSIGNER,PRODUCT_MANAGER_ASSIGNER,MARKETING_DIRECTOR_ASSIGNER,MARKETING_MANAGER_ASSIGNER,REG_SUPPLY_CHAIN_MANAGER_ASSIGNER,GLOBAL_LEADER_ASSIGNER,SUPPLY_CHAIN_MANAGER_ASSIGNER,MASTER_PLANNER_ASSIGNER,SUPPLY_CHAIN_PLANNING_SPECIALIST_ASSIGNER">
+					initiallyVisibleFields="USER_ID,USER_NAME,EMAIL,ROLE,ADMIN,DEMAND_MANAGER,MARKETING_MANAGER,SUPPLY_MANAGER,BUSINESS_USER,CU_ASSIGNER,DEMAND_MANAGER_ASSIGNER,PRODUCT_MANAGER_ASSIGNER,MARKETING_DIRECTOR_ASSIGNER,MARKETING_MANAGER_ASSIGNER,REG_SUPPLY_CHAIN_MANAGER_ASSIGNER,GLOBAL_LEADER_ASSIGNER,SUPPLY_CHAIN_MANAGER_ASSIGNER,MASTER_PLANNER_ASSIGNER,SUPPLY_CHAIN_PLANNING_SPECIALIST_ASSIGNER"
+					dataReceived =  "onDataRecieved">
 						<!-- layout data used to make the table growing but the filter bar fixed -->
 						<smartTable:layoutData>
 								<FlexItemData growFactor="1" baseSize="0%"/>

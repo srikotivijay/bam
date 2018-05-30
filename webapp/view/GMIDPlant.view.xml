@@ -10,7 +10,8 @@
 					
 					<smartTable:SmartTable id="smartTblBAMAttributes" beforeRebindTable="onBeforeRebindTable" entitySet="V_GMID_CROP_PROTECTION" tableType="Table" useExportToExcel="true" useVariantManagement="true" showFullScreenButton="true" 
 					useTablePersonalisation="true" header="Material Country Attributes" showRowCount="true" enableAutoBinding="true" app:useSmartField="true" class="sapUiResponsiveContentPadding" ignoreFromPersonalisation="ID"
-					initiallyVisibleFields="GMID,GMID_SHORTTEXT,COUNTRY,COUNTRY_CODE,MATERIAL_STATUS">
+					initiallyVisibleFields="GMID,GMID_SHORTTEXT,COUNTRY,COUNTRY_CODE,MATERIAL_STATUS"
+					dataReceived =  "onDataRecieved">
 						<!-- layout data used to make the table growing but the filter bar fixed -->
 						<smartTable:layoutData>
 								<FlexItemData growFactor="1" baseSize="0%"/>

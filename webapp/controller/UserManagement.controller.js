@@ -223,6 +223,42 @@ sap.ui.define([
 				}
 			});
 			return result;
-		}
+		},
+			adjustTableColumnWidth : function(tableName, columnList){
+  			var oSmartTable = this.getView().byId(tableName); 
+  			var tableColumns = oSmartTable.getTable().getColumns();
+  			var tableId = oSmartTable.getId();
+  			for(var i = 0; i < tableColumns.length; i++){
+  				for(var j = 0; j < columnList.length; j++){
+  					if(tableColumns[i].getId() === tableId + "-" + columnList[j].columnName){
+  						tableColumns[i].setWidth(columnList[j].width);
+  						break;
+  					}
+  				}
+  			}
+  		},
+  			onDataRecieved : function(){
+				var columnList=[];
+				columnList.push({columnName : "USER_ID", width : "10em"});
+				columnList.push({columnName : "USER_NAME", width : "15em"});
+				columnList.push({columnName : "EMAIL", width : "15em"});
+				columnList.push({columnName : "ROLE", width : "10em"});
+				columnList.push({columnName : "ADMIN", width : "10em"});
+				columnList.push({columnName : "DEMAND_MANAGER", width : "10em"});
+				columnList.push({columnName : "MARKETING_MANAGER", width : "10em"});
+				columnList.push({columnName : "SUPPLY_MANAGER", width : "10em"});
+				columnList.push({columnName : "BUSINESS_USER", width : "10em"});
+				columnList.push({columnName : "CU_ASSIGNER", width : "10em"});
+				columnList.push({columnName : "DEMAND_MANAGER_ASSIGNER", width : "10em"});
+				columnList.push({columnName : "PRODUCT_MANAGER_ASSIGNER", width : "10em"});
+				columnList.push({columnName : "MARKETING_DIRECTOR_ASSIGNER", width : "10em"});
+				columnList.push({columnName : "MARKETING_MANAGER_ASSIGNER", width : "10em"});
+				columnList.push({columnName : "REG_SUPPLY_CHAIN_MANAGER_ASSIGNER", width : "10em"});
+				columnList.push({columnName : "GLOBAL_LEADER_ASSIGNER", width : "10em"});
+				columnList.push({columnName : "SUPPLY_CHAIN_MANAGER_ASSIGNER", width : "10em"});
+				columnList.push({columnName : "MASTER_PLANNER_ASSIGNER", width : "10em"});
+				columnList.push({columnName : "SUPPLY_CHAIN_PLANNING_SPECIALIST_ASSIGNER", width : "10em"});
+				this.adjustTableColumnWidth("smartTblUserManagement",columnList);  			
+  		}
   	});
 });

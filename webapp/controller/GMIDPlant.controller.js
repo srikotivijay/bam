@@ -198,6 +198,28 @@ sap.ui.define([
 							title : "Error"
 					});
 				}
-			}
+			},
+		adjustTableColumnWidth : function(tableName, columnList){
+  			var oSmartTable = this.getView().byId(tableName); 
+  			var tableColumns = oSmartTable.getTable().getColumns();
+  			var tableId = oSmartTable.getId();
+  			for(var i = 0; i < tableColumns.length; i++){
+  				for(var j = 0; j < columnList.length; j++){
+  					if(tableColumns[i].getId() === tableId + "-" + columnList[j].columnName){
+  						tableColumns[i].setWidth(columnList[j].width);
+  						break;
+  					}
+  				}
+  			}
+  		},
+  		onDataRecieved : function(){
+				var columnList=[];
+				columnList.push({columnName : "GMID", width : "10em"});
+				columnList.push({columnName : "GMID_SHORTTEXT", width : "20em"});
+				columnList.push({columnName : "COUNTRY", width : "15em"});
+				columnList.push({columnName : "COUNTRY_CODE", width : "10em"});
+				columnList.push({columnName : "MATERIAL_STATUS", width : "20em"});
+				this.adjustTableColumnWidth("smartTblBAMAttributes",columnList);  			
+  		}
   	});
 });
