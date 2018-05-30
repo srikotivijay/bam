@@ -31,7 +31,7 @@ sap.ui.define([
 	    		
 	    		// add column freeze to table
 	    		var oSmartTable = this.getView().byId("smartTblBAMAttributes");   
-	    		this.oSmartTable = oSmartTable;
+	    		this._oSmartTable = oSmartTable;
 				var oTable = oSmartTable.getTable();  
 				oTable.setEnableColumnFreeze(true);
             	
