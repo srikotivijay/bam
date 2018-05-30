@@ -106,6 +106,20 @@ sap.ui.define([
 				}				
 	            // setting up filters
 	            var aFilters = this._oBindingParams.filters;
+	            var prevFilters = [];
+           
+        		//there is no need to check if there will be filters applied because the logged in user is applied by default therefore, the filter will afilters
+        		//will never be empty on the inside. Also the user is required to enter Material and jCountry so a query cannot be submitted without filters.
+				while (aFilters.length > 0){
+	            	prevFilters.push(aFilters.pop());
+	            }
+	            
+				var dFitler = new Filter ({
+	                    	filters : prevFilters,
+	                        bAnd : true
+	                    });
+				aFilters.push(dFitler);
+				
 				if(dateFilter.length > 0){
 	            	var dateFilters = new Filter ({
 		                filters : dateFilter,
@@ -121,13 +135,13 @@ sap.ui.define([
 				}
 				
 				var userFilters = [];
-               userFilters.push(new Filter("REQUESTED_BY",sap.ui.model.FilterOperator.EQ, loggedInUserID));
-               var userFilter = new Filter ({
+            	userFilters.push(new Filter("REQUESTED_BY",sap.ui.model.FilterOperator.EQ, loggedInUserID));
+            	var userFilter = new Filter ({
                                     filters : userFilters,
                                     bAnd : true
                                 });
-               if(aFilters.length > 0 && aFilters[0].aFilters !== undefined)
-               {
+            	if(aFilters.length > 0 && aFilters[0].aFilters !== undefined)
+            	{
                     aFilters[0].bAnd = true;
                     aFilters[0].aFilters.push(userFilter);
                 }
@@ -148,7 +162,6 @@ sap.ui.define([
 		            	aFilters.push(gmidFilterList);
 		            }
 				}
-				
 			},
 			smartFilterSearch: function(oEvent){
 				var filterArray = [];

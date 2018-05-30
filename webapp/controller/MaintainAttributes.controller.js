@@ -109,7 +109,7 @@ sap.ui.define([
 				//
 				// setting up sorters
 				if (this._oBindingParams.sorter === undefined || this._oBindingParams.sorter.length === 0){
-					this._oBindingParams.sorter.push(new sap.ui.model.Sorter("IBP_STATUS", true));
+					this._oBindingParams.sorter.push(new sap.ui.model.Sorter("GMID_COUNTRY_STATUS", true));
 					this._oBindingParams.sorter.push(new sap.ui.model.Sorter("GMID", false));
 				}	
 	        	

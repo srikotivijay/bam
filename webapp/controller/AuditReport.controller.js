@@ -96,35 +96,49 @@ sap.ui.define([
 				this._oBindingParams = oEvent.getParameter("bindingParams");
 	            // setting up filters
 	            var aFilters = this._oBindingParams.filters;
-            	
-				if(dateFilter.length > 0){
-	            	var dateFilters = new Filter ({
-		                filters : dateFilter,
-		                    bAnd : true
-	                });
-	                if(aFilters.length > 0 && aFilters[0].aFilters != undefined){
-		            	aFilters[0].bAnd = true;
-		            	aFilters[0].aFilters.push(dateFilters);
+	            var prevFilters = [];
+           
+        		//check if there are custom filters to apply because if there are not and there is no personalization filter provided then the
+        		//filter will screw up and display nothing
+        		if(dateFilter.length > 0 || filter.length > 0){
+        			while (aFilters.length > 0){
+		            	prevFilters.push(aFilters.pop());
 		            }
-		            else{
-		            	aFilters.push(dateFilters);
-		            }
-				}
-				
-				if(filter.length > 0){
-	            	var gmidFilterList = new Filter ({
-	                    filters : filter,
-	                        bAnd : false
-	                    });
-		            if(aFilters.length > 0 && aFilters[0].aFilters != undefined){
-		            	aFilters[0].bAnd = true;
-		            	aFilters[0].aFilters.push(gmidFilterList);
-		            }
-		            else{
-		            	aFilters.push(gmidFilterList);
-		            }
-				}
-
+		            
+					var dFitler = new Filter ({
+		                    	filters : prevFilters,
+		                        bAnd : true
+		                    });
+					aFilters.push(dFitler);
+	            	
+					if(dateFilter.length > 0){
+		            	var dateFilters = new Filter ({
+			                filters : dateFilter,
+			                    bAnd : true
+		                });
+		                if(aFilters.length > 0 && aFilters[0].aFilters != undefined){
+			            	aFilters[0].bAnd = true;
+			            	aFilters[0].aFilters.push(dateFilters);
+			            }
+			            else{
+			            	aFilters.push(dateFilters);
+			            }
+					}
+					
+					if(filter.length > 0){
+		            	var gmidFilterList = new Filter ({
+		                    filters : filter,
+		                        bAnd : false
+		                    });
+			            if(aFilters.length > 0 && aFilters[0].aFilters != undefined){
+			            	aFilters[0].bAnd = true;
+			            	aFilters[0].aFilters.push(gmidFilterList);
+			            }
+			            else{
+			            	aFilters.push(gmidFilterList);
+			            }
+					}
+        		}
 			},
 			tableInitialised: function(){
 				var allColumns = this._oSmartTable.getTable().getColumns();

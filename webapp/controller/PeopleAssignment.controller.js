@@ -152,16 +152,7 @@ sap.ui.define([
 		// navigate back to the homepage
 		onHome: function(){
 			DataContext.clearPersFilter(this._oSmartTable,this._oBindingParams); // eslint-disable-line
-			//this.clearPersFilter();
 			this.getOwnerComponent().getRouter().navTo("home");
-		},
-		clearPersFilter: function(){
-			// this._oSmartTable._oCurrentVariant.filter.filterItems = [];
-			// this._oBindingParams.filters = [];
-			// this._oSmartTable._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.alreadyKnownPersistentData.filter.filterItems = []; // eslint-disable-line
-			// this._oSmartTable._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.controlData.filter.filterItems = []; // eslint-disable-line
-			// this._oSmartTable._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.alreadyKnownRuntimeData.filter.filterItems = []; // eslint-disable-line
-			// this._oSmartTable._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.controlDataBase.filter.filterItems = []; // eslint-disable-line
 		},
 		onExit: function(){
 			
@@ -235,13 +226,6 @@ sap.ui.define([
             
             this.getOwnerComponent().getModel().refresh(true);
         },
-		// filterInitialised: function(){
-		// 	var curr = this; 
-		// 	//sap.ui.getCore().byId("__component0---peopleAssignment--smartFilterBar-btnGo").attachPress(function(){});
-		// },
-		clickGo: function(){
-			
-		},
 		filterSearch: function(){
 			dropdownFilters = [];
 			fuzzyFilters = [];
@@ -284,7 +268,6 @@ sap.ui.define([
 				oRouter.navTo("maintainRules", true);
 			}
 			DataContext.clearPersFilter(this._oSmartTable,this._oBindingParams);
-			// this.clearPersFilter();
 		},
 		// open the new page to add rule/ruleset
 		onAdd: function(){
