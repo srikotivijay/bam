@@ -43,7 +43,7 @@
 									</ComboBox>
 								</smartFilterBar:customControl>
 							</smartFilterBar:ControlConfiguration>
-							<smartFilterBar:ControlConfiguration key="FUZZY" label="FUZZY SEARCH" visibleInAdvancedArea="true">
+							<smartFilterBar:ControlConfiguration key="FUZZY" label="SEARCH" visibleInAdvancedArea="true">
 								<smartFilterBar:customControl>
 									<Input id="fuzzy" name="fuzzy" maxLength = "50" liveChange="onChange" valueLiveUpdate="true" width="48.5%" value="{PeopleAssignmentVM>/FUZZY}"/>
 								</smartFilterBar:customControl>
