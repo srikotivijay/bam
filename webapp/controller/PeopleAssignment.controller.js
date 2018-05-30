@@ -244,6 +244,8 @@ sap.ui.define([
 			}
 			if(fuzzyText != undefined && fuzzyText !== ""){
 				fuzzyText = fuzzyText.toUpperCase();
+				fuzzyFilters.push(new Filter("PEOPLE_RULESET_DESCRIPTION",sap.ui.model.FilterOperator.Contains,fuzzyText));
+				fuzzyFilters.push(new Filter("GEOGRAPHY",sap.ui.model.FilterOperator.Contains,fuzzyText));
 				fuzzyFilters.push(new Filter("PRODUCT_DESCRIPTION",sap.ui.model.FilterOperator.Contains,fuzzyText));
 				fuzzyFilters.push(new Filter("DEMAND_MANAGER",sap.ui.model.FilterOperator.Contains,fuzzyText));
 				fuzzyFilters.push(new Filter("PRODUCT_MANAGER",sap.ui.model.FilterOperator.Contains,fuzzyText));
