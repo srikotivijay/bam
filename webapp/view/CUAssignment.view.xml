@@ -8,11 +8,46 @@
 				 
 				<!-- use this to make the table occupy the available screen height -->
 				<VBox fitContainer="true">
-					<smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="V_WEB_CU_RULES">
+					<smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="V_WEB_CU_RULES" search="filterSearch">
 					<smartFilterBar:controlConfiguration>
-						<smartFilterBar:ControlConfiguration key="CU_RULESET_DESCRIPTION" visibleInAdvancedArea="true">
+						<smartFilterBar:ControlConfiguration key="RULESETS" label="RULESET" index="0" visibleInAdvancedArea="true">
+							<smartFilterBar:customControl>
+								<ComboBox
+									id="cmbRuleSetList"
+									showSecondaryValues= "true"
+									filterSecondaryValues= "true"
+									change="onChangeRuleSet"
+									value="{CUAssignmentVM>/RULESET_DESCRIPTION}"
+									selectedKey="{CUAssignmentVM>/SELECTED_CU_RULESET_SEQ}"
+									width="800px"
+									items="{
+										path: 'CUAssignmentVM>/RuleSet'
+									}">
+									<core:ListItem key="{CUAssignmentVM>CU_RULESET_SEQ}" text="{parts: ['CUAssignmentVM>NAME','CUAssignmentVM>DESCRIPTION'], formatter: '.formatText'}" additionalText="{CUAssignmentVM>CU_RULESET_SEQ}"/>
+								</ComboBox>
+							</smartFilterBar:customControl>
 						</smartFilterBar:ControlConfiguration>
-							<smartFilterBar:ControlConfiguration key="GEOGRAPHY" visibleInAdvancedArea="true">
+						<smartFilterBar:ControlConfiguration key="GEO" label="GEOGRAPHY" index="1" visibleInAdvancedArea="true">
+							<smartFilterBar:customControl>
+								<ComboBox
+										id="cmbGeo"
+										showSecondaryValues= "true"
+										filterSecondaryValues= "true"
+										change="onChangeGeo"
+										value="{CUAssignmentVM>/SELECTED_GEO_NAME}"
+										selectedKey="{CUAssignmentVM>/SELECTED_GEO_LEVEL}"
+										width="800px"
+										items="{
+											path: 'CUAssignmentVM>/GeographySet'
+										}">
+									<core:ListItem key="{CUAssignmentVM>GEO_LEVEL}" text="{CUAssignmentVM>NAME}" additionalText="{CUAssignmentVM>GEO_LEVEL}"/>
+								</ComboBox>
+							</smartFilterBar:customControl>
+						</smartFilterBar:ControlConfiguration>
+						<smartFilterBar:ControlConfiguration key="FUZZY" label="SEARCH" visibleInAdvancedArea="true">
+							<smartFilterBar:customControl>
+								<Input id="fuzzy" name="fuzzy" maxLength = "50" liveChange="onChange" valueLiveUpdate="true" width="48.5%" value="{CUAssignmentVM>/FUZZY}"/>
+							</smartFilterBar:customControl>
 						</smartFilterBar:ControlConfiguration>
 					</smartFilterBar:controlConfiguration>
 				</smartFilterBar:SmartFilterBar>

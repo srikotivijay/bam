@@ -648,12 +648,19 @@ sap.ui.define([
 		}
 
 		function clearPersFilter(table, bindinParams) {
-			if(table._oCurrentVariant != undefined){
+			try{
 				table._oCurrentVariant.filter.filterItems = [];
-			}
-			if(bindinParams != undefined){
 				bindinParams.filters = [];
 			}
+			catch(ex){
+				console.error(ex.message); //eslint-disable-line
+			}
+			// if(table._oCurrentVariant != undefined){
+			// 	table._oCurrentVariant.filter.filterItems = [];
+			// }
+			// if(bindinParams != undefined){
+			// 	bindinParams.filters = [];
+			// }
 			table._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.alreadyKnownPersistentData.filter.filterItems = []; // eslint-disable-line
 			table._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.controlData.filter.filterItems = []; // eslint-disable-line
 			table._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.alreadyKnownRuntimeData.filter.filterItems = []; // eslint-disable-line

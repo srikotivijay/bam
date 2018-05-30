@@ -25,7 +25,6 @@ sap.ui.define([
     var filter = [];
     var dropdownFilters = [];
     var fuzzyFilters = [];
-    var initFlag = false;
 	return Controller.extend("bam.controller.PeopleAssignment", {
 		onInit : function () {
 			// Get logged in user id
@@ -490,10 +489,6 @@ sap.ui.define([
 					filters: filterArray,
 					sorters: sortArray,
 	                success: function(oData, oResponse){
-	                	// // add Please select item on top of the list
-		                // oData.results.unshift({	"PEOPLE_RULESET_SEQ":-1,
-		              		// 					"NAME":"Please Select a Rule Set"});
-		                // Bind the CU RuleSet data
 		                result =  oData.results;
 	                },
 	    		    error: function(error){
