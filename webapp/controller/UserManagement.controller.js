@@ -71,6 +71,7 @@ sap.ui.define([
 			else
 			{
 				this.getOwnerComponent().getModel().refresh(true);
+				oSmartTable.rebindTable();
 				//This is a bandaid for resetting the Checkboxes on the grid, we could not find a method that directly unsets the checkboxes
 				//Instead we can unset and set the checkbox
 				oTable.setSelectionMode("None");
@@ -100,7 +101,7 @@ sap.ui.define([
 		},
 		onBeforeRebindTable: function(oEvent) {
                 // refresh the odata model, this will force a refresh of the smart table UI
-                // this.getOwnerComponent().getModel().refresh(true);
+                 this.getOwnerComponent().getModel().refresh(true);
                 //                 //Get bindinParams Object, which includes filters
                 this._oBindingParams = oEvent.getParameter("bindingParams");
                 //                 // setting up sorters
