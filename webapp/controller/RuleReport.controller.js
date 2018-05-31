@@ -464,7 +464,8 @@ sap.ui.define([
 				var columnList=[];
 				columnList.push({columnName : "GMID", width : "10em"});
 				columnList.push({columnName : "GMID_DESC", width : "20em"});
-				columnList.push({columnName : "COUNTRY", width : "15em"});
+				columnList.push({columnName : "COUNTRY", width : "10em"});
+				columnList.push({columnName : "SHIP_TO_COUNTRY", width : "10em"});
 				columnList.push({columnName : "COUNTRY_CODE", width : "10em"});
 				columnList.push({columnName : "RULE_TYPE", width : "10em"});
 				columnList.push({columnName : "RULE_SET_DESCRIPTION", width : "20em"});
@@ -493,9 +494,9 @@ sap.ui.define([
 				columnList.push({columnName : "PRIOR_REG_SUPPLY_CHAIN_MANAGER", width : "15em"});
 				columnList.push({columnName : "MASTER_PLANNER", width : "15em"});
 				columnList.push({columnName : "PRIOR_MASTER_PLANNER", width : "15em"});
-				columnList.push({columnName : "OPERATION_BY", width : "15em"});
+				columnList.push({columnName : "OPERATION_BY", width : "10em"});
 				columnList.push({columnName : "OPERATION_ON", width : "15em"});
-				columnList.push({columnName : "OPERATION", width : "15em"});
+				columnList.push({columnName : "OPERATION", width : "10em"});
 				this.adjustTableColumnWidth("smartTblRuleReport",columnList);  			
   		}
   	});

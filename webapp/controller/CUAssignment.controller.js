@@ -435,8 +435,8 @@ sap.ui.define([
 				columnList.push({columnName : "CU_RULESET_DESCRIPTION", width : "20em"});
 				columnList.push({columnName : "GEOGRAPHY", width : "15em"});
 				columnList.push({columnName : "PRODUCT_DESCRIPTION", width : "15em"});
-				columnList.push({columnName : "CU_DESCRIPTION", width : "15em"});
-				columnList.push({columnName : "SCU_DESCRIPTION", width : "15em"});
+				columnList.push({columnName : "CU_DESCRIPTION", width : "20em"});
+				columnList.push({columnName : "SCU_DESCRIPTION", width : "20em"});
 				columnList.push({columnName : "OBSOLETE", width : "5em"});
 				this.adjustTableColumnWidth("smartTblCUAssignment",columnList);  			
   		}
