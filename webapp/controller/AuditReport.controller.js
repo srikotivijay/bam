@@ -40,6 +40,7 @@ sap.ui.define([
 			    this._oModel.setProperty("/ChangeAttributes",this.getChangeAttributeDropDown());
 			    var initialColumns = this.getTableColumns("V_AUDIT_REPORT").join();
 			    this._oSmartTable.setInitiallyVisibleFields(initialColumns);
+			    this._oSmartTable.setShowRowCount(false);
 			    // this._oModel.setProperty("InitiallyVisibleFields", beginInitialColumns, null, true);
 		    	
 		    	if(firstTimePageLoad)
@@ -139,6 +140,7 @@ sap.ui.define([
 			            }
 					}
         		}
+        		this._oSmartTable.setShowRowCount(true);
 			},
 			tableInitialised: function(){
 				var allColumns = this._oSmartTable.getTable().getColumns();

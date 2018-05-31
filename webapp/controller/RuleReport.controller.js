@@ -50,6 +50,7 @@ sap.ui.define([
 		    	else{
 		    		this.setSmartTablePersonalization(false);
 		    	}
+		    	this._oSmartTable.setShowRowCount(false);
 			},
 			getRouter : function () {
 				return sap.ui.core.UIComponent.getRouterFor(this);
@@ -162,6 +163,7 @@ sap.ui.define([
 		            	aFilters.push(gmidFilterList);
 		            }
 				}
+				this._oSmartTable.setShowRowCount(true);
 			},
 			smartFilterSearch: function(oEvent){
 				var filterArray = [];
