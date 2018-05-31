@@ -1,0 +1,28 @@
+Generally used accross the application:
+
+this._oBindingParams.filters
+this._oSmartTable.getBinding().aApplicationFilters
+this._oSmartTable.getBinding().aSorters;
+
+this._oSmartTable._oPersController
+	Ex:
+	this._oSmartTable._oPersController.oModels.$sapuicomppersonalizationBaseController.oData.controlData.columns.columnsItems
+
+table._oCurrentVariant.filter.filterItems
+
+
+Warning disabled via: // eslint-disable-line
+
+
+Controllers:
+MaintainMaterialAttribtues
+MaintainAttributes
+GMIDPlant
+AuditReport
+CUAssignment
+PeopleAssignment
+UserManagement
+RuleReport
+
+
+DataContext
