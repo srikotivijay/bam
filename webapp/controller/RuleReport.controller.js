@@ -170,6 +170,9 @@ sap.ui.define([
 				filter = [];
 				dateFilter = [];
 				var changeAttributeList = this.getView().byId("cmbAttr").getSelectedKeys();
+				if(changeAttributeList.length === 0){
+					changeAttributeList = this.getView().byId("cmbAttr").getKeys();
+				}
 				
 				var fromDate = this._oModel.getProperty("/DateTimeFrom");
 				if(fromDate !== undefined && fromDate !== null){

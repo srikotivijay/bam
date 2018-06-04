@@ -153,7 +153,9 @@ sap.ui.define([
 				var filterArray = [];
 				filter = [];
 				dateFilter = [];
-				
+				if(changeAttributeList.length === 0){
+					changeAttributeList = this.getView().byId("cmbAttr").getKeys();
+				}
 				var fromDate = this._oModel.getProperty("/DateTimeFrom");
 				if(fromDate != undefined){
 					var fromDateFilter = new Filter("OPERATION_ON",sap.ui.model.FilterOperator.GE, fromDate);
