@@ -271,7 +271,10 @@ sap.ui.define([
             });
             // Get data for all GMIDS Entered in UI
             oDataModel.read(viewpath, {
-                filters: gmidFilterArray,
+                filters: [new Filter ({
+                    filters : gmidFilterArray,
+                        and : false
+                    })],
                 async: false,
 				success: function(oData, oResponse) {
                     var GMIDCountryList = [];
