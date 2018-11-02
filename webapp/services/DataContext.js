@@ -233,7 +233,10 @@ sap.ui.define([
             });
             // Get data for all GMIDS Entered in UI
             oDataModel.read(viewpath, {
-                filters: gmidFilterArray,
+                filters: [new Filter ({
+                    filters : gmidFilterArray,
+                        and : false
+                    })],
                 async: false,
 				success: function(oData, oResponse) {
                     var GMIDCountryList = [];
@@ -333,6 +336,8 @@ sap.ui.define([
 			//making filter for user ID
 			var filterArray=[];
 	    	var userFilter = new Filter("CREATED_BY",sap.ui.model.FilterOperator.EQ,loggedInUserID);
+			//PRODFLAG
+			//This may not need to be modified as this is only pushing one filter into the array which should work
 			filterArray.push(userFilter);
 			
 			oDataModel.read("/GMID_SHIP_TO_COUNTRY_STG",{
@@ -387,6 +392,7 @@ sap.ui.define([
 			// Create a filter & sorter array
 			var filterArray = [];
 			var countryFilter = new Filter("CODE_TYPE",sap.ui.model.FilterOperator.EQ,dropdownType);
+			//PRODFLAG
 			filterArray.push(countryFilter);
 			var sortArray = [];
 			var sorter = new sap.ui.model.Sorter("LABEL",false);
@@ -421,6 +427,7 @@ sap.ui.define([
 			// Create a filter & sorter array
 			var filterArray = [];
 			var countryFilter = new Filter("CODE_TYPE",sap.ui.model.FilterOperator.EQ,dropdownType);
+			//PRODFLAG
 			filterArray.push(countryFilter);
 			var sortArray = [];
 			var sorter = new sap.ui.model.Sorter("LABEL",false);
@@ -454,6 +461,7 @@ sap.ui.define([
 			// get the Custom1 values to be filtered for Admins and Non Admins to fetch the country list
         	 var ocustom1N = oi18nModel.getProperty("custom1N");
   			// Create a filter & sorter array
+			//PRODFLAG POSSIBLE ISSUE
 			var filterArray = [];
 			var countryFilter = new Filter("CODE_TYPE",sap.ui.model.FilterOperator.EQ,dropdownType);
 			filterArray.push(countryFilter);
@@ -525,7 +533,8 @@ sap.ui.define([
         
         // function to get GMID/Country Plant Combinations from DB
     	function getGMIDCountryPlantListFromDB(gmididsList,viewpath) {
-           var result;                            
+           var result;    
+           //PRODFLAG PROBABLE ISSUE
             var gmididFilterArray = [];
               gmididsList.forEach(function(item) {
 	            var gmidFilter = new Filter("ID",sap.ui.model.FilterOperator.EQ,item.ID);
@@ -539,7 +548,10 @@ sap.ui.define([
             });
             // Get data for all GMIDS Entered in UI
             oDataModel.read(viewpath, {
-                filters: gmididFilterArray,
+                filters: [new Filter ({
+                    filters : gmididFilterArray,
+                        and : false
+                    })],
                 async: false,
 				success: function(oData, oResponse) {
                    // var GMIDCountryPlantList = [];
@@ -602,6 +614,7 @@ sap.ui.define([
 			var ruleseqtypeFilter = filters;
 			ruleseqFilterArray.push(ruleseqtypeFilter);
             // Get data for all GMIDS Entered in UI
+            //PRODFLAG POSSIBLE ISSUE
             oDataModel.read(viewpath, {
                 filters: ruleseqFilterArray,
                 async: false,

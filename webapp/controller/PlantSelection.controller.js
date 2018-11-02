@@ -451,6 +451,7 @@ sap.ui.define([
                 gmidList.push(gmid);
             }
             var viewPath = "V_VALIDATE_GMID_COUNTRY";
+            //PRODFLAG
         	var gmidCountryRecords = DataContext.getGMIDListFromDB(gmidList,viewPath);                           
             var noDuplicates = true;
             for(var i = 0; i < data.length; i++) 
